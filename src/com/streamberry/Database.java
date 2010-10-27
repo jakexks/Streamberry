@@ -1,4 +1,4 @@
-package com.streamberry.db;
+package com.streamberry;
 
 public class Database {
 
