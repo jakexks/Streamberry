@@ -1,6 +1,6 @@
 package com.streamberry;
 
-public class PoC_Discovery implements Runnable {
+public class PoC_Threadtest implements Runnable {
 	// public static void main(String[] args) {
 	// new Thread(new PoC_Discovery()).start();
 	//		
