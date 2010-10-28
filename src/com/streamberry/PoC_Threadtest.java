@@ -18,7 +18,7 @@ public class PoC_Threadtest implements Runnable {
 		}
 	}
 
-	private static void printwithdelay(String thing, int id) throws InterruptedException {
+	private void printwithdelay(String thing, int id) throws InterruptedException {
 		Thread.sleep(1000);
 		System.out.println(thing + "\nI am thread" + id +"\n-------------");
 		
