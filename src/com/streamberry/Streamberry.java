@@ -1,3 +1,5 @@
+package com.streamberry;
+
 public class Streamberry {
 
 	/**
