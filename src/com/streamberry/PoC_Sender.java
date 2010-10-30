@@ -9,20 +9,23 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PoC_Sender implements Runnable {
 
-	int port = 35489;
+	private static final int port = 35489;
 	// Arbitrarily chosen from unassigned multicast block
 	// See:
 	// http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml
-	String multicastgroup = "224.0.0.133";
-
+	private static final String multicastgroup = "224.0.0.133";
+	byte uniqid[] = new byte[6];
+	
 	@Override
 	public void run() {
 		System.out.println("Sender thread starting");
 
-		byte uniqid[] = new byte[6];
+
 		try {
 			Enumeration<NetworkInterface> nics = NetworkInterface
 					.getNetworkInterfaces();
@@ -50,23 +53,12 @@ public class PoC_Sender implements Runnable {
 			System.exit(1);
 		}
 
-		try {
-			DatagramSocket s = new DatagramSocket();
-			byte sendtest[] = concat("StreamBerry:HELO:".getBytes("UTF-8"), uniqid);
-			
-			send(s, sendtest);
-
-		} catch (SocketException e) {
-			e.printStackTrace();
-			System.exit(1);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-
+		Timer heartbeattimer = new Timer();
+		heartbeattimer.scheduleAtFixedRate(new heartbeatsend(), 0, 5000);
+		
 	}
 
-	private int send(DatagramSocket s, byte[] data) {
+	private static int send(DatagramSocket s, byte[] data) {
 		try {
 			DatagramPacket p = new DatagramPacket(data, data.length,InetAddress.getByName(multicastgroup),port);
 			s.send(p);
@@ -81,6 +73,25 @@ public class PoC_Sender implements Runnable {
 		byte[] result = Arrays.copyOf(first, first.length + second.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
+	}
+	
+	class heartbeatsend extends TimerTask {
+		public void run(){
+			try {
+				DatagramSocket s = new DatagramSocket();
+				byte sendtest[] = concat("StreamBerry:HELO:".getBytes("UTF-8"), uniqid);
+				
+				send(s, sendtest);
+
+			} catch (SocketException e) {
+				e.printStackTrace();
+				System.exit(1);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+
+		}
 	}
 
 }
