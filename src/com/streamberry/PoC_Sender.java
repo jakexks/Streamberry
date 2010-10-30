@@ -20,11 +20,10 @@ public class PoC_Sender implements Runnable {
 	// http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml
 	private static final String multicastgroup = "224.0.0.133";
 	byte uniqid[] = new byte[6];
-	
+
 	@Override
 	public void run() {
 		System.out.println("Sender thread starting");
-
 
 		try {
 			Enumeration<NetworkInterface> nics = NetworkInterface
@@ -43,7 +42,7 @@ public class PoC_Sender implements Runnable {
 								(i < mac.length - 1) ? "-" : "\n");
 					break;
 				}
-				if (uniqid == null){
+				if (uniqid == null) {
 					// TODO: No MAC! random ID generator
 				}
 			}
@@ -55,12 +54,13 @@ public class PoC_Sender implements Runnable {
 
 		Timer heartbeattimer = new Timer();
 		heartbeattimer.scheduleAtFixedRate(new heartbeatsend(), 0, 5000);
-		
+
 	}
 
 	private static int send(DatagramSocket s, byte[] data) {
 		try {
-			DatagramPacket p = new DatagramPacket(data, data.length,InetAddress.getByName(multicastgroup),port);
+			DatagramPacket p = new DatagramPacket(data, data.length,
+					InetAddress.getByName(multicastgroup), port);
 			s.send(p);
 		} catch (IOException e) {
 			System.err.println("Failed to send data");
@@ -74,13 +74,14 @@ public class PoC_Sender implements Runnable {
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
 	}
-	
+
 	class heartbeatsend extends TimerTask {
-		public void run(){
+		public void run() {
 			try {
 				DatagramSocket s = new DatagramSocket();
-				byte sendtest[] = concat("StreamBerry:HELO:".getBytes("UTF-8"), uniqid);
-				
+				byte sendtest[] = concat("StreamBerry:HELO:".getBytes("UTF-8"),
+						uniqid);
+
 				send(s, sendtest);
 
 			} catch (SocketException e) {
