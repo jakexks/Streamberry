@@ -1,12 +1,12 @@
 package com.streamberry;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Enumeration;
 
@@ -46,10 +46,14 @@ public class PoC_Sender implements Runnable {
 
 		try {
 			DatagramSocket s = new DatagramSocket();
-			byte sendtest[] = concat("StreamBerry:HELO:".getBytes(Charset.defaultCharset()), uniqid);
+			byte sendtest[] = concat("StreamBerry:HELO:".getBytes("UTF-8"), uniqid);
+			
 			send(s, sendtest);
 
 		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -67,7 +71,7 @@ public class PoC_Sender implements Runnable {
 		return 0;
 	}
 
-	public static byte[] concat(byte[] first, byte[] second) {
+	public byte[] concat(byte[] first, byte[] second) {
 		byte[] result = Arrays.copyOf(first, first.length + second.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;

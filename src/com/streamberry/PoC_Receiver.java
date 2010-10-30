@@ -30,6 +30,7 @@ public class PoC_Receiver implements Runnable {
 			for (;;) {
 				s.receive(p);
 				System.out.println("Recieved data from " + p.getAddress().getCanonicalHostName());
+				System.out.println("Contents: "+ new String(p.getData(),"UTF-8"));
 			}
 		} catch (IOException e) {
 			System.err.println("Failed to make multicast socket (port " + port);
