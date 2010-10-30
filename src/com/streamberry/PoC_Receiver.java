@@ -7,21 +7,21 @@ import java.net.MulticastSocket;
 
 public class PoC_Receiver implements Runnable {
 
+	int port = 35489;	
+	// Arbitrarily chosen from unassigned multicast block
+	// See:
+	// http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml
+	String multicastgroup = "224.0.0.133";
+	
 	@Override
 	public void run() {
-		int port = 35489;
-
 		System.out.println("Receiver thread starting");
 		listener(port);
 	}
 
 	private void listener(int port) {
 		byte recvbuf[] = new byte[1024];
-		// Arbitrarily chosen from unassigned multicast block
-		// See:
-		// http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml
-		String multicastgroup = "224.0.0.133";
-
+		
 		try {
 			MulticastSocket s = new MulticastSocket(port);
 

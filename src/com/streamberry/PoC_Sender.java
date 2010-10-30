@@ -13,6 +13,9 @@ import java.util.Enumeration;
 public class PoC_Sender implements Runnable {
 
 	int port = 35489;
+	// Arbitrarily chosen from unassigned multicast block
+	// See:
+	// http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml
 	String multicastgroup = "224.0.0.133";
 
 	@Override
