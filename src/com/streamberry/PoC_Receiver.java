@@ -11,7 +11,7 @@ public class PoC_Receiver implements Runnable {
 	public void run() {
 		int port = 35489;
 
-		System.out.println("Receiver thread started");
+		System.out.println("Receiver thread starting");
 		listener(port);
 	}
 
