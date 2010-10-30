@@ -37,6 +37,9 @@ public class PoC_Sender implements Runnable {
 								(i < mac.length - 1) ? "-" : "\n");
 					break;
 				}
+				if (uniqid == null){
+					// TODO: No MAC! random ID generator
+				}
 			}
 
 		} catch (SocketException e) {
@@ -51,11 +54,11 @@ public class PoC_Sender implements Runnable {
 			send(s, sendtest);
 
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(1);
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(1);
 		}
 
 	}
