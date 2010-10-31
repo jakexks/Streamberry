@@ -58,7 +58,7 @@ public class PoC_Sender implements Runnable {
 		
 	}
 
-	private static int send(DatagramSocket s, byte[] data) {
+	private int send(DatagramSocket s, byte[] data) {
 		try {
 			DatagramPacket p = new DatagramPacket(data, data.length,InetAddress.getByName(multicastgroup),port);
 			s.send(p);
