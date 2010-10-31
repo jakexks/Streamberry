@@ -14,11 +14,11 @@ import java.util.TimerTask;
 
 public class PoC_Sender implements Runnable {
 
-	private static final int port = 35489;
+	private final int port = 35489;
 	// Arbitrarily chosen from unassigned multicast block
 	// See:
 	// http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml
-	private static final String multicastgroup = "224.0.0.133";
+	private final String multicastgroup = "224.0.0.133";
 	byte uniqid[] = new byte[6];
 	
 	@Override
