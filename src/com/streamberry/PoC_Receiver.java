@@ -29,7 +29,7 @@ public class PoC_Receiver implements Runnable {
 			DatagramPacket p = new DatagramPacket(recvbuf, recvbuf.length);
 			for (;;) {
 				s.receive(p);
-				System.out.println("Recieved data from "
+				System.out.println("Received data from "
 						+ p.getAddress().getCanonicalHostName());
 				System.out.println("Contents: "
 						+ new String(p.getData(), "UTF-8"));
