@@ -35,6 +35,8 @@ public class PoC_Sender implements Runnable {
 				byte mac[] = ni.getHardwareAddress();
 				if (mac == null) {
 					// No MAC address, probably loopback
+					System.err.println("No MAC ???");
+					System.exit(1);
 				} else {
 					uniqid = mac;
 					System.out.print("with mac ");
