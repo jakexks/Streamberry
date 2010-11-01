@@ -14,11 +14,11 @@ import java.util.TimerTask;
 
 public class PoC_Sender implements Runnable {
 
-	private static final int port = 35489;
+	private final int port = 35489;
 	// Arbitrarily chosen from unassigned multicast block
 	// See:
 	// http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml
-	private static final String multicastgroup = "224.0.0.133";
+	private final String multicastgroup = "224.0.0.133";
 	byte uniqid[] = new byte[6];
 
 	@Override
@@ -34,6 +34,8 @@ public class PoC_Sender implements Runnable {
 				byte mac[] = ni.getHardwareAddress();
 				if (mac == null) {
 					// No MAC address, probably loopback
+					System.err.println("No MAC ???");
+					System.exit(1);
 				} else {
 					uniqid = mac;
 					System.out.print("with mac ");
@@ -57,7 +59,7 @@ public class PoC_Sender implements Runnable {
 
 	}
 
-	private static int send(DatagramSocket s, byte[] data) {
+	private int send(DatagramSocket s, byte[] data) {
 		try {
 			DatagramPacket p = new DatagramPacket(data, data.length,
 					InetAddress.getByName(multicastgroup), port);
