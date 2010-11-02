@@ -25,6 +25,15 @@ public class PoC_Sender implements Runnable {
 	public void run() {
 		System.out.println("Sender thread starting");
 
+		uniqid = getUniqid();
+
+		Timer heartbeattimer = new Timer();
+		heartbeattimer.scheduleAtFixedRate(new heartbeatsend(), 0, 5000);
+
+	}
+
+	public byte[] getUniqid() {
+		byte[] id = new byte[6];
 		try {
 			Enumeration<NetworkInterface> nics = NetworkInterface
 					.getNetworkInterfaces();
@@ -32,22 +41,19 @@ public class PoC_Sender implements Runnable {
 				NetworkInterface ni = nics.nextElement();
 				System.out.print("Found network adaptor " + ni.getName() + " ");
 				byte mac[] = ni.getHardwareAddress();
-				for (int i = 0; i < mac.length; i++)
-					System.out.format("%02X%s", mac[i],
-							(i < mac.length - 1) ? "-" : "\n");
-				if (mac == null) {
+				if (iszero(mac)) {
 					// No MAC address, probably loopback
-					System.err.println("No MAC ???");
-					System.exit(1);
+					System.err.println("No MAC found for " + ni.getName());
 				} else {
-					uniqid = mac;
-					System.out.print("with mac ");
+
+					id = mac;
 					for (int i = 0; i < mac.length; i++)
 						System.out.format("%02X%s", mac[i],
 								(i < mac.length - 1) ? "-" : "\n");
+
 					break;
 				}
-				if (uniqid == null) {
+				if (id == null) {
 					// TODO: No MAC! random ID generator
 				}
 			}
@@ -56,10 +62,7 @@ public class PoC_Sender implements Runnable {
 			e.printStackTrace();
 			System.exit(1);
 		}
-
-		Timer heartbeattimer = new Timer();
-		heartbeattimer.scheduleAtFixedRate(new heartbeatsend(), 0, 5000);
-
+		return id;
 	}
 
 	private int send(DatagramSocket s, byte[] data) {
@@ -78,6 +81,18 @@ public class PoC_Sender implements Runnable {
 		byte[] result = Arrays.copyOf(first, first.length + second.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
+	}
+
+	private boolean iszero(byte[] array) {
+		if (array == null)
+			return true;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] != 0) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	class heartbeatsend extends TimerTask {
