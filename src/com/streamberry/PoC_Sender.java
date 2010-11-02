@@ -1,7 +1,6 @@
 package com.streamberry;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -19,17 +18,13 @@ public class PoC_Sender implements Runnable {
 	// See:
 	// http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml
 	private final String multicastgroup = "224.0.0.133";
-	byte uniqid[] = new byte[6];
 
 	@Override
 	public void run() {
 		System.out.println("Sender thread starting");
 
-		uniqid = getUniqID();
-
 		Timer heartbeattimer = new Timer();
 		heartbeattimer.scheduleAtFixedRate(new heartbeatsend(), 0, 5000);
-
 	}
 
 	public byte[] getUniqID() {
@@ -39,24 +34,26 @@ public class PoC_Sender implements Runnable {
 					.getNetworkInterfaces();
 			while (nics.hasMoreElements()) {
 				NetworkInterface ni = nics.nextElement();
-				System.out.print("Found network adaptor " + ni.getName() + " ");
+//				System.out.println("Found network adaptor " + ni.getName()
+//						+ " ");
 				byte mac[] = ni.getHardwareAddress();
 				if (iszero(mac)) {
 					// No MAC address, probably loopback
-					System.err.println("No MAC found for " + ni.getName()
-							+ "trying next network interface.");
+//					System.err.println("No MAC found for " + ni.getName()
+//							+ "trying next network interface.");
 				} else {
 
 					id = mac;
-					for (int i = 0; i < mac.length; i++)
-						System.out.format("%02X%s", mac[i],
-								(i < mac.length - 1) ? "-" : "\n");
-
+//					for (int i = 0; i < mac.length; i++) {
+//						System.out.format("%02X%s", mac[i],
+//								(i < mac.length - 1) ? "-" : "\n");
+//					}
 					break;
 				}
-				if (id == null) {
-					// TODO: No MAC! random ID generator
-				}
+
+			}
+			if (iszero(id)) {
+				// TODO: No MAC! random ID generator
 			}
 
 		} catch (SocketException e) {
@@ -66,7 +63,7 @@ public class PoC_Sender implements Runnable {
 		return id;
 	}
 
-	private int send(DatagramSocket s, byte[] data) {
+	public int send(DatagramSocket s, byte[] data) {
 		try {
 			DatagramPacket p = new DatagramPacket(data, data.length,
 					InetAddress.getByName(multicastgroup), port);
@@ -100,15 +97,13 @@ public class PoC_Sender implements Runnable {
 		public void run() {
 			try {
 				DatagramSocket s = new DatagramSocket();
-				byte sendtest[] = concat("StreamBerry:HELO:".getBytes("UTF-8"),
-						uniqid);
+				byte hellopacket[] = { (byte) 0xFF, (byte) 0xFF };
+
+				byte sendtest[] = concat(hellopacket, getUniqID());
 
 				send(s, sendtest);
 
 			} catch (SocketException e) {
-				e.printStackTrace();
-				System.exit(1);
-			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 				System.exit(1);
 			}

@@ -1,6 +1,7 @@
 package com.streamberry;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -29,16 +30,23 @@ public class PoC_Receiver implements Runnable {
 			DatagramPacket p = new DatagramPacket(recvbuf, recvbuf.length);
 			for (;;) {
 				s.receive(p);
-				System.out.println("Received data from "
-						+ p.getAddress().getCanonicalHostName());
-				System.out.println("Contents: "
-						+ new String(p.getData(), "UTF-8"));
+				decode(p);
 			}
 		} catch (IOException e) {
 			System.err.println("Failed to make multicast socket (port " + port);
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+
+	private void decode(DatagramPacket p) throws UnsupportedEncodingException {
+		System.out.println("Received data from "
+				+ p.getAddress().getCanonicalHostName());
+		byte data[] = p.getData();
+		if (data[0] ==  (byte) 0xFF && data[1] == (byte) 0xFF) {
+			System.out.println("Hello (Keep-alive) packet");
+		}
+		
 	}
 
 }
