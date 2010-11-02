@@ -25,14 +25,14 @@ public class PoC_Sender implements Runnable {
 	public void run() {
 		System.out.println("Sender thread starting");
 
-		uniqid = getUniqid();
+		uniqid = getUniqID();
 
 		Timer heartbeattimer = new Timer();
 		heartbeattimer.scheduleAtFixedRate(new heartbeatsend(), 0, 5000);
 
 	}
 
-	public byte[] getUniqid() {
+	public byte[] getUniqID() {
 		byte[] id = new byte[6];
 		try {
 			Enumeration<NetworkInterface> nics = NetworkInterface
@@ -43,7 +43,8 @@ public class PoC_Sender implements Runnable {
 				byte mac[] = ni.getHardwareAddress();
 				if (iszero(mac)) {
 					// No MAC address, probably loopback
-					System.err.println("No MAC found for " + ni.getName());
+					System.err.println("No MAC found for " + ni.getName()
+							+ "trying next network interface.");
 				} else {
 
 					id = mac;
