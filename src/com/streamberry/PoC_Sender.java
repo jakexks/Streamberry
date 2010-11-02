@@ -44,10 +44,10 @@ public class PoC_Sender implements Runnable {
 				} else {
 
 					id = mac;
-//					for (int i = 0; i < mac.length; i++) {
-//						System.out.format("%02X%s", mac[i],
-//								(i < mac.length - 1) ? "-" : "\n");
-//					}
+					// for (int i = 0; i < mac.length; i++) {
+					// System.out.format("%02X%s", mac[i],
+					// (i < mac.length - 1) ? "-" : "\n");
+					// }
 					break;
 				}
 
