@@ -1,12 +1,11 @@
 package com.streamberry;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class PoC_Receiver implements Runnable {
+public class BeaconReceive implements Runnable {
 
 	int port = 35489;
 	// Arbitrarily chosen from unassigned multicast block
@@ -39,7 +38,7 @@ public class PoC_Receiver implements Runnable {
 		}
 	}
 
-	private void decode(DatagramPacket p) throws UnsupportedEncodingException {
+	private void decode(DatagramPacket p) {
 		System.out.println("Received data from "
 				+ p.getAddress().getCanonicalHostName());
 		byte data[] = p.getData();

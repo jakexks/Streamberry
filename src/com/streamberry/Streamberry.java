@@ -7,7 +7,7 @@ public class Streamberry {
 	 */
 	public static void main(String[] args) {
 		System.out.println("Hello, Streamberry user!");
-		new Thread(new PoC_Receiver()).start();
-		new Thread(new PoC_Sender()).start();
+		new Thread(new BeaconReceive()).start();
+		new Thread(new BeaconSend()).start();
 	}
 }

@@ -11,7 +11,7 @@ import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PoC_Sender implements Runnable {
+public class BeaconSend implements Runnable {
 
 	private final int port = 35489;
 	// Arbitrarily chosen from unassigned multicast block
