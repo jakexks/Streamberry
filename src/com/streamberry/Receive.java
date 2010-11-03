@@ -67,6 +67,11 @@ public class Receive implements Runnable {
 }
 
 class Beacon extends Thread {
+	/**
+	 * This class deals with Beacon (keep-alive) packets
+	 * @param data The Raw packet data received  
+	 * @param ht The hashtable of current other users on the network
+	 */
 	public Beacon(byte[] data, Hashtable<byte[], Date> ht) {
 		byte id[] = { data[2], data[3], data[4], data[5], data[6], data[7] };
 
