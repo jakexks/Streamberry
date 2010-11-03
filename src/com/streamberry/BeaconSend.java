@@ -25,8 +25,13 @@ public class BeaconSend implements Runnable {
 
 		Timer heartbeattimer = new Timer();
 		heartbeattimer.scheduleAtFixedRate(new heartbeatsend(), 0, 5000);
+		// Creates a timer which creates a heartbeatsend object every 5 seconds
 	}
 
+	/**
+	 * Retrieves the unique ID (MAC address) of the host machine
+	 * @return Current machine's MAC address as a byte array
+	 */
 	public byte[] getUniqID() {
 		byte[] id = new byte[6];
 		try {
@@ -34,20 +39,9 @@ public class BeaconSend implements Runnable {
 					.getNetworkInterfaces();
 			while (nics.hasMoreElements()) {
 				NetworkInterface ni = nics.nextElement();
-//				System.out.println("Found network adaptor " + ni.getName()
-//						+ " ");
 				byte mac[] = ni.getHardwareAddress();
-				if (iszero(mac)) {
-					// No MAC address, probably loopback
-//					System.err.println("No MAC found for " + ni.getName()
-//							+ "trying next network interface.");
-				} else {
-
+				if (!iszero(mac)) {
 					id = mac;
-					// for (int i = 0; i < mac.length; i++) {
-					// System.out.format("%02X%s", mac[i],
-					// (i < mac.length - 1) ? "-" : "\n");
-					// }
 					break;
 				}
 
@@ -63,7 +57,12 @@ public class BeaconSend implements Runnable {
 		return id;
 	}
 
-	public int send(DatagramSocket s, byte[] data) {
+	/**
+	 * Creates a datagram packet containing MAC, data length, InetAddress and port, then sends it via the specified socket
+	 * @param s Socket used for sending
+	 * @param data Current MAC address
+	 */
+	public void send(DatagramSocket s, byte[] data) {
 		try {
 			DatagramPacket p = new DatagramPacket(data, data.length,
 					InetAddress.getByName(multicastgroup), port);
@@ -72,15 +71,24 @@ public class BeaconSend implements Runnable {
 			System.err.println("Failed to send data");
 			e.printStackTrace();
 		}
-		return 0;
 	}
 
+	/**
+	 * Concatenates 2 byte arrays
+	 * @param first Byte array to go at the beginning
+	 * @param second Byte array to be appended
+	 * @return Byte array with second concatenated onto first
+	 */
 	public byte[] concat(byte[] first, byte[] second) {
 		byte[] result = Arrays.copyOf(first, first.length + second.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
 	}
 
+	/**
+	 * Returns true if byte array is either null or contains all zeros
+	 * @param array Byte array to be checked
+	 */
 	private boolean iszero(byte[] array) {
 		if (array == null)
 			return true;
@@ -93,6 +101,10 @@ public class BeaconSend implements Runnable {
 		return true;
 	}
 
+	/**
+	 * Creates a beacon packet and sends it
+	 *
+	 */
 	class heartbeatsend extends TimerTask {
 		public void run() {
 			try {
