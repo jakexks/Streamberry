@@ -8,17 +8,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 
-import javax.sql.rowset.serial.SerialArray;
 
 public class Receive implements Runnable {
 
-	int port = 35489;
+	private static final int port = 35489;
 	// Arbitrarily chosen from unassigned multicast block
 	// See:
 	// http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml
-	String multicastgroup = "224.0.0.133";
+	private static final String multicastgroup = "224.0.0.133";
 
-	Hashtable<byte[], Date> clienttable = new Hashtable<byte[], Date>();
+	private Hashtable<byte[], Date> clienttable = new Hashtable<byte[], Date>();
 
 	@Override
 	public void run() {
@@ -26,6 +25,10 @@ public class Receive implements Runnable {
 		listener(port);
 	}
 
+	/**
+	 * Creates a multicast listen socket on the given port. 
+	 * @param port Port number
+	 */
 	private void listener(int port) {
 		byte recvbuf[] = new byte[1024];
 
@@ -45,6 +48,13 @@ public class Receive implements Runnable {
 		}
 	}
 
+	/**
+	 * Determines the type of the incoming datagram packet p, before passing it
+	 * to the appropriate class to deal with said packet.
+	 * 
+	 * @param p
+	 *            The incoming DatagramPacket
+	 */
 	private void decode(DatagramPacket p) {
 		System.out.println("Received data from "
 				+ p.getAddress().getCanonicalHostName());
