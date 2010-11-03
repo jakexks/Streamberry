@@ -5,7 +5,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class BeaconReceive implements Runnable {
+public class Receive implements Runnable {
 
 	int port = 35489;
 	// Arbitrarily chosen from unassigned multicast block
