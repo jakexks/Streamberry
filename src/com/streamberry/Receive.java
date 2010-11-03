@@ -43,14 +43,20 @@ public class Receive implements Runnable {
 				+ p.getAddress().getCanonicalHostName());
 		byte data[] = p.getData();
 		if (data[0] == (byte) 0xFF && data[1] == (byte) 0xFF) {
-			byte id[] = { data[2], data[3], data[4], data[5], data[6], data[7] };
-			System.out.print("Hello (Keep-alive) packet from ");
-			for (int i = 0; i < id.length; i++) {
-				System.out.format("%02X%s", id[i], (i < id.length - 1) ? "-"
-						: "\n");
-			}
+			new Thread(new Beacon(data)).start();
 		}
+	}
 
+}
+
+class Beacon extends Thread {
+	public Beacon(byte[] data) {
+		byte id[] = { data[2], data[3], data[4], data[5], data[6], data[7] };
+		System.out.print("Hello (Keep-alive) packet from ");
+		for (int i = 0; i < id.length; i++) {
+			System.out
+					.format("%02X%s", id[i], (i < id.length - 1) ? "-" : "\n");
+		}
 	}
 
 }
