@@ -14,6 +14,7 @@ Database::Database()
     db = QSqlDatabase::addDatabase( "QSQLITE" );
     connected = false;
     dbfilename = "database.sqlite";
+    initialise();
 }
 
 //deconstructor
