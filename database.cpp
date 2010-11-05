@@ -6,6 +6,7 @@
 
 using namespace std;
 
+//Because application data path is platform specific, need this function. Should be moved at later date.
 QString getAppDataPath() {
     #ifdef Q_WS_WIN
     return QDir::homePath() + "/Application Data/Streamberry/";
