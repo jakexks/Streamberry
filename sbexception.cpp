@@ -32,7 +32,7 @@ QString SBException::getException()
 
     s += " exception.";
 
-    if(s!="") {
+    if(exmsg!="") {
         s += " '";
         s += exmsg;
         s += "'.";
