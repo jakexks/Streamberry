@@ -2,6 +2,8 @@
 #include <QtDebug>
 #include <QtSql>
 #include <QString>
+#include <QFile>
+#include <QDir>
 #include "sbexception.h"
 #include "crossplatform.h"
 
@@ -35,19 +37,63 @@ void Database::connect(QString &path)
     }
 }
 
+//create database if one does not exist
+void Database::createDatabase(QString &path)
+{
+    QString filepath = path;
+    filepath += "database.sqlite";
+
+    //sql statements which creates structure. must be split as it doesn't seem to work with just one
+    QString sql[10];
+    sql[0] = "DROP TABLE IF EXISTS \"HomeTable\";";
+    sql[1] = "CREATE TABLE \"HomeTable\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" DATETIME, \"Length\" INTEGER, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" DATETIME NOT NULL , \"Filetype\" VARCHAR);";
+    sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
+    sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Home\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" DATETIME NOT NULL , \"TimeLastOnline\" DATETIME NOT NULL , \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL );";
+    sql[4] = "DROP TABLE IF EXISTS \"Settings\";";
+    sql[5] = "CREATE TABLE \"Settings\" (\"Name\" VARCHAR(10),\"Value\" INTEGER);";
+    sql[6] = "DROP TABLE IF EXISTS \"TrackedFolders\";";
+    sql[7] = "CREATE TABLE \"TrackedFolders\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Folderpath\" VARCHAR);";
+    sql[8] = "DROP TABLE IF EXISTS \"UserTable\";";
+    sql[9] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"Deleted\" BOOL);";
+
+    QFile dbfile(filepath);
+    QDir dir;
+
+    if(dbfile.exists()) {
+        throw SBException(DB, "Database exists but could not connect.");
+    }
+
+    try {
+        dir.mkpath(path);
+        dbfile.open(QIODevice::ReadWrite);
+        dbfile.close();
+        connect(filepath);
+
+        for(int i = 0; i<10; i++) {
+            query(sql[i]);
+        }
+    } catch(SBException e) {
+        throw e;
+    }
+}
+
 void Database::initialse()
 {
     QString path = CrossPlatform::getAppDataPath();
-    path += "database.sqlite";
+    QString filepath = path;
+    filepath += "database.sqlite";
 
     //qDebug() << "Path is: " << path;
 
     //try to connect to database, if fail pass on exception
     try {
-        connect(path);
-    } catch (SBException e) {
-        //need code here to create database
-        throw e;
+        connect(filepath);
+    } catch (SBException) {
+        try {
+            createDatabase(path);
+        } catch (SBException e) {
+            throw e;
+        }
     }
 }
 
@@ -58,7 +104,7 @@ void Database::query(QString sql)
     QSqlQuery query(db);
     query.prepare(sql);
 
-    //qDebug() << sql;
+    qDebug() << sql;
 
     //if it can't execute, throw exception
     if(!query.exec()) {

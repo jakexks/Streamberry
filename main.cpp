@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     try {
         db.initialse();
         QString sql = "INSERT INTO main.test (name, value) VALUES ('Barry', 2);";
-        db.query(sql);
+        //db.query(sql);
     } catch (SBException e) {
         qDebug() << e.getException();
     }

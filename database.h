@@ -21,6 +21,8 @@ public:
 private:
     //connects to database in given path
     void connect(QString &path);
+    //creates database file
+    void createDatabase(QString &path);
 
     QSqlDatabase db;
     //says whether database is connected or not
