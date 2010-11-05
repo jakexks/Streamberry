@@ -3,26 +3,9 @@
 #include <QtSql>
 #include <QString>
 #include "sbexception.h"
+#include "crossplatform.h"
 
 using namespace std;
-
-//Because application data path is platform specific, need this function. Should be moved at later date.
-QString getAppDataPath() {
-    #ifdef Q_WS_WIN
-    return QDir::homePath() + "/Application Data/Streamberry/";
-    #endif
-
-    #ifdef Q_WS_MAC
-    return QDir::homePath() + "/Library/Application Support/Streamberry/";
-    #endif
-
-    #ifdef Q_WS_X11
-    return QDir::homePath() + "/.streamberry/";
-    #endif
-
-    return "/";
-}
-
 
 Database::Database()
 {
@@ -54,7 +37,7 @@ void Database::connect(QString &path)
 
 void Database::initialse()
 {
-    QString path = getAppDataPath();
+    QString path = CrossPlatform::getAppDataPath();
     path += "database.sqlite";
 
     //qDebug() << "Path is: " << path;

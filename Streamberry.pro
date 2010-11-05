@@ -13,11 +13,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     database.cpp \
-    sbexception.cpp
+    sbexception.cpp \
+    crossplatform.cpp
 
 HEADERS  += mainwindow.h \
     database.h \
-    sbexception.h
+    sbexception.h \
+    crossplatform.h
 
 FORMS    += mainwindow.ui
 
