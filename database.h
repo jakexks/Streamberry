@@ -12,7 +12,7 @@ public:
     Database();
     virtual ~Database();
     //initialises the database
-    void initialse();
+    void initialise();
     //performs an action type SQL query
     void query(QString sql);
     //performs a get type SQL query and returns records

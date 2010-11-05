@@ -85,7 +85,7 @@ void Database::createDatabase(QString &path)
     }
 }
 
-void Database::initialse()
+void Database::initialise()
 {
     QString path = CrossPlatform::getAppDataPath();
     QString filepath = path;
