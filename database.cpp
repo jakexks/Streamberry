@@ -22,7 +22,7 @@ Database::~Database()
     }
 }
 
-void Database::dbConnect(QString &path)
+void Database::connect(QString &path)
 {
     db.setDatabaseName(path);
 
@@ -34,22 +34,26 @@ void Database::dbConnect(QString &path)
     }
 }
 
-void Database::dbInitialse()
+void Database::initialse()
 {
     QString path = "./database.sqlite";
 
     //try to connect to database, if fail pass on exception
     try {
-        dbConnect(path);
+        connect(path);
     } catch (SBException e) {
         throw e;
     }
 }
 
-void Database::dbQuery(QString &sql)
+void Database::query(QString sql)
 {
-    QSqlQuery query;
+    if(!connected) throw SBException(DB, "Not connected.");
+
+    QSqlQuery query(db);
     query.prepare(sql);
+
+    qDebug() << sql;
 
     if(!query.exec()) {
         QString s = "SQL failed: ";
@@ -58,9 +62,11 @@ void Database::dbQuery(QString &sql)
     }
 }
 
-QSqlRecord Database::dbSelectQuery(QString &sql)
+QSqlRecord Database::selectQuery(QString sql)
 {
-    QSqlQuery query;
+    if(!connected) throw SBException(DB, "Not connected.");
+
+    QSqlQuery query(db);
     query.prepare(sql);
 
     if(!query.exec()) {
