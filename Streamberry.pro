@@ -24,3 +24,5 @@ FORMS    += mainwindow.ui
 LIBS += -plugin-sql-sqlite
 
 QT += sql
+
+QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.3
