@@ -18,3 +18,7 @@ HEADERS  += mainwindow.h \
     database.h
 
 FORMS    += mainwindow.ui
+
+LIBS += -plugin-sql-sqlite
+
+QT += sql
