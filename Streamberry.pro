@@ -12,10 +12,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    database.cpp
+    database.cpp \
+    sbexception.cpp
 
 HEADERS  += mainwindow.h \
-    database.h
+    database.h \
+    sbexception.h
 
 FORMS    += mainwindow.ui
 

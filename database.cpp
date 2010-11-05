@@ -2,6 +2,7 @@
 #include <QtDebug>
 #include <QtSql>
 #include <QString>
+#include "sbexception.h"
 
 using namespace std;
 
@@ -21,55 +22,52 @@ Database::~Database()
     }
 }
 
-bool Database::dbConnect(QString &path)
+void Database::dbConnect(QString &path)
 {
     db.setDatabaseName(path);
 
     //if database can't be opened at path, print error and return with error code
     if(!db.open()) {
-        qFatal("Database could not be found.");
-        return false;
+        throw SBException(DB, "Database could not be found.");
     } else {
         connected = true;
     }
-
-    return true;
 }
 
-bool Database::dbInitialse()
+void Database::dbInitialse()
 {
     QString path = "./database.sqlite";
 
-    if(!dbConnect(path)) {
-        qFatal("Database unable to be initialised.");
-        return false;
+    //try to connect to database, if fail pass on exception
+    try {
+        dbConnect(path);
+    } catch (SBException e) {
+        throw e;
     }
-
-    return true;
 }
 
-bool Database::dbQuery(QString &statement)
+void Database::dbQuery(QString &sql)
 {
     QSqlQuery query;
-    query.prepare(statement);
+    query.prepare(sql);
 
     if(!query.exec()) {
-        qDebug() << "SQL statement failed: " << query.lastError();
-        return false;
+        QString s = "SQL failed: ";
+        s += query.lastError().text();
+        throw SBException(DB, s);
     }
-
-    return true;
 }
 
-QSqlQuery Database::dbSelectQuery(QString &statement)
+QSqlRecord Database::dbSelectQuery(QString &sql)
 {
     QSqlQuery query;
-    query.prepare(statement);
+    query.prepare(sql);
 
     if(!query.exec()) {
-        qDebug() << "SQL statement failed: " << query.lastError();
-        return NULL;
+        QString s = "SQL failed: ";
+        s += query.lastError().text();
+        throw SBException(DB, s);
     }
 
-    return query;
+    return query.record();
 }
