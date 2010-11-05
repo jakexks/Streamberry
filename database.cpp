@@ -70,7 +70,7 @@ void Database::initialse()
 
 void Database::query(QString sql)
 {
-    if(!connected) throw SBException(DB, "Not connected.");
+    if(!connected) throw SBException(DB, "Cannot run query, not connected to database.");
 
     QSqlQuery query(db);
     query.prepare(sql);
@@ -87,7 +87,7 @@ void Database::query(QString sql)
 
 QSqlRecord Database::selectQuery(QString sql)
 {
-    if(!connected) throw SBException(DB, "Not connected.");
+    if(!connected) throw SBException(DB, "Cannot run query, not connected to database.");
 
     QSqlQuery query(db);
     query.prepare(sql);
