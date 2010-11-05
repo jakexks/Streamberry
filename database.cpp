@@ -13,7 +13,7 @@ Database::Database()
 {
     db = QSqlDatabase::addDatabase( "QSQLITE" );
     connected = false;
-    //qDebug() << "Constructor called";
+    dbfilename = "database.sqlite";
 }
 
 //deconstructor
@@ -40,8 +40,9 @@ void Database::connect(QString &path)
 //create database if one does not exist
 void Database::createDatabase(QString &path)
 {
+    //put filename on end of path
     QString filepath = path;
-    filepath += "database.sqlite";
+    filepath += dbfilename;
 
     //sql statements which creates structure. must be split as it doesn't seem to work with just one
     QString sql[10];
@@ -56,19 +57,25 @@ void Database::createDatabase(QString &path)
     sql[8] = "DROP TABLE IF EXISTS \"UserTable\";";
     sql[9] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"Deleted\" BOOL);";
 
+    //file and directory objects to create file and directories
     QFile dbfile(filepath);
     QDir dir;
 
+    //if the file exists, then you shouldn't be making a new one
     if(dbfile.exists()) {
-        throw SBException(DB, "Database exists but could not connect.");
+        throw SBException(DB, "Database exists but create has been called.");
     }
 
     try {
+        //make folder and file
         dir.mkpath(path);
         dbfile.open(QIODevice::ReadWrite);
         dbfile.close();
+
+        //connect to new file as database
         connect(filepath);
 
+        //create database structure by looping through sql statements
         for(int i = 0; i<10; i++) {
             query(sql[i]);
         }
@@ -81,9 +88,7 @@ void Database::initialse()
 {
     QString path = CrossPlatform::getAppDataPath();
     QString filepath = path;
-    filepath += "database.sqlite";
-
-    //qDebug() << "Path is: " << path;
+    filepath += dbfilename;
 
     //try to connect to database, if fail pass on exception
     try {
@@ -104,7 +109,7 @@ void Database::query(QString sql)
     QSqlQuery query(db);
     query.prepare(sql);
 
-    qDebug() << sql;
+    //qDebug() << sql;
 
     //if it can't execute, throw exception
     if(!query.exec()) {

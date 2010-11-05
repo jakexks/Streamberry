@@ -27,6 +27,7 @@ private:
     QSqlDatabase db;
     //says whether database is connected or not
     bool connected;
+    QString dbfilename;
 };
 
 #endif // DATABASE_H
