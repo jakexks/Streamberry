@@ -23,16 +23,18 @@ QString SBException::getException()
 {
     QString s;
 
-    switch(type) {
-    case GENERIC:
-        s += "Generic";
-    case DB:
-        s += "Database";
+    switch(type)
+    {
+        case GENERIC:
+            s += "Generic";
+        case DB:
+            s += "Database";
     }
 
     s += " exception.";
 
-    if(exmsg!="") {
+    if(exmsg!="")
+    {
         s += " '";
         s += exmsg;
         s += "'.";

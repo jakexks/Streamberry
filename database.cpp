@@ -21,7 +21,8 @@ Database::Database()
 Database::~Database()
 {
     //if db is connected then it must be closed
-    if(connected) {
+    if(connected)
+    {
         db.close();
     }
 }
@@ -31,9 +32,12 @@ void Database::connect(QString &path)
     db.setDatabaseName(path);
 
     //if database can't be opened at path, print error and return with error code
-    if(!db.open()) {
+    if(!db.open())
+    {
         throw SBException(DB, "Database could not be found.");
-    } else {
+    }
+    else
+    {
         connected = true;
     }
 }
@@ -63,11 +67,13 @@ void Database::createDatabase(QString &path)
     QDir dir;
 
     //if the file exists, then you shouldn't be making a new one
-    if(dbfile.exists()) {
+    if(dbfile.exists())
+    {
         throw SBException(DB, "Database exists but create has been called.");
     }
 
-    try {
+    try
+    {
         //make folder and file
         dir.mkpath(path);
         dbfile.open(QIODevice::ReadWrite);
@@ -77,10 +83,13 @@ void Database::createDatabase(QString &path)
         connect(filepath);
 
         //create database structure by looping through sql statements
-        for(int i = 0; i<10; i++) {
+        for(int i = 0; i<10; i++)
+        {
             query(sql[i]);
         }
-    } catch(SBException e) {
+    }
+    catch(SBException e)
+    {
         throw e;
     }
 }
@@ -92,12 +101,18 @@ void Database::initialise()
     filepath += dbfilename;
 
     //try to connect to database, if fail pass on exception
-    try {
+    try
+    {
         connect(filepath);
-    } catch (SBException) {
-        try {
+    }
+    catch (SBException)
+    {
+        try
+        {
             createDatabase(path);
-        } catch (SBException e) {
+        }
+        catch (SBException e)
+        {
             throw e;
         }
     }
@@ -113,7 +128,8 @@ void Database::query(QString sql)
     //qDebug() << sql;
 
     //if it can't execute, throw exception
-    if(!query.exec()) {
+    if(!query.exec())
+    {
         QString s = "SQL failed: ";
         s += query.lastError().text();
         throw SBException(DB, s);
@@ -128,7 +144,8 @@ QSqlRecord Database::selectQuery(QString sql)
     query.prepare(sql);
 
     //if it can't execute, throw exception
-    if(!query.exec()) {
+    if(!query.exec())
+    {
         QString s = "SQL failed: ";
         s += query.lastError().text();
         throw SBException(DB, s);

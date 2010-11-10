@@ -5,7 +5,8 @@
 CrossPlatform::CrossPlatform() {}
 
 //Because application data path is platform specific, need this function.
-QString CrossPlatform::getAppDataPath() {
+QString CrossPlatform::getAppDataPath()
+{
     #ifdef Q_WS_WIN
     return QDir::homePath() + "/Application Data/Streamberry/";
     #endif
