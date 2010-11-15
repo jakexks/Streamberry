@@ -185,7 +185,7 @@ QString Database::getSetting(QString name)
         QSqlQuery result = selectQuery(sql);
 
         //if query has returned empty
-        if(result.first()==false)
+        if(!result.first())
         {
             return NULL;
         }
