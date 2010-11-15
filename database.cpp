@@ -29,16 +29,19 @@ Database::~Database()
 
 void Database::connect(QString &path)
 {
-    db.setDatabaseName(path);
+    if(!connected)
+    {
+        db.setDatabaseName(path);
 
-    //if database can't be opened at path, print error and return with error code
-    if(!db.open())
-    {
-        throw SBException(DB, "Database could not be found.");
-    }
-    else
-    {
-        connected = true;
+        //if database can't be opened at path, print error and return with error code
+        if(!db.open())
+        {
+            throw SBException(DB, "Database could not be found.");
+        }
+        else
+        {
+            connected = true;
+        }
     }
 }
 
@@ -56,7 +59,7 @@ void Database::createDatabase(QString &path)
     sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
     sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Home\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" DATETIME NOT NULL , \"TimeLastOnline\" DATETIME NOT NULL , \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL );";
     sql[4] = "DROP TABLE IF EXISTS \"Settings\";";
-    sql[5] = "CREATE TABLE \"Settings\" (\"Name\" VARCHAR(10),\"Value\" INTEGER);";
+    sql[5] = "CREATE TABLE \"Settings\" (\"Name\" VARCHAR(10) UNIQUE,\"Value\" INTEGER);";
     sql[6] = "DROP TABLE IF EXISTS \"TrackedFolders\";";
     sql[7] = "CREATE TABLE \"TrackedFolders\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Folderpath\" VARCHAR);";
     sql[8] = "DROP TABLE IF EXISTS \"UserTable\";";
@@ -71,7 +74,6 @@ void Database::createDatabase(QString &path)
     {
         throw SBException(DB, "Database exists but create has been called.");
     }
-
     try
     {
         //make folder and file
@@ -99,33 +101,29 @@ void Database::initialise()
     QString path = CrossPlatform::getAppDataPath();
     QString filepath = path;
     filepath += dbfilename;
+    QFile dbfile(filepath);
 
-    //try to connect to database, if fail pass on exception
     try
     {
-        connect(filepath);
-    }
-    catch (SBException)
-    {
-        try
+        //if the database doesn't exist, create it
+        if(!dbfile.exists())
         {
             createDatabase(path);
         }
-        catch (SBException e)
-        {
-            throw e;
-        }
+
+        connect(filepath);
+    }
+    catch (SBException e)
+    {
+        throw e;
     }
 }
 
 void Database::query(QString sql)
 {
     if(!connected) throw SBException(DB, "Cannot run query, not connected to database.");
-
     QSqlQuery query(db);
     query.prepare(sql);
-
-    //qDebug() << sql;
 
     //if it can't execute, throw exception
     if(!query.exec())
@@ -136,10 +134,9 @@ void Database::query(QString sql)
     }
 }
 
-QSqlRecord Database::selectQuery(QString sql)
+QSqlQuery Database::selectQuery(QString sql)
 {
     if(!connected) throw SBException(DB, "Cannot run query, not connected to database.");
-
     QSqlQuery query(db);
     query.prepare(sql);
 
@@ -150,6 +147,55 @@ QSqlRecord Database::selectQuery(QString sql)
         s += query.lastError().text();
         throw SBException(DB, s);
     }
+    else if(!query.isSelect())
+    {
+        QString s = "SQL failed: Non-select query ran in select query method.";
+        throw SBException(DB, s);
+    }
 
-    return query.record();
+    return query;
+}
+
+void Database::storeSetting(QString name, QString value)
+{
+    QString sql = "INSERT OR REPLACE INTO Settings (name, value) VALUES (\"";
+    sql += name;
+    sql += "\", \"";
+    sql += value;
+    sql += "\");";
+
+    try
+    {
+        query(sql);
+    }
+    catch (SBException e)
+    {
+        throw e;
+    }
+}
+
+QString Database::getSetting(QString name)
+{
+    QString sql = "SELECT value FROM Settings WHERE name=\"";
+    sql += name;
+    sql += "\" LIMIT 1";
+
+    try
+    {
+        QSqlQuery result = selectQuery(sql);
+
+        //if query has returned empty
+        if(result.first()==false)
+        {
+            return NULL;
+        }
+
+        const QSqlRecord r = result.record();
+        return r.value("value").toString();
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+
 }
