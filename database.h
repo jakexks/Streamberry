@@ -31,6 +31,7 @@ private:
     QSqlDatabase db;
     //says whether database is connected or not
     bool connected;
+    //file name not including path
     QString dbfilename;
 };
 
