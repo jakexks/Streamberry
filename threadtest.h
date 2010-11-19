@@ -1,7 +1,7 @@
 #ifndef THREADTEST_H
 #define THREADTEST_H
 
-class threadtest
+class threadtest : QThread
 {
 public:
     threadtest();
