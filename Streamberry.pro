@@ -4,15 +4,17 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 TARGET = Streamberry
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    beaconsender.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    beaconsender.h
 
 FORMS    += mainwindow.ui
