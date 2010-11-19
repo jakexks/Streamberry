@@ -1,5 +1,24 @@
 #include "threadtest.h"
+#include <iostream>
 
-threadtest::threadtest()
+int tid;
+
+threadtest::threadtest(int id)
 {
+    tid = id;
+}
+
+void threadtest::run()
+{
+    while (true)
+    {
+    std::cout << "DICKS from " << tid << std::endl;
+    sleep(1);
+    }
+}
+
+int threadtest::setid(int id)
+{
+    tid = id;
+    return tid;
 }
