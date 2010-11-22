@@ -25,6 +25,18 @@ int main(int argc, char *argv[])
         qDebug() << "Test1 = " << db.getSetting("Test1");
         //should return null
         qDebug() << "Not in database = " << db.getSetting("notthere");
+
+        //testing setting and getting folders
+        db.setFolders("folder1;folder2");
+        db.setFolders("folder3;folder4;folder5;");
+
+        QStringList strlst = db.getFolders();
+
+        qDebug() << "Folders in database. size: " << strlst.size() << ".\n";
+        for(int i = 0; i<strlst.size(); i++)
+        {
+            qDebug() << strlst.value(i) << "\n";
+        }
     }
     catch(SBException e)
     {

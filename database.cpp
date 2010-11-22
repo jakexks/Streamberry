@@ -2,6 +2,7 @@
 #include <QtDebug>
 #include <QtSql>
 #include <QString>
+#include <QStringList>
 #include <QFile>
 #include <QDir>
 #include "sbexception.h"
@@ -61,7 +62,7 @@ void Database::createDatabase(QString &path)
     sql[4] = "DROP TABLE IF EXISTS \"Settings\";";
     sql[5] = "CREATE TABLE \"Settings\" (\"Name\" VARCHAR(10) UNIQUE,\"Value\" INTEGER);";
     sql[6] = "DROP TABLE IF EXISTS \"TrackedFolders\";";
-    sql[7] = "CREATE TABLE \"TrackedFolders\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Folderpath\" VARCHAR);";
+    sql[7] = "CREATE TABLE \"TrackedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";
     sql[8] = "DROP TABLE IF EXISTS \"UserTable\";";
     sql[9] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"Deleted\" BOOL);";
 
@@ -132,6 +133,11 @@ void Database::query(QString sql)
         s += query.lastError().text();
         throw SBException(DB, s);
     }
+    else if(query.isSelect())
+    {
+        QString s = "SQL failed: Select query ran in non-select query method. Use selectQuery.";
+        throw SBException(DB, s);
+    }
 }
 
 QSqlQuery Database::selectQuery(QString sql)
@@ -198,4 +204,90 @@ QString Database::getSetting(QString name)
         throw e;
     }
 
+}
+
+void Database::setFolders(QString folders) {
+    try
+    {
+        setFolders(folders.split(";"));
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
+
+void Database::setFolders(QStringList folderlist)
+{
+    //NOTE: method implentation assumes low number of folders as it does not detect changes, it just deletes all records before entering. may need to be rewritten to detect changes if large number of folders used.
+    QString sql;
+    QString folderpath;
+
+    //clear table first
+    sql = "DELETE FROM TrackedFolders";
+
+    try
+    {
+        query(sql);
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+
+    //for every folder in folderlist
+    while(!folderlist.isEmpty())
+    {
+        //removes and returns first folder in list
+        folderpath = folderlist.takeFirst();
+
+        //necessary as blank strings can be added otherwise if input doesn't end with semi-colon
+        if(folderpath.compare("")!=0)
+        {
+            sql = "INSERT OR REPLACE INTO TrackedFolders (Folderpath) VALUES (\"";
+            sql += folderpath;
+            sql += "\");";
+
+            try
+            {
+                query(sql);
+            }
+            catch(SBException e)
+            {
+                throw e;
+            }
+        }
+    }
+
+}
+
+QStringList Database::getFolders()
+{
+    QStringList folderlist;
+    QSqlQuery result;
+    QString sql;
+
+    sql = "SELECT * FROM TrackedFolders ORDER BY Folderpath ASC;";
+
+    try
+    {
+        result = selectQuery(sql);
+        result.first();
+        int i = 0;
+
+        //for every record in the query, add it to the folder list as a string
+        while(result.isValid())
+        {
+            //insert result into string list
+            folderlist.insert(i, result.value(0).toString());
+            i++;
+            result.next();
+        }
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+
+    return folderlist;
 }
