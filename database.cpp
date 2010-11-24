@@ -120,7 +120,7 @@ void Database::initialise()
     }
 }
 
-void Database::query(QString sql)
+QSqlQuery Database::query(QString sql)
 {
     if(!connected) throw SBException(DB, "Cannot run query, not connected to database.");
     QSqlQuery query(db);
@@ -131,31 +131,6 @@ void Database::query(QString sql)
     {
         QString s = "SQL failed: ";
         s += query.lastError().text();
-        throw SBException(DB, s);
-    }
-    else if(query.isSelect())
-    {
-        QString s = "SQL failed: Select query ran in non-select query method. Use selectQuery.";
-        throw SBException(DB, s);
-    }
-}
-
-QSqlQuery Database::selectQuery(QString sql)
-{
-    if(!connected) throw SBException(DB, "Cannot run query, not connected to database.");
-    QSqlQuery query(db);
-    query.prepare(sql);
-
-    //if it can't execute, throw exception
-    if(!query.exec())
-    {
-        QString s = "SQL failed: ";
-        s += query.lastError().text();
-        throw SBException(DB, s);
-    }
-    else if(!query.isSelect())
-    {
-        QString s = "SQL failed: Non-select query ran in select query method.";
         throw SBException(DB, s);
     }
 
@@ -188,7 +163,7 @@ QString Database::getSetting(QString name)
 
     try
     {
-        QSqlQuery result = selectQuery(sql);
+        QSqlQuery result = query(sql);
 
         //if query has returned empty
         if(!result.first())
@@ -271,7 +246,7 @@ QStringList Database::getFolders()
 
     try
     {
-        result = selectQuery(sql);
+        result = query(sql);
         result.first();
         int i = 0;
 
