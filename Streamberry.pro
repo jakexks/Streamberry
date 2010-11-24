@@ -14,12 +14,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     database.cpp \
     sbexception.cpp \
-    crossplatform.cpp
+    crossplatform.cpp \
+    utilities.cpp
 
 HEADERS  += mainwindow.h \
     database.h \
     sbexception.h \
-    crossplatform.h
+    crossplatform.h \
+    utilities.h
 
 FORMS    += mainwindow.ui
 
