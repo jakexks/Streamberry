@@ -1,6 +1,7 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 #include "threadtest.h"
+#include "beaconsender.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,12 +11,9 @@ int main(int argc, char *argv[])
 
     //return a.exec();
 
-    threadtest *t1 = new threadtest(1);
-    threadtest *t2 = new threadtest(2);
-    threadtest *t3 = new threadtest(3);
-    t1->start();
-    t2->start();
-    t3->start();
-    sleep(20);
+    beaconsender b;
+    b.start();
+    while (true)
+        sleep(5);
     return 0;
 }
