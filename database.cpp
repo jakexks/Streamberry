@@ -7,6 +7,7 @@
 #include <QDir>
 #include "sbexception.h"
 #include "crossplatform.h"
+#include "iostream"
 
 using namespace std;
 
@@ -265,4 +266,30 @@ QStringList Database::getFolders()
     }
 
     return folderlist;
+}
+
+QString Database::lastUpdate(QString user_name)
+{
+    QString sql = "SELECT TimeLastUpdated FROM LibIndex WHERE Name=\"";
+    sql += user_name;
+    sql += "\" LIMIT 1";
+
+    try
+    {
+        QSqlQuery result = query(sql);
+
+        //if query has returned empty
+        if(!result.first())
+        {
+            return NULL;
+        }
+
+        const QSqlRecord r = result.record();
+        return r.value("TimeLastUpdated").toString();
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+
 }
