@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "threadtest.h"
 #include "beaconsender.h"
+#include "networking.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,7 +11,8 @@ int main(int argc, char *argv[])
     //w.show();
 
     //return a.exec();
-
+    networking n;
+    n.getuniqid();
     beaconsender b;
     b.start();
     while (true)
