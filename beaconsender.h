@@ -1,18 +1,17 @@
 #ifndef BEACONSENDER_H
 #define BEACONSENDER_H
+#include <QThread>
 #include <QtNetwork>
 
-class beaconsender
+class beaconsender : public QThread
 {
 public:
     beaconsender();
-
+    void send();
+protected:
+    void run();
 private:
     QUdpSocket *udpSocket;
-    QTimer timer(&this);
-    int messageNo;
-    void startBroadcasting();
-    void broadcastDatagram();
 };
 
 #endif // BEACONSENDER_H

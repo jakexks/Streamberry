@@ -1,21 +1,24 @@
-#include <QtNetwork>
 #include "beaconsender.h"
 
 beaconsender::beaconsender()
 {
-    udpSocket = new QUdpSocket((QObject *)this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(broadcastDatagram()));
 
 }
 
-void beaconsender::startBroadcasting()
+void beaconsender::send()
 {
-    timer->start(1000);
-}
-
-void beaconsender::broadcastDatagram()
-{
-    QByteArray datagram = "Bigot Bigot Bigot";
+    udpSocket = new QUdpSocket();
+    QByteArray datagram = "DICKS";
     udpSocket->writeDatagram(datagram.data(), datagram.size(),
                              QHostAddress::Broadcast, 45454);
+    delete udpSocket;
+}
+
+void beaconsender::run()
+{
+    while(true)
+    {
+        send();
+        sleep(5);
+    }
 }
