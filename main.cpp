@@ -1,6 +1,7 @@
 #include <QtGui/QApplication>
 #include <QDir>
 #include <QDebug>
+#include <QDateTime>
 #include "mainwindow.h"
 #include "database.h"
 #include "sbexception.h"
@@ -30,13 +31,21 @@ int main(int argc, char *argv[])
         db.setFolders("folder1;folder2");
         db.setFolders("folder3;folder4;folder5;");
 
-        QStringList strlst = db.getFolders();
+        QStringList strlst = db.getFolders(0);
 
         qDebug() << "Folders in database. size: " << strlst.size() << ".\n";
         for(int i = 0; i<strlst.size(); i++)
         {
             qDebug() << strlst.value(i) << "\n";
         }
+
+        qDebug() << "Tracked folder count: " << db.rowCount("TrackedFolders");
+
+        db.addFile("/test", "a", "a", "artist", "album", "the title", "the genre", "5", "1992", "367", "123", "mp3", "LibLocal");
+
+        QList<QSqlRecord> files = db.searchDb(0, "");
+
+        qDebug() << "First file in database: " << files.value(0).value(0).toString();
     }
     catch(SBException e)
     {

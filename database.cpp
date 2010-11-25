@@ -5,9 +5,15 @@
 #include <QStringList>
 #include <QFile>
 #include <QDir>
+#include <QSqlRecord>
+#include <QList>
 #include "sbexception.h"
 #include "crossplatform.h"
+<<<<<<< HEAD
 #include "iostream"
+=======
+#include "utilities.h"
+>>>>>>> 7797bf0559d9dcbeea96fa7665f5e5991ba589fa
 
 using namespace std;
 
@@ -55,17 +61,22 @@ void Database::createDatabase(QString &path)
     filepath += dbfilename;
 
     //sql statements which creates structure. must be split as it doesn't seem to work with just one
-    QString sql[10];
+    QString sql[9];
     sql[0] = "DROP TABLE IF EXISTS \"HomeTable\";";
-    sql[1] = "CREATE TABLE \"HomeTable\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" DATETIME, \"Length\" INTEGER, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" DATETIME NOT NULL , \"Filetype\" VARCHAR);";
+    sql[1] = "CREATE TABLE \"LibLocal\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
     sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
-    sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Home\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" DATETIME NOT NULL , \"TimeLastOnline\" DATETIME NOT NULL , \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL );";
-    sql[4] = "DROP TABLE IF EXISTS \"Settings\";";
-    sql[5] = "CREATE TABLE \"Settings\" (\"Name\" VARCHAR(10) UNIQUE,\"Value\" INTEGER);";
-    sql[6] = "DROP TABLE IF EXISTS \"TrackedFolders\";";
-    sql[7] = "CREATE TABLE \"TrackedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";
-    sql[8] = "DROP TABLE IF EXISTS \"UserTable\";";
-    sql[9] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"Deleted\" BOOL);";
+    sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Local\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" INTEGER NOT NULL , \"TimeLastOnline\" INTEGER NOT NULL , \"UniqueID\" VARCHAR UNIQUE NOT NULL, \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL );";
+    sql[4] = "INSERT INTO LibIndex (ID, Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES (\"1\", 1, \"";
+    sql[4] += QString::number(Utilities::getCurrentTimestamp());
+    sql[4] += "\", \"0\", \"-1\", \"Local\", 1);";
+    sql[5] = "DROP TABLE IF EXISTS \"Settings\";";
+    sql[6] = "CREATE TABLE \"Settings\" (\"Name\" VARCHAR(10) UNIQUE,\"Value\" INTEGER);";
+    sql[7] = "DROP TABLE IF EXISTS \"TrackedFolders\";";
+    sql[8] = "CREATE TABLE \"TrackedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";
+    //sql[9] = "DROP TABLE IF EXISTS \"UserTable\";";
+    //sql[10] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"Deleted\" BOOL DEFAULT 0);";
+
+    qDebug() << sql[4];
 
     //file and directory objects to create file and directories
     QFile dbfile(filepath);
@@ -87,7 +98,7 @@ void Database::createDatabase(QString &path)
         connect(filepath);
 
         //create database structure by looping through sql statements
-        for(int i = 0; i<10; i++)
+        for(int i = 0; i<9; i++)
         {
             query(sql[i]);
         }
@@ -237,13 +248,20 @@ void Database::setFolders(QStringList folderlist)
 
 }
 
-QStringList Database::getFolders()
+QStringList Database::getFolders(int trackedOrExcluded)
 {
     QStringList folderlist;
     QSqlQuery result;
     QString sql;
 
-    sql = "SELECT * FROM TrackedFolders ORDER BY Folderpath ASC;";
+    if(trackedOrExcluded==0)
+    {
+        sql = "SELECT * FROM TrackedFolders ORDER BY Folderpath ASC;";
+    }
+    else
+    {
+        sql = "SELECT * FROM ExcludedFolders ORDER BY Folderpath ASC;";
+    }
 
     try
     {
@@ -268,6 +286,7 @@ QStringList Database::getFolders()
     return folderlist;
 }
 
+<<<<<<< HEAD
 QString Database::lastUpdate(QString user_name)
 {
     QString sql = "SELECT TimeLastUpdated FROM LibIndex WHERE Name=\"";
@@ -286,10 +305,178 @@ QString Database::lastUpdate(QString user_name)
 
         const QSqlRecord r = result.record();
         return r.value("TimeLastUpdated").toString();
+=======
+int Database::rowCount(QString tablename)
+{
+    QSqlQuery result;
+    QString sql;
+
+    sql = "SELECT COUNT(*) FROM ";
+    sql += tablename;
+    sql += ";";
+
+    try
+    {
+        result = query(sql);
+        result.first();
+        return result.value(0).toInt();
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
+
+void Database::addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString bitrate, QString filetype, QString table)
+{
+    int timestamp = Utilities::getCurrentTimestamp();
+    QString sql;
+
+    sql = "INSERT OR REPLACE INTO ";
+    sql += table;
+    sql += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype) VALUES (\"";
+    sql += filepath;
+    sql += "\", \"";
+    sql += artist;
+    sql += "\", \"";
+    sql += album;
+    sql += "\", \"";
+    sql += title;
+    sql += "\", \"";
+    sql += genre;
+    sql += "\", \"";
+    sql += rating;
+    sql += "\", \"";
+    sql += filename;
+    sql += "\", \"";
+    sql += year;
+    sql += "\", \"";
+    sql += length;
+    sql += "\", \"";
+    sql += bitrate;
+    sql += "\", \"";
+    sql += filesize;
+    sql += "\", \"";
+    sql += QString::number(timestamp);
+    sql += "\", \"";
+    sql += filetype;
+    sql += "\");";
+
+    try
+    {
+        query(sql);
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
+
+int Database::deleteFile(QString id, QString table)
+{
+    QSqlQuery result;
+    QString sql = "DELETE FROM ";
+    sql += table;
+    sql += " WHERE id=\"";
+    sql += id;
+    sql +="\"";
+
+    try
+    {
+        result = query(sql);
+        return result.numRowsAffected();
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
+
+QList<QSqlRecord> Database::searchDb(int type, QString searchtxt)
+{
+    QString condition;
+    QString sql;
+    QSqlQuery result;
+    QList<QSqlRecord> users;
+    QList<QSqlRecord> files;
+
+    //work out condition
+    switch(type)
+    {
+    case 1:
+        condition = "WHERE (Artist LIKE \"%";
+        condition += searchtxt;
+        condition += "%\")";
+        break;
+    case 2:
+        condition = "WHERE (Title LIKE \"%";
+        condition += searchtxt;
+        condition += "%\")";
+        break;
+    case 3:
+        condition = "WHERE (Genre LIKE \"%";
+        condition += searchtxt;
+        condition += "%\")";
+    default:
+        condition = "WHERE (Artist LIKE \"%";
+        condition += searchtxt;
+        condition += "%\") OR (Title LIKE \"%";
+        condition += searchtxt;
+        condition += "%\") OR (Genre LIKE \"%";
+        condition += searchtxt;
+        condition += "%\")";
+        break;
+    }
+
+    try
+    {
+        //select all unique ids from libindex
+        sql = "SELECT UniqueID FROM LibIndex WHERE (UniqueID!=-1) AND (Online=1)";
+
+        result = query(sql);
+        result.first();
+
+        //for every table found add it to the users list
+        while(result.isValid())
+        {
+            users.append(result.record());
+            result.next();
+        }
+
+        //get local library and add to files list
+        sql = "SELECT * FROM LibLocal";
+        result = query(sql);
+        result.first();
+        while(result.isValid())
+        {
+            files.append(result.record());
+            result.next();
+        }
+
+        //for every user
+        while(!users.isEmpty())
+        {
+            //get library and add to files list
+            sql = "SELECT * FROM Lib";
+            sql += users.takeFirst().value(0).toString();
+
+            result = query(sql);
+            result.first();
+            while(result.isValid())
+            {
+                files.append(result.record());
+                result.next();
+            }
+        }
+>>>>>>> 7797bf0559d9dcbeea96fa7665f5e5991ba589fa
     }
     catch(SBException e)
     {
         throw e;
     }
 
+<<<<<<< HEAD
+=======
+    return files;
+>>>>>>> 7797bf0559d9dcbeea96fa7665f5e5991ba589fa
 }

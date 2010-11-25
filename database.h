@@ -4,6 +4,8 @@
 #include <QtSql>
 #include <QString>
 #include <QStringList>
+#include <QSqlRecord>
+#include <QList>
 
 using namespace std;
 
@@ -24,9 +26,24 @@ public:
     //takes QStringList instead of string
     void setFolders(QStringList folderlist);
     //get list of folders for file scanner to search through. returns QStringList containing folders.
+<<<<<<< HEAD
     QStringList getFolders();
     //gets the last update of the library of a specified user
     QString lastUpdate(QString user_name);
+=======
+    //if argument 0 gets tracked, if 1 gets excluded
+    QStringList getFolders(int trackedOrExcluded);
+    //counts the number of rows in a table
+    int rowCount(QString tablename);
+    //adds file to database. if already in database it just updates.
+    void addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString bitrate, QString filetype, QString table);
+    //deletes file by ID. returns number of files deleted.
+    int deleteFile(QString id, QString table);
+    //perform search.
+    //type: 0 - all, 1 - artist, 2 - title, 3 - genre
+    //return order: Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype
+    QList<QSqlRecord> searchDb(int type, QString searchtxt);
+>>>>>>> 7797bf0559d9dcbeea96fa7665f5e5991ba589fa
 
 private:
     //connects to database in given path
