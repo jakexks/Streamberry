@@ -9,11 +9,11 @@
 #include <QList>
 #include "sbexception.h"
 #include "crossplatform.h"
-<<<<<<< HEAD
+
 #include "iostream"
-=======
+
 #include "utilities.h"
->>>>>>> 7797bf0559d9dcbeea96fa7665f5e5991ba589fa
+
 
 using namespace std;
 
@@ -286,12 +286,12 @@ QStringList Database::getFolders(int trackedOrExcluded)
     return folderlist;
 }
 
-<<<<<<< HEAD
+
 QString Database::lastUpdate(QString user_name)
 {
     QString sql = "SELECT TimeLastUpdated FROM LibIndex WHERE Name=\"";
     sql += user_name;
-    sql += "\" LIMIT 1";
+    sql += "\"";
 
     try
     {
@@ -305,7 +305,13 @@ QString Database::lastUpdate(QString user_name)
 
         const QSqlRecord r = result.record();
         return r.value("TimeLastUpdated").toString();
-=======
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
+
 int Database::rowCount(QString tablename)
 {
     QSqlQuery result;
@@ -468,15 +474,14 @@ QList<QSqlRecord> Database::searchDb(int type, QString searchtxt)
                 result.next();
             }
         }
->>>>>>> 7797bf0559d9dcbeea96fa7665f5e5991ba589fa
+
     }
     catch(SBException e)
     {
         throw e;
     }
 
-<<<<<<< HEAD
-=======
+
     return files;
->>>>>>> 7797bf0559d9dcbeea96fa7665f5e5991ba589fa
+
 }
