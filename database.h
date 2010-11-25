@@ -25,6 +25,8 @@ public:
     void setFolders(QStringList folderlist);
     //get list of folders for file scanner to search through. returns QStringList containing folders.
     QStringList getFolders();
+    //gets the last update of the library of a specified user
+    QString lastUpdate(QString user_name);
 
 private:
     //connects to database in given path
