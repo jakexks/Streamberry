@@ -9,9 +9,6 @@
 #include <QList>
 #include "sbexception.h"
 #include "crossplatform.h"
-
-#include "iostream"
-
 #include "utilities.h"
 
 
