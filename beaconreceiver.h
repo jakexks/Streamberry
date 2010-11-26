@@ -13,6 +13,7 @@ protected:
 private:
     QUdpSocket udpSocket;
     void receive();
+    void processPendingDatagrams();
 };
 
 #endif // BEACONRECEIVER_H
