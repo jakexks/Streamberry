@@ -2,6 +2,7 @@
 #include "threadtest.h"
 #include "beaconsender.h"
 #include "beaconreceiver.h"
+#include "networking.h"
 
 class I : public QThread
 {
@@ -17,6 +18,7 @@ public:
         }
 };
 
+
 int main(int argc, char *argv[])
 {
     //QApplication a(argc, argv);
@@ -25,6 +27,8 @@ int main(int argc, char *argv[])
 
     //return a.exec();
     qDebug() << "Test main";
+    networking n;
+    n.getuniqid();
     beaconsender b;
     b.start();
     beaconreceiver r;
