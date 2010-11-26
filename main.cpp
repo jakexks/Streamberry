@@ -46,6 +46,8 @@ int main(int argc, char *argv[])
         QList<QSqlRecord> files = db.searchDb(0, "");
 
         qDebug() << "First file in database: " << files.value(0).value(0).toString();
+
+        qDebug() << "Changes: " << db.changesSinceTime(1, "TESTID") << endl;
     }
     catch(SBException e)
     {

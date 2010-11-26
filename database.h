@@ -30,6 +30,8 @@ public:
     QStringList getFolders();
     //gets the last update of the library of a specified user
     QString lastUpdate(QString user_name);
+    //get all changes from Local after timestamp. takes this computer's unique ID.
+    QString changesSinceTime(int timestamp, QString uniqueID);
 
     //if argument 0 gets tracked, if 1 gets excluded
     QStringList getFolders(int trackedOrExcluded);

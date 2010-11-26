@@ -59,7 +59,6 @@ void Database::createDatabase(QString &path)
     //put filename on end of path
     QString filepath = path;
     filepath += dbfilename;
-
     //sql statements which creates structure. must be split as it doesn't seem to work with just one
     QString sql[9];
     sql[0] = "DROP TABLE IF EXISTS \"HomeTable\";";
@@ -483,5 +482,69 @@ QList<QSqlRecord> Database::searchDb(int type, QString searchtxt)
 
 
     return files;
+
+}
+
+QString Database::changesSinceTime(int timestamp, QString uniqueID)
+{
+    QString sql;
+    QString final;
+    QSqlQuery result;
+
+    sql = "SELECT * FROM LibLocal WHERE (Timestamp >";
+    sql += QString::number(timestamp);
+    sql += ");";
+
+    try
+    {
+        result = query(sql);
+        result.first();
+
+        final = "CREATE TABLE IF NOT EXISTS \"Lib";
+        final += uniqueID;
+        final += "\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0); \x1D";
+
+        while(result.isValid())
+        {
+            final += "INSERT OR REPLACE INTO Lib";
+            final += uniqueID;
+            final += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype) VALUES (\"";
+            final += result.record().value("Filepath").toString();
+            final += "\", \"";
+            final += result.record().value("Artist").toString();
+            final += "\", \"";
+            final += result.record().value("Album").toString();
+            final += "\", \"";
+            final += result.record().value("Title").toString();
+            final += "\", \"";
+            final += result.record().value("Genre").toString();
+            final += "\", \"";
+            final += result.record().value("Rating").toString();
+            final += "\", \"";
+            final += result.record().value("Filename").toString();
+            final += "\", \"";
+            final += result.record().value("Year").toString();
+            final += "\", \"";
+            final += result.record().value("Length").toString();
+            final += "\", \"";
+            final += result.record().value("Bitrate").toString();
+            final += "\", \"";
+            final += result.record().value("Filesize").toString();
+            final += "\", \"";
+            final += result.record().value("Timestamp").toString();
+            final += "\", \"";
+            final += result.record().value("Filetype").toString();
+            //group separator
+            final += "\"); \x1D";
+            result.next();
+        }
+
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+
+    return final;
 
 }
