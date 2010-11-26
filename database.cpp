@@ -75,8 +75,6 @@ void Database::createDatabase(QString &path)
     //sql[9] = "DROP TABLE IF EXISTS \"UserTable\";";
     //sql[10] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"Deleted\" BOOL DEFAULT 0);";
 
-    qDebug() << sql[4];
-
     //file and directory objects to create file and directories
     QFile dbfile(filepath);
     QDir dir;
