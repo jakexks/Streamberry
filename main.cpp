@@ -1,7 +1,21 @@
-#include <QtGui/QApplication>
-#include "mainwindow.h"
+#include <qthread.h>
 #include "threadtest.h"
 #include "beaconsender.h"
+#include "beaconreceiver.h"
+
+class I : public QThread
+{
+public:
+        static void sleep(unsigned long secs) {
+                QThread::sleep(secs);
+        }
+        static void msleep(unsigned long msecs) {
+                QThread::msleep(msecs);
+        }
+        static void usleep(unsigned long usecs) {
+                QThread::usleep(usecs);
+        }
+};
 
 int main(int argc, char *argv[])
 {
@@ -10,10 +24,12 @@ int main(int argc, char *argv[])
     //w.show();
 
     //return a.exec();
-
+    qDebug() << "Test main";
     beaconsender b;
     b.start();
+    beaconreceiver r;
+    r.start();
     while (true)
-        sleep(5);
+        I::sleep(5);
     return 0;
 }

@@ -13,10 +13,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     threadtest.cpp \
-    beaconsender.cpp
+    beaconsender.cpp \
+    beaconreceiver.cpp
 
 HEADERS  += mainwindow.h \
     threadtest.h \
-    beaconsender.h
+    beaconsender.h \
+    beaconreceiver.h
 
 FORMS    += mainwindow.ui
