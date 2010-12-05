@@ -15,18 +15,19 @@ SOURCES += main.cpp\
     database.cpp \
     sbexception.cpp \
     crossplatform.cpp \
-    utilities.cpp
+    utilities.cpp \
+    filescan.cpp
+
 
 HEADERS  += mainwindow.h \
     database.h \
     sbexception.h \
     crossplatform.h \
-    utilities.h
+    utilities.h \
+    filescan.h
 
 FORMS    += mainwindow.ui
 
-LIBS += -plugin-sql-sqlite
+LIBS += -plugin -sql -sqlite
 
 QT += sql
-
-QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.3
