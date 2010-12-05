@@ -20,7 +20,8 @@ int main(int argc, char *argv[])
    Filescan scanner(db);
    try
    {
-       db.setFolders("C:\\Users\\Jim\\Music\\Noah and the Whale\\Peaceful, The World Lays Me Down");
+       db.setFolders("C:\\Users\\Jim\\Music\\Noah and the Whale\\Peaceful, The World Lays Me Down;");
+
        scanner.build_new();
    }
    catch(SBException e)
