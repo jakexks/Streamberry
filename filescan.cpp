@@ -10,18 +10,22 @@
 #include "crossplatform.h"
 
 using namespace std;
-Database db;
+//Database& db;
 
-//Connects to the database by being passed the database pointer.
-filescan::filescan(Database &datab)
+Filescan::Filescan(Database &datab): db(datab)
 {
-    Database db = datab;
+  db = datab;
 }
+//Connects to the database by being passed the database pointer.
+//filescan::filescan(Database &datab)
+//{
+//    db = datab;
+//}
 
 //This method builds a database by scanning the TrackedFolders for media files to add
 //Doesn't add files stored in exluded folders
 //Returns 1 if successful
-int filescan::build_new()
+int Filescan::build_new()
 {
     QStringList TrackedFolders;
     QStringList ExFolders;
@@ -40,7 +44,7 @@ int filescan::build_new()
 //It calls addFiles on the current folder, then builds a list of directories currently in this folder.
 //scanFolder is called on these directories too, so the directory tree is traversed recursively.
 //Returns 1 when complete
-int filescan::scanFolder(QDir path, QStringList Expaths)
+int Filescan::scanFolder(QDir path, QStringList Expaths)
 {
     QStringList folderList;
     for(int i=0; i<Expaths.size(); i++)
@@ -63,7 +67,7 @@ int filescan::scanFolder(QDir path, QStringList Expaths)
 //If a duplicate file is found, e.g. one matching certain criteria, then it is added to the database with a dup flag set 1
 //returns 1 if files are added.
 //TODO Deal with album art in some way. Look at meta.c in VLC
-int filescan::addFiles(QDir path)
+int Filescan::addFiles(QDir path)
 {
     QStringList fileList;
     path.setFilter(QDir::Files);
@@ -71,13 +75,13 @@ int filescan::addFiles(QDir path)
     for(int i = 0; i<fileList.size(); i++)
         if(ismedia(fileList.at(i))==1)
             qDebug() << fileList.at(i);
-            //db.addFile(fileList.at(i).filePath(), fileList.at(i).fileName(), fileList.at(i).size(), "ARTIST", "ALBUM", "TITLE", "GENRE", "5", "1991", "123", "2400", fileList.at(i).extension(FALSE), "HomeTable");
+            //db.addFile(fileList.at(i).filePath(), fileList.at(i).fileName(), fileList.at(i).size(), "ARTIST", "ALBUM", "TITLE", "GENRE", "5", "1991", "123", "2400", fileList.at(i).extension(FALSE), "LibLocal");
     return 1;
 }
 
 //TO DO: Many more compatible filetypes need adding
 //This method takes a filepath and returns 1 if the file in question is a media file
-int filescan::ismedia(QDir file)
+int Filescan::ismedia(QDir file)
 {
     QString name = ((file.entryInfoList()).takeFirst()).completeSuffix();
     if(file.match("wav", name) || file.match("mp3", name) || file.match("wma", name) ||
