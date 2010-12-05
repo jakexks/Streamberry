@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     Player p;
     p.resize(640,480);
-    p.playFile("./01-Metric-Help I'm Alive.mp3"); // Replace with what you want to play
+    p.playFile("./k_k13fo4pr4.flv"); // Replace with what you want to play
     p.show();
     return a.exec();
 }

@@ -98,9 +98,9 @@ void Player::playFile(QString file)
     libvlc_media_player_set_media (_mp, _m);
     libvlc_media_parse (_m);
 
-    QMessageBox msgBox;
-    msgBox.setText(libvlc_media_get_meta(_m, libvlc_meta_Title));
-    msgBox.exec();
+    //QMessageBox msgBox;
+    //msgBox.setText(libvlc_media_get_meta(_m, libvlc_meta_Title));
+    //msgBox.exec();
     //Free media
     libvlc_media_release (_m);
     //raise(&_vlcexcep);
