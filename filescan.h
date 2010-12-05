@@ -14,14 +14,17 @@
 using namespace std;
 
 
-class filescan
+class Filescan
 {
 public:
-   filescan(Database &pointer);
+   //Filescan();
+   Filescan(Database &datab);
+   //Filescan(Database &datab): db(datab){}
    int build_new(); //reads the list of folders to be scanned out of the database and adds media files in that
                     // folder and it's subfolders to it's library. Returns 1 if successful
 
 private:
+   Database& db;
    int scanFolder(QDir path, QStringList Expaths);
    int addFiles(QDir path);
    int ismedia(QDir file);
