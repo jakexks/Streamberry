@@ -29,8 +29,15 @@ int Filescan::build_new()
 {
     QStringList TrackedFolders;
     QStringList ExFolders;
-    TrackedFolders = db.getFolders(0);
-    ExFolders = db.getFolders(1);
+    try
+    {
+        TrackedFolders = db.getFolders(0);
+        ExFolders = db.getFolders(1);
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
     //For every folder to be tracked, run the scanFolder method
     for(int i=0; i<TrackedFolders.size(); i++)
     {
