@@ -24,3 +24,17 @@ QString networking::getuniqid()
     }
     return s;
 }
+
+void networking::receive()
+{
+    while (!tcpServer.isListening() && !tcpServer.listen())
+    {
+        qDebug() << "Could not listen";
+        return;
+    }
+}
+
+void networking::send()
+{
+// todo
+}
