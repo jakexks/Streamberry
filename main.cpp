@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <QtGui/QApplication>
 #include <QDir>
 #include <QDebug>
@@ -66,8 +65,7 @@ int main(int argc, char *argv[])
 //    {
 //        qDebug() << e.getException();
 //    }
-=======
-#include <qthread.h>
+/*#include <qthread.h>
 #include "threadtest.h"
 #include "beaconsender.h"
 #include "beaconreceiver.h"
@@ -79,11 +77,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     //MainWindow w;
->>>>>>> 66b5192a2bfd16325cf5a29f4ab4474081331483
 
     beaconsender b;
     b.start();
     beaconreceiver r;
     r.start();
     return a.exec();
-}
+}*/
