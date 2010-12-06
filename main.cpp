@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
    Filescan scanner(db);
    try
    {
+
        db.setFolders("/Users/Robbie/Music/Albums/;");
        //scanner.build_new();
 
