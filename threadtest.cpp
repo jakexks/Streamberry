@@ -12,7 +12,7 @@ void threadtest::run()
 {
     while (true)
     {
-    std::cout << "DICKS from " << tid << std::endl;
+    std::cout << "data from " << tid << std::endl;
     sleep(1);
     }
 }
