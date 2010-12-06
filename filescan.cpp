@@ -55,7 +55,7 @@ int Filescan::build_new()
 //Returns 1 when complete
 int Filescan::scanFolder(QDir path, QStringList expaths)
 {
-    QStringList folderList;
+    QFileInfoList folderList;
     if(!expaths.isEmpty())
     {
         for(int i=0; i<expaths.size(); i++)
@@ -66,17 +66,15 @@ int Filescan::scanFolder(QDir path, QStringList expaths)
     }
     addFiles(path);
 
-    path.setFilter(QDir::AllDirs | QDir::NoDotAndDotDot);
+    path.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
 
-    folderList = path.entryList();
+    folderList = path.entryInfoList();
 
     if(!folderList.isEmpty())
     {
-
         for(int j=0; j<folderList.size(); j++)
         {
-            QDir passpath = QDir(folderList.at(j));
-            scanFolder(passpath, expaths);
+            scanFolder(QDir(folderList.at(j).absoluteFilePath()), expaths);
         }
     }
     return 1;
@@ -91,7 +89,7 @@ int Filescan::scanFolder(QDir path, QStringList expaths)
 int Filescan::addFiles(QDir path)
 {
     QFileInfoList fileList;
-    path.setFilter(QDir::Files|QDir::NoDotAndDotDot);
+    path.setFilter(QDir::Files);
 
     fileList = path.entryInfoList();
 
@@ -101,8 +99,10 @@ int Filescan::addFiles(QDir path)
         for(int i = 0; i<fileList.size(); i++)
         {
             if(ismedia(fileList.at(i))==1)
-                qDebug() << fileList.at(i).fileName();
-            //db.addFile(fileList.at(i).filePath(), fileList.at(i).fileName(), fileList.at(i).size(), "ARTIST", "ALBUM", "TITLE", "GENRE", "5", "1991", "123", "2400", fileList.at(i).extension(FALSE), "LibLocal");
+            {
+                //qDebug() << fileList.at(i).absoluteFilePath();
+                db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), "ARTIST", "ALBUM", "TITLE", "GENRE", "5", "1991", "123", "2400", fileList.at(i).suffix(), "LibLocal");
+            }
         }
     }
     return 1;

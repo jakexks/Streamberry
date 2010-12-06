@@ -20,8 +20,8 @@ int main(int argc, char *argv[])
    Filescan scanner(db);
    try
    {
-       db.setFolders("/home/jakexks/Desktop/THE LOCAL CHEESE PLAYLIST THAT EVER WAS/tagged");
 
+       db.setFolders("/Users/Robbie/Music/Albums/;");
        scanner.build_new();
    }
    catch(SBException e)
