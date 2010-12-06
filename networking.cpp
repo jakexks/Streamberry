@@ -12,14 +12,15 @@ QString networking::getuniqid()
     QString s = "";
     for (int i = 0; i < interfaces.length(); i++)
     {
-        if(QString::compare(interfaces[i].humanReadableName(), "lo") == 0)
+        qDebug() << interfaces[i].humanReadableName() << interfaces[i].hardwareAddress();
+        if(interfaces[i].humanReadableName().startsWith("lo"))
         {
             // test on windows
         }
         else
         {
             s.append(interfaces[i].hardwareAddress());
-            break;
+            //break;
         }
     }
     return s;
