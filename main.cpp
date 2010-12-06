@@ -1,21 +1,19 @@
-#include <QtGui/QApplication>
-#include "mainwindow.h"
+#include <qthread.h>
 #include "threadtest.h"
 #include "beaconsender.h"
-#include "networking.h"
+#include "beaconreceiver.h"
+#include <QDebug>
+#include <mainwindow.h>
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    //QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
+    QApplication a(argc, argv);
+    MainWindow w;
 
-    //return a.exec();
-    networking n;
-    qDebug() << n.getuniqid();
     beaconsender b;
     b.start();
-    while (true)
-        sleep(5);
-    return 0;
+    beaconreceiver r;
+    r.start();
+    return a.exec();
 }

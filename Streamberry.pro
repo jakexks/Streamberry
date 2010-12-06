@@ -14,11 +14,13 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     threadtest.cpp \
     beaconsender.cpp \
-    networking.cpp
+    beaconreceiver.cpp
+#   networking.cpp
 
 HEADERS  += mainwindow.h \
     threadtest.h \
     beaconsender.h \
-    networking.h
+    beaconreceiver.h
+#    networking.h
 
 FORMS    += mainwindow.ui
