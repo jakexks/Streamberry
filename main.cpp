@@ -17,8 +17,11 @@ int main(int argc, char *argv[])
    QApplication a(argc, argv);
    MainWindow w;
    w.show();
+   beaconsender b;
+   beaconreceiver r;
+   b.start();
+   r.start();
    Database db = Database();
-
    Filescan scanner(db);
    try
    {
@@ -26,10 +29,8 @@ int main(int argc, char *argv[])
        db.setFolders("/Users/Robbie/Music/Albums/;");
        //scanner.build_new();
 
-       beaconsender b;
-       b.start();
-       beaconreceiver r;
-       r.start();
+
+
    }
    catch(SBException e)
    {
