@@ -12,8 +12,9 @@ class networking
 public:
     networking();
     QString getuniqid();
-    void receive();
-    void send();
+    QString getmyip();
+    QByteArray receive();
+    void send(QHostAddress, quint16, QByteArray);
 private:
     QTcpServer tcpServer;
     QTcpSocket tcpClient;
