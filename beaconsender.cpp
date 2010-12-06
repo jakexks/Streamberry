@@ -7,6 +7,7 @@ beaconsender::beaconsender(Database &datab): db(datab)
 void beaconsender::send()
 {
     udpSocket = new QUdpSocket();
+    udpSocket->bind(QHostAddress::Broadcast, 45454, QUdpSocket::ShareAddress);
     networking n;
     QString sendme = "";
     sendme.append("STREAMBEACON|");
