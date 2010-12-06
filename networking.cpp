@@ -25,6 +25,25 @@ QString networking::getuniqid()
     return s;
 }
 
+QString networking::getmyip()
+{
+    QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
+
+    QString s = "";
+    for (int i = 0; i < interfaces.length(); i++)
+    {
+        for (int j = 0; j < interfaces[i].allAddresses().length(); j++)
+        {
+            QString ip = interfaces[i].allAddresses()[j].toString();
+            if (!ip.startsWith("fe80:", Qt::CaseInsensitive) && !ip.startsWith("127.") && !ip.startsWith("0:"))
+            {
+                return ip;
+            }
+        }
+    }
+    return NULL;
+}
+
 QByteArray networking::receive()
 {
     tcpServer.listen(QHostAddress::Any,6567);

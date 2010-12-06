@@ -12,6 +12,7 @@ class networking
 public:
     networking();
     QString getuniqid();
+    QString getmyip();
     QByteArray receive();
     void send(QHostAddress, quint16, QByteArray);
 private:
