@@ -9,8 +9,10 @@ void beaconsender::send()
 {
     udpSocket = new QUdpSocket();
     networking n;
-
-    QByteArray datagram = "STREAMBEACON" + n.getuniqid();
+    QString sendme = "";
+    sendme.append("STREAMBEACON|");
+    sendme.append(n.getuniqid());
+    QByteArray datagram = sendme.toUtf8();
     udpSocket->writeDatagram(datagram.data(), datagram.size(),
                              QHostAddress::Broadcast, 45454);
     delete udpSocket;
