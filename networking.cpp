@@ -1,5 +1,5 @@
 #include "networking.h"
-#include <iostream>
+#include <QCryptographicHash>
 
 networking::networking()
 {
@@ -12,18 +12,12 @@ QString networking::getuniqid()
     QString s = "";
     for (int i = 0; i < interfaces.length(); i++)
     {
-        qDebug() << interfaces[i].humanReadableName() << interfaces[i].hardwareAddress();
-        if(interfaces[i].humanReadableName().startsWith("lo"))
-        {
-            // test on windows
-        }
-        else
-        {
-            s.append(interfaces[i].hardwareAddress());
+        s.append(interfaces[i].hardwareAddress());
             //break;
-        }
     }
-    return s;
+    QCryptographicHash hash(QCryptographicHash::Sha1);
+    hash.addData(s.toUtf8());
+    return hash.result().toHex();
 }
 
 QString networking::getmyip()
