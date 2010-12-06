@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 
     //return a.exec();
     networking n;
-    n.getuniqid();
+    qDebug() << n.getuniqid();
     beaconsender b;
     b.start();
     while (true)
