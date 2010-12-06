@@ -6,6 +6,8 @@
 #include "database.h"
 #include "sbexception.h"
 #include "filescan.h"
+#include "beaconsender.h"
+#include "beaconreceiver.h"
 
 using namespace std;
 
@@ -21,7 +23,12 @@ int main(int argc, char *argv[])
    try
    {
        db.setFolders("/Users/Robbie/Music/Albums/;");
-       scanner.build_new();
+       //scanner.build_new();
+
+       beaconsender b;
+       b.start();
+       beaconreceiver r;
+       r.start();
    }
    catch(SBException e)
    {
