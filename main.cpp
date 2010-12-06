@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
    Filescan scanner(db);
    try
    {
-       db.setFolders("/Users/Robbie/Music/Albums;");
+       db.setFolders("/home/jakexks/Desktop/THE LOCAL CHEESE PLAYLIST THAT EVER WAS/tagged");
 
        scanner.build_new();
    }

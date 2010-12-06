@@ -1,4 +1,7 @@
 #include "beaconreceiver.h"
+#include "database.h"
+#include "utilities.h"
+#include "networking.h"
 #include <QDebug>
 
 beaconreceiver::beaconreceiver()
