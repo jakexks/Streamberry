@@ -27,7 +27,7 @@ private:
    Database& db;
    int scanFolder(QDir path, QStringList Expaths);
    int addFiles(QDir path);
-   int ismedia(QDir file);
+   int ismedia(QFileInfo file);
    int isalreadyindat(QDir file);
    int isdup(QDir file);
 };

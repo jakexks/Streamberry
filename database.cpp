@@ -57,7 +57,7 @@ void Database::createDatabase(QString &path)
     QString filepath = path;
     filepath += dbfilename;
     //sql statements which creates structure. must be split as it doesn't seem to work with just one
-    QString sql[9];
+    QString sql[10];
     sql[0] = "DROP TABLE IF EXISTS \"HomeTable\";";
     sql[1] = "CREATE TABLE \"LibLocal\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
     sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
@@ -69,6 +69,7 @@ void Database::createDatabase(QString &path)
     sql[6] = "CREATE TABLE \"Settings\" (\"Name\" VARCHAR(10) UNIQUE,\"Value\" INTEGER);";
     sql[7] = "DROP TABLE IF EXISTS \"TrackedFolders\";";
     sql[8] = "CREATE TABLE \"TrackedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";
+    sql[9] = "CREATE TABLE \"ExcludedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";
     //sql[9] = "DROP TABLE IF EXISTS \"UserTable\";";
     //sql[10] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"Deleted\" BOOL DEFAULT 0);";
 
@@ -92,7 +93,7 @@ void Database::createDatabase(QString &path)
         connect(filepath);
 
         //create database structure by looping through sql statements
-        for(int i = 0; i<9; i++)
+        for(int i = 0; i<10; i++)
         {
             query(sql[i]);
         }
@@ -261,6 +262,7 @@ QStringList Database::getFolders(int trackedOrExcluded)
     {
         result = query(sql);
         result.first();
+
         int i = 0;
 
         //for every record in the query, add it to the folder list as a string

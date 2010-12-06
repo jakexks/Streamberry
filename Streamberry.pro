@@ -16,7 +16,11 @@ SOURCES += main.cpp\
     sbexception.cpp \
     crossplatform.cpp \
     utilities.cpp \
-    filescan.cpp
+    filescan.cpp \
+    threadtest.cpp \
+    beaconsender.cpp \
+    beaconreceiver.cpp \
+    networking.cpp
 
 
 HEADERS  += mainwindow.h \

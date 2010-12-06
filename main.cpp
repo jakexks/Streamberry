@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
    Filescan scanner(db);
    try
    {
-       db.setFolders("C:\\Users\\Jim\\Music\\Noah and the Whale\\Peaceful, The World Lays Me Down;");
+       db.setFolders("/Users/Robbie/Music/Albums;");
 
        scanner.build_new();
    }
@@ -81,6 +81,6 @@ int main(int argc, char *argv[])
     beaconsender b;
     b.start();
     beaconreceiver r;
-    r.start();
+    r.start();*/
     return a.exec();
-}*/
+}

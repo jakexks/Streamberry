@@ -14,7 +14,7 @@ using namespace std;
 
 Filescan::Filescan(Database &datab): db(datab)
 {
-  db = datab;
+    db = datab;
 }
 //Connects to the database by being passed the database pointer.
 //filescan::filescan(Database &datab)
@@ -33,37 +33,51 @@ int Filescan::build_new()
     {
         TrackedFolders = db.getFolders(0);
         ExFolders = db.getFolders(1);
+
+        //For every folder to be tracked, run the scanFolder method
+        for(int i=0; i<TrackedFolders.size(); i++)
+        {
+            QDir passpath = QDir(TrackedFolders.at(i));
+            scanFolder(passpath, ExFolders);
+        }
+        return 1;
     }
     catch(SBException e)
     {
         throw e;
     }
-    //For every folder to be tracked, run the scanFolder method
-    for(int i=0; i<TrackedFolders.size(); i++)
-    {
-        QDir passpath = QDir(TrackedFolders.at(i));
-        scanFolder(passpath, ExFolders);
-    }
-    return 1;
+    return 0;
 }
 
 //This method takes a folder path and an array of folders to exclude.
 //It calls addFiles on the current folder, then builds a list of directories currently in this folder.
 //scanFolder is called on these directories too, so the directory tree is traversed recursively.
 //Returns 1 when complete
-int Filescan::scanFolder(QDir path, QStringList Expaths)
+int Filescan::scanFolder(QDir path, QStringList expaths)
 {
     QStringList folderList;
-    for(int i=0; i<Expaths.size(); i++)
-        if(path==Expaths[i])
-            return 1;
-    addFiles(path);
-    path.setFilter(QDir::AllDirs);
-    folderList = path.entryList();
-    for(int j=0; j<folderList.size(); j++)
+    if(!expaths.isEmpty())
     {
-        QDir passpath = QDir(folderList.at(j));
-        scanFolder(passpath, Expaths);
+        for(int i=0; i<expaths.size(); i++)
+        {
+            if(path==expaths[i])
+                return 1;
+        }
+    }
+    addFiles(path);
+
+    path.setFilter(QDir::AllDirs | QDir::NoDotAndDotDot);
+
+    folderList = path.entryList();
+
+    if(!folderList.isEmpty())
+    {
+
+        for(int j=0; j<folderList.size(); j++)
+        {
+            QDir passpath = QDir(folderList.at(j));
+            scanFolder(passpath, expaths);
+        }
     }
     return 1;
 }
@@ -76,24 +90,33 @@ int Filescan::scanFolder(QDir path, QStringList Expaths)
 //TODO Deal with album art in some way. Look at meta.c in VLC
 int Filescan::addFiles(QDir path)
 {
-    QStringList fileList;
-    path.setFilter(QDir::Files);
-    fileList = path.entryList();
-    for(int i = 0; i<fileList.size(); i++)
-        if(ismedia(fileList.at(i))==1)
-            qDebug() << fileList.at(i);
+    QFileInfoList fileList;
+    path.setFilter(QDir::Files|QDir::NoDotAndDotDot);
+
+    fileList = path.entryInfoList();
+
+    if(!fileList.isEmpty())
+    {
+
+        for(int i = 0; i<fileList.size(); i++)
+        {
+            if(ismedia(fileList.at(i))==1)
+                qDebug() << fileList.at(i).fileName();
             //db.addFile(fileList.at(i).filePath(), fileList.at(i).fileName(), fileList.at(i).size(), "ARTIST", "ALBUM", "TITLE", "GENRE", "5", "1991", "123", "2400", fileList.at(i).extension(FALSE), "LibLocal");
+        }
+    }
     return 1;
 }
 
 //TO DO: Many more compatible filetypes need adding
 //This method takes a filepath and returns 1 if the file in question is a media file
-int Filescan::ismedia(QDir file)
+int Filescan::ismedia(QFileInfo file)
 {
-    QString name = ((file.entryInfoList()).takeFirst()).completeSuffix();
-    if(file.match("wav", name) || file.match("mp3", name) || file.match("wma", name) ||
-       file.match("ogg", name) || file.match("acc", name) || file.match("mid", name))
-       return 1;
+    QString name = file.suffix();
+    if(QString::compare("wav",name)==0 || QString::compare("mp3",name)==0 || QString::compare("wma",name)==0 || QString::compare("ogg",name)==0 || QString::compare("aac",name)==0 || QString::compare("mid",name)==0)
+    {
+        return 1;
+    }
     return 0;
 }
 
