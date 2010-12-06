@@ -28,7 +28,6 @@ int main(int argc, char *argv[])
    {
        qDebug() << e.getException();
    }
-}
 //    //testing storing settings
 //    try
 //    {
