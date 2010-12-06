@@ -1,5 +1,5 @@
 #include "beaconsender.h"
-
+#include "networking.h"
 beaconsender::beaconsender()
 {
 
@@ -8,7 +8,9 @@ beaconsender::beaconsender()
 void beaconsender::send()
 {
     udpSocket = new QUdpSocket();
-    QByteArray datagram = "DICKS";
+    networking n;
+
+    QByteArray datagram = "STREAMBEACON" + n.getuniqid();
     udpSocket->writeDatagram(datagram.data(), datagram.size(),
                              QHostAddress::Broadcast, 45454);
     delete udpSocket;
