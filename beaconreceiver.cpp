@@ -8,7 +8,6 @@ beaconreceiver::beaconreceiver()
 void beaconreceiver::run()
 {
     udpSocket.bind(45454, QUdpSocket::ShareAddress);
-    qDebug() << "Test";
     while (true)
     {
         if(udpSocket.hasPendingDatagrams())
