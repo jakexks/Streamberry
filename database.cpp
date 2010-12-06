@@ -285,9 +285,9 @@ QStringList Database::getFolders(int trackedOrExcluded)
 
 QString Database::lastUpdate(QString user_name)
 {
-    QString sql = "SELECT TimeLastUpdated FROM LibIndex WHERE Name=\"";
+    QString sql = "SELECT TimeLastUpdated FROM LibIndex WHERE Name='";
     sql += user_name;
-    sql += "\"";
+    sql += "';";
 
     try
     {
@@ -296,7 +296,7 @@ QString Database::lastUpdate(QString user_name)
         //if query has returned empty
         if(!result.first())
         {
-            return NULL;
+            return "";
         }
 
         const QSqlRecord r = result.record();

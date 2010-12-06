@@ -1,21 +1,18 @@
 #include "beaconsender.h"
 #include "networking.h"
 #include "database.h"
-beaconsender::beaconsender()
-{
-
-}
+beaconsender::beaconsender(Database &datab): db(datab)
+{}
 
 void beaconsender::send()
 {
     udpSocket = new QUdpSocket();
     networking n;
-    Database d;
     QString sendme = "";
     sendme.append("STREAMBEACON|");
     sendme.append(n.getuniqid());
     sendme.append("|");
-    sendme.append(d.lastUpdate("Local"));
+    sendme.append(db.lastUpdate("Local"));
     sendme.append("|");
     sendme.append(n.getmyip());
     QByteArray datagram = sendme.toUtf8();

@@ -17,11 +17,13 @@ int main(int argc, char *argv[])
    QApplication a(argc, argv);
    MainWindow w;
    w.show();
-   beaconsender b;
+   Database db = Database();
+
+   beaconsender b(db);
    beaconreceiver r;
    b.start();
    r.start();
-   Database db = Database();
+
    Filescan scanner(db);
    try
    {
