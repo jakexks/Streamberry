@@ -1,3 +1,5 @@
+// Example code, marked for deletion
+
 #include "beaconsend.h"
 #include <QtNetwork>
 
