@@ -1,10 +1,12 @@
 #include "networking.h"
 #include <iostream>
 
+// Constructor, needs no arguments
 networking::networking()
 {
 }
 
+// Returns a string containing the unique ID of the current machine
 QString networking::getuniqid()
 {
     QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
@@ -25,6 +27,7 @@ QString networking::getuniqid()
     return s;
 }
 
+// Returns a string containing the ip address of the current machine
 QString networking::getmyip()
 {
     QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
@@ -44,6 +47,7 @@ QString networking::getmyip()
     return NULL;
 }
 
+// Generic receive function. Waits until there is something to receive from the network, then returns a byte array containing all the data received
 QByteArray networking::receive()
 {
     tcpServer.listen(QHostAddress::Any,6567);
@@ -68,6 +72,7 @@ QByteArray networking::receive()
     return buf;
 }
 
+// Generic send function
 void networking::send(QHostAddress host, quint16 port, QByteArray data)
 {
     tcpClient.connectToHost(host, port);
