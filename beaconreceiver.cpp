@@ -39,12 +39,15 @@ void beaconreceiver::processPendingDatagrams()
 // Checks whether a machine has been seen before, updates the timestamp if so and adds it to the list if not
 /*void beaconreceiver::checkID(QString id)
 {
-    if (//ID is in data structure)
+    declare stamp;
+    if ((stamp = onlineMachines.value(id)) != <default-constructed timestamp>)
     {
         //update timestamp
+        onlineMachines.insert(id, <timestamp>);
     }
     else
     {
         //insert ID into data structure
+        onlineMachines.insert(id, <timestamp>);
     }
 }*/
