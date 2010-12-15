@@ -14,6 +14,7 @@ private:
     QUdpSocket udpSocket;
     void receive();
     void processPendingDatagrams();
+    //void checkID(QString);
 };
 
 #endif // BEACONRECEIVER_H
