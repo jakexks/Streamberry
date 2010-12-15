@@ -9,47 +9,41 @@ beaconreceiver::beaconreceiver()
 {
 }
 
-// Sets up the hash table for storing connected machines, the unique ID of the machine is used as the hash key and a timestamp of when the last beacon was received is the data
-//QHash<QString, (whatever we use for timestamp)> onlineMachines;
-
 // Continually processes received datagrams by calling processPendingDatagrams
 void beaconreceiver::run()
 {
     udpSocket.bind(QHostAddress::Broadcast, 45454, QUdpSocket::ShareAddress);
     while (true)
     {
+        // Beacon structure is "STREAMBEACON|<unique ID>|<timestamp>|<ip address>
         if(udpSocket.hasPendingDatagrams())
             processPendingDatagrams();
     }
 }
 
 // INCOMPLETE
+
 void beaconreceiver::processPendingDatagrams()
 {
     while (udpSocket.hasPendingDatagrams())
     {
         QByteArray datagram;
-        //QString id = "";
         datagram.resize(udpSocket.pendingDatagramSize());
         udpSocket.readDatagram(datagram.data(), datagram.size());
-        //change datagram.data into a QString (id)
-        //checkID(id);
+        QString datastring = (QString) datagram.data();
+        qDebug() << datastring.split('|')[0];
         qDebug() << datagram.data();
     }
 }
 
 // Checks whether a machine has been seen before, updates the timestamp if so and adds it to the list if not
-/*void beaconreceiver::checkID(QString id)
+void beaconreceiver::checkID(QString id)
 {
-    declare stamp;
-    if ((stamp = onlineMachines.value(id)) != <default-constructed timestamp>)
+    int stamp;
+
+    if ((stamp = onlineMachines.value(id)) != 0)
     {
-        //update timestamp
-        onlineMachines.insert(id, <timestamp>);
+
     }
-    else
-    {
-        //insert ID into data structure
-        onlineMachines.insert(id, <timestamp>);
-    }
-}*/
+    onlineMachines.insert(id, getCurrentTimestamp());
+}

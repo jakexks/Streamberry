@@ -13,7 +13,7 @@ void beaconsender::send()
     udpSocket->bind(QHostAddress::Broadcast, 45454, QUdpSocket::ShareAddress);
     networking n;
     QString sendme = "";
-    // Beacon structure is "STREAMBEACON|<unique ID>|<ip address>
+    // Beacon structure is "STREAMBEACON|<unique ID>|<timestamp>|<ip address>
     sendme.append("STREAMBEACON|");
     sendme.append(n.getuniqid());
     sendme.append("|");
