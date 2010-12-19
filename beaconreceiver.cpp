@@ -22,7 +22,6 @@ void beaconreceiver::run()
 }
 
 // INCOMPLETE
-
 void beaconreceiver::processPendingDatagrams()
 {
     while (udpSocket.hasPendingDatagrams())
@@ -42,7 +41,7 @@ void beaconreceiver::checkID(QString id)
     int stamp;
     if ((stamp = onlineMachines.value(id)) != 0)
     {
-
+        //whatever needs to be done when a new machine is seen
     }
     onlineMachines.insert(id, getCurrentTimestamp());
 }
