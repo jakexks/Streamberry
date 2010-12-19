@@ -40,7 +40,6 @@ void beaconreceiver::processPendingDatagrams()
 void beaconreceiver::checkID(QString id)
 {
     int stamp;
-
     if ((stamp = onlineMachines.value(id)) != 0)
     {
 
