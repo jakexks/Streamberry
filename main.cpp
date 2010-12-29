@@ -2,8 +2,8 @@
  * Copyright © 2009 Alexander Maringer <maringer@maringer-it.de>
  */
 
-#include "vlc_on_qt.h"
-#include "file_meta.h"
+//#include "vlc_on_qt.h"
+//#include "file_meta.h"
 #include <QtGui/QApplication>
 #include <QDir>
 #include <QDebug>

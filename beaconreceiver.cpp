@@ -43,5 +43,5 @@ void beaconreceiver::checkID(QString id)
     {
         //whatever needs to be done when a new machine is seen
     }
-    onlineMachines.insert(id, getCurrentTimestamp());
+    onlineMachines.insert(id, Utilities::getCurrentTimestamp());
 }
