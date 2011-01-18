@@ -14,6 +14,7 @@
 #include "filescan.h"
 #include "beaconsender.h"
 #include "beaconreceiver.h"
+#include "offlinechecker.h"
 
 using namespace std;
 
@@ -27,8 +28,10 @@ int main(int argc, char *argv[])
 
    beaconsender b(db);
    beaconreceiver r;
+   offlinechecker oc(r);
    b.start();
    r.start();
+   oc.start();
 
    Filescan scanner(db);
    try

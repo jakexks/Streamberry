@@ -1,4 +1,5 @@
 #include "networking.h"
+#include "sleeper.h"
 #include <QCryptographicHash>
 
 // Constructor, needs no arguments
@@ -54,7 +55,7 @@ QByteArray networking::receive()
     }
     while(!tcpServer.hasPendingConnections())
     {
-        usleep(500);
+        sleeper::msleep(500);
     }
     while(tcpServer.hasPendingConnections())
     {
