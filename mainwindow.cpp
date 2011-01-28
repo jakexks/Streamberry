@@ -14,14 +14,12 @@ MainWindow::MainWindow(char* path, QWidget *parent)
     : QMainWindow(parent)
 {
     expath = QString(path);
-
-    #ifndef Q_OS_WIN
-        expath.resize(expath.lastIndexOf('/'));
-    #endif
-    #ifdef Q_OS_WIN
-        expath.resize(expath.lastIndexOf('\\'));
-    #endif
-
+    //#ifndef Q_OS_WIN
+      expath.resize(expath.lastIndexOf('/'));
+    //#endif
+    //#ifdef Q_OS_WIN
+        //expath.resize(expath.lastIndexOf('\\'));
+    //#endif
     expath += "/";
 
     this->setWindowTitle("Streamberry");
@@ -102,7 +100,7 @@ QWidget* MainWindow::makeRightSide() {
     tableWidget->setRowCount(10);
     tableWidget->setColumnCount(5);
 
-    QTableWidgetItem *newItem = new QTableWidgetItem("Hello");
+    QTableWidgetItem *newItem = new QTableWidgetItem(expath);
     tableWidget->setItem(5, 2, newItem);
     temp->addWidget(tableWidget);
 
