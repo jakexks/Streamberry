@@ -19,5 +19,5 @@ QString CrossPlatform::getAppDataPath()
     return QDir::homePath() + "/.streamberry/";
     #endif
 
-    return "/";
+    return "./";
 }

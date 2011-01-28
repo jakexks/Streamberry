@@ -74,3 +74,10 @@ void networking::send(QHostAddress host, quint16 port, QByteArray data)
     tcpClient.connectToHost(host, port);
     tcpClient.write(data);
 }
+
+// Unique ID parser
+QString networking::parsebeacon(QString bc, int field)
+{
+    QStringList split = bc.split('|', QString::SkipEmptyParts, Qt::CaseInsensitive);
+    return split[field];
+}

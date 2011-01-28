@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     beaconreceiver.cpp \
     networking.cpp \
     offlinechecker.cpp \
-    sleeper.cpp
+    sleeper.cpp \
+    librarysend.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -36,7 +37,8 @@ HEADERS  += mainwindow.h \
     beaconreceiver.h \
     networking.h \
     offlinechecker.h \
-    sleeper.h
+    sleeper.h \
+    librarysend.h
 
 FORMS    += mainwindow.ui
 
