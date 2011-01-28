@@ -14,3 +14,19 @@ SOURCES += main.cpp\
         mainwindow.cpp
 
 HEADERS  += mainwindow.h
+
+OTHER_FILES += \
+    images/bgBottomBar.png \
+    images/btnMuteUp.png \
+    images/btnShuffleUp.png \
+    images/scrollHandle.png \
+    images/bgTopBar.png \
+    images/btnNextUp.png \
+    images/btnVideosUp.png \
+    images/searchBar.png \
+    images/btnBackUp.png \
+    images/btnPlayUp.png \
+    images/scrollBarLeft.png \
+    images/btnFowardUp.png \
+    images/btnPreviousUp.png \
+    images/scrollBarMiddle.png

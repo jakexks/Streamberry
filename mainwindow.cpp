@@ -5,13 +5,14 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    this->setWindowTitle("Streamberry");
     resize(500, 500);
     centralWidget = new QWidget();
     mainLayout = new QGridLayout(centralWidget);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
 
-    mainLayout->setRowMinimumHeight(0, 70);
+    mainLayout->setRowMinimumHeight(0, 36);
     mainLayout->setRowStretch(0, 0);
     mainLayout->setRowStretch(1, 1);
     mainLayout->setRowMinimumHeight(2, 50);
@@ -25,8 +26,8 @@ MainWindow::MainWindow(QWidget *parent)
     bottombar = makeBottomBar();
     rightside = makeRightSide();
 
-    mainLayout->addWidget(topbar, 0, 0, 1, 2);
-    mainLayout->addWidget(leftbar, 1, 0);
+    mainLayout->addWidget(topbar, 1, 0);
+    mainLayout->addWidget(leftbar, 0, 0, 2, 1);
     mainLayout->addWidget(rightside, 1, 1);
     mainLayout->addWidget(bottombar, 2, 0, 1, 2);
 
