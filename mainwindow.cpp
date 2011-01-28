@@ -2,9 +2,28 @@
 #include <QtGui>
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent)
+#define TOPBARHEIGHT 34
+#define BOTTOMBARHEIGHT 83
+
+void MainWindow::setPath(char* path)
+{
+    expath = path;
+}
+
+MainWindow::MainWindow(char* path, QWidget *parent)
     : QMainWindow(parent)
 {
+    expath = QString(path);
+
+    #ifndef Q_OS_WIN
+        expath.resize(expath.lastIndexOf('/'));
+    #endif
+    #ifdef Q_OS_WIN
+        expath.resize(expath.lastIndexOf('\'));
+    #endif
+
+    expath += "/";
+
     this->setWindowTitle("Streamberry");
     resize(500, 500);
     centralWidget = new QWidget();
@@ -12,10 +31,10 @@ MainWindow::MainWindow(QWidget *parent)
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
 
-    mainLayout->setRowMinimumHeight(0, 36);
+    mainLayout->setRowMinimumHeight(0, TOPBARHEIGHT);
     mainLayout->setRowStretch(0, 0);
     mainLayout->setRowStretch(1, 1);
-    mainLayout->setRowMinimumHeight(2, 50);
+    mainLayout->setRowMinimumHeight(2, BOTTOMBARHEIGHT);
     mainLayout->setRowStretch(2, 0);
     mainLayout->setColumnMinimumWidth(0, 190);
     mainLayout->setColumnStretch(0, 0);
@@ -37,7 +56,10 @@ MainWindow::MainWindow(QWidget *parent)
 QWidget* MainWindow::makeTopBar() {
     QWidget *tempw = new QWidget();
     tempw->setObjectName("topBarWidget");
-    tempw->setStyleSheet("QWidget#topBarWidget { background-image: url(bgTopBar.png); background-repeat: repeat-x }");
+    QString style = "QWidget#topBarWidget { background-image: url(";
+    style += expath;
+    style += "images/bgTopBar.png); background-repeat: repeat-x }";
+    tempw->setStyleSheet(style);
 
     QGridLayout *temp = new QGridLayout(tempw);
     return tempw;
@@ -56,7 +78,10 @@ QWidget* MainWindow::makeLeftBar() {
 QWidget* MainWindow::makeBottomBar() {
     QWidget *tempw = new QWidget();
     tempw->setObjectName("bottomBarWidget");
-    tempw->setStyleSheet("QWidget#bottomBarWidget { background-color: #DDDDDD }");
+    QString style = "QWidget#bottomBarWidget { background-image: url(";
+    style += expath;
+    style += "images/bgBottomBar.png); background-repeat: repeat-x }";
+    tempw->setStyleSheet(style);
 
     QGridLayout *temp = new QGridLayout(tempw);
     //put widgets into layout here
@@ -72,6 +97,8 @@ QWidget* MainWindow::makeRightSide() {
     temp->setMargin(0);
 
     QTableWidget *tableWidget = new QTableWidget(12, 3);
+    tableWidget->setObjectName("libraryTableWidget");
+    tableWidget->setStyleSheet("QTableWidget#libraryTableWidget { border:none; }");
     tableWidget->setRowCount(10);
     tableWidget->setColumnCount(5);
 

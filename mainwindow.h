@@ -8,8 +8,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = 0);
+    MainWindow(char* path, QWidget *parent = 0);
     ~MainWindow();
+    void setPath(char* path);
 
 private:
     QWidget* centralWidget;
@@ -23,6 +24,8 @@ private:
     QWidget* makeBottomBar();
     QWidget* rightside;
     QWidget* makeRightSide();
+    //path of the executable
+    QString expath;
 };
 
 #endif // MAINWINDOW_H
