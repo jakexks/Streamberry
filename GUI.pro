@@ -16,11 +16,9 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h
 
 OTHER_FILES += \
-    images/bgBottomBar.png \
     images/btnMuteUp.png \
     images/btnShuffleUp.png \
     images/scrollHandle.png \
-    images/bgTopBar.png \
     images/btnNextUp.png \
     images/btnVideosUp.png \
     images/searchBar.png \

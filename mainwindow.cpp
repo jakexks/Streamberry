@@ -19,7 +19,7 @@ MainWindow::MainWindow(char* path, QWidget *parent)
         expath.resize(expath.lastIndexOf('/'));
     #endif
     #ifdef Q_OS_WIN
-        expath.resize(expath.lastIndexOf('\'));
+        expath.resize(expath.lastIndexOf('\\'));
     #endif
 
     expath += "/";
