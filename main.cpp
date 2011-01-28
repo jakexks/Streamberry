@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
    Database db = Database();
 
    beaconsender b(db);
-   beaconreceiver r;
+   beaconreceiver r(db);
    offlinechecker oc(r);
    b.start();
    r.start();

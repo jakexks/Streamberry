@@ -47,7 +47,7 @@ void beaconreceiver::checkID(QString id, QString dbTimeStamp)
         //whatever needs to be done when a new machine is seen
         //TODO: tell the db that the machine is online
         //get the timestamp of last update from db
-        if((compare(Database::lastUpdate(id), dbTimeStamp)) != 0)
+        if((QString::compare(db.lastUpdate(id), dbTimeStamp)) != 0)
         {
             //TODO: if receiver isn't busy then tell library receive to request their library
         }

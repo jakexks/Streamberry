@@ -1,6 +1,7 @@
 #include "networking.h"
 #include "sleeper.h"
 #include <QCryptographicHash>
+#include <QStringList>
 
 // Constructor, needs no arguments
 networking::networking()
@@ -79,5 +80,5 @@ void networking::send(QHostAddress host, quint16 port, QByteArray data)
 QString networking::parsebeacon(QString bc, int field)
 {
     QStringList split = bc.split('|', QString::SkipEmptyParts, Qt::CaseInsensitive);
-    return split[field];
+    return split.takeAt(field);
 }

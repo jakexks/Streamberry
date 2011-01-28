@@ -5,6 +5,8 @@ class librarySend
 {
 public:
     librarySend(int timestamp, QString, Database &datab);
+private:
+    Database &db;
 };
 
 #endif // LIBRARYSEND_H
