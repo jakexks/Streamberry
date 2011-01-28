@@ -2,7 +2,7 @@
 #include <QtGui>
 #include <QDebug>
 
-#define TOPBARHEIGHT 34
+#define TOPBARHEIGHT 33
 #define BOTTOMBARHEIGHT 83
 
 void MainWindow::setPath(char* path)
