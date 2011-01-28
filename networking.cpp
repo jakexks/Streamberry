@@ -75,8 +75,6 @@ void networking::send(QHostAddress host, quint16 port, QByteArray data)
     tcpClient.write(data);
 }
 
-enum networking::beaconFields { beaconHeader, uid, timestamp, ip };
-
 // Unique ID parser
 QString networking::parsebeacon(QString bc, int field)
 {
