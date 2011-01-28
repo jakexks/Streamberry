@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     bottombar = makeBottomBar();
     rightside = makeRightSide();
 
-    mainLayout->addWidget(topbar, 1, 0);
+    mainLayout->addWidget(topbar, 0, 1);
     mainLayout->addWidget(leftbar, 0, 0, 2, 1);
     mainLayout->addWidget(rightside, 1, 1);
     mainLayout->addWidget(bottombar, 2, 0, 1, 2);
@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
 QWidget* MainWindow::makeTopBar() {
     QWidget *tempw = new QWidget();
     tempw->setObjectName("topBarWidget");
-    tempw->setStyleSheet("QWidget#topBarWidget { background-color: #DDDDDD }");
+    tempw->setStyleSheet("QWidget#topBarWidget { background-image: url(bgTopBar.png); background-repeat: repeat-x }");
 
     QGridLayout *temp = new QGridLayout(tempw);
     return tempw;
