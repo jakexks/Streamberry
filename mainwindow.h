@@ -11,6 +11,7 @@ public:
     MainWindow(char* path, QWidget *parent = 0);
     ~MainWindow();
     void setPath(char* path);
+    QMenuBar* createMenuBar();
 
 private:
     QWidget* centralWidget;
@@ -26,6 +27,7 @@ private:
     QWidget* makeRightSide();
     //path of the executable
     QString expath;
+    QMenuBar* menubar;
 };
 
 #endif // MAINWINDOW_H

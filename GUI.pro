@@ -11,9 +11,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    sbsearchbar.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    sbsearchbar.h
 
 OTHER_FILES += \
     images/btnMuteUp.png \
