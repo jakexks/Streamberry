@@ -5,7 +5,7 @@
 #include <QDebug>
 
 // Constructor, needs no arguments
-beaconreceiver::beaconreceiver()
+beaconreceiver::beaconreceiver(Database &datab): db(datab)
 {
 }
 
@@ -30,18 +30,29 @@ void beaconreceiver::processPendingDatagrams()
         datagram.resize(udpSocket.pendingDatagramSize());
         udpSocket.readDatagram(datagram.data(), datagram.size());
         QString datastring = (QString) datagram.data();
-        qDebug() << datastring.split('|')[0];
         qDebug() << datagram.data();
+        QStringList beaconPart = datastring.split("|");
+        QString id = beaconPart.takeAt(1), dbTimeStamp = beaconPart.takeAt(2);
+        checkID(id, dbTimeStamp);
     }
 }
 
 // Checks whether a machine has been seen before, updates the timestamp if so and adds it to the list if not
-void beaconreceiver::checkID(QString id)
+// Also detects whether the library needs updating and alerts the library receiver if so
+void beaconreceiver::checkID(QString id, QString dbTimeStamp)
 {
     int stamp;
-    if ((stamp = onlineMachines.value(id)) != 0)
+    if ((stamp = onlineMachines.value(id)) == 0)
     {
         //whatever needs to be done when a new machine is seen
+        //TODO: tell the db that the machine is online
+        //get the timestamp of last update from db
+        if((compare(Database::lastUpdate(id), dbTimeStamp)) != 0)
+        {
+            //TODO: if receiver isn't busy then tell library receive to request their library
+        }
+
     }
+    //need to check if timestamp is different and tell library receiver to request library if so
     onlineMachines.insert(id, Utilities::getCurrentTimestamp());
 }

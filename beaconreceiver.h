@@ -8,7 +8,7 @@
 class beaconreceiver : public QThread
 {
 public:
-    beaconreceiver();
+    beaconreceiver(Database &datab);
     // Sets up the hash table for storing connected machines, the unique ID of the machine is used as the hash key and a timestamp of when the last beacon was received is the data
     QHash<QString, int> onlineMachines;
 protected:
@@ -17,7 +17,7 @@ private:
     QUdpSocket udpSocket;
     void receive();
     void processPendingDatagrams();
-    void checkID(QString);
+    void checkID(QString, QString);
 };
 
 #endif // BEACONRECEIVER_H
