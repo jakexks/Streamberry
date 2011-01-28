@@ -12,12 +12,16 @@ beaconreceiver::beaconreceiver(Database &datab): db(datab)
 // Continually processes received datagrams by calling processPendingDatagrams
 void beaconreceiver::run()
 {
-    qDebug() << udpSocket.bind(QHostAddress::LocalHost, 45454);
+    qDebug() << udpSocket.bind(QHostAddress::Broadcast, 45454, QUdpSocket::ShareAddress);
     while (true)
     {
         // Beacon structure is "STREAMBEACON|<unique ID>|<timestamp>|<ip address>
         if(udpSocket.hasPendingDatagrams())
+        {
+            qDebug() << "HERE";
             processPendingDatagrams();
+        }
+
     }
 }
 
