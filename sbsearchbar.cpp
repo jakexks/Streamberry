@@ -1,10 +1,8 @@
 #include "sbsearchbar.h"
 #include <QPainter>
 #include <QGridLayout>
-#include <QLabel>
-#include <QLineEdit>
+#include <QtGui>
 #include <QMacStyle>
-#include <QPushButton>
 #include <QDebug>
 #include <QString>
 
@@ -14,7 +12,10 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
     expath = path;
     QGridLayout *layout = new QGridLayout(this);
     QImage icon(path + "images/magnifying.png");
-    QLabel* icondisplay = new QLabel();
+    QPushButton* icondisplay = new QPushButton();
+    icondisplay->setStyleSheet("border:none;");
+    icondisplay->setFlat(true);
+    icondisplay->setFixedSize(icon.size());
     cross = new QPushButton();
     textbox = new QLineEdit();
 
@@ -30,7 +31,8 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
     layout->setColumnStretch(1,1);
     layout->setColumnStretch(2,0);
 
-    icondisplay->setPixmap(QPixmap::fromImage(icon));
+    icondisplay->setIcon(QIcon(QPixmap::fromImage(icon)));
+    //icondisplay->setPixmap(QPixmap::fromImage(icon));
     textbox->setPlaceholderText("Search...");
     textbox->setModified(true);
     textbox->setFrame(false);
