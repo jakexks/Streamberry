@@ -73,7 +73,7 @@ QWidget* MainWindow::makeTopBar() {
     SBSearchBar *search = new SBSearchBar(expath);
     //Split it into three sections
     outer->addLayout(innerleft, 1, 0);
-    outer->addLayout(innermiddle, 1, 1);
+    outer->addLayout(innermiddle, 0, 1, 3, 1);
     outer->addLayout(innerright, 1, 2);
     //set which rows and columns in outer layout are stretchy
     outer->setRowStretch(0, 1);
@@ -90,7 +90,38 @@ QWidget* MainWindow::makeTopBar() {
     //Set measurements of spacer columns
     innerleft->setColumnMinimumWidth(0, 15);
     innerleft->setColumnMinimumWidth(2, 10);
+    innermiddle->setColumnMinimumWidth(0, 40);
+    innermiddle->setColumnMinimumWidth(3, 40);
     innerright->setColumnMinimumWidth(1, 35);
+    //style the buttons
+    style = "background-image: url(";
+    style += expath;
+    style += "images/btnBackUp.png); background-repeat: no-repeat; border:none;";
+    back->setStyleSheet(style);
+    back->setMaximumSize(35, 29);
+    back->setMinimumSize(35, 29);
+    back->setFlat(true);
+    style = "background-image: url(";
+    style += expath;
+    style += "images/btnForwardUp.png); background-repeat: no-repeat; border:none;";
+    forward->setStyleSheet(style);
+    forward->setMaximumSize(35, 29);
+    forward->setMinimumSize(35, 29);
+    forward->setFlat(true);
+    style = "background-image: url(";
+    style += expath;
+    style += "images/btnMusicUp.png); background-repeat: no-repeat; border:none;";
+    music->setStyleSheet(style);
+    music->setMaximumSize(106, 33);
+    music->setMinimumSize(106, 33);
+    music->setFlat(true);
+    style = "background-image: url(";
+    style += expath;
+    style += "images/btnVideosUp.png); background-repeat: no-repeat; border:none;";
+    videos->setStyleSheet(style);
+    videos->setMaximumSize(114, 33);
+    videos->setMinimumSize(114, 33);
+    videos->setFlat(true);
     //Add buttons to each section
     innerleft->addWidget(back, 0, 1);
     innerleft->addWidget(forward, 0, 3);
@@ -152,7 +183,7 @@ QMenuBar* MainWindow::createMenuBar()
     QMenu* view = menu->addMenu("View");
     QMenu* controls = menu->addMenu("View");
     QMenu* window = menu->addMenu("Window");
-    QMenu* Help = menu->addMenu("Help");
+    QMenu* help = menu->addMenu("Help");
     return menu;
 }
 
