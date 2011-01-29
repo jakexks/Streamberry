@@ -152,10 +152,10 @@ QWidget* MainWindow::makeBottomBar() {
     tempw->setStyleSheet(style);
 
     QGridLayout *temp = new QGridLayout(tempw);
-    QHBoxLayout *playbackbox = new QHBoxLayout();
-    playbackbox->setContentsMargins(15, 0, 15, 0);
     temp->setSpacing(0);
     temp->setMargin(5);
+    QHBoxLayout *playbackbox = new QHBoxLayout();
+    playbackbox->setContentsMargins(15, 0, 15, 0);
     QSlider *playback = new QSlider(Qt::Horizontal);
     playbackbox->addWidget(playback);
     temp->addLayout(playbackbox, 0, 0, Qt::AlignHCenter);
