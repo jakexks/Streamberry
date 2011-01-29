@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include <QtGui>
 #include <QDebug>
+#include <QGridLayout>
+#include <QHBoxLayout>
 #include "sbsearchbar.h"
 
 #define TOPBARHEIGHT 33
@@ -150,7 +152,14 @@ QWidget* MainWindow::makeBottomBar() {
     tempw->setStyleSheet(style);
 
     QGridLayout *temp = new QGridLayout(tempw);
-    //put widgets into layout here
+    QHBoxLayout *playbackbox = new QHBoxLayout();
+    playbackbox->setContentsMargins(15, 0, 15, 0);
+    temp->setSpacing(0);
+    temp->setMargin(5);
+    QSlider *playback = new QSlider(Qt::Horizontal);
+    playbackbox->addWidget(playback);
+    temp->addLayout(playbackbox, 0, 0, Qt::AlignHCenter);
+
     return tempw;
 }
 
