@@ -61,9 +61,11 @@ QWidget* MainWindow::makeTopBar() {
     QGridLayout *innerleft = new QGridLayout();
     innerleft->setMargin(0);
     innerleft->setSpacing(0);
+    innerleft->setContentsMargins(0,2,0,0);
     QGridLayout *innermiddle = new QGridLayout();
     innermiddle->setMargin(0);
     innermiddle->setSpacing(0);
+    innermiddle->setContentsMargins(0,2,0,0);
     QGridLayout *innerright = new QGridLayout();
     innerright->setMargin(0);
     innerright->setSpacing(0);
@@ -91,10 +93,10 @@ QWidget* MainWindow::makeTopBar() {
     innermiddle->setColumnStretch(3, 1);
     //Set measurements of spacer columns
     innerleft->setColumnMinimumWidth(0, 15);
-    innerleft->setColumnMinimumWidth(2, 10);
+    innerleft->setColumnMinimumWidth(2, 5);
     innermiddle->setColumnMinimumWidth(0, 40);
     innermiddle->setColumnMinimumWidth(3, 40);
-    innerright->setColumnMinimumWidth(1, 35);
+    innerright->setColumnMinimumWidth(1, 15);
     //style the buttons
     style = "background-image: url(";
     style += expath;
