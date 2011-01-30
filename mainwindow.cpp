@@ -3,9 +3,10 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include "playlists.h"
 #include "sbsearchbar.h"
 
-#define TOPBARHEIGHT 33
+#define TOPBARHEIGHT 36 //changed from 33 to match the flat better (jim) (can be changed back if we like this version more)
 #define BOTTOMBARHEIGHT 83
 
 MainWindow::MainWindow(char* path, QWidget *parent)
@@ -33,8 +34,9 @@ MainWindow::MainWindow(char* path, QWidget *parent)
     mainLayout->setColumnStretch(0, 0);
     mainLayout->setColumnStretch(1, 1);
 
+    playlists* sidebar = new playlists();
     topbar = makeTopBar();
-    leftbar = makeLeftBar();
+    leftbar = sidebar->makesidebar(expath);
     bottombar = makeBottomBar();
     rightside = makeRightSide();
 

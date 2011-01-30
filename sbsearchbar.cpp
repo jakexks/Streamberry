@@ -37,7 +37,10 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
     textbox->setModified(true);
     textbox->setFrame(false);
     textbox->setTextMargins(0,0,0,0);
-    QMacStyle::setFocusRectPolicy(textbox, QMacStyle::FocusDisabled);
+    #ifndef Q_OS_MAC
+      //QMacStyle::setFocusRectPolicy(textbox, QMacStyle::FocusDisabled);
+    #endif
+
 
     QString temp = "background-image:url(";
     temp += path;

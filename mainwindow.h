@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QtGui>
+#include "playlists.h"
 
 class MainWindow : public QMainWindow
 {
@@ -19,6 +20,7 @@ private:
     //properties and method for each section of screen
     QWidget* topbar;
     QWidget* makeTopBar();
+    playlists* sidebar;
     QWidget* leftbar;
     QWidget* makeLeftBar();
     QWidget* bottombar;
