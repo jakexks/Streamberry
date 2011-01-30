@@ -15,6 +15,7 @@
 #include "beaconsender.h"
 #include "beaconreceiver.h"
 #include "offlinechecker.h"
+#include "importlib.h"
 
 using namespace std;
 
@@ -41,12 +42,17 @@ int main(int argc, char *argv[])
        //scanner.build_new();
 
 
-
+       importLib itunes("");//file name here.
+       QList<QString> allFiles = itunes.libFileList();
    }
    catch(SBException e)
    {
        qDebug() << e.getException();
    }
+
+
+
+
 //    //testing storing settings
 //    try
 //    {

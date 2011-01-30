@@ -1,6 +1,7 @@
 #ifndef LIBRARYSEND_H
 #define LIBRARYSEND_H
 #include "database.h"
+
 class librarySend
 {
 public:

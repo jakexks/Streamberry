@@ -27,8 +27,10 @@ QString SBException::getException()
     {
         case GENERIC:
             s += "Generic";
+            break;
         case DB:
             s += "Database";
+            break;
     }
 
     s += " exception.";
