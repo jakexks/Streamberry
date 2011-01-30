@@ -14,7 +14,6 @@ void offlinechecker::detectOfflineMachines()
         if(i.value() - Utilities::getCurrentTimestamp() > 10)
         {
             //TODO: tell db machine is offline
-            //TODO: other stuff when a machine goes offline
             qDebug() << i.key() + "is offline";
             //remove the machine's ID from the hashtable of online machines
             rec.onlineMachines.remove(i.key());
