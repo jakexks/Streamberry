@@ -25,7 +25,7 @@ void beaconreceiver::run()
     }
 }
 
-// INCOMPLETE
+// Takes an unread datagram from the updSocket and passes the unique ID and the database timestamp to checkID
 void beaconreceiver::processPendingDatagrams()
 {
     while (udpSocket.hasPendingDatagrams())
@@ -48,15 +48,13 @@ void beaconreceiver::checkID(QString id, QString dbTimeStamp)
     int stamp;
     if ((stamp = onlineMachines.value(id)) == 0)
     {
-        //whatever needs to be done when a new machine is seen
         //TODO: tell the db that the machine is online
-        //get the timestamp of last update from db
-        if((QString::compare(db.lastUpdate(id), dbTimeStamp)) != 0)
-        {
-            //TODO: if receiver isn't busy then tell library receive to request their library
-        }
 
     }
-    //need to check if timestamp is different and tell library receiver to request library if so
+    // Checks whether the receiving machine has the most recent version of the senders' library and requests an update if not
+    if ((QString::compare(db.lastUpdate(id), dbTimeStamp)) != 0)
+    {
+        //TODO: if receiver isn't busy then tell library receive to request their library
+    }
     onlineMachines.insert(id, Utilities::getCurrentTimestamp());
 }
