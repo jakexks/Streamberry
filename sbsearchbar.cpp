@@ -37,8 +37,8 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
     textbox->setModified(true);
     textbox->setFrame(false);
     textbox->setTextMargins(0,0,0,0);
-    #ifndef Q_OS_MAC
-      //QMacStyle::setFocusRectPolicy(textbox, QMacStyle::FocusDisabled);
+    #ifdef Q_OS_MAC
+      QMacStyle::setFocusRectPolicy(textbox, QMacStyle::FocusDisabled);
     #endif
 
 
