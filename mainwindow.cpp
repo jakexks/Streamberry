@@ -9,6 +9,7 @@
 #include "sbsearchbar.h"
 #include "librarygenerator.h"
 #include "albuminfo.h"
+#include "albumpanel.h"
 
 //changed from 33 to match the flat better (jim) (can be changed back if we like this version more)
 #define TOPBARHEIGHT 36
@@ -273,23 +274,27 @@ QWidget* MainWindow::makeRightSide() {
 
     // librarygenerator lg; This was horribly broken and reverted...
     albuminfo ai;
-    QTableWidget *tableWidget = new QTableWidget(12, 3);
-    tableWidget->setObjectName("libraryTableWidget");
-    tableWidget->setGridStyle(Qt::NoPen);
-    tableWidget->verticalHeader()->setVisible(false);
-    tableWidget->setRowCount(ai.getTracks().length());
-    tableWidget->setColumnCount(3);
-    tableWidget->setSpan(0,0,ai.getTracks().length(),1);
-    tableWidget->setItem(0, 1, new QTableWidgetItem(ai.getTitle()));
-    tableWidget->setItem(1, 1, new QTableWidgetItem(ai.getArtist()));
-    tableWidget->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
+    QTableWidget *tablewidget = new QTableWidget(12, 3);
+    tablewidget->setObjectName("libraryTableWidget");
+    tablewidget->setGridStyle(Qt::NoPen);
+    tablewidget->verticalHeader()->setVisible(false);
+    tablewidget->setRowCount(ai.getTracks().length());
+    tablewidget->setColumnCount(3);
+    tablewidget->setSpan(0,0,ai.getTracks().length(),1);
+    tablewidget->setItem(0, 1, new QTableWidgetItem(ai.getTitle()));
+    tablewidget->setItem(1, 1, new QTableWidgetItem(ai.getArtist()));
+    tablewidget->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
 
     QTableWidgetItem *headertemp = new QTableWidgetItem("Title", 0);
-    tableWidget->setHorizontalHeaderItem(3, headertemp);
+    tablewidget->setHorizontalHeaderItem(3, headertemp);
     headertemp = new QTableWidgetItem("", 0);
-    tableWidget->setHorizontalHeaderItem(1, headertemp);
+    tablewidget->setHorizontalHeaderItem(1, headertemp);
     headertemp = new QTableWidgetItem("", 0);
-    tableWidget->setHorizontalHeaderItem(0, headertemp);
+    tablewidget->setHorizontalHeaderItem(0, headertemp);
+
+    QTableWidgetItem *albuminfo = new QTableWidgetItem();
+    AlbumPanel *albumpanel = new AlbumPanel(albuminfo);
+    tablewidget->setItem(0, 0, albuminfo);
 
     for (int i = 1; i <= ai.getTracks().length(); i++)
     {
@@ -299,19 +304,19 @@ QWidget* MainWindow::makeRightSide() {
         tableitem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         if(i%2 == 1)
             tableitem->setBackgroundColor(QColor("#DCE4E8"));
-        tableWidget->setItem(i - 1, 1, tableitem);
+        tablewidget->setItem(i - 1, 1, tableitem);
 
         tableitem = new QTableWidgetItem(ai.getTracks().takeAt(i - 1));
         if(i%2 == 1)
             tableitem->setBackgroundColor(QColor("#DCE4E8"));
-        tableWidget->setItem(i - 1, 2, tableitem);
+        tablewidget->setItem(i - 1, 2, tableitem);
     }
 
     /*QTableWidgetItem *newItem = new QTableWidgetItem(expath);
     tableWidget->setItem(5, 2, newItem);
     */
-    tableWidget->verticalHeader()->setVisible(FALSE);;
-    temp->addWidget(tableWidget);
+    tablewidget->verticalHeader()->setVisible(FALSE);;
+    temp->addWidget(tablewidget);
 
     return tempw;
 }
