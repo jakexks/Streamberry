@@ -42,8 +42,8 @@ int main(int argc, char *argv[])
        //scanner.build_new();
 
 
-       importLib itunes("");//file name here.
-       QList<QString> allFiles = itunes.libFileList();
+       //importLib itunes("");//file name here.
+       //QList<QString> allFiles = itunes.libFileList();
    }
    catch(SBException e)
    {
