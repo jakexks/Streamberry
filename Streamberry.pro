@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network sql
+QT += core gui network sql
 
 LIBS += -plugin -sql -sqlite
 
@@ -17,10 +17,19 @@ SOURCES += main.cpp\
         database.cpp\
         utilities.cpp\
         sbexception.cpp\
-        crossplatform.cpp
+        crossplatform.cpp\
+        sbsearchbar.cpp \
+        playlists.cpp \
+        albumpanel.cpp
 
-HEADERS  += mainwindow.h\
-            database.h\
-            utilities.h\
-            sbexception.h\
-            crossplatform.h
+HEADERS += mainwindow.h\
+           database.h\
+           utilities.h\
+           sbexception.h\
+           crossplatform.h\
+           sbsearchbar.h\
+           playlists.h\
+           albumpanel.h \
+    sbsearchbar.h \
+    playlists.h \
+    albumpanel.h
