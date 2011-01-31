@@ -4,13 +4,23 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network sql
+
+LIBS += -plugin -sql -sqlite
 
 TARGET = Streamberry
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp\
+        database.cpp\
+        utilities.cpp\
+        sbexception.cpp\
+        crossplatform.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h\
+            database.h\
+            utilities.h\
+            sbexception.h\
+            crossplatform.h
