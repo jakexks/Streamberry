@@ -9,10 +9,11 @@ class AlbumPanel : public QWidget
 {
     Q_OBJECT
 public:
-    explicit AlbumPanel(QWidget *parent = 0);
+    explicit AlbumPanel(QString expath, QWidget *parent = 0);
     QWidget *makeAlbumArt();
 private:
     QGridLayout* grid;
+    QString expath;
 signals:
 
 public slots:

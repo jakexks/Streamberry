@@ -292,9 +292,8 @@ QWidget* MainWindow::makeRightSide() {
     headertemp = new QTableWidgetItem("", 0);
     tablewidget->setHorizontalHeaderItem(0, headertemp);
 
-    QTableWidgetItem *albuminfo = new QTableWidgetItem();
-    AlbumPanel *albumpanel = new AlbumPanel(albuminfo);
-    tablewidget->setItem(0, 0, albuminfo);
+    AlbumPanel *albumpanel = new AlbumPanel(expath);
+    tablewidget->setCellWidget(0, 0, albumpanel);
 
     for (int i = 1; i <= ai.getTracks().length(); i++)
     {
