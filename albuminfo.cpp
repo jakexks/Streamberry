@@ -18,7 +18,7 @@ albuminfo::albuminfo()
     tracks += "Crumb Begging Baghead";
     tracks += "Unstookie Titled";
     tracks += "French Dog Blues";
-    tracks += "There SHe Goes";
+    tracks += "There She Goes";
     tracks += "Baddies Boogie";
     tracks += "Deft Left Hand";
     tracks += "Lost Art of Murder";
