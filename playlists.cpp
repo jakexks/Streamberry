@@ -75,7 +75,7 @@ QPushButton* Playlists::makePreviewBtn()
   temp->setObjectName("PreviewBtn");
   QString style = "background-image: url(";
   style += expath;
-  style += "images/BtnPreview.png); background-repeat: no-repeat; border:none;";
+  style += "images/btnPreview.png); background-repeat: no-repeat; border:none;";
   temp->setStyleSheet(style);
   temp->setMaximumSize(190, 43);
   temp->setMinimumSize(190, 43);
