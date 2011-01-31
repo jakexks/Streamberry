@@ -23,7 +23,7 @@ private:
 
     QWidget* playlistbar;
     QWidget* previewbar;
-    QWidget* makePlaylistBtn();
+    QWidget* makePlaylistBar();
 
     QPushButton* previewbtn;
     QPushButton* makePreviewBtn();
