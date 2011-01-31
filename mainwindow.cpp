@@ -282,23 +282,21 @@ QWidget* MainWindow::makeRightSide() {
     tableWidget->setSpan(0,0,ai.getTracks().length(),1);
     tableWidget->setItem(0, 1, new QTableWidgetItem(ai.getTitle()));
     tableWidget->setItem(1, 1, new QTableWidgetItem(ai.getArtist()));
-    tableWidget->horizontalHeader()->setResizeMode(2, QHeaderView::ResizeToContents);
+    tableWidget->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
 
     QTableWidgetItem *headertemp = new QTableWidgetItem("Title", 0);
     tableWidget->setHorizontalHeaderItem(3, headertemp);
     headertemp = new QTableWidgetItem("", 0);
-    tableWidget->setHorizontalHeaderItem(2, headertemp);
+    tableWidget->setHorizontalHeaderItem(1, headertemp);
+    headertemp = new QTableWidgetItem("", 0);
+    tableWidget->setHorizontalHeaderItem(0, headertemp);
 
     for (int i = 1; i <= ai.getTracks().length(); i++)
     {
         QString track;
         track.setNum(i);
         QTableWidgetItem *tableitem = new QTableWidgetItem(track, 0);
-        if(i%2 == 1)
-            tableitem->setBackgroundColor(QColor("#DCE4E8"));
-        tableWidget->setItem(i - 1, 2, tableitem);
-
-        tableitem = new QTableWidgetItem(i);
+        tableitem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         if(i%2 == 1)
             tableitem->setBackgroundColor(QColor("#DCE4E8"));
         tableWidget->setItem(i - 1, 1, tableitem);

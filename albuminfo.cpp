@@ -2,10 +2,6 @@
 #include <QString>
 #include <QList>
 
-QString albumTitle;
-QString albumArtist;
-QList<QString> tracks;
-
 albuminfo::albuminfo()
 {
     // Sample data...
@@ -18,7 +14,7 @@ albuminfo::albuminfo()
     tracks += "Crumb Begging Baghead";
     tracks += "Unstookie Titled";
     tracks += "French Dog Blues";
-    tracks += "There SHe Goes";
+    tracks += "There She Goes";
     tracks += "Baddies Boogiex";
     tracks += "Deft Left Hand";
     tracks += "Lost Art of Murder";
