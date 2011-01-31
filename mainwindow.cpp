@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include "playlists.h"
 #include "sbsearchbar.h"
+#include "librarygenerator.h"
 
 //changed from 33 to match the flat better (jim) (can be changed back if we like this version more)
 #define TOPBARHEIGHT 36
@@ -267,6 +268,7 @@ QWidget* MainWindow::makeRightSide() {
     QGridLayout *temp = new QGridLayout(tempw);
     temp->setMargin(0);
 
+    librarygenerator lg;
     QTableWidget *tableWidget = new QTableWidget(12, 3);
     tableWidget->setObjectName("libraryTableWidget");
     tableWidget->setStyleSheet("QTableWidget#libraryTableWidget { border:none; }");
