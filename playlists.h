@@ -3,12 +3,12 @@
 
 #include <QtGui>
 
-class playlists : public QWidget
+class Playlists : public QWidget
 {
     Q_OBJECT
 
 public:
-    playlists();
+    Playlists();
     QWidget* makesidebar(QString path);
     void setPath(char* path);
 

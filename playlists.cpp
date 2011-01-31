@@ -19,17 +19,17 @@
     bottombar = makeBottomBar();
     rightside = makeRightSide();
  */
-void playlists::setPath(char* path)
+void Playlists::setPath(char* path)
 {
     expath = path;
 }
 
-playlists::playlists()
+Playlists::Playlists()
 {
    SideWidget = new QWidget();
 }
 
-QWidget* playlists::makesidebar(QString path)
+QWidget* Playlists::makesidebar(QString path)
 {
     expath = path;
     SideBarLayout = new QGridLayout(SideWidget)                    ;
@@ -69,7 +69,7 @@ QWidget* playlists::makesidebar(QString path)
 }*/
 
 
-QPushButton* playlists::makePreviewBtn()
+QPushButton* Playlists::makePreviewBtn()
 {
   QPushButton* temp = new QPushButton();
   temp->setObjectName("PreviewBtn");
@@ -83,7 +83,7 @@ QPushButton* playlists::makePreviewBtn()
   return temp;
 }
 
-QPushButton* playlists::makePlaylistBtn()
+QPushButton* Playlists::makePlaylistBtn()
 {
   QPushButton* temp = new QPushButton();
   temp->setObjectName("PlaylistBtn");
@@ -97,7 +97,7 @@ QPushButton* playlists::makePlaylistBtn()
   return temp;
 }
 
-QWidget* playlists::makePlaylistBar()
+QWidget* Playlists::makePlaylistBar()
 {
   QWidget *tempw = new QWidget();
   tempw->setObjectName("PlaylistBarWidget");

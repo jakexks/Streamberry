@@ -6,8 +6,9 @@
 #include "playlists.h"
 #include "sbsearchbar.h"
 
-#define TOPBARHEIGHT 36 //changed from 33 to match the flat better (jim) (can be changed back if we like this version more)
-#define BOTTOMBARHEIGHT 83
+//changed from 33 to match the flat better (jim) (can be changed back if we like this version more)
+#define TOPBARHEIGHT 36
+#define BOTTOMBARHEIGHT 90
 
 MainWindow::MainWindow(char* path, QWidget *parent)
     : QMainWindow(parent)
@@ -34,7 +35,7 @@ MainWindow::MainWindow(char* path, QWidget *parent)
     mainLayout->setColumnStretch(0, 0);
     mainLayout->setColumnStretch(1, 1);
 
-    playlists* sidebar = new playlists();
+    Playlists* sidebar = new Playlists();
     topbar = makeTopBar();
     leftbar = sidebar->makesidebar(expath);
     bottombar = makeBottomBar();
@@ -172,23 +173,26 @@ QWidget* MainWindow::makeBottomBar() {
     QHBoxLayout* right = new QHBoxLayout();
     left->setSpacing(35);
     left->setMargin(0);
-    left->setContentsMargins(0,0,35,0);
+    left->setContentsMargins(40,0,0,0);
     middle->setSpacing(0);
-    middle->setContentsMargins(0,0,0,0);
+    middle->setContentsMargins(35,0,35,0);
     middle->setMargin(0);
     right->setSpacing(10);
-    right->setContentsMargins(200,0,0,0);
     right->setMargin(0);
     controls->addLayout(left, 0, 1, Qt::AlignRight | Qt::AlignVCenter);
-    controls->addLayout(middle, 0, 2, Qt::AlignCenter | Qt::AlignVCenter);
-    controls->addLayout(right, 0, 3, Qt::AlignLeft | Qt::AlignVCenter);
+    controls->addLayout(middle, 0, 3, Qt::AlignCenter | Qt::AlignVCenter);
+    controls->addLayout(right, 0, 5, Qt::AlignLeft | Qt::AlignVCenter);
     controls->setSpacing(0);
     controls->setMargin(0);
     controls->setColumnStretch(0, 1);
     controls->setColumnStretch(1, 0);
     controls->setColumnStretch(2, 0);
     controls->setColumnStretch(3, 0);
-    controls->setColumnStretch(4, 1);
+    controls->setColumnStretch(4, 0);
+    controls->setColumnStretch(5, 0);
+    controls->setColumnStretch(6, 1);
+    controls->setColumnMinimumWidth(2, 35);
+    controls->setColumnMinimumWidth(4, 35);
 
     QPushButton *repeat = new QPushButton();
     style = "background-image: url(";
@@ -250,6 +254,8 @@ QWidget* MainWindow::makeBottomBar() {
 
     temp->addLayout(controls, 1, 0, Qt::AlignHCenter | Qt::AlignVCenter);
     temp->addLayout(playbackbox, 0, 0, Qt::AlignHCenter | Qt::AlignTop);
+    temp->setRowMinimumHeight(2, 5);
+    temp->setRowStretch(0, 0);
     return tempw;
 }
 

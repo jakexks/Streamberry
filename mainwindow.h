@@ -20,7 +20,7 @@ private:
     //properties and method for each section of screen
     QWidget* topbar;
     QWidget* makeTopBar();
-    playlists* sidebar;
+    Playlists* sidebar;
     QWidget* leftbar;
     QWidget* makeLeftBar();
     QWidget* bottombar;

@@ -11,7 +11,7 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
 {
     expath = path;
     QGridLayout *layout = new QGridLayout(this);
-    QImage icon(path + "images/magnifying.png");
+    QImage icon(path + "images/searchBarMagnifying.png");
     QPushButton* icondisplay = new QPushButton();
     icondisplay->setStyleSheet("border:none;");
     icondisplay->setFlat(true);
