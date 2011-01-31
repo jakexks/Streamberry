@@ -1,6 +1,7 @@
 #include "albumpanel.h"
 #include <QGridLayout>
 #include <QLabel>
+#include <albuminfo.h>
 
 AlbumPanel::AlbumPanel(QWidget *parent) :
     QWidget(parent)
@@ -10,7 +11,9 @@ AlbumPanel::AlbumPanel(QWidget *parent) :
     grid->setMargin(0);
     QWidget *art = makeAlbumArt();
     grid->addWidget(art,0,0);
-    grid->addWidget(new QLabel);
+    albuminfo ai;
+    grid->addWidget(new QLabel(ai.getTitle()),1,0);
+    grid->addWidget(new QLabel(ai.getArtist()),2,0);
 }
 
 QWidget *AlbumPanel::makeAlbumArt() {
