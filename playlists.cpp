@@ -26,34 +26,34 @@ void Playlists::setPath(char* path)
 
 Playlists::Playlists()
 {
-   SideWidget = new QWidget();
+   sidewidget = new QWidget();
 }
 
-QWidget* Playlists::makesidebar(QString path)
+QWidget* Playlists::makeSidebar(QString path)
 {
     expath = path;
-    SideBarLayout = new QGridLayout(SideWidget)                    ;
-    SideBarLayout->setRowMinimumHeight(0, TOPBARHEIGHT);
-    SideBarLayout->setRowStretch(0, 0);
-    SideBarLayout->setRowStretch(1, 2);
-    SideBarLayout->setRowStretch(2, 0);
-    SideBarLayout->setRowStretch(3, 0);
-    SideBarLayout->setRowMinimumHeight(2, BOTTOMBARHEIGHT);
-    SideBarLayout->setRowMinimumHeight(3, 140);
-    SideBarLayout->setColumnMinimumWidth(0, 140);
-    SideBarLayout->setMargin(0);
-    SideBarLayout->setSpacing(0);
+    sidebarlayout = new QGridLayout(sidewidget)                    ;
+    sidebarlayout->setRowMinimumHeight(0, TOPBARHEIGHT);
+    sidebarlayout->setRowStretch(0, 0);
+    sidebarlayout->setRowStretch(1, 2);
+    sidebarlayout->setRowStretch(2, 0);
+    sidebarlayout->setRowStretch(3, 0);
+    sidebarlayout->setRowMinimumHeight(2, BOTTOMBARHEIGHT);
+    sidebarlayout->setRowMinimumHeight(3, 140);
+    sidebarlayout->setColumnMinimumWidth(0, 140);
+    sidebarlayout->setMargin(0);
+    sidebarlayout->setSpacing(0);
 
-    PlaylistBtn = makePlaylistBtn();
-    PlaylistBar = makePlaylistBar();
-    PreviewBar = makePlaylistBar();
-    PreviewBtn = makePreviewBtn();
+    playlistbtn = makePlaylistBtn();
+    playlistbar = makePlaylistBar();
+    previewbar = makePlaylistBar();
+    previewbtn = makePreviewBtn();
 
-    SideBarLayout->addWidget(PlaylistBtn, 0, 0);
-    SideBarLayout->addWidget(PlaylistBar, 1, 0);
-    SideBarLayout->addWidget(PreviewBtn, 2, 0);
-    SideBarLayout->addWidget(PreviewBar, 3, 0);
-    return SideWidget;
+    sidebarlayout->addWidget(playlistbtn, 0, 0);
+    sidebarlayout->addWidget(playlistbar, 1, 0);
+    sidebarlayout->addWidget(previewbtn, 2, 0);
+    sidebarlayout->addWidget(previewbar, 3, 0);
+    return sidewidget;
 }
 
 /*QWidget* playlists::makePlaylistsTitle()

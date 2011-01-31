@@ -9,23 +9,23 @@ class Playlists : public QWidget
 
 public:
     Playlists();
-    QWidget* makesidebar(QString path);
+    QWidget* makeSidebar(QString path);
     void setPath(char* path);
 
 private:
 
-    QWidget* SideWidget;
-    QGridLayout* SideBarLayout;
+    QWidget* sidewidget;
+    QGridLayout* sidebarlayout;
     //properties and method for each section of screen
 
-    QPushButton* PlaylistBtn;
+    QPushButton* playlistbtn;
     QPushButton* makePlaylistBtn();
 
-    QWidget* PlaylistBar;
-    QWidget* PreviewBar;
+    QWidget* playlistbar;
+    QWidget* previewbar;
     QWidget* makePlaylistBar();
 
-    QPushButton* PreviewBtn;
+    QPushButton* previewbtn;
     QPushButton* makePreviewBtn();
 
     QString expath;
