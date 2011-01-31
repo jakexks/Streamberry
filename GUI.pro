@@ -15,12 +15,14 @@ SOURCES += main.cpp\
     sbsearchbar.cpp \
     playlists.cpp \
     albuminfo.cpp \
-    librarygenerator.cpp
+    librarygenerator.cpp \
+    albumpanel.cpp
 
 HEADERS  += mainwindow.h \
     sbsearchbar.h \
     playlists.h \
     albuminfo.h \
-    librarygenerator.h
+    librarygenerator.h \
+    albumpanel.h
 
 FORMS +=

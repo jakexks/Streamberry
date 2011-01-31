@@ -305,6 +305,7 @@ QWidget* MainWindow::makeRightSide() {
     /*QTableWidgetItem *newItem = new QTableWidgetItem(expath);
     tableWidget->setItem(5, 2, newItem);
     */
+    tableWidget->verticalHeader()->setVisible(FALSE);;
     temp->addWidget(tableWidget);
 
     return tempw;
