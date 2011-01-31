@@ -15,7 +15,7 @@ albuminfo::albuminfo()
     tracks += "Unstookie Titled";
     tracks += "French Dog Blues";
     tracks += "There She Goes";
-    tracks += "Baddies Boogiex";
+    tracks += "Baddies Boogie";
     tracks += "Deft Left Hand";
     tracks += "Lost Art of Murder";
 }
