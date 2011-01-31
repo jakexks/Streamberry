@@ -4,6 +4,7 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QColor>
+#include <QString>
 #include "playlists.h"
 #include "sbsearchbar.h"
 #include "librarygenerator.h"
@@ -291,7 +292,14 @@ QWidget* MainWindow::makeRightSide() {
 
     for (int i = 1; i <= ai.getTracks().length(); i++)
     {
-        QTableWidgetItem *tableitem = new QTableWidgetItem(i);
+        QString track;
+        track.setNum(i);
+        QTableWidgetItem *tableitem = new QTableWidgetItem(track, 0);
+        if(i%2 == 1)
+            tableitem->setBackgroundColor(QColor("#DCE4E8"));
+        tableWidget->setItem(i - 1, 2, tableitem);
+
+        tableitem = new QTableWidgetItem(i);
         if(i%2 == 1)
             tableitem->setBackgroundColor(QColor("#DCE4E8"));
         tableWidget->setItem(i - 1, 2, tableitem);
