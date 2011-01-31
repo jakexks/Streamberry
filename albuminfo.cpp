@@ -2,10 +2,6 @@
 #include <QString>
 #include <QList>
 
-QString albumTitle;
-QString albumArtist;
-QList<QString> tracks;
-
 albuminfo::albuminfo()
 {
     // Sample data...

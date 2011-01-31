@@ -9,6 +9,10 @@ public:
     QList<QString> getTracks();
     QString getArtist();
     QString getTitle();
+private:
+    QString albumTitle;
+    QString albumArtist;
+    QList<QString> tracks;
 };
 
 #endif // ALBUMINFO_H

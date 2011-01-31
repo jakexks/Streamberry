@@ -3,11 +3,11 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include <QColor>
 #include "playlists.h"
 #include "sbsearchbar.h"
 #include "librarygenerator.h"
 #include "albuminfo.h"
-#include <string>
 
 //changed from 33 to match the flat better (jim) (can be changed back if we like this version more)
 #define TOPBARHEIGHT 36
@@ -274,17 +274,32 @@ QWidget* MainWindow::makeRightSide() {
     albuminfo ai;
     QTableWidget *tableWidget = new QTableWidget(12, 3);
     tableWidget->setObjectName("libraryTableWidget");
-    tableWidget->setStyleSheet("QTableWidget#libraryTableWidget { border:none; }");
+    tableWidget->setGridStyle(Qt::NoPen);
+    tableWidget->verticalHeader()->setVisible(false);
     tableWidget->setRowCount(ai.getTracks().length());
     tableWidget->setColumnCount(4);
     tableWidget->setSpan(0,0,ai.getTracks().length(),1);
     tableWidget->setSpan(1,1,(ai.getTracks().length()) - 1,1);
     tableWidget->setItem(0, 1, new QTableWidgetItem(ai.getTitle()));
     tableWidget->setItem(1, 1, new QTableWidgetItem(ai.getArtist()));
+    tableWidget->horizontalHeader()->setResizeMode(2, QHeaderView::ResizeToContents);
+
+    QTableWidgetItem *headertemp = new QTableWidgetItem("Title", 0);
+    tableWidget->setHorizontalHeaderItem(3, headertemp);
+    headertemp = new QTableWidgetItem("", 0);
+    tableWidget->setHorizontalHeaderItem(2, headertemp);
+
     for (int i = 1; i <= ai.getTracks().length(); i++)
     {
-        tableWidget->setItem(i - 1, 2, new QTableWidgetItem(i));
-        tableWidget->setItem(i - 1, 3, new QTableWidgetItem(ai.getTracks().takeAt(i - 1)));
+        QTableWidgetItem *tableitem = new QTableWidgetItem(i);
+        if(i%2 == 1)
+            tableitem->setBackgroundColor(QColor("#DCE4E8"));
+        tableWidget->setItem(i - 1, 2, tableitem);
+
+        tableitem = new QTableWidgetItem(ai.getTracks().takeAt(i - 1));
+        if(i%2 == 1)
+            tableitem->setBackgroundColor(QColor("#DCE4E8"));
+        tableWidget->setItem(i - 1, 3, tableitem);
     }
 
     /*QTableWidgetItem *newItem = new QTableWidgetItem(expath);
