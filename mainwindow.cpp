@@ -5,6 +5,9 @@
 #include <QHBoxLayout>
 #include "playlists.h"
 #include "sbsearchbar.h"
+#include "librarygenerator.h"
+#include "albuminfo.h"
+#include <string>
 
 //changed from 33 to match the flat better (jim) (can be changed back if we like this version more)
 #define TOPBARHEIGHT 36
@@ -267,14 +270,26 @@ QWidget* MainWindow::makeRightSide() {
     QGridLayout *temp = new QGridLayout(tempw);
     temp->setMargin(0);
 
+    // librarygenerator lg; This was horribly broken and reverted...
+    albuminfo ai;
     QTableWidget *tableWidget = new QTableWidget(12, 3);
     tableWidget->setObjectName("libraryTableWidget");
     tableWidget->setStyleSheet("QTableWidget#libraryTableWidget { border:none; }");
-    tableWidget->setRowCount(10);
-    tableWidget->setColumnCount(5);
+    tableWidget->setRowCount(ai.getTracks().length());
+    tableWidget->setColumnCount(4);
+    tableWidget->setSpan(0,0,ai.getTracks().length(),1);
+    tableWidget->setSpan(1,1,(ai.getTracks().length()) - 1,1);
+    tableWidget->setItem(0, 1, new QTableWidgetItem(ai.getTitle()));
+    tableWidget->setItem(1, 1, new QTableWidgetItem(ai.getArtist()));
+    for (int i = 1; i <= ai.getTracks().length(); i++)
+    {
+        tableWidget->setItem(i - 1, 2, new QTableWidgetItem(i));
+        tableWidget->setItem(i - 1, 3, new QTableWidgetItem(ai.getTracks().takeAt(i - 1)));
+    }
 
-    QTableWidgetItem *newItem = new QTableWidgetItem(expath);
+    /*QTableWidgetItem *newItem = new QTableWidgetItem(expath);
     tableWidget->setItem(5, 2, newItem);
+    */
     temp->addWidget(tableWidget);
 
     return tempw;

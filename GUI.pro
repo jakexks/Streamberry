@@ -13,8 +13,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     sbsearchbar.cpp \
-    playlists.cpp
+    playlists.cpp \
+    albuminfo.cpp \
+    librarygenerator.cpp
 
 HEADERS  += mainwindow.h \
     sbsearchbar.h \
-    playlists.h
+    playlists.h \
+    albuminfo.h \
+    librarygenerator.h
+
+FORMS +=
