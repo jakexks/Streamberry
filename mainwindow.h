@@ -15,8 +15,8 @@ public:
     QMenuBar* createMenuBar();
 
 private:
-    QWidget* centralWidget;
-    QGridLayout* mainLayout;
+    QWidget* centralwidget;
+    QGridLayout* mainlayout;
     //properties and method for each section of screen
     QWidget* topbar;
     QWidget* makeTopBar();

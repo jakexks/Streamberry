@@ -21,32 +21,32 @@ MainWindow::MainWindow(char* path, QWidget *parent)
     this->setWindowTitle("Streamberry");
     this->setMenuBar(menubar);
     resize(850, 600);
-    centralWidget = new QWidget();
-    mainLayout = new QGridLayout(centralWidget);
-    mainLayout->setMargin(0);
-    mainLayout->setSpacing(0);
+    centralwidget = new QWidget();
+    mainlayout = new QGridLayout(centralwidget);
+    mainlayout->setMargin(0);
+    mainlayout->setSpacing(0);
 
-    mainLayout->setRowMinimumHeight(0, TOPBARHEIGHT);
-    mainLayout->setRowStretch(0, 0);
-    mainLayout->setRowStretch(1, 1);
-    mainLayout->setRowMinimumHeight(2, BOTTOMBARHEIGHT);
-    mainLayout->setRowStretch(2, 0);
-    mainLayout->setColumnMinimumWidth(0, 190);
-    mainLayout->setColumnStretch(0, 0);
-    mainLayout->setColumnStretch(1, 1);
+    mainlayout->setRowMinimumHeight(0, TOPBARHEIGHT);
+    mainlayout->setRowStretch(0, 0);
+    mainlayout->setRowStretch(1, 1);
+    mainlayout->setRowMinimumHeight(2, BOTTOMBARHEIGHT);
+    mainlayout->setRowStretch(2, 0);
+    mainlayout->setColumnMinimumWidth(0, 190);
+    mainlayout->setColumnStretch(0, 0);
+    mainlayout->setColumnStretch(1, 1);
 
     Playlists* sidebar = new Playlists();
     topbar = makeTopBar();
-    leftbar = sidebar->makesidebar(expath);
+    leftbar = sidebar->makeSidebar(expath);
     bottombar = makeBottomBar();
     rightside = makeRightSide();
 
-    mainLayout->addWidget(topbar, 0, 1);
-    mainLayout->addWidget(leftbar, 0, 0, 2, 1);
-    mainLayout->addWidget(rightside, 1, 1);
-    mainLayout->addWidget(bottombar, 2, 0, 1, 2);
+    mainlayout->addWidget(topbar, 0, 1);
+    mainlayout->addWidget(leftbar, 0, 0, 2, 1);
+    mainlayout->addWidget(rightside, 1, 1);
+    mainlayout->addWidget(bottombar, 2, 0, 1, 2);
 
-    setCentralWidget(centralWidget);
+    setCentralWidget(centralwidget);
 }
 
 QWidget* MainWindow::makeTopBar() {
