@@ -284,14 +284,15 @@ QWidget* MainWindow::makeRightSide() {
     tablewidget->setItem(0, 1, new QTableWidgetItem(ai.getTitle()));
     tablewidget->setItem(1, 1, new QTableWidgetItem(ai.getArtist()));
     tablewidget->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
+    tablewidget->setColumnWidth(0, 130);
+    tablewidget->setColumnWidth(2, 250);
 
     QTableWidgetItem *headertemp = new QTableWidgetItem("Title", 0);
-    tablewidget->setHorizontalHeaderItem(3, headertemp);
+    tablewidget->setHorizontalHeaderItem(2, headertemp);
     headertemp = new QTableWidgetItem("", 0);
     tablewidget->setHorizontalHeaderItem(1, headertemp);
     headertemp = new QTableWidgetItem("", 0);
     tablewidget->setHorizontalHeaderItem(0, headertemp);
-
     AlbumPanel *albumpanel = new AlbumPanel(expath);
     tablewidget->setCellWidget(0, 0, albumpanel);
 
