@@ -283,10 +283,10 @@ QStringList Database::getFolders(int trackedOrExcluded)
 }
 
 
-QString Database::lastUpdate(QString user_name)
+QString Database::lastUpdate(QString uniqueid)
 {
-    QString sql = "SELECT TimeLastUpdated FROM LibIndex WHERE Name='";
-    sql += user_name;
+    QString sql = "SELECT TimeLastUpdated FROM LibIndex WHERE UniqueID='";
+    sql += uniqueid;
     sql += "';";
 
     try

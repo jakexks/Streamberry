@@ -1,7 +1,3 @@
-/* libVLC and Qt sample code
- * Copyright © 2009 Alexander Maringer <maringer@maringer-it.de>
- */
-
 //#include "vlc_on_qt.h"
 //#include "file_meta.h"
 #include <QtGui/QApplication>
@@ -27,18 +23,18 @@ int main(int argc, char *argv[])
    w.show();
    Database db = Database();
 
-   beaconsender b(db);
-   beaconreceiver r(db);
-   offlinechecker oc(r);
-   b.start();
-   r.start();
-   oc.start();
+//   beaconsender b(db);
+//   beaconreceiver r(db);
+//   offlinechecker oc(r);
+//   b.start();
+//   r.start();
+//   oc.start();
 
    Filescan scanner(db);
    try
    {
 
-       db.setFolders("/Users/Robbie/Music/Albums/;");
+       //db.setFolders("/Users/Robbie/Music/Albums/The Avalanches - Since I Left You;/Users/Robbie/Music/Albums/Red Hot Chili Peppers - By The Way;");
        //scanner.build_new();
 
 

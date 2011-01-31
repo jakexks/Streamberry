@@ -10,7 +10,6 @@
 #include "crossplatform.h"
 
 using namespace std;
-//Database& db;
 
 Filescan::Filescan(Database &datab): db(datab)
 {
@@ -100,7 +99,7 @@ int Filescan::addFiles(QDir path)
         {
             if(ismedia(fileList.at(i))==1)
             {
-                //qDebug() << fileList.at(i).absoluteFilePath();
+                qDebug() << fileList.at(i).absoluteFilePath();
                 db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), "ARTIST", "ALBUM", "TITLE", "GENRE", "5", "1991", "123", "2400", fileList.at(i).suffix(), "LibLocal");
             }
         }
