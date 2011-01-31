@@ -274,22 +274,21 @@ QWidget* MainWindow::makeRightSide() {
     albuminfo ai;
     QTableWidget *tableWidget = new QTableWidget(12, 3);
     tableWidget->setObjectName("libraryTableWidget");
-    tableWidget->setStyleSheet("QTableWidget#libraryTableWidget { border:none; }");
+    tableWidget->setStyleSheet("QTableWidget { border:none; }");
     tableWidget->setRowCount(ai.getTracks().length());
-    tableWidget->setColumnCount(4);
-    tableWidget->setSpan(0,0,ai.getTracks().length(),1);
-    tableWidget->setSpan(1,1,(ai.getTracks().length()) - 1,1);
-    tableWidget->setItem(0, 1, new QTableWidgetItem(ai.getTitle()));
-    tableWidget->setItem(1, 1, new QTableWidgetItem(ai.getArtist()));
+    tableWidget->setColumnCount(3);
+    tableWidget->setSpan(0,0,(ai.getTracks().length()),1);
     for (int i = 1; i <= ai.getTracks().length(); i++)
     {
-        tableWidget->setItem(i - 1, 2, new QTableWidgetItem(i));
-        tableWidget->setItem(i - 1, 3, new QTableWidgetItem(ai.getTracks().takeAt(i - 1)));
+//       QString tracknum =
+        //tableWidget->setItem(i - 1, 2, new QTableWidgetItem(tracknum));
+        tableWidget->setItem(i - 1, 2, new QTableWidgetItem(ai.getTracks().takeAt(i - 1)));
     }
 
     /*QTableWidgetItem *newItem = new QTableWidgetItem(expath);
     tableWidget->setItem(5, 2, newItem);
     */
+    tableWidget->verticalHeader()->setVisible(FALSE);;
     temp->addWidget(tableWidget);
 
     return tempw;
