@@ -277,9 +277,8 @@ QWidget* MainWindow::makeRightSide() {
     tableWidget->setGridStyle(Qt::NoPen);
     tableWidget->verticalHeader()->setVisible(false);
     tableWidget->setRowCount(ai.getTracks().length());
-    tableWidget->setColumnCount(4);
+    tableWidget->setColumnCount(3);
     tableWidget->setSpan(0,0,ai.getTracks().length(),1);
-    tableWidget->setSpan(1,1,(ai.getTracks().length()) - 1,1);
     tableWidget->setItem(0, 1, new QTableWidgetItem(ai.getTitle()));
     tableWidget->setItem(1, 1, new QTableWidgetItem(ai.getArtist()));
     tableWidget->horizontalHeader()->setResizeMode(2, QHeaderView::ResizeToContents);
@@ -294,12 +293,12 @@ QWidget* MainWindow::makeRightSide() {
         QTableWidgetItem *tableitem = new QTableWidgetItem(i);
         if(i%2 == 1)
             tableitem->setBackgroundColor(QColor("#DCE4E8"));
-        tableWidget->setItem(i - 1, 2, tableitem);
+        tableWidget->setItem(i - 1, 1, tableitem);
 
         tableitem = new QTableWidgetItem(ai.getTracks().takeAt(i - 1));
         if(i%2 == 1)
             tableitem->setBackgroundColor(QColor("#DCE4E8"));
-        tableWidget->setItem(i - 1, 3, tableitem);
+        tableWidget->setItem(i - 1, 2, tableitem);
     }
 
     /*QTableWidgetItem *newItem = new QTableWidgetItem(expath);
