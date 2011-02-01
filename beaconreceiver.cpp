@@ -30,6 +30,8 @@ void beaconreceiver::processPendingDatagrams()
 {
     while (udpSocket.hasPendingDatagrams())
     {
+        //check datagram begins with STREAMBEACON
+        //check beacon received is not own
         QByteArray datagram;
         datagram.resize(udpSocket.pendingDatagramSize());
         udpSocket.readDatagram(datagram.data(), datagram.size());
