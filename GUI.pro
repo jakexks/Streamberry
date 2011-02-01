@@ -31,4 +31,8 @@ OTHER_FILES += \
     images/scrollBarLeft.png \
     images/btnFowardUp.png \
     images/btnPreviousUp.png \
+    images/bgPlaylistBarTop.png \
+    images/bgPlaylistBarTopClicked.png \
+    images/btnPreview.png \
+    images/btnPreviewClicked.png \
     images/scrollBarMiddle.png
