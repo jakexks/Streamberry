@@ -4,6 +4,7 @@
 #include "networking.h"
 #include "sbexception.h"
 #include "libraryreceive.h"
+#include "librarysend.h"
 #include <QDebug>
 
 // Constructor gets the current machine's unique ID and creates a library receiver
@@ -48,6 +49,15 @@ void beaconreceiver::processPendingDatagrams()
                 checkID(id, dbTimeStamp);
             }
         }
+        else if (networking::parsebeacon(datastring, networking::beaconHeader) == "STREAMLIBRARY")
+        {
+            if(networking::parsebeacon(datastring, networking::uid) == myID)
+            {
+                //FFFFFFFFUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+                librarySend ls = librarySend(db.lastUpdate(networking::parsebeacon(datastring, networking::timestamp)), new QHostAddress(networking::parsebeacon(networking::ip)),db);
+            }
+        }
+
     }
 }
 

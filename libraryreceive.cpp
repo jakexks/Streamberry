@@ -2,6 +2,7 @@
 #include "database.h"
 #include "networking.h"
 #include "sbexception.h"
+#include "beaconsender.h"
 #include <iostream>
 
 libraryReceive::libraryReceive(Database &datab): db(datab)
@@ -15,10 +16,12 @@ bool libraryReceive::isBusy()
     return busy;
 }
 
-int libraryReceive::receive()
+int libraryReceive::receive(QString theirID)
 {
-    networking n;
     busy = TRUE;
+    networking n;
+    beaconsender::sendLibraryRequest(theirID);
+
     QString libraryQuery = n.receive();
     QList<QString> queries = libraryQuery.split('\x1D',QString::SkipEmptyParts);
     try

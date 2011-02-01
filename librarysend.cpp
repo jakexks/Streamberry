@@ -11,3 +11,10 @@ librarySend::librarySend(int timestamp, QString receiversID, Database &datab): d
     QHostAddress host = QHostAddress::QHostAddress(ip);
     n.send(host,(quint16) 4310,update_query.toUtf8());
 }
+
+librarySend::librarySend(int timestamp, QHostAddress receiversIP, Database &datab): db(datab)
+{
+    networking n;
+    QString update_query = datab.changesSinceTime(timestamp,n.getuniqid());
+    n.send(receiversIP,(quint16) 4310,update_query.toUtf8());
+}
