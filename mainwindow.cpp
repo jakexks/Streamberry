@@ -119,9 +119,16 @@ QWidget* MainWindow::makeTopBar() {
     back->setMaximumSize(35, 29);
     back->setMinimumSize(35, 29);
     back->setFlat(true);
-    style = "background-image: url(";
+    style = "QPushButton { background-image: url(";
     style += expath;
-    style += "images/btnForwardUp.png); background-repeat: no-repeat; border:none;";
+    style += "images/btnForwardUp.png); background-repeat: no-repeat; border:none;} QPushButton:pressed {";
+    style += "background-image: url(";
+    style += expath;
+    style += "images/btnForwardDown.png); background-repeat: no-repeat; border:none;} QPushButton:hover:!pressed {";
+    style += "background-image: url(";
+    style += expath;
+    style += "images/btnForwardUpGlow.png); background-repeat: no-repeat; border:none;}";
+    qDebug() << style;
     forward->setStyleSheet(style);
     forward->setMaximumSize(35, 29);
     forward->setMinimumSize(35, 29);
