@@ -569,3 +569,27 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
     return final;
 
 }
+
+
+void Database::setNewChanges(QString changes)
+{
+    QList<QString> queries = libraryQuery.split('\x1D',QString::SkipEmptyParts);
+
+    try
+    {
+        if(queries.length() > 0)
+        {
+
+        }
+
+        for (int i = 0; i < queries.length(); i++)
+        {
+            db.query(queries.takeAt(i));
+        }
+    }
+    catch (SBException e)
+    {
+        std::cerr << e.getException().toStdString();
+        return 1;
+    }
+}

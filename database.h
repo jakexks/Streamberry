@@ -34,6 +34,8 @@ public:
     QString changesSinceTime(int timestamp, QString uniqueID);
     //set a user online or offline
     void setOnline(QString uniqueID, QString status);
+    //add new changes
+    void setNewChanges(QString changes);
 
     //if argument 0 gets tracked, if 1 gets excluded
     QStringList getFolders(int trackedOrExcluded);
