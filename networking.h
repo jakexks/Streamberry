@@ -11,11 +11,11 @@ class networking
 {
 public:
     networking();
-    QString getuniqid();
+    static QString getuniqid();
     QString getmyip();
     QByteArray receive();
     void send(QHostAddress, quint16, QByteArray);
-    QString parsebeacon(QString, int);
+    static QString parsebeacon(QString, int);
     enum beaconFields { beaconHeader, uid, timestamp, ip };
 private:
     QTcpServer tcpServer;
