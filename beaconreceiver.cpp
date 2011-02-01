@@ -3,12 +3,14 @@
 #include "utilities.h"
 #include "networking.h"
 #include "sbexception.h"
+#include "libraryreceive.h"
 #include <QDebug>
 
-// Constructor, needs no arguments
+// Constructor gets the current machine's unique ID and creates a library receiver
 beaconreceiver::beaconreceiver(Database &datab): db(datab)
 {
     myID = networking::getuniqid();
+    libr = libraryReceive::libraryReceive();
 }
 
 // Continually processes received datagrams by calling processPendingDatagrams
@@ -59,7 +61,11 @@ void beaconreceiver::checkID(QString id, QString dbTimeStamp)
         // Checks whether the receiving machine has the most recent version of the senders' library and requests an update if not
         if ((QString::compare(db.lastUpdate(id), dbTimeStamp)) != 0)
         {
-            //TODO: if receiver isn't busy then tell library receive to request their library
+            //if receiver isn't busy then tell library receive to request their library
+            if (!libr.isBusy())
+            {
+                libr.receive(id);
+            }
         }
         // If the machine has just come online
         else if (stamp == 0)

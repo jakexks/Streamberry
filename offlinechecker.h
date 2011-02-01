@@ -3,6 +3,7 @@
 #include <QThread>
 #include <QHash>
 #include "beaconreceiver.h"
+#include "database.h"
 
 class offlinechecker : public QThread
 {
@@ -13,6 +14,7 @@ protected:
 private:
     void detectOfflineMachines();
     beaconreceiver &rec;
+    Database &db;
 };
 
 #endif // OFFLINECHECKER_H

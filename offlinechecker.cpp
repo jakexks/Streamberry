@@ -1,6 +1,7 @@
 #include "offlinechecker.h"
 #include "utilities.h"
 #include "beaconreceiver.h"
+#include "database.h"
 
 offlinechecker::offlinechecker(beaconreceiver &br, Database &datab) : rec(br), db(datab)
 {
@@ -13,7 +14,8 @@ void offlinechecker::detectOfflineMachines()
     {
         if(i.value() - Utilities::getCurrentTimestamp() > 10)
         {
-            //TODO: tell db machine is offline
+            //tell db machine is offline
+            db.setOnline(i.key(), "0");
             qDebug() << i.key() + "is offline";
             //remove the machine's ID from the hashtable of online machines
             rec.onlineMachines.remove(i.key());

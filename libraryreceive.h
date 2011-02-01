@@ -7,9 +7,9 @@ class libraryReceive
 public:
     libraryReceive(Database &datab);
     int receive();
+    bool isBusy();
 private:
     Database &db;
-    bool isBusy();
     bool busy;
 };
 

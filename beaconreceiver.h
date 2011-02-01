@@ -5,6 +5,7 @@
 #include <QUdpSocket>
 #include <QHash>
 #include "database.h"
+#include "libraryreceive.h"
 
 class beaconreceiver : public QThread
 {
@@ -17,6 +18,7 @@ protected:
 private:
     QUdpSocket udpSocket;
     Database &db;
+    libraryReceive libr;
     void receive();
     void processPendingDatagrams();
     void checkID(QString, QString);
