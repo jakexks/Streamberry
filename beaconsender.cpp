@@ -26,23 +26,23 @@ void beaconsender::send()
     delete udpSocket;
 }
 
-static void beaconsender::sendLibraryRequest(QString theirID)
+void beaconsender::sendLibraryRequest(QString theirID, QString lastupdate)
 {
-    udpSocket = new QUdpSocket();
-    udpSocket->bind(QHostAddress::Broadcast, 45454, QUdpSocket::ShareAddress);
+    QUdpSocket *s = new QUdpSocket();
+    s->bind(QHostAddress::Broadcast, 45454, QUdpSocket::ShareAddress);
     networking n;
     QString sendme = "";
     // Beacon structure is "STREAMLIBRARY|<unique ID>|<timestamp>|<ip address>"
     sendme.append("STREAMLIBRARY|");
     sendme.append(theirID);
     sendme.append("|");
-    sendme.append(db.lastUpdate(theirID));
+    sendme.append(lastupdate);
     sendme.append("|");
     sendme.append(n.getmyip());
-    QByteArray datagram = sendme.toUtf8();
-    udpSocket->writeDatagram(datagram.data(), datagram.size(),
+    QByteArray dg = sendme.toUtf8();
+    s->writeDatagram(dg.data(), dg.size(),
                              QHostAddress::Broadcast, 45454);
-    delete udpSocket;
+    delete s;
 }
 
 // Repeatedly sends a beacon then sleeps for 5 seconds

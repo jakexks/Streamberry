@@ -9,7 +9,7 @@ class beaconsender : public QThread
 public:
     beaconsender(Database &datab);
     void send();
-    static void sendLibraryRequest(QString theirID);
+    static void sendLibraryRequest(QString theirID, QString lastupdate);
 protected:
     void run();
 private:

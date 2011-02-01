@@ -20,7 +20,7 @@ int libraryReceive::receive(QString theirID)
 {
     busy = TRUE;
     networking n;
-    beaconsender::sendLibraryRequest(theirID);
+    beaconsender::sendLibraryRequest(theirID,db.lastUpdate(theirID));
 
     QString libraryQuery = n.receive();
     QList<QString> queries = libraryQuery.split('\x1D',QString::SkipEmptyParts);
