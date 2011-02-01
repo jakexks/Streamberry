@@ -3,6 +3,7 @@
 
 #include <QtGui>
 #include "playlists.h"
+#include "player.h"
 
 class MainWindow : public QMainWindow
 {
@@ -13,6 +14,7 @@ public:
     ~MainWindow();
     void setPath(char* path);
     QMenuBar* createMenuBar();
+    Player a;
 
 private:
     QWidget* centralwidget;

@@ -16,14 +16,16 @@ SOURCES += main.cpp\
     playlists.cpp \
     albuminfo.cpp \
     librarygenerator.cpp \
-    albumpanel.cpp
+    albumpanel.cpp \
+    player.cpp
 
 HEADERS  += mainwindow.h \
     sbsearchbar.h \
     playlists.h \
     albuminfo.h \
     librarygenerator.h \
-    albumpanel.h
+    albumpanel.h \
+    player.h
 
 
 OTHER_FILES += \
@@ -43,6 +45,7 @@ OTHER_FILES += \
     images/btnPreview.png \
     images/btnPreviewClicked.png \
     images/scrollBarMiddle.png
+
+LIBS += -lvlc
 =======
 FORMS +=
-

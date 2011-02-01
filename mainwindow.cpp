@@ -10,6 +10,7 @@
 #include "librarygenerator.h"
 #include "albuminfo.h"
 #include "albumpanel.h"
+#include "player.h"
 
 //changed from 33 to match the flat better (jim) (can be changed back if we like this version more)
 #define TOPBARHEIGHT 36
@@ -275,6 +276,10 @@ QWidget* MainWindow::makeBottomBar() {
     playpause->setMaximumSize(53, 61);
     playpause->setMinimumSize(53, 61);
     playpause->setFlat(true);
+
+    a.playFile("/home/vity/01-Metric-Help I'm Alive.mp3");
+    connect(playpause, SIGNAL(clicked()), &a, SLOT(playControl()));
+
     QPushButton *next = new QPushButton();
     style = "QPushButton { background-image: url(";
     style += expath;
@@ -312,7 +317,6 @@ QWidget* MainWindow::makeBottomBar() {
     middle->addWidget(next);
     right->addWidget(mute);
     right->addWidget(volumeslider);
-
     temp->addLayout(controls, 1, 0, Qt::AlignHCenter | Qt::AlignVCenter);
     temp->addLayout(playbackbox, 0, 0, Qt::AlignHCenter | Qt::AlignTop);
     temp->setRowMinimumHeight(2, 5);
