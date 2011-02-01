@@ -45,7 +45,7 @@ public:
     //type: 0 - all, 1 - artist, 2 - title, 3 - genre
     //return order: Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype
     QList<QSqlRecord> searchDb(int type, QString searchtxt);
-
+    QSqlQuery query(QString sql);
 
 private:
     //connects to database in given path
@@ -53,7 +53,7 @@ private:
     //creates database file
     void createDatabase(QString &path);
     //performs an SQL query
-    QSqlQuery query(QString sql);
+
 
     QSqlDatabase db;
     //says whether database is connected or not
