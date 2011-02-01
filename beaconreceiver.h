@@ -20,6 +20,7 @@ private:
     void receive();
     void processPendingDatagrams();
     void checkID(QString, QString);
+    QString myID;
 };
 
 #endif // BEACONRECEIVER_H

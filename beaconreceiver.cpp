@@ -7,6 +7,7 @@
 // Constructor, needs no arguments
 beaconreceiver::beaconreceiver(Database &datab): db(datab)
 {
+    myID = networking::getuniqid();
 }
 
 // Continually processes received datagrams by calling processPendingDatagrams
@@ -37,9 +38,15 @@ void beaconreceiver::processPendingDatagrams()
         udpSocket.readDatagram(datagram.data(), datagram.size());
         QString datastring = (QString) datagram.data();
         qDebug() << datagram.data();
-        QStringList beaconPart = datastring.split("|");
-        QString id = beaconPart.takeAt(1), dbTimeStamp = beaconPart.takeAt(2);
-        checkID(id, dbTimeStamp);
+        if (networking::parsebeacon(datastring, networking::beaconHeader) == "STREAMBEACON")
+        {
+            QString id = networking::parsebeacon(datastring, networking::uid);
+            if (id != myID)
+            {
+                QString dbTimeStamp = networking::parsebeacon(datastring, networking::timestamp);
+                checkID(id, dbTimeStamp);
+            }
+        }
     }
 }
 
