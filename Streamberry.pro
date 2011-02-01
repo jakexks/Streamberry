@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     offlinechecker.cpp \
     sleeper.cpp \
     librarysend.cpp \
-    importlib.cpp
+    importlib.cpp \
+    libraryreceive.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -42,7 +43,8 @@ HEADERS  += mainwindow.h \
     librarysend.h \
     importlib.h \
     rapidxml_utils.hpp \
-    rapidxml.hpp
+    rapidxml.hpp \
+    libraryreceive.h
 
 FORMS    += mainwindow.ui
 
