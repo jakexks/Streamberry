@@ -272,7 +272,7 @@ QWidget* MainWindow::makeBottomBar() {
     playpause->setMinimumSize(48, 59);
     playpause->setFlat(true);
 
-    a.playFile("/home/vity/01-Metric-Help I'm Alive.mp3");
+    a.playFile("/home/jakexks/Desktop/THE LOCAL CHEESE PLAYLIST THAT EVER WAS/tagged/a-ha - Take On Me.mp3");
     connect(playpause, SIGNAL(clicked()), &a, SLOT(playControl()));
 
     QPushButton *next = new QPushButton();
