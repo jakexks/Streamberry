@@ -13,12 +13,19 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     sbsearchbar.cpp \
-    playlists.cpp
+    playlists.cpp \
+    albuminfo.cpp \
+    librarygenerator.cpp \
+    albumpanel.cpp
 
 HEADERS  += mainwindow.h \
     sbsearchbar.h \
-    playlists.h
+    playlists.h \
+    albuminfo.h \
+    librarygenerator.h \
+    albumpanel.h
 
+<<<<<<< HEAD
 OTHER_FILES += \
     images/btnMuteUp.png \
     images/btnShuffleUp.png \
@@ -36,3 +43,6 @@ OTHER_FILES += \
     images/btnPreview.png \
     images/btnPreviewClicked.png \
     images/scrollBarMiddle.png
+=======
+FORMS +=
+>>>>>>> aace901267549f03cc40792dd4270ea43b26f0b3

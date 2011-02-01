@@ -6,17 +6,17 @@
 #define TOPBARHEIGHT 32
 #define BOTTOMBARHEIGHT 34
 
-void playlists::setPath(char* path)
+void Playlists::setPath(char* path)
 {
     expath = path;
 }
 
-playlists::playlists()
+Playlists::Playlists()
 {
-   SideWidget = new QWidget();
+   sidewidget = new QWidget();
 }
 
-QWidget* playlists::makesidebar(QString path)
+QWidget* Playlists::makeSidebar(QString path)
 {
     expath = path;
     SideBarLayout = new QGridLayout(SideWidget)                    ;
@@ -45,6 +45,33 @@ QWidget* playlists::makesidebar(QString path)
 }
 
 QPushButton* playlists::makePreviewBtn()
+    sidebarlayout = new QGridLayout(sidewidget)                    ;
+    sidebarlayout->setRowMinimumHeight(0, TOPBARHEIGHT);
+    sidebarlayout->setRowStretch(0, 0);
+    sidebarlayout->setRowStretch(1, 2);
+    sidebarlayout->setRowStretch(2, 0);
+    sidebarlayout->setRowStretch(3, 0);
+    sidebarlayout->setRowMinimumHeight(2, BOTTOMBARHEIGHT);
+    sidebarlayout->setRowMinimumHeight(3, 140);
+    sidebarlayout->setColumnMinimumWidth(0, 140);
+    sidebarlayout->setMargin(0);
+    sidebarlayout->setSpacing(0);
+
+    playlistbtn = makePlaylistBtn();
+    playlistbar = makePlaylistBar();
+    previewbar = makePlaylistBar();
+    previewbtn = makePreviewBtn();
+
+    sidebarlayout->addWidget(playlistbtn, 0, 0);
+    sidebarlayout->addWidget(playlistbar, 1, 0);
+    sidebarlayout->addWidget(previewbtn, 2, 0);
+    sidebarlayout->addWidget(previewbar, 3, 0);
+    return sidewidget;
+}
+
+
+
+QPushButton* Playlists::makePreviewBtn()
 {
   QPushButton* temp = new QPushButton();
   temp->setObjectName("PreviewBtn");
@@ -64,7 +91,7 @@ QPushButton* playlists::makePreviewBtn()
   return temp;
 }
 
-QPushButton* playlists::makePlaylistBtn()
+QPushButton* Playlists::makePlaylistBtn()
 {
   QPushButton* temp = new QPushButton();
   temp->setObjectName("PlaylistBtn");
@@ -84,7 +111,7 @@ QPushButton* playlists::makePlaylistBtn()
   return temp;
 }
 
-QWidget* playlists::makePlaylistBar()
+QWidget* Playlists::makePlaylistBar()
 {
   QWidget *tempw = new QWidget();
   tempw->setObjectName("PlaylistBarWidget");
@@ -92,9 +119,7 @@ QWidget* playlists::makePlaylistBar()
   style += expath;
   style += "images/bgSideBar.png); background-repeat: repeat-y }";
   tempw->setStyleSheet(style);
-  //qDebug() << style;
   QGridLayout *temp = new QGridLayout(tempw);
-  //put widgets into layout here
   return tempw;
 }
 

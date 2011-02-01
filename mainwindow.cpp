@@ -3,11 +3,17 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include <QColor>
+#include <QString>
 #include "playlists.h"
 #include "sbsearchbar.h"
+#include "librarygenerator.h"
+#include "albuminfo.h"
+#include "albumpanel.h"
 
-#define TOPBARHEIGHT 36 //changed from 33 to match the flat better (jim) (can be changed back if we like this version more)
-#define BOTTOMBARHEIGHT 83
+//changed from 33 to match the flat better (jim) (can be changed back if we like this version more)
+#define TOPBARHEIGHT 36
+#define BOTTOMBARHEIGHT 90
 
 MainWindow::MainWindow(char* path, QWidget *parent)
     : QMainWindow(parent)
@@ -20,32 +26,32 @@ MainWindow::MainWindow(char* path, QWidget *parent)
     this->setWindowTitle("Streamberry");
     this->setMenuBar(menubar);
     resize(850, 600);
-    centralWidget = new QWidget();
-    mainLayout = new QGridLayout(centralWidget);
-    mainLayout->setMargin(0);
-    mainLayout->setSpacing(0);
+    centralwidget = new QWidget();
+    mainlayout = new QGridLayout(centralwidget);
+    mainlayout->setMargin(0);
+    mainlayout->setSpacing(0);
 
-    mainLayout->setRowMinimumHeight(0, TOPBARHEIGHT);
-    mainLayout->setRowStretch(0, 0);
-    mainLayout->setRowStretch(1, 1);
-    mainLayout->setRowMinimumHeight(2, BOTTOMBARHEIGHT);
-    mainLayout->setRowStretch(2, 0);
-    mainLayout->setColumnMinimumWidth(0, 190);
-    mainLayout->setColumnStretch(0, 0);
-    mainLayout->setColumnStretch(1, 1);
+    mainlayout->setRowMinimumHeight(0, TOPBARHEIGHT);
+    mainlayout->setRowStretch(0, 0);
+    mainlayout->setRowStretch(1, 1);
+    mainlayout->setRowMinimumHeight(2, BOTTOMBARHEIGHT);
+    mainlayout->setRowStretch(2, 0);
+    mainlayout->setColumnMinimumWidth(0, 190);
+    mainlayout->setColumnStretch(0, 0);
+    mainlayout->setColumnStretch(1, 1);
 
-    playlists* sidebar = new playlists();
+    Playlists* sidebar = new Playlists();
     topbar = makeTopBar();
-    leftbar = sidebar->makesidebar(expath);
+    leftbar = sidebar->makeSidebar(expath);
     bottombar = makeBottomBar();
     rightside = makeRightSide();
 
-    mainLayout->addWidget(topbar, 0, 1);
-    mainLayout->addWidget(leftbar, 0, 0, 2, 1);
-    mainLayout->addWidget(rightside, 1, 1);
-    mainLayout->addWidget(bottombar, 2, 0, 1, 2);
+    mainlayout->addWidget(topbar, 0, 1);
+    mainlayout->addWidget(leftbar, 0, 0, 2, 1);
+    mainlayout->addWidget(rightside, 1, 1);
+    mainlayout->addWidget(bottombar, 2, 0, 1, 2);
 
-    setCentralWidget(centralWidget);
+    setCentralWidget(centralwidget);
 }
 
 QWidget* MainWindow::makeTopBar() {
@@ -184,23 +190,31 @@ QWidget* MainWindow::makeBottomBar() {
     QHBoxLayout* right = new QHBoxLayout();
     left->setSpacing(35);
     left->setMargin(0);
-    left->setContentsMargins(0,0,35,0);
+    left->setContentsMargins(40,0,0,0);
     middle->setSpacing(0);
+<<<<<<< HEAD
     middle->setContentsMargins(0,0,35,0);
     middle->setMargin(35);
+=======
+    middle->setContentsMargins(35,0,35,0);
+    middle->setMargin(0);
+>>>>>>> aace901267549f03cc40792dd4270ea43b26f0b3
     right->setSpacing(10);
-    right->setContentsMargins(200,0,0,0);
     right->setMargin(0);
     controls->addLayout(left, 0, 1, Qt::AlignRight | Qt::AlignVCenter);
-    controls->addLayout(middle, 0, 2, Qt::AlignCenter | Qt::AlignVCenter);
-    controls->addLayout(right, 0, 3, Qt::AlignLeft | Qt::AlignVCenter);
+    controls->addLayout(middle, 0, 3, Qt::AlignCenter | Qt::AlignVCenter);
+    controls->addLayout(right, 0, 5, Qt::AlignLeft | Qt::AlignVCenter);
     controls->setSpacing(0);
     controls->setMargin(0);
     controls->setColumnStretch(0, 1);
     controls->setColumnStretch(1, 0);
     controls->setColumnStretch(2, 0);
     controls->setColumnStretch(3, 0);
-    controls->setColumnStretch(4, 1);
+    controls->setColumnStretch(4, 0);
+    controls->setColumnStretch(5, 0);
+    controls->setColumnStretch(6, 1);
+    controls->setColumnMinimumWidth(2, 35);
+    controls->setColumnMinimumWidth(4, 35);
 
     QPushButton *repeat = new QPushButton();    
     style = "QPushButton { background-image: url(";
@@ -298,6 +312,8 @@ QWidget* MainWindow::makeBottomBar() {
 
     temp->addLayout(controls, 1, 0, Qt::AlignHCenter | Qt::AlignVCenter);
     temp->addLayout(playbackbox, 0, 0, Qt::AlignHCenter | Qt::AlignTop);
+    temp->setRowMinimumHeight(2, 5);
+    temp->setRowStretch(0, 0);
     return tempw;
 }
 
@@ -309,15 +325,51 @@ QWidget* MainWindow::makeRightSide() {
     QGridLayout *temp = new QGridLayout(tempw);
     temp->setMargin(0);
 
-    QTableWidget *tableWidget = new QTableWidget(12, 3);
-    tableWidget->setObjectName("libraryTableWidget");
-    tableWidget->setStyleSheet("QTableWidget#libraryTableWidget { border:none; }");
-    tableWidget->setRowCount(10);
-    tableWidget->setColumnCount(5);
+    // librarygenerator lg; This was horribly broken and reverted...
+    albuminfo ai;
+    QTableWidget *tablewidget = new QTableWidget(12, 3);
+    tablewidget->setObjectName("libraryTableWidget");
+    tablewidget->setGridStyle(Qt::NoPen);
+    tablewidget->verticalHeader()->setVisible(false);
+    tablewidget->setRowCount(ai.getTracks().length());
+    tablewidget->setColumnCount(3);
+    tablewidget->setSpan(0,0,ai.getTracks().length(),1);
+    tablewidget->setItem(0, 1, new QTableWidgetItem(ai.getTitle()));
+    tablewidget->setItem(1, 1, new QTableWidgetItem(ai.getArtist()));
+    tablewidget->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
+    tablewidget->setColumnWidth(0, 130);
+    tablewidget->setColumnWidth(2, 250);
 
-    QTableWidgetItem *newItem = new QTableWidgetItem(expath);
+    QTableWidgetItem *headertemp = new QTableWidgetItem("Title", 0);
+    tablewidget->setHorizontalHeaderItem(2, headertemp);
+    headertemp = new QTableWidgetItem("", 0);
+    tablewidget->setHorizontalHeaderItem(1, headertemp);
+    headertemp = new QTableWidgetItem("", 0);
+    tablewidget->setHorizontalHeaderItem(0, headertemp);
+    AlbumPanel *albumpanel = new AlbumPanel(expath);
+    tablewidget->setCellWidget(0, 0, albumpanel);
+
+    for (int i = 1; i <= ai.getTracks().length(); i++)
+    {
+        QString track;
+        track.setNum(i);
+        QTableWidgetItem *tableitem = new QTableWidgetItem(track, 0);
+        tableitem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+        if(i%2 == 1)
+            tableitem->setBackgroundColor(QColor("#DCE4E8"));
+        tablewidget->setItem(i - 1, 1, tableitem);
+
+        tableitem = new QTableWidgetItem(ai.getTracks().takeAt(i - 1));
+        if(i%2 == 1)
+            tableitem->setBackgroundColor(QColor("#DCE4E8"));
+        tablewidget->setItem(i - 1, 2, tableitem);
+    }
+
+    /*QTableWidgetItem *newItem = new QTableWidgetItem(expath);
     tableWidget->setItem(5, 2, newItem);
-    temp->addWidget(tableWidget);
+    */
+    tablewidget->verticalHeader()->setVisible(FALSE);;
+    temp->addWidget(tablewidget);
 
     return tempw;
 }

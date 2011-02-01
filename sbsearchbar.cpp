@@ -11,7 +11,7 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
 {
     expath = path;
     QGridLayout *layout = new QGridLayout(this);
-    QImage icon(path + "images/magnifying.png");
+    QImage icon(path + "images/searchBarMagnifying.png");
     QPushButton* icondisplay = new QPushButton();
     icondisplay->setStyleSheet("border:none;");
     icondisplay->setFlat(true);
@@ -37,8 +37,8 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
     textbox->setModified(true);
     textbox->setFrame(false);
     textbox->setTextMargins(0,0,0,0);
-    #ifndef Q_OS_MAC
-      //QMacStyle::setFocusRectPolicy(textbox, QMacStyle::FocusDisabled);
+    #ifdef Q_OS_MAC
+      QMacStyle::setFocusRectPolicy(textbox, QMacStyle::FocusDisabled);
     #endif
 
 
