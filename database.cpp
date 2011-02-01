@@ -307,6 +307,31 @@ QString Database::lastUpdate(QString uniqueid)
     }
 }
 
+
+void Database::setOnline(QString uniqueID, QString status)
+{
+    QSqlQuery result;
+    QString sql;
+
+    sql = "UPDATE LibIndex SET Online='";
+    sql += status;
+    sql += "' WHERE UniqueID='";
+           sql += uniqueID;
+    sql += "'';";
+
+    try
+    {
+        result = query(sql);
+        result.first();
+        return result.value(0).toInt();
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
+
+
 int Database::rowCount(QString tablename)
 {
     QSqlQuery result;

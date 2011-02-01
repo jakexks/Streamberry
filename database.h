@@ -32,6 +32,7 @@ public:
     QString lastUpdate(QString user_name);
     //get all changes from Local after timestamp. takes this computer's unique ID.
     QString changesSinceTime(int timestamp, QString uniqueID);
+    void setOnline(QString uniqueID, int status);
 
     //if argument 0 gets tracked, if 1 gets excluded
     QStringList getFolders(int trackedOrExcluded);
