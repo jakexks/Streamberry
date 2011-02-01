@@ -36,6 +36,7 @@ public:
     void setOnline(QString uniqueID, QString status);
     //add new changes
     void setNewChanges(QString changes);
+    void makeUser(QString timeLastUpdated, QString timeLastOnline, QString uniqueID, QString name);
 
     //if argument 0 gets tracked, if 1 gets excluded
     QStringList getFolders(int trackedOrExcluded);

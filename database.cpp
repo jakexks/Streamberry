@@ -323,7 +323,6 @@ void Database::setOnline(QString uniqueID, QString status)
     {
         result = query(sql);
         result.first();
-        return result.value(0).toInt();
     }
     catch(SBException e)
     {
@@ -570,26 +569,32 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
 
 }
 
-
-void Database::setNewChanges(QString changes)
+void Database::makeUser(QString timeLastUpdated, QString timeLastOnline, QString uniqueID, QString name)
 {
-    QList<QString> queries = libraryQuery.split('\x1D',QString::SkipEmptyParts);
-
     try
     {
-        if(queries.length() > 0)
-        {
+        QSqlQuery result;
+        QString sql = "INSERT INTO LibIndex (Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES ('0', '";
+        sql += timeLastUpdated;
+        sql += "', '";
+        sql += timeLastOnline;
+        sql += "', '";
+        sql += uniqueID;
+        sql += "', '";
+        sql += name;
+        sql += "', '0');";
 
+        try
+        {
+            result = query(sql);
         }
-
-        for (int i = 0; i < queries.length(); i++)
+        catch(SBException e)
         {
-            db.query(queries.takeAt(i));
+            throw e;
         }
     }
-    catch (SBException e)
+    catch(SBException e)
     {
-        std::cerr << e.getException().toStdString();
-        return 1;
+        throw e;
     }
 }

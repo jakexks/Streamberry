@@ -30,6 +30,8 @@ int libraryReceive::receive(QString theirID)
         {
             db.query(queries.takeAt(i));
         }
+
+        db.makeUser();
     }
     catch (SBException e)
     {
