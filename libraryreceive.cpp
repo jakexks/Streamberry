@@ -6,7 +6,18 @@
 
 libraryReceive::libraryReceive(Database &datab): db(datab)
 {
+    busy = FALSE;
+}
+
+bool libraryReceive::isBusy()
+{
+    return busy;
+}
+
+int libraryReceive::receive()
+{
     networking n;
+    busy = TRUE;
     QString libraryQuery = n.receive();
     QList<QString> queries = libraryQuery.split('\x1D',QString::SkipEmptyParts);
     try
@@ -19,6 +30,8 @@ libraryReceive::libraryReceive(Database &datab): db(datab)
     catch (SBException e)
     {
         std::cerr << e.getException().toStdString();
+        return 1;
     }
-
+    busy = FALSE;
+    return 0;
 }
