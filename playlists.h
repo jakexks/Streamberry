@@ -14,18 +14,18 @@ public:
 
 private:
 
-    QWidget* sidewidget;
-    QGridLayout* sidebarlayout;
+    QWidget* SideWidget;
+    QGridLayout* SideBarLayout;
     //properties and method for each section of screen
 
-    QPushButton* playlistbtn;
+    QPushButton* PlaylistBtn;
     QPushButton* makePlaylistBtn();
 
-    QWidget* playlistbar;
-    QWidget* previewbar;
+    QWidget* PlaylistBar;
+    QWidget* PreviewBar;
     QWidget* makePlaylistBar();
 
-    QPushButton* previewbtn;
+    QPushButton* PreviewBtn;
     QPushButton* makePreviewBtn();
 
     QString expath;

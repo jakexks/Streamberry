@@ -25,7 +25,7 @@ HEADERS  += mainwindow.h \
     librarygenerator.h \
     albumpanel.h
 
-<<<<<<< HEAD
+
 OTHER_FILES += \
     images/btnMuteUp.png \
     images/btnShuffleUp.png \
@@ -45,4 +45,4 @@ OTHER_FILES += \
     images/scrollBarMiddle.png
 =======
 FORMS +=
->>>>>>> aace901267549f03cc40792dd4270ea43b26f0b3
+

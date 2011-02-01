@@ -106,9 +106,15 @@ QWidget* MainWindow::makeTopBar() {
     innermiddle->setColumnMinimumWidth(3, 40);
     innerright->setColumnMinimumWidth(1, 15);
     //style the buttons
-    style = "background-image: url(";
+    style = "QPushButton { background-image: url(";
     style += expath;
-    style += "images/btnBackUp.png); background-repeat: no-repeat; border:none;";
+    style += "images/btnBackUp.png); background-repeat: no-repeat; border:none;} QPushButton:pressed {";
+    style += "background-image: url(";
+    style += expath;
+    style += "images/btnBackDown.png); background-repeat: no-repeat; border:none;} QPushButton:hover:!pressed {";
+    style += "background-image: url(";
+    style += expath;
+    style += "images/btnBackUpGlow.png); background-repeat: no-repeat; border:none;}";
     back->setStyleSheet(style);
     back->setMaximumSize(35, 29);
     back->setMinimumSize(35, 29);
@@ -192,13 +198,10 @@ QWidget* MainWindow::makeBottomBar() {
     left->setMargin(0);
     left->setContentsMargins(40,0,0,0);
     middle->setSpacing(0);
-<<<<<<< HEAD
-    middle->setContentsMargins(0,0,35,0);
-    middle->setMargin(35);
-=======
-    middle->setContentsMargins(35,0,35,0);
+    //middle->setContentsMargins(0,0,35,0);
+    //middle->setMargin(35);
+    //middle->setContentsMargins(35,0,35,0);
     middle->setMargin(0);
->>>>>>> aace901267549f03cc40792dd4270ea43b26f0b3
     right->setSpacing(10);
     right->setMargin(0);
     controls->addLayout(left, 0, 1, Qt::AlignRight | Qt::AlignVCenter);
@@ -255,8 +258,8 @@ QWidget* MainWindow::makeBottomBar() {
     style += expath;
     style += "images/btnPreviousUpGlow.png); background-repeat: no-repeat; border:none;}";
     previous->setStyleSheet(style);
-    previous->setMaximumSize(42, 39);
-    previous->setMinimumSize(42, 39);
+    previous->setMaximumSize(38, 39);
+    previous->setMinimumSize(38, 39);
     previous->setFlat(true);
     QPushButton *playpause = new QPushButton();
     style = "QPushButton { background-image: url(";
@@ -283,8 +286,8 @@ QWidget* MainWindow::makeBottomBar() {
     style += expath;
     style += "images/btnNextUpGlow.png); background-repeat: no-repeat; border:none;}";
     next->setStyleSheet(style);
-    next->setMaximumSize(42, 39);
-    next->setMinimumSize(42, 39);
+    next->setMaximumSize(38, 39);
+    next->setMinimumSize(38, 39);
     next->setFlat(true);
     QPushButton *mute = new QPushButton();
     style = "QPushButton { background-image: url(";

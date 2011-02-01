@@ -13,7 +13,7 @@ void Playlists::setPath(char* path)
 
 Playlists::Playlists()
 {
-   sidewidget = new QWidget();
+    SideWidget = new QWidget();
 }
 
 QWidget* Playlists::makeSidebar(QString path)
@@ -43,33 +43,6 @@ QWidget* Playlists::makeSidebar(QString path)
 
     return SideWidget;
 }
-
-QPushButton* playlists::makePreviewBtn()
-    sidebarlayout = new QGridLayout(sidewidget)                    ;
-    sidebarlayout->setRowMinimumHeight(0, TOPBARHEIGHT);
-    sidebarlayout->setRowStretch(0, 0);
-    sidebarlayout->setRowStretch(1, 2);
-    sidebarlayout->setRowStretch(2, 0);
-    sidebarlayout->setRowStretch(3, 0);
-    sidebarlayout->setRowMinimumHeight(2, BOTTOMBARHEIGHT);
-    sidebarlayout->setRowMinimumHeight(3, 140);
-    sidebarlayout->setColumnMinimumWidth(0, 140);
-    sidebarlayout->setMargin(0);
-    sidebarlayout->setSpacing(0);
-
-    playlistbtn = makePlaylistBtn();
-    playlistbar = makePlaylistBar();
-    previewbar = makePlaylistBar();
-    previewbtn = makePreviewBtn();
-
-    sidebarlayout->addWidget(playlistbtn, 0, 0);
-    sidebarlayout->addWidget(playlistbar, 1, 0);
-    sidebarlayout->addWidget(previewbtn, 2, 0);
-    sidebarlayout->addWidget(previewbar, 3, 0);
-    return sidewidget;
-}
-
-
 
 QPushButton* Playlists::makePreviewBtn()
 {
