@@ -140,7 +140,6 @@ QSqlQuery Database::query(QString sql)
         s += query.lastError().text();
         throw SBException(DB, s);
     }
-
     return query;
 }
 

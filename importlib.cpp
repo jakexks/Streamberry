@@ -22,7 +22,7 @@ QList<QString> importLib::libFileList(){
         node = node->next_sibling();
         if (node!=0) node = node->next_sibling();
     }
-
+    return list;
     //qDebug() << list.takeFirst() << endl;
 }
 
