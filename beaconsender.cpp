@@ -17,7 +17,7 @@ void beaconsender::send()
     sendme.append("STREAMBEACON|");
     sendme.append(n.getuniqid());
     sendme.append("|");
-    sendme.append(db.lastUpdate("Local"));
+    sendme.append(db.lastUpdate("-1"));
     sendme.append("|");
     sendme.append(n.getmyip());
     QByteArray datagram = sendme.toUtf8();

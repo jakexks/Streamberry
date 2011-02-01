@@ -23,12 +23,12 @@ int main(int argc, char *argv[])
    w.show();
    Database db = Database();
 
-//   beaconsender b(db);
-//   beaconreceiver r(db);
-//   offlinechecker oc(r);
-//   b.start();
-//   r.start();
-//   oc.start();
+   beaconsender b(db);
+   beaconreceiver r(db);
+   offlinechecker oc(r);
+   b.start();
+   r.start();
+   oc.start();
 
    Filescan scanner(db);
    try
