@@ -6,19 +6,6 @@
 #define TOPBARHEIGHT 32
 #define BOTTOMBARHEIGHT 34
 
-/*
-
- These changes to be made in the mainwindow file in the needed place
-
- #define TOPBARHEIGHT 36
-
-
-    playlists* sidebar = new playlists();
-    topbar = makeTopBar();
-    leftbar = sidebar->makesidebar(expath);
-    bottombar = makeBottomBar();
-    rightside = makeRightSide();
- */
 void playlists::setPath(char* path)
 {
     expath = path;
@@ -53,29 +40,23 @@ QWidget* playlists::makesidebar(QString path)
     SideBarLayout->addWidget(PlaylistBar, 1, 0);
     SideBarLayout->addWidget(PreviewBtn, 2, 0);
     SideBarLayout->addWidget(PreviewBar, 3, 0);
+
     return SideWidget;
 }
-
-/*QWidget* playlists::makePlaylistsTitle()
-{
-  QWidget *tempw = new QWidget();
-  tempw->setObjectName("PlaylistTitle");
-  QString style = "QWidget#PlaylistTitleWidget { background-image: url(";
-  style += expath;
-  style += "images/bgPlaylistBarTop.png);}";
-  tempw->setStyleSheet(style);
-  QGridLayout *temp = new QGridLayout(tempw);
-  return tempw;
-}*/
-
 
 QPushButton* playlists::makePreviewBtn()
 {
   QPushButton* temp = new QPushButton();
   temp->setObjectName("PreviewBtn");
-  QString style = "background-image: url(";
+  QString style = "QPushButton { background-image: url(";
   style += expath;
-  style += "images/BtnPreview.png); background-repeat: no-repeat; border:none;";
+  style += "images/btnPreview.png); background-repeat: no-repeat; border:none;} QPushButton:pressed {";
+  style += "background-image: url(";
+  style += expath;
+  style += "images/btnPreviewClicked.png); background-repeat: no-repeat; border:none;} QPushButton:hover:!pressed {";
+  style += "background-image: url(";
+  style += expath;
+  style += "images/btnPreviewGlow.png); background-repeat: no-repeat; border:none;}";
   temp->setStyleSheet(style);
   temp->setMaximumSize(190, 43);
   temp->setMinimumSize(190, 43);
@@ -87,13 +68,19 @@ QPushButton* playlists::makePlaylistBtn()
 {
   QPushButton* temp = new QPushButton();
   temp->setObjectName("PlaylistBtn");
-  QString style = "background-image: url(";
+  QString style = "QPushButton { background-image: url(";
   style += expath;
-  style += "images/bgPlaylistBarTop.png); background-repeat: no-repeat; border:none;";
+  style += "images/bgPlaylistBarTop.png); background-repeat: no-repeat; border:none;} QPushButton:pressed {";
+  style += "background-image: url(";
+  style += expath;
+  style += "images/bgPlaylistBarTopClicked.png); background-repeat: no-repeat; border:none;} QPushButton:hover:!pressed {";
+  style += "background-image: url(";
+  style += expath;
+  style += "images/bgPlaylistBarTopGlow.png); background-repeat: no-repeat; border:none;}";
   temp->setStyleSheet(style);
   temp->setMaximumSize(190, 40);
   temp->setMinimumSize(190, 40);
-  temp->setFlat(true);
+  temp->setFlat(true);  
   return temp;
 }
 
@@ -105,8 +92,7 @@ QWidget* playlists::makePlaylistBar()
   style += expath;
   style += "images/bgSideBar.png); background-repeat: repeat-y }";
   tempw->setStyleSheet(style);
-  qDebug() << "working one:";
-  qDebug() << style;
+  //qDebug() << style;
   QGridLayout *temp = new QGridLayout(tempw);
   //put widgets into layout here
   return tempw;
