@@ -7,7 +7,7 @@
 class offlinechecker : public QThread
 {
 public:
-    offlinechecker(beaconreceiver &br);
+    offlinechecker(beaconreceiver &br, Database &datab);
 protected:
     void run();
 private:

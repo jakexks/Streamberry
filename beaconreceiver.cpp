@@ -2,6 +2,7 @@
 #include "database.h"
 #include "utilities.h"
 #include "networking.h"
+#include "sbexception.h"
 #include <QDebug>
 
 // Constructor, needs no arguments
@@ -31,8 +32,6 @@ void beaconreceiver::processPendingDatagrams()
 {
     while (udpSocket.hasPendingDatagrams())
     {
-        //check datagram begins with STREAMBEACON
-        //check beacon received is not own
         QByteArray datagram;
         datagram.resize(udpSocket.pendingDatagramSize());
         udpSocket.readDatagram(datagram.data(), datagram.size());
@@ -54,16 +53,26 @@ void beaconreceiver::processPendingDatagrams()
 // Also detects whether the library needs updating and alerts the library receiver if so
 void beaconreceiver::checkID(QString id, QString dbTimeStamp)
 {
-    int stamp;
-    if ((stamp = onlineMachines.value(id)) == 0)
+    int stamp = onlineMachines.value(id);
+    try
     {
-        //TODO: tell the db that the machine is online
-
+        // Checks whether the receiving machine has the most recent version of the senders' library and requests an update if not
+        if ((QString::compare(db.lastUpdate(id), dbTimeStamp)) != 0)
+        {
+            //TODO: if receiver isn't busy then tell library receive to request their library
+        }
+        // If the machine has just come online
+        else if (stamp == 0)
+        {
+            //tell the db that the machine is online
+            db.setOnline(id, "1");
+        }
     }
-    // Checks whether the receiving machine has the most recent version of the senders' library and requests an update if not
-    if ((QString::compare(db.lastUpdate(id), dbTimeStamp)) != 0)
+    // If the machine is new
+    catch (SBException e)
     {
         //TODO: if receiver isn't busy then tell library receive to request their library
     }
+
     onlineMachines.insert(id, Utilities::getCurrentTimestamp());
 }

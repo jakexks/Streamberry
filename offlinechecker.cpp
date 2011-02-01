@@ -2,7 +2,7 @@
 #include "utilities.h"
 #include "beaconreceiver.h"
 
-offlinechecker::offlinechecker(beaconreceiver &br) : rec(br)
+offlinechecker::offlinechecker(beaconreceiver &br, Database &datab) : rec(br), db(datab)
 {
 }
 
