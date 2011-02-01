@@ -87,7 +87,11 @@ void beaconreceiver::checkID(QString id, QString dbTimeStamp)
     // If the machine is new
     catch (SBException e)
     {
-        //TODO: if receiver isn't busy then tell library receive to request their library
+        //if receiver isn't busy then tell library receive to request their library
+        if (!libr.isBusy())
+        {
+            libr.receive(id);
+        }
     }
 
     onlineMachines.insert(id, Utilities::getCurrentTimestamp());
