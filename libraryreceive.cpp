@@ -6,6 +6,7 @@
 
 libraryReceive::libraryReceive(Database &datab): db(datab)
 {
+    db.setOnline(networking::getuniqid(), "1");
     busy = FALSE;
 }
 
