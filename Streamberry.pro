@@ -13,17 +13,17 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp\
-        database.cpp\
-        utilities.cpp\
-        sbexception.cpp\
-        crossplatform.cpp\
-        sbsearchbar.cpp \
-        sidebarcontroller.cpp \
-        albumpanel.cpp \
-        topbarcontroller.cpp \
-        librarycontroller.cpp \
-        playbackcontroller.cpp
+           mainwindow.cpp\
+           database.cpp\
+           utilities.cpp\
+           sbexception.cpp\
+           crossplatform.cpp\
+           sbsearchbar.cpp \
+           sidebarcontroller.cpp \
+           albumpanel.cpp \
+           topbarcontroller.cpp \
+           librarycontroller.cpp \
+           playbackcontroller.cpp
 
 HEADERS += mainwindow.h\
            database.h\
@@ -37,5 +37,5 @@ HEADERS += mainwindow.h\
            sidebarcontroller.h \
            albumpanel.h \
            topbarcontroller.h \
-        librarycontroller.h \
-        playbackcontroller.h
+           librarycontroller.h \
+           playbackcontroller.h

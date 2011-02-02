@@ -19,8 +19,7 @@ QWidget* LibraryController::getWidget()
 QWidget* LibraryController::makeWidget()
 {
     QWidget *tempw = new QWidget();
-    tempw->setObjectName("rightSideWidget");
-    tempw->setStyleSheet("QWidget#rightSideWidget { background-color: #FFFFFF }");
+    tempw->setObjectName("library");
 
     QGridLayout *temp = new QGridLayout(tempw);
     temp->setMargin(0);

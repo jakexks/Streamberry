@@ -18,11 +18,7 @@ QWidget* TopbarController::getWidget()
 QWidget* TopbarController::makeWidget()
 {
     QWidget *temp = new QWidget();
-    temp->setObjectName("topBar");
-    QString style = "QWidget#topBar { background-image: url(";
-    style += expath;
-    style += "images/bgTopBar.png); background-repeat: repeat-x; }";
-    temp->setStyleSheet(style);
+    temp->setObjectName("topBarWidget");
 
     //Grids to hold objects in
     QGridLayout *outer = new QGridLayout(temp);
@@ -39,12 +35,18 @@ QWidget* TopbarController::makeWidget()
     QGridLayout *innerright = new QGridLayout();
     innerright->setMargin(0);
     innerright->setSpacing(0);
+
     //Buttons for menu
     QPushButton *back = new QPushButton();
+    back->setObjectName("topBarBack");
     QPushButton *forward = new QPushButton();
+    forward->setObjectName("topBarForward");
     QPushButton *music = new QPushButton();
+    music->setObjectName("topBarMusic");
     QPushButton *videos = new QPushButton();
+    videos->setObjectName("topBarVideos");
     SBSearchBar *search = new SBSearchBar(expath);
+
     //Split it into three sections
     outer->addLayout(innerleft, 1, 0);
     outer->addLayout(innermiddle, 0, 1, 3, 1);
@@ -68,31 +70,15 @@ QWidget* TopbarController::makeWidget()
     innermiddle->setColumnMinimumWidth(3, 40);
     innerright->setColumnMinimumWidth(1, 15);
     //style the buttons
-    style = "background-image: url(";
-    style += expath;
-    style += "images/btnBackUp.png); background-repeat: no-repeat; border:none;";
-    back->setStyleSheet(style);
     back->setMaximumSize(35, 29);
     back->setMinimumSize(35, 29);
     back->setFlat(true);
-    style = "background-image: url(";
-    style += expath;
-    style += "images/btnForwardUp.png); background-repeat: no-repeat; border:none;";
-    forward->setStyleSheet(style);
     forward->setMaximumSize(35, 29);
     forward->setMinimumSize(35, 29);
     forward->setFlat(true);
-    style = "background-image: url(";
-    style += expath;
-    style += "images/btnMusicUp.png); background-repeat: no-repeat; border:none;";
-    music->setStyleSheet(style);
     music->setMaximumSize(106, 33);
     music->setMinimumSize(106, 33);
     music->setFlat(true);
-    style = "background-image: url(";
-    style += expath;
-    style += "images/btnVideosUp.png); background-repeat: no-repeat; border:none;";
-    videos->setStyleSheet(style);
     videos->setMaximumSize(114, 33);
     videos->setMinimumSize(114, 33);
     videos->setFlat(true);

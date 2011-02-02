@@ -14,13 +14,8 @@ QWidget* PlaybackController::getWidget()
 
 QWidget* PlaybackController::makeWidget()
 {
-    QString expath(util.getExecutePath());
     QWidget *tempw = new QWidget();
     tempw->setObjectName("bottomBarWidget");
-    QString style = "QWidget#bottomBarWidget { background-image: url(";
-    style += expath;
-    style += "images/bgBottomBar.png); background-repeat: repeat-x }";
-    tempw->setStyleSheet(style);
 
     QGridLayout *temp = new QGridLayout(tempw);
     temp->setSpacing(0);
@@ -30,6 +25,7 @@ QWidget* PlaybackController::makeWidget()
     QHBoxLayout *playbackbox = new QHBoxLayout();
     playbackbox->setContentsMargins(15, 0, 15, 0);
     QSlider *playback = new QSlider(Qt::Horizontal);
+    playback->setObjectName("bottomBarPlayback");
     playbackbox->addWidget(playback);
 
     //playback controls
@@ -61,54 +57,37 @@ QWidget* PlaybackController::makeWidget()
     controls->setColumnMinimumWidth(4, 35);
 
     QPushButton *repeat = new QPushButton();
-    style = "background-image: url(";
-    style += expath;
-    style += "images/btnRepeatUp.png); background-repeat: no-repeat; border:none;";
-    repeat->setStyleSheet(style);
+    repeat->setObjectName("bottomBarRepeat");
     repeat->setMaximumSize(57, 36);
     repeat->setMinimumSize(57, 36);
     repeat->setFlat(true);
     QPushButton *shuffle = new QPushButton();
-    style = "background-image: url(";
-    style += expath;
-    style += "images/btnShuffleUp.png); background-repeat: no-repeat; border:none;";
-    shuffle->setStyleSheet(style);
+    repeat->setObjectName("bottomBarShuffle");
     shuffle->setMaximumSize(57, 36);
     shuffle->setMinimumSize(57, 36);
     shuffle->setFlat(true);
     QPushButton *previous = new QPushButton();
-    style = "background-image: url(";
-    style += expath;
-    style += "images/btnPreviousUp.png); background-repeat: no-repeat; border:none;";
-    previous->setStyleSheet(style);
+    previous->setObjectName("bottomBarPrevious");
     previous->setMaximumSize(42, 39);
     previous->setMinimumSize(42, 39);
     previous->setFlat(true);
     QPushButton *playpause = new QPushButton();
-    style = "background-image: url(";
-    style += expath;
-    style += "images/btnPlayUp.png); background-repeat: no-repeat; border:none;";
-    playpause->setStyleSheet(style);
+    playpause->setObjectName("bottomBarPlaypause");
     playpause->setMaximumSize(48, 59);
     playpause->setMinimumSize(48, 59);
     playpause->setFlat(true);
     QPushButton *next = new QPushButton();
-    style = "background-image: url(";
-    style += expath;
-    style += "images/btnNextUp.png); background-repeat: no-repeat; border:none;";
-    next->setStyleSheet(style);
+    next->setObjectName("bottomBarNext");
     next->setMaximumSize(42, 39);
     next->setMinimumSize(42, 39);
     next->setFlat(true);
     QPushButton *mute = new QPushButton();
-    style = "background-image: url(";
-    style += expath;
-    style += "images/btnMuteUp.png); background-repeat: no-repeat; border:none;";
-    mute->setStyleSheet(style);
+    mute->setObjectName("bottomBarMute");
     mute->setMaximumSize(57, 36);
     mute->setMinimumSize(57, 36);
     mute->setFlat(true);
     QSlider *volumeslider = new QSlider(Qt::Horizontal);
+    volumeslider->setObjectName("bottomBarVolumeslider");
     volumeslider->setFixedWidth(125);
     left->addWidget(repeat);
     left->addWidget(shuffle);

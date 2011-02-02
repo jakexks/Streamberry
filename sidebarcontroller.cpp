@@ -42,29 +42,12 @@ QWidget* SidebarController::makeWidget()
 QWidget* SidebarController::getWidget()
 {
     return widget;
-}
-
-/*QWidget* sidebar::makePlaylistsTitle()
-{
-  QWidget *tempw = new QWidget();
-  tempw->setObjectName("PlaylistTitle");
-  QString style = "QWidget#PlaylistTitleWidget { background-image: url(";
-  style += expath;
-  style += "images/bgPlaylistBarTop.png);}";
-  tempw->setStyleSheet(style);
-  QGridLayout *temp = new QGridLayout(tempw);
-  return tempw;
-}*/
-
+};
 
 QPushButton* SidebarController::makePreviewBtn()
 {
   QPushButton* temp = new QPushButton();
-  temp->setObjectName("PreviewBtn");
-  QString style = "background-image: url(";
-  style += expath;
-  style += "images/btnPreview.png); background-repeat: no-repeat; border:none;";
-  temp->setStyleSheet(style);
+  temp->setObjectName("playlistBarPreviewBtn");
   temp->setMaximumSize(190, 43);
   temp->setMinimumSize(190, 43);
   temp->setFlat(true);
@@ -74,11 +57,7 @@ QPushButton* SidebarController::makePreviewBtn()
 QPushButton* SidebarController::makePlaylistBtn()
 {
   QPushButton* temp = new QPushButton();
-  temp->setObjectName("PlaylistBtn");
-  QString style = "background-image: url(";
-  style += expath;
-  style += "images/bgPlaylistBarTop.png); background-repeat: no-repeat; border:none;";
-  temp->setStyleSheet(style);
+  temp->setObjectName("playlistBarPlaylistBtn");
   temp->setMaximumSize(190, 40);
   temp->setMinimumSize(190, 40);
   temp->setFlat(true);
@@ -87,13 +66,9 @@ QPushButton* SidebarController::makePlaylistBtn()
 
 QWidget* SidebarController::makePlaylistBar()
 {
-  QWidget *tempw = new QWidget();
-  tempw->setObjectName("PlaylistBarWidget");
-  QString style = "QWidget#PlaylistBarWidget { background-image: url(";
-  style += expath;
-  style += "images/bgSideBar.png); background-repeat: repeat-y }";
-  tempw->setStyleSheet(style);
-  return tempw;
+  QWidget *temp = new QWidget();
+  temp->setObjectName("playlistBarWidget");
+  return temp;
 }
 
 
