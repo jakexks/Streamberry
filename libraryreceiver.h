@@ -4,7 +4,7 @@
 class LibraryReceiver
 {
 public:
-    LibraryReceiver();
+    LibraryReceiver(QString theirid);
 };
 
 #endif // LIBRARYRECEIVER_H
