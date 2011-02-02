@@ -16,13 +16,15 @@ SOURCES += main.cpp\
     libraryreceiver.cpp \
     libraryrequester.cpp \
     beaconreceiver.cpp \
-    beaconsender.cpp
+    beaconsender.cpp \
+    networking.cpp
 
 HEADERS  += mainwindow.h \
     librarysender.h \
     libraryreceiver.h \
     libraryrequester.h \
     beaconreceiver.h \
-    beaconsender.h
+    beaconsender.h \
+    networking.h
 
 FORMS    += mainwindow.ui
