@@ -19,8 +19,11 @@ SOURCES += main.cpp\
         sbexception.cpp\
         crossplatform.cpp\
         sbsearchbar.cpp \
-        playlists.cpp \
-        albumpanel.cpp
+        sidebarcontroller.cpp \
+        albumpanel.cpp \
+        topbarcontroller.cpp \
+        librarycontroller.cpp \
+        playbackcontroller.cpp
 
 HEADERS += mainwindow.h\
            database.h\
@@ -28,8 +31,11 @@ HEADERS += mainwindow.h\
            sbexception.h\
            crossplatform.h\
            sbsearchbar.h\
-           playlists.h\
+           sidebarcontroller.h\
            albumpanel.h \
-    sbsearchbar.h \
-    playlists.h \
-    albumpanel.h
+           sbsearchbar.h \
+           sidebarcontroller.h \
+           albumpanel.h \
+           topbarcontroller.h \
+        librarycontroller.h \
+        playbackcontroller.h
