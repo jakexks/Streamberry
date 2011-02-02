@@ -1,4 +1,5 @@
 #include "crossplatform.h"
+#include "utilities.h"
 #include <QString>
 #include <QDir>
 
@@ -8,7 +9,7 @@ CrossPlatform::CrossPlatform() {}
 QString CrossPlatform::getAppDataPath()
 {
     #ifdef Q_WS_WIN
-    return QDir::homePath() + "/Application Data/Streamberry/";
+    return QDir::homePath() + "/AppData/Streamberry/";
     #endif
 
     #ifdef Q_WS_MAC
@@ -20,4 +21,12 @@ QString CrossPlatform::getAppDataPath()
     #endif
 
     return "./";
+}
+
+QString CrossPlatform::getImageDirPath(Utilities *util)
+{
+    //needs rewriting to change for every platform
+    QString str = util->getExecutePath();
+    str += "images/";
+    return str;
 }

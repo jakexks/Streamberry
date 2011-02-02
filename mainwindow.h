@@ -2,34 +2,35 @@
 #define MAINWINDOW_H
 
 #include <QtGui>
-#include "playlists.h"
+#include "sidebarcontroller.h"
+#include "topbarcontroller.h"
+#include "librarycontroller.h"
+#include "playbackcontroller.h"
+#include "utilities.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(char* path, QWidget *parent = 0);
-    ~MainWindow();
+    MainWindow(Utilities& util, QWidget *parent = 0);
     void setPath(char* path);
     QMenuBar* createMenuBar();
 
 private:
+    //layout of the main window
     QWidget* centralwidget;
-    QGridLayout* mainlayout;
-    //properties and method for each section of screen
-    QWidget* topbar;
-    QWidget* makeTopBar();
-    Playlists* sidebar;
-    QWidget* leftbar;
-    QWidget* makeLeftBar();
-    QWidget* bottombar;
-    QWidget* makeBottomBar();
-    QWidget* rightside;
-    QWidget* makeRightSide();
-    //path of the executable
-    QString expath;
     QMenuBar* menubar;
+    QGridLayout* mainlayout;
+    void initialiseGrid();
+
+    //widgets for each section of screen
+    SidebarController* sidebarcontroller;
+    TopbarController* topbarcontroller;
+    LibraryController* librarycontroller;
+    PlaybackController* playbackcontroller;
+
+    Utilities& util;
 };
 
 #endif // MAINWINDOW_H
