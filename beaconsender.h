@@ -9,9 +9,10 @@ public:
     BeaconSender();
 public slots:
     void sendOfflineBeacon();
+private slots:
+    void send();
 protected:
     void run();
-
 };
 
 #endif // BEACONSENDER_H

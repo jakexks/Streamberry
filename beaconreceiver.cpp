@@ -1,5 +1,5 @@
 #include "beaconreceiver.h"
 
-BeaconReceiver::BeaconReceiver()
+BeaconReceiver::BeaconReceiver(Database &datab) : db(datab)
 {
 }

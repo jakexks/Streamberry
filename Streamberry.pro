@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network\
+    sql
 
 TARGET = Streamberry
 TEMPLATE = app

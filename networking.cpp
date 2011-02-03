@@ -1,5 +1,4 @@
 #include "networking.h"
-#include "sleeper.h"
 #include <QCryptographicHash>
 #include <QStringList>
 
@@ -53,10 +52,6 @@ QByteArray networking::receive()
     {
         qDebug() << "Could not listen";
         return NULL;
-    }
-    while(!tcpServer.hasPendingConnections())
-    {
-        sleeper::msleep(500);
     }
     while(tcpServer.hasPendingConnections())
     {
