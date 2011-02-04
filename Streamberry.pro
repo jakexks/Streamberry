@@ -19,7 +19,10 @@ SOURCES += main.cpp\
     beaconreceiver.cpp \
     beaconsender.cpp \
     networking.cpp \
-    database.cpp
+    database.cpp \
+    utilities.cpp \
+    sbexception.cpp \
+    crossplatform.cpp
 
 HEADERS  += mainwindow.h \
     librarysender.h \
@@ -28,6 +31,9 @@ HEADERS  += mainwindow.h \
     beaconreceiver.h \
     beaconsender.h \
     networking.h \
-    database.h
+    database.h \
+    utilities.h \
+    sbexception.h \
+    crossplatform.h
 
 FORMS    += mainwindow.ui

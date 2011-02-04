@@ -1,16 +1,20 @@
 #include "beaconsender.h"
 #include "networking.h"
+#include "database.h"
 #include <QtNetwork>
 #include <QtCore>
+#include <QDebug>
 
-BeaconSender::BeaconSender()
+BeaconSender::BeaconSender(Database &datab): db(datab)
 {
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(send()));
+    timer->start(5000);
 }
 
 // Sends a streambeacon to every machine on the local network
 void BeaconSender::send()
 {
-    qDebug() << "sending beacon";
     QUdpSocket *udpsocket = new QUdpSocket();
     udpsocket->bind(QHostAddress::Broadcast, 45454, QUdpSocket::ShareAddress);
     networking n;
@@ -19,18 +23,12 @@ void BeaconSender::send()
     sendme.append("STREAMBEACON|");
     sendme.append(n.getuniqid());
     sendme.append("|");
-    sendme.append(""/*db.lastUpdate("-1"*/);
+    // Gets the timestamp from the database, could be changed to get the timestamp from constructor and a slot for updates
+    sendme.append(db.lastUpdate("-1"));
     sendme.append("|");
     sendme.append(n.getmyip());
+    qDebug() << sendme;
     QByteArray datagram = sendme.toUtf8();
     udpsocket->writeDatagram(datagram.data(), datagram.size(), QHostAddress::Broadcast, 45454);
     delete udpsocket;
-}
-
-//
-void BeaconSender::run()
-{
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(send()));
-    timer->start(5000);
 }

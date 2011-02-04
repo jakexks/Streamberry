@@ -8,7 +8,7 @@ class LibraryRequester : public QThread
 public:
     LibraryRequester();
 public slots:
-    void getLibrary(QString theirid, QString dblastupdate);
+    //void getLibrary(QString theirid, QString dblastupdate);
 };
 
 #endif // LIBRARYREQUESTER_H

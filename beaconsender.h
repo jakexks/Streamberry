@@ -1,18 +1,20 @@
 #ifndef BEACONSENDER_H
 #define BEACONSENDER_H
 #include <QThread>
+#include "database.h"
 
-class BeaconSender : public QThread
+class BeaconSender : public QObject
 {
     Q_OBJECT
 public:
-    BeaconSender();
+    BeaconSender(Database &datab);
 public slots:
-    void sendOfflineBeacon();
+    //void sendOfflineBeacon();
 private slots:
     void send();
 protected:
-    void run();
+private:
+    Database& db;
 };
 
 #endif // BEACONSENDER_H
