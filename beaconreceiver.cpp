@@ -5,7 +5,7 @@
 #include <QtNetwork>
 #include <QUdpSocket>
 
-//
+// Creates a beaconReceiver that will process all streambeacons received over the LAN
 BeaconReceiver::BeaconReceiver(Database &datab) : db(datab)
 {
     networking n;
@@ -29,6 +29,7 @@ void BeaconReceiver::processPendingDatagrams()
             qDebug() << "received " + datastring;
             networking n;
             QString id = n.parsebeacon(datastring, networking::uid);
+            // If normal beacon then check sender is in the hashtable and check their library
             if (n.parsebeacon(datastring, networking::beaconHeader) == "STREAMBEACON")
             {
                 // Checks that beacon is not our own
@@ -38,6 +39,7 @@ void BeaconReceiver::processPendingDatagrams()
                     checkID(id, dbtimestamp);
                 }
             }
+            // If offline beacon
             else if (n.parsebeacon(datastring, networking::beaconHeader) == "STREAMOFFLINE")
             {
                 if (id != myid)
@@ -81,4 +83,10 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp)
         //TODO: tell library requester to get their library
     }
     onlinemachines.insert(id, Utilities::getCurrentTimestamp());
+}
+
+// Iterates over the hashtable of online machines and checks for timeouts
+void BeaconReceiver::removeOfflineMachines()
+{
+
 }

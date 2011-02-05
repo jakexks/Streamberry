@@ -8,12 +8,13 @@ class BeaconSender : public QObject
 public:
     BeaconSender(Database &datab);
 public slots:
-    //void sendOfflineBeacon();
+    void sendOfflineBeacon();
 private slots:
-    void send();
+    void send(bool online = true);
 protected:
 private:
     Database& db;
+    QTimer *timer;
 };
 
 #endif // BEACONSENDER_H

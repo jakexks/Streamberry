@@ -22,6 +22,7 @@ private:
     QString myid;
     void checkID(QString id, QString dbtimestamp);
     QUdpSocket *udpsocket;
+    void removeOfflineMachines();
 };
 
 #endif // BEACONRECEIVER_H
