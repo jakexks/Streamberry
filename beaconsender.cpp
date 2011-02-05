@@ -27,7 +27,7 @@ void BeaconSender::send()
     sendme.append(db.lastUpdate("-1"));
     sendme.append("|");
     sendme.append(n.getmyip());
-    qDebug() << sendme;
+    qDebug() << "sending " + sendme;
     QByteArray datagram = sendme.toUtf8();
     udpsocket->writeDatagram(datagram.data(), datagram.size(), QHostAddress::Broadcast, 45454);
     delete udpsocket;

@@ -1,28 +1,27 @@
 #ifndef BEACONRECEIVER_H
 #define BEACONRECEIVER_H
-//#include <QThread>
-//#include <QHash>
-//#include "database.h"
+#include <QHash>
+#include <QtNetwork>
+#include <QUdpSocket>
+#include "database.h"
 
-class BeaconReceiver
-{
-    public:
-        BeaconReceiver();
-};
-
-#endif // BEACONRECEIVER_H
-
-/*class BeaconReceiver : public QThread
+class BeaconReceiver : public QObject
 {
     Q_OBJECT
 public:
     BeaconReceiver(Database &datab);
 signals:
     void getLibrary(QString uid, QString dbtimestamp);
+private slots:
+    void processPendingDatagrams();
 protected:
-    void run();
 private:
     // Sets up the hash table for storing connected machines, the unique ID of the machine is used as the hash key and a timestamp of when the last beacon was received is the data
-    QHash<QString, int> onlineMachines;
+    QHash<QString, int> onlinemachines;
     Database &db;
-};*/
+    QString myid;
+    void checkID(QString id, QString dbtimestamp);
+    QUdpSocket *udpsocket;
+};
+
+#endif // BEACONRECEIVER_H

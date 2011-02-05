@@ -1,6 +1,5 @@
 #ifndef BEACONSENDER_H
 #define BEACONSENDER_H
-#include <QThread>
 #include "database.h"
 
 class BeaconSender : public QObject
