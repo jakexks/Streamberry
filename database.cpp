@@ -59,7 +59,7 @@ void Database::createDatabase(QString &path)
     //sql statements which creates structure. must be split as it doesn't seem to work with just one
     QString sql[10];
     sql[0] = "DROP TABLE IF EXISTS \"HomeTable\";";
-    sql[1] = "CREATE TABLE \"LibLocal\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
+    sql[1] = "CREATE TABLE \"LibLocal\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Track\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
     sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
     sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Local\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" INTEGER NOT NULL , \"TimeLastOnline\" INTEGER NOT NULL , \"UniqueID\" VARCHAR UNIQUE NOT NULL, \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL );";
     sql[4] = "INSERT INTO LibIndex (ID, Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES (\"1\", 1, \"";
@@ -329,14 +329,14 @@ int Database::rowCount(QString tablename)
     }
 }
 
-void Database::addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString bitrate, QString filetype, QString table)
+void Database::addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString track, QString length, QString bitrate, QString filetype, QString table)
 {
     int timestamp = Utilities::getCurrentTimestamp();
     QString sql;
 
     sql = "INSERT OR REPLACE INTO ";
     sql += table;
-    sql += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype) VALUES (\"";
+    sql += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Track, Length , Bitrate , Filesize , Timestamp , Filetype) VALUES (\"";
     sql += filepath;
     sql += "\", \"";
     sql += artist;
@@ -352,6 +352,8 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     sql += filename;
     sql += "\", \"";
     sql += year;
+    sql += "\", \"";
+    sql += track;
     sql += "\", \"";
     sql += length;
     sql += "\", \"";
@@ -394,33 +396,37 @@ int Database::deleteFile(QString id, QString table)
     }
 }
 
-QList<QSqlRecord> Database::searchDb(int type, QString searchtxt)
+QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString>& sortcols, QList<QString> order)
 {
     QString condition;
     QString sql;
     QSqlQuery result;
     QList<QSqlRecord> users;
-    QList<QSqlRecord> files;
+    QList<QSqlRecord> *files;
 
     //work out condition
     switch(type)
     {
     case 1:
-        condition = "WHERE (Artist LIKE \"%";
+        condition = " WHERE (Artist LIKE \"%";
         condition += searchtxt;
         condition += "%\")";
         break;
     case 2:
-        condition = "WHERE (Title LIKE \"%";
+        condition = " WHERE (Title LIKE \"%";
         condition += searchtxt;
         condition += "%\")";
         break;
     case 3:
-        condition = "WHERE (Genre LIKE \"%";
+        condition = " WHERE (Genre LIKE \"%";
+        condition += searchtxt;
+        condition += "%\")";
+    case 4:
+        condition = " WHERE (Album LIKE \"%";
         condition += searchtxt;
         condition += "%\")";
     default:
-        condition = "WHERE (Artist LIKE \"%";
+        condition = " WHERE (Artist LIKE \"%";
         condition += searchtxt;
         condition += "%\") OR (Title LIKE \"%";
         condition += searchtxt;
@@ -430,11 +436,30 @@ QList<QSqlRecord> Database::searchDb(int type, QString searchtxt)
         break;
     }
 
+    int sortcount = sortcols.length();
+
+    if(sortcount>0)
+    {
+        condition += " ORDER BY ";
+        condition += sortcols.at(0);
+        condition += " ";
+        condition += order.at(0);
+
+        for(int i = 1; i < sortcount; i++)
+        {
+            condition += ", ";
+            condition += sortcols.at(i);
+            condition += " ";
+            condition += order.at(i);
+        }
+    }
+
+    condition += ", TRACK ASC";
+
     try
     {
         //select all unique ids from libindex
         sql = "SELECT UniqueID FROM LibIndex WHERE (UniqueID!=-1) AND (Online=1)";
-
         result = query(sql);
         result.first();
 
@@ -447,11 +472,13 @@ QList<QSqlRecord> Database::searchDb(int type, QString searchtxt)
 
         //get local library and add to files list
         sql = "SELECT * FROM LibLocal";
+        sql += condition;
         result = query(sql);
         result.first();
+        files = new QList<QSqlRecord>();
         while(result.isValid())
         {
-            files.append(result.record());
+            files->append(result.record());
             result.next();
         }
 
@@ -461,12 +488,13 @@ QList<QSqlRecord> Database::searchDb(int type, QString searchtxt)
             //get library and add to files list
             sql = "SELECT * FROM Lib";
             sql += users.takeFirst().value(0).toString();
+            sql += condition;
 
             result = query(sql);
             result.first();
             while(result.isValid())
             {
-                files.append(result.record());
+                files->append(result.record());
                 result.next();
             }
         }
@@ -499,13 +527,13 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
 
         final = "CREATE TABLE IF NOT EXISTS \"Lib";
         final += uniqueID;
-        final += "\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0); \x1D";
+        final += "\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Track\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0); \x1D";
 
         while(result.isValid())
         {
             final += "INSERT OR REPLACE INTO Lib";
             final += uniqueID;
-            final += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype) VALUES (\"";
+            final += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Track, Length , Bitrate , Filesize , Timestamp , Filetype) VALUES (\"";
             final += result.record().value("Filepath").toString();
             final += "\", \"";
             final += result.record().value("Artist").toString();
@@ -521,6 +549,8 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
             final += result.record().value("Filename").toString();
             final += "\", \"";
             final += result.record().value("Year").toString();
+            final += "\", \"";
+            final += result.record().value("Track").toString();
             final += "\", \"";
             final += result.record().value("Length").toString();
             final += "\", \"";

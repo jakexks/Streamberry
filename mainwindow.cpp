@@ -6,12 +6,13 @@
 #include "albumpanel.h"
 #include "librarycontroller.h"
 #include "utilities.h"
+#include "database.h"
 
 #define TOPBARHEIGHT 36
 #define BOTTOMBARHEIGHT 90
 
-MainWindow::MainWindow(Utilities& utilities, QWidget *parent)
-    : QMainWindow(parent), util(utilities)
+MainWindow::MainWindow(Utilities& utilities, Database &datab, QWidget *parent)
+    : QMainWindow(parent), util(utilities), db(datab)
 {
     //set window properties
     menubar = createMenuBar();
@@ -32,6 +33,16 @@ MainWindow::MainWindow(Utilities& utilities, QWidget *parent)
     mainlayout->addWidget(sidebarcontroller->getWidget(), 0, 0, 2, 1);
     mainlayout->addWidget(librarycontroller->getWidget(), 1, 1);
     mainlayout->addWidget(playbackcontroller->getWidget(), 2, 0, 1, 2);
+
+    QList<QString> fields;
+    QList<QString> order;
+    fields.append("Album");
+    order.append("DESC");
+
+    QList<QSqlRecord> *result = db.searchDb(0, "", fields, order);
+    librarycontroller->fillData(result);
+
+    QObject::connect(librarycontroller, SIGNAL(needNewLibrary(QList<QString>*,QList<QString>*)), this, SLOT(giveNewLibrary(QList<QString>*,QList<QString>*)));
 
     setCentralWidget(centralwidget);
 }
@@ -65,4 +76,12 @@ QMenuBar* MainWindow::createMenuBar()
     menu->addMenu("Window");
     menu->addMenu("Help");
     return menu;
+}
+
+void MainWindow::giveNewLibrary(QList<QString> *sortcols, QList<QString> *order)
+{
+    QList<QSqlRecord> *result = db.searchDb(0, "", *sortcols, *order);
+    librarycontroller->fillData(result);
+    delete sortcols;
+    delete order;
 }

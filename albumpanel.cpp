@@ -1,6 +1,7 @@
 #include "albumpanel.h"
 #include <QGridLayout>
 #include <QWidget>
+#include <QColor>
 
 AlbumPanel::AlbumPanel(QString path, QWidget *parent) :
     QWidget(parent)

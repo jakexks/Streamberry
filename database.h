@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class Database
+class Database : public QObject
 {
 public:
     Database();
@@ -38,13 +38,13 @@ public:
     //counts the number of rows in a table
     int rowCount(QString tablename);
     //adds file to database. if already in database it just updates.
-    void addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString bitrate, QString filetype, QString table);
+    void addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString track, QString length, QString bitrate, QString filetype, QString table);
     //deletes file by ID. returns number of files deleted.
     int deleteFile(QString id, QString table);
     //perform search.
-    //type: 0 - all, 1 - artist, 2 - title, 3 - genre
+    //type: 0 - all, 1 - artist, 2 - title, 3 - genre, 4 - album
     //return order: Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype
-    QList<QSqlRecord> searchDb(int type, QString searchtxt);
+    QList<QSqlRecord>* searchDb(int type, QString searchtxt, QList<QString>& sortcols, QList<QString> order);
 
 
 private:

@@ -23,7 +23,8 @@ SOURCES += main.cpp\
            albumpanel.cpp \
            topbarcontroller.cpp \
            librarycontroller.cpp \
-           playbackcontroller.cpp
+           playbackcontroller.cpp \
+           albumartdelegate.cpp
 
 HEADERS += mainwindow.h\
            database.h\
@@ -38,4 +39,5 @@ HEADERS += mainwindow.h\
            albumpanel.h \
            topbarcontroller.h \
            librarycontroller.h \
-           playbackcontroller.h
+           playbackcontroller.h \
+           albumartdelegate.h
