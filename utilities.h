@@ -1,6 +1,6 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
-#include <QString>;
+#include <QString>
 
 class Utilities
 {
