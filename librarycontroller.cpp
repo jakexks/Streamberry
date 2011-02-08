@@ -125,6 +125,7 @@ void LibraryController::addHeaders()
     }
 
     tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, Qt::AscendingOrder);
+    tablewidget->horizontalHeader()->setMovable(true);
 }
 
 void LibraryController::fillData(QList<QSqlRecord> *values)
