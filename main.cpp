@@ -10,10 +10,6 @@ int main(int argc, char *argv[])
     Utilities util(argv[0]);
     Database db;
 
-    QThread *dbthread = new QThread();
-    db.moveToThread(dbthread);
-    dbthread->start();
-
     MainWindow w(util, db);
     w.show();
 

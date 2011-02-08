@@ -2,6 +2,7 @@
 #include "sbexception.h"
 #include "utilities.h"
 #include "albumartdelegate.h"
+#include "database.h"
 #include <QtGui>
 #include <QString>
 #include <QGridLayout>
@@ -9,8 +10,11 @@
 #include <QDebug>
 #include <QFontMetrics>
 
-LibraryController::LibraryController(Utilities& utilities)
-    : util(utilities)
+#define DEFAULT_WIDTH 170
+#define DEFAULT_ARTPANEL_WIDTH 160
+
+LibraryController::LibraryController(Utilities& utilities, Database& datab)
+    : util(utilities), db(datab)
 {
     curheaders = NULL;
 
@@ -26,38 +30,7 @@ LibraryController::LibraryController(Utilities& utilities)
     paneldelegate = new AlbumArtDelegate();
     makeWidget();
 
-    //    QList<QSqlRecord> temp;
-    //    QSqlRecord rec;
-    //    QString str;
-
-    //    for(int i = 1; i<9; i++)
-    //    {
-    //        for(int j = 1; j<13; j++)
-    //        {
-    //            rec = QSqlRecord();
-    //            rec.append(QSqlField("Track"));
-    //            rec.setValue("Track", QVariant(j));
-    //            str = "Title ";
-    //            str += QString::number(j);
-    //            rec.append(QSqlField("Title"));
-    //            rec.setValue("Title", QVariant(str));
-    //            str = "Artist ";
-    //            str += QString::number(i);
-    //            rec.append(QSqlField("Artist"));
-    //            rec.setValue("Artist", QVariant(str));
-    //            str = "Album ";
-    //            str += QString::number(i);
-    //            rec.append(QSqlField("Album"));
-    //            rec.setValue("Album", QVariant(str));
-    //            str = "Genre ";
-    //            str += QString::number(i);
-    //            rec.append(QSqlField("Genre"));
-    //            rec.setValue("Genre", QVariant(str));
-    //            temp.append(rec);
-    //        }
-    //    }
-
-    //fillData(temp);
+    QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
 }
 
 QWidget* LibraryController::getWidget()
@@ -84,7 +57,7 @@ void LibraryController::makeWidget()
     tablewidget->setShowGrid(false);
     tablewidget->horizontalHeader()->setHighlightSections(false);
     tablewidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-    tablewidget->horizontalHeader()->setStretchLastSection(true);
+    //tablewidget->horizontalHeader()->setStretchLastSection(true);
     tablewidget->horizontalHeader()->setSortIndicatorShown(true);
     tablewidget->setWordWrap(false);
     temp->addWidget(tablewidget);
@@ -115,7 +88,18 @@ void LibraryController::addHeaders()
     tablewidget->verticalHeader()->setVisible(false);
     header = new QTableWidgetItem("");
     tablewidget->setHorizontalHeaderItem(0, header);
-    tablewidget->setColumnWidth(0, 150);
+
+    QString setting;
+
+    if((setting = db.getSetting("headerAlbumPanel"))!=NULL)
+    {
+        tablewidget->setColumnWidth(0, setting.toInt());
+    }
+    else
+    {
+        tablewidget->setColumnWidth(0, DEFAULT_ARTPANEL_WIDTH);
+    }
+
     header = new QTableWidgetItem("");
     tablewidget->setHorizontalHeaderItem(1, header);
     tablewidget->horizontalHeader()->setResizeMode(1, QHeaderView::Fixed);
@@ -125,6 +109,18 @@ void LibraryController::addHeaders()
     for(int i = 0; i<headercount; i++)
     {
         header = new QTableWidgetItem(*curheaders[i]);
+        QString settingname = "header";
+        settingname += *curheaders[i];
+
+        if((setting = db.getSetting(settingname))!=NULL)
+        {
+            tablewidget->setColumnWidth(i+2, setting.toInt());
+        }
+        else
+        {
+            tablewidget->setColumnWidth(i+2, DEFAULT_WIDTH);
+        }
+
         tablewidget->setHorizontalHeaderItem(i+2, header);
     }
 
@@ -170,6 +166,7 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
         QTableWidgetItem* item = new QTableWidgetItem(currecord.field("Track").value().toString());
         item->setFont(font);
         item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+        item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
         if(i%2==1)
             item->setBackgroundColor(background);
@@ -290,6 +287,27 @@ void LibraryController::sortIndicatorChanged(int index, Qt::SortOrder order)
         sortcolumn = index - 2;
         sortorder = order;
         emit needNewLibrary(sortcols, orders);
+    }
+}
+
+void LibraryController::sectionResized(int logicalindex, int oldsize, int newsize)
+{
+    try
+    {
+        if(logicalindex==0)
+        {
+            db.storeSetting("headerAlbumPanel", QString::number(newsize));
+        }
+        else if(logicalindex>1)
+        {
+            QString temp = "header";
+            temp += *curheaders[logicalindex-2];
+            db.storeSetting(temp, QString::number(newsize));
+        }
+    }
+    catch(SBException e)
+    {
+        //qDebug() << e.getException();
     }
 }
 

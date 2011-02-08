@@ -18,7 +18,33 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, QWidget *parent)
     menubar = createMenuBar();
     this->setWindowTitle("Streamberry");
     this->setMenuBar(menubar);
-    resize(850, 600);
+
+    QString temp;
+    if((temp = db.getSetting("windowSize")) != NULL)
+    {
+        QStringList list = temp.split('|');
+        if(list.size()==2)
+        {
+            resize(list.at(0).toInt(), list.at(1).toInt());
+        }
+        else
+        {
+            resize(900, 625);
+        }
+    }
+    else
+    {
+        resize(900, 625);
+    }
+
+    if((temp = db.getSetting("windowPos")) != NULL)
+    {
+        QStringList list = temp.split('|');
+        if(list.size()==2)
+        {
+            move(list.at(0).toInt(), list.at(1).toInt());
+        }
+    }
 
     //initialise window layout
     centralwidget = new QWidget();
@@ -27,7 +53,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, QWidget *parent)
 
     //initialise controllers and add widgets to window
     sidebarcontroller = new SidebarController(util);
-    librarycontroller = new LibraryController(util);
+    librarycontroller = new LibraryController(util, db);
     playbackcontroller = new PlaybackController(util);
 
     mainlayout->addWidget(sidebarcontroller->getWidget(), 0, 0, 2, 1);
@@ -84,4 +110,22 @@ void MainWindow::giveNewLibrary(QList<QString> *sortcols, QList<QString> *order)
     librarycontroller->fillData(result);
     delete sortcols;
     delete order;
+}
+
+void MainWindow::resizeEvent(QResizeEvent *resize)
+{
+    QSize size = resize->size();
+    QString winsize = QString::number(size.width());
+    winsize += "|";
+    winsize += QString::number(size.height());
+    db.storeSetting("windowSize", winsize);
+}
+
+void MainWindow::moveEvent(QMoveEvent *move)
+{
+    QPoint pos = move->pos();
+    QString winpos = QString::number(pos.x());
+    winpos += "|";
+    winpos += QString::number(pos.y());
+    db.storeSetting("windowPos", winpos);
 }

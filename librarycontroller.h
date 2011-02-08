@@ -3,6 +3,7 @@
 
 #include "utilities.h"
 #include "albumartdelegate.h"
+#include "database.h"
 #include <QtGui>
 #include <QSqlRecord>
 #include <QList>
@@ -13,7 +14,7 @@ class LibraryController : public QObject
     Q_OBJECT
 
 public:
-    LibraryController(Utilities& utilities);
+    LibraryController(Utilities& utilities, Database& datab);
     ~LibraryController();
     QWidget* getWidget();
     void addHeaders();
@@ -25,6 +26,7 @@ signals:
 public slots:
     void deselectFirst();
     void sortIndicatorChanged(int index,Qt::SortOrder order);
+    void sectionResized(int logicalindex, int oldsize, int newsize);
 private:
     Utilities& util;
     QWidget* widget;
@@ -37,6 +39,7 @@ private:
     QTableWidget* tablewidget;
     QList<QSqlRecord>* currentdata;
     AlbumArtDelegate* paneldelegate;
+    Database& db;
 };
 
 #endif // LIBRARYCONTROLLER_H

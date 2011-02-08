@@ -25,6 +25,8 @@ private:
     QMenuBar* menubar;
     QGridLayout* mainlayout;
     void initialiseGrid();
+    void resizeEvent(QResizeEvent *);
+    void moveEvent(QMoveEvent *);
 
     //widgets for each section of screen
     SidebarController* sidebarcontroller;
