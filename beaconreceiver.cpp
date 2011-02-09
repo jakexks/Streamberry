@@ -13,6 +13,10 @@ BeaconReceiver::BeaconReceiver(Database &datab) : db(datab)
     udpsocket = new QUdpSocket(this);
     udpsocket->bind(45454, QUdpSocket::ShareAddress);
     connect(udpsocket, SIGNAL(readyRead()), this, SLOT(processPendingDatagrams()));
+    // Creates a timer that tells the object when to check for timeouts
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(removeOfflineMachines()));
+    timer->start(10000);
 }
 
 // Gets a datagram from the UDPsocket, decodes it and checks that it belongs to streamberry, takes appropriate action if so
@@ -77,7 +81,7 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp)
     catch (SBException e)
     {
         // Adds machine to database as it has not been seen before
-        //TODO: enter real user name rather than Gary
+        //TODO: enter real user name rather than Gary OR get the library requester to enter username as this would be more efficient
         QString username = "Gary";
         db.makeUser(dbtimestamp, QString::number(Utilities::getCurrentTimestamp()), id, username);
         //TODO: tell library requester to get their library
@@ -88,5 +92,16 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp)
 // Iterates over the hashtable of online machines and checks for timeouts
 void BeaconReceiver::removeOfflineMachines()
 {
-
+    QHash<QString, int>::const_iterator i;
+    for (i = onlinemachines.constBegin(); i != onlinemachines.constEnd(); ++i)
+    {
+        if (i.value() - Utilities::getCurrentTimestamp() > 10)
+        {
+            // Set machine offline in the database
+            db.setOnline(i.key(), "0");
+            qDebug() << i.key() + "has timed out";
+            // Remove the machine's ID from the hashtable of online machines
+            onlinemachines.remove(i.key());
+        }
+    }
 }

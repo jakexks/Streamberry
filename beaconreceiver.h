@@ -14,6 +14,7 @@ signals:
     void getLibrary(QString uid, QString dbtimestamp);
 private slots:
     void processPendingDatagrams();
+    void removeOfflineMachines();
 protected:
 private:
     // Sets up the hash table for storing connected machines, the unique ID of the machine is used as the hash key and a timestamp of when the last beacon was received is the data
@@ -22,7 +23,7 @@ private:
     QString myid;
     void checkID(QString id, QString dbtimestamp);
     QUdpSocket *udpsocket;
-    void removeOfflineMachines();
+    QTimer *timer;
 };
 
 #endif // BEACONRECEIVER_H
