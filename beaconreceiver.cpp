@@ -10,13 +10,13 @@ BeaconReceiver::BeaconReceiver(Database &datab) : db(datab)
 {
     networking n;
     myid = n.getuniqid();
-    udpsocket = new QUdpSocket(this);
-    udpsocket->bind(45454, QUdpSocket::ShareAddress);
-    connect(udpsocket, SIGNAL(readyRead()), this, SLOT(processPendingDatagrams()));
     // Creates a timer that tells the object when to check for timeouts
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(removeOfflineMachines()));
     timer->start(10000);
+    udpsocket = new QUdpSocket(this);
+    udpsocket->bind(45454, QUdpSocket::ShareAddress);
+    connect(udpsocket, SIGNAL(readyRead()), this, SLOT(processPendingDatagrams()));
 }
 
 // Gets a datagram from the UDPsocket, decodes it and checks that it belongs to streamberry, takes appropriate action if so
@@ -92,6 +92,7 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp)
 // Iterates over the hashtable of online machines and checks for timeouts
 void BeaconReceiver::removeOfflineMachines()
 {
+    qDebug() << "hallelujah we're actually in the offline checker";
     QHash<QString, int>::const_iterator i;
     for (i = onlinemachines.constBegin(); i != onlinemachines.constEnd(); ++i)
     {
