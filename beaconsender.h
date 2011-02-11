@@ -15,6 +15,7 @@ protected:
 private:
     Database& db;
     QTimer *timer;
+    QString myip;
 };
 
 #endif // BEACONSENDER_H

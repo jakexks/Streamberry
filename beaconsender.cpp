@@ -7,6 +7,8 @@
 
 BeaconSender::BeaconSender(Database &datab): db(datab)
 {
+    networking n;
+    myip = n.getmyip();
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(send()));
     timer->start(5000);
@@ -23,13 +25,13 @@ void BeaconSender::send(bool online)
     if (online)
         sendme.append("STREAMBEACON|");
     else
-        sendme.append("STREAMOFFLINE");
+        sendme.append("STREAMOFFLINE|");
     sendme.append(n.getuniqid());
     sendme.append("|");
     // Gets the timestamp from the database, could be changed to get the timestamp from constructor and a slot for updates
-    sendme.append(db.lastUpdate("-1"));
+    if(online) sendme.append(db.lastUpdate("-1"));
     sendme.append("|");
-    sendme.append(n.getmyip());
+    sendme.append(myip);
     qDebug() << "sending " + sendme;
     QByteArray datagram = sendme.toUtf8();
     udpsocket->writeDatagram(datagram.data(), datagram.size(), QHostAddress::Broadcast, 45454);
