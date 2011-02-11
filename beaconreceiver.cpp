@@ -4,6 +4,7 @@
 #include "utilities.h"
 #include <QtNetwork>
 #include <QUdpSocket>
+#include <QHashIterator>
 
 // Creates a beaconReceiver that will process all streambeacons received over the LAN
 BeaconReceiver::BeaconReceiver(Database &datab) : db(datab)
@@ -93,14 +94,15 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp)
 void BeaconReceiver::removeOfflineMachines()
 {
     qDebug() << "hallelujah we're actually in the offline checker";
-    QHash<QString, int>::const_iterator i;
-    for (i = onlinemachines.constBegin(); i != onlinemachines.constEnd(); ++i)
+    QHashIterator<QString, int> i(onlinemachines);
+    while (i.hasNext())
     {
-        if (i.value() - Utilities::getCurrentTimestamp() > 10)
+        i.next();
+        if (Utilities::getCurrentTimestamp() - i.value() > 10)
         {
             // Set machine offline in the database
-            db.setOnline(i.key(), "0");
-            qDebug() << i.key() + "has timed out";
+            //db.setOnline(i.key(), "0");
+            qDebug() << i.key() + " has timed out";
             // Remove the machine's ID from the hashtable of online machines
             onlinemachines.remove(i.key());
         }
