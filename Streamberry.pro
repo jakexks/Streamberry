@@ -6,7 +6,7 @@
 
 QT += core gui network sql
 
-LIBS += -plugin -sql -sqlite
+LIBS += -plugin -sql -sqlite -lvlc
 
 TARGET = Streamberry
 TEMPLATE = app
@@ -25,7 +25,8 @@ SOURCES += main.cpp\
            topbarcontroller.cpp \
            librarycontroller.cpp \
            playbackcontroller.cpp \
-           albumartdelegate.cpp
+           albumartdelegate.cpp \
+    streamfile.cpp
 
 HEADERS += mainwindow.h\
            database.h\
@@ -41,4 +42,5 @@ HEADERS += mainwindow.h\
            topbarcontroller.h \
            librarycontroller.h \
            playbackcontroller.h \
-           albumartdelegate.h
+           albumartdelegate.h \
+    streamfile.h
