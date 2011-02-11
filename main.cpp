@@ -3,6 +3,8 @@
 #include "utilities.h"
 #include "database.h"
 #include <QThread>
+#include "streamfile.h"
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +14,10 @@ int main(int argc, char *argv[])
 
     MainWindow w(util, db);
     w.show();
+
+    StreamFile stream;
+    stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");
+    qDebug() << stream.getStreamLength("test");
 
     return a.exec();
 }

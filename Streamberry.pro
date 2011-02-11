@@ -6,9 +6,10 @@
 
 QT += core gui network sql
 
-LIBS += -plugin -sql -sqlite -lvlc.5 -L/Applications/VLC.app/Contents/MacOS/lib/
+LIBS += -plugin -sql -sqlite -lvlc
+mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
 
-INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
+mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
 
 TARGET = Streamberry
 TEMPLATE = app
