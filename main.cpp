@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     br->moveToThread(brthread);
     brthread->start();
 
-    //QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
+    QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
     return a.exec();
 }

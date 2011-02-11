@@ -93,7 +93,6 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp)
 // Iterates over the hashtable of online machines and checks for timeouts
 void BeaconReceiver::removeOfflineMachines()
 {
-    qDebug() << "hallelujah we're actually in the offline checker";
     QHashIterator<QString, int> i(onlinemachines);
     while (i.hasNext())
     {
