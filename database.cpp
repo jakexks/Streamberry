@@ -9,7 +9,7 @@
 #include <QList>
 #include "sbexception.h"
 #include "crossplatform.h"
-#include "utilities.h"
+#include <utilities.h>
 
 
 using namespace std;

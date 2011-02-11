@@ -10,6 +10,7 @@ LIBS += -plugin -sql -sqlite
 
 TARGET = Streamberry
 TEMPLATE = app
+BUILDPATH += '../Streamberry-build-desktop/'
 
 
 SOURCES += main.cpp\
