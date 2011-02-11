@@ -52,7 +52,7 @@ void BeaconReceiver::processPendingDatagrams()
                     // Sets the machine offline in the database and removes it from the hashtable
                     db.setOnline(id, "0");
                     onlinemachines.remove(id);
-                    qDebug() << id + "is offline";
+                    qDebug() << id + " is offline";
                 }
             }
         }
@@ -100,7 +100,7 @@ void BeaconReceiver::removeOfflineMachines()
         if (Utilities::getCurrentTimestamp() - i.value() > 10)
         {
             // Set machine offline in the database
-            //db.setOnline(i.key(), "0");
+            db.setOnline(i.key(), "0");
             qDebug() << i.key() + " has timed out";
             // Remove the machine's ID from the hashtable of online machines
             onlinemachines.remove(i.key());
