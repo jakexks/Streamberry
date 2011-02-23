@@ -33,7 +33,6 @@ QList<QString> FileMeta::printMeta(QString file)
     meta.append(currmeta.fromAscii(libvlc_media_get_meta(_m, libvlc_meta_Genre)));
     meta.append(currmeta.fromAscii(libvlc_media_get_meta(_m, libvlc_meta_Rating)));
     meta.append(currmeta.fromAscii(libvlc_media_get_meta(_m, libvlc_meta_Date)));
-    //NO length
     //NO BITRATE
     /*libvlc_media_player_get_length(); // length of video
     libvlc_media_player_get_time(); // current position (milliseconds)*/
