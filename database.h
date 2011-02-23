@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class Database: public QObject
+class Database //: public QObject
 {
 public:
     Database();
@@ -77,7 +77,7 @@ public:
     void createDatabase(QString &path);
     //performs an SQL query
 
-
+    bool localonly; //when true, only local files can played, other files are greyed out
     QSqlDatabase db;
     //says whether database is connected or not
     bool connected;

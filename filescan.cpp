@@ -15,6 +15,7 @@ Filescan::Filescan(Database &datab): db(datab)
 {
     db = datab;
 }
+
 //Connects to the database by being passed the database pointer.
 //filescan::filescan(Database &datab)
 //{
