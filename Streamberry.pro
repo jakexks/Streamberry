@@ -11,6 +11,9 @@ mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
 
 mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
 
+win32:LIBS += -L"C:\Program files\VideoLAN\VLC"
+win32:INCLUDEPATH += "C:\vlc-1.1.7\include"
+
 TARGET = Streamberry
 TEMPLATE = app
 
