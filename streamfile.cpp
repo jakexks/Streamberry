@@ -17,7 +17,8 @@ void StreamFile::addStream(QString fileName, QString compID, QString ipAddress)
     sout += "}}";
     libvlc_vlm_add_broadcast(_vlcinstance, compID.toAscii(), fileName.toAscii(),
                                 sout.toAscii(), 0, NULL, TRUE, TRUE);
-    libvlc_vlm_play_media(_vlcinstance, "Test");
+    libvlc_vlm_play_media(_vlcinstance, compID.toAscii());
+
 }
 
 void StreamFile::removeStream(QString compID)
@@ -62,7 +63,11 @@ int StreamFile::getStreamTime(QString compID)
 
 int StreamFile::getStreamLength(QString compID)
 {
-    return libvlc_vlm_get_media_instance_length(_vlcinstance, compID.toAscii(), 0)/1000000;
+    int length = 0;
+    while(length < 1 && length != -1){
+        length = libvlc_vlm_get_media_instance_length(_vlcinstance, compID.toAscii(), 0)/1000000;
+    }
+    return length;
 }
 
 StreamFile::~StreamFile()
