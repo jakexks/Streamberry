@@ -9,6 +9,7 @@
 #include "sbexception.h"
 #include "filescan.h"
 #include "playlist.h"
+#include "filemeta.h"
 
 int main(int argc, char *argv[])
 {

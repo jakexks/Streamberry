@@ -31,7 +31,8 @@ SOURCES += main.cpp\
            librarycontroller.cpp \
            playbackcontroller.cpp \
            albumartdelegate.cpp \
-    streamfile.cpp
+    streamfile.cpp \
+    filemeta.cpp
 
 HEADERS += mainwindow.h\
            database.h\
@@ -48,4 +49,5 @@ HEADERS += mainwindow.h\
            librarycontroller.h \
            playbackcontroller.h \
            albumartdelegate.h \
-    streamfile.h
+    streamfile.h \
+    filemeta.h

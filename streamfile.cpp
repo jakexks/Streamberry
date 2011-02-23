@@ -4,6 +4,7 @@ StreamFile::StreamFile()
 {
     const char * vlc_args[] = {
                         "--ignore-config",
+                        "--no-plugins-cache",
                         "--verbose=2"};
 
     //const char * sout = "#duplicate{dst=display,dst=rtp{mux=ts,dst=127.0.0.1}}";
