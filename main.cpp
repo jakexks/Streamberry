@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Utilities util(argv[0]);
-    Database db = Database();
-    Database gb = Database();
+    //Database db;
+    Database gb;
     MainWindow w(util, gb);
     w.show();
 
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     //stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");
     //qDebug() << stream.getStreamLength("test");
 
-    db.initialise();
+    /*db.initialise();
       Filescan scanner(db);
       try
       {
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
       catch(SBException e)
       {
           qDebug() << e.getException();
-      }
+      }*/
 
     return a.exec();
 }
