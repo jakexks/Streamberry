@@ -11,9 +11,9 @@ using namespace std;
 
 Filescan::Filescan(Database &datab): db(datab)
 {
-    db = datab;
-    localTable = "Lib";
-    localTable += db.getUniqueID();
+  db = datab;
+  localTable = "Lib";
+  localTable += db.getUniqueID();
 }
 
 Filescan::~Filescan()
@@ -26,28 +26,28 @@ Filescan::~Filescan()
 //Returns 1 if successful
 int Filescan::build_new()
 {
-    QStringList TrackedFolders;
-    QStringList ExFolders;
-    QString homeid;
-    try
+  QStringList TrackedFolders;
+  QStringList ExFolders;
+  QString homeid;
+  try
+  {
+    TrackedFolders = db.getFolders(0);
+    ExFolders = db.getFolders(1);
+    homeid = db.getUniqueID();
+    //For every folder to be tracked, run the scanFolder method
+    for(int i=0; i<TrackedFolders.size(); i++)
     {
-        TrackedFolders = db.getFolders(0);
-        ExFolders = db.getFolders(1);
-        homeid = db.getUniqueID();
-        //For every folder to be tracked, run the scanFolder method
-        for(int i=0; i<TrackedFolders.size(); i++)
-        {
-            QDir passpath = QDir(TrackedFolders.at(i));
-            scanFolder(passpath, ExFolders, homeid);
-        }
-        qDebug() << "File Scan Completed";
-        return 1;
+      QDir passpath = QDir(TrackedFolders.at(i));
+      scanFolder(passpath, ExFolders, homeid);
     }
-    catch(SBException e)
-    {
-        throw e;
-    }
-    return 0;
+    qDebug() << "File Scan Completed";
+    return 1;
+  }
+  catch(SBException e)
+  {
+    throw e;
+  }
+  return 0;
 }
 
 //This method builds a database by scanning the TrackedFolders for media files to add
@@ -56,34 +56,34 @@ int Filescan::build_new()
 //Thsi method differs from the standard build_new because it wipes the current library first.
 int Filescan::build_new_clean()
 {
-    QStringList TrackedFolders;
-    QStringList ExFolders;
-    QString homeid;
-    try
+  QStringList TrackedFolders;
+  QStringList ExFolders;
+  QString homeid;
+  try
+  {
+    QString sql = "DELETE FROM sqlite_sequence WHERE name=\"";
+    sql += localTable;
+    sql += "\";";
+    db.query(sql);
+    sql = "DELETE FROM ";
+    sql += localTable;
+    db.query(sql);
+    TrackedFolders = db.getFolders(0);
+    ExFolders = db.getFolders(1);
+    homeid = "-1";
+    for(int i=0; i<TrackedFolders.size(); i++)
     {
-      QString sql = "DELETE FROM sqlite_sequence WHERE name=\"";
-      sql += localTable;
-      sql += "\";";
-      db.query(sql);
-      sql = "DELETE FROM ";
-      sql += localTable;
-      db.query(sql);
-      TrackedFolders = db.getFolders(0);
-      ExFolders = db.getFolders(1);
-      homeid = "-1";
-      for(int i=0; i<TrackedFolders.size(); i++)
-      {
-        QDir passpath = QDir(TrackedFolders.at(i));
-        scanFolder(passpath, ExFolders, homeid);
-      }
-      qDebug() << "Clean File Scan Completed";
-      return 1;
+      QDir passpath = QDir(TrackedFolders.at(i));
+      scanFolder(passpath, ExFolders, homeid);
     }
-    catch(SBException e)
-    {
-        throw e;
-    }
-    return 0;
+    qDebug() << "Clean File Scan Completed";
+    return 1;
+  }
+  catch(SBException e)
+  {
+    throw e;
+  }
+  return 0;
 }
 
 //This method takes a folder path and an array of folders to exclude.
@@ -92,28 +92,28 @@ int Filescan::build_new_clean()
 //Returns 1 when complete
 int Filescan::scanFolder(QDir path, QStringList expaths, QString homeid)
 {
-    QFileInfoList folderList;
-    if(!expaths.isEmpty())
+  QFileInfoList folderList;
+  if(!expaths.isEmpty())
+  {
+    for(int i=0; i<expaths.size(); i++)
     {
-        for(int i=0; i<expaths.size(); i++)
-        {
-            if(path==expaths[i])
-                return 1;
-        }
+      if(path==expaths[i])
+        return 1;
     }
-    addFiles(path, homeid);
-    path.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
-    folderList = path.entryInfoList();
+  }
+  addFiles(path, homeid);
+  path.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
+  folderList = path.entryInfoList();
 
-    if(!folderList.isEmpty())
+  if(!folderList.isEmpty())
+  {
+    for(int j=0; j<folderList.size(); j++)
     {
-        for(int j=0; j<folderList.size(); j++)
-        {
 
-            scanFolder(QDir(folderList.at(j).absoluteFilePath()), expaths, homeid);
-        }
+      scanFolder(QDir(folderList.at(j).absoluteFilePath()), expaths, homeid);
     }
-    return 1;
+  }
+  return 1;
 }
 
 
@@ -124,11 +124,11 @@ int Filescan::scanFolder(QDir path, QStringList expaths, QString homeid)
 //TODO Deal with album art in some way. Look at meta.c in VLC
 void Filescan::addFiles(QDir path, QString homeID)
 {
-    QFileInfoList fileList;
-    //FileMeta file;
-    QList<QString> tags;
-    ///TEST
-   /* QList<QString> test;
+  QFileInfoList fileList;
+  //FileMeta file;
+  QList<QString> tags;
+  ///TEST
+  /* QList<QString> test;
     test.append("");
     test.append("");
     test.append("");
@@ -137,23 +137,30 @@ void Filescan::addFiles(QDir path, QString homeID)
     test.append("");
     test.append("");
     test.append("");*/
-    ///TEST ENDS
-    path.setFilter(QDir::Files);
-    fileList = path.entryInfoList();
-    if(!fileList.isEmpty())
+  ///TEST ENDS
+  path.setFilter(QDir::Files);
+  fileList = path.entryInfoList();
+  if(!fileList.isEmpty())
+  {
+    for(int i = 0; i<fileList.size(); i++)
     {
-        for(int i = 0; i<fileList.size(); i++)
+      if(ismedia(fileList.at(i))==1)
+      {
+        try
         {
-            if(ismedia(fileList.at(i))==1)
-            {
-                tags = checktags(file.printMeta(fileList.at(i).absoluteFilePath()), fileList.at(i).fileName());
-                //tags = checktags(test, fileList.at(i).fileName());
-                db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", fileList.at(i).suffix(), (QString)localTable, homeID);
-            }
+          tags = checktags(file.printMeta(fileList.at(i).absoluteFilePath()), fileList.at(i).fileName());
+          //tags = checktags(test, fileList.at(i).fileName());
+          db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", fileList.at(i).suffix(), (QString)localTable, homeID);
         }
+        catch (SBException e)
+        {
+          qDebug() << "broken file found";
+        }
+      }
     }
-    //file.~FileMeta();
-    return;
+  }
+  //file.~FileMeta();
+  return;
 }
 
 QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
@@ -192,12 +199,12 @@ QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
 //This method takes a filepath and returns 1 if the file in question is a media file
 int Filescan::ismedia(QFileInfo file)
 {
-    QString name = file.suffix();
-    if(QString::compare("wav",name)==0 || QString::compare("mp3",name)==0 || QString::compare("wma",name)==0 || QString::compare("ogg",name)==0 || QString::compare("aac",name)==0 || QString::compare("mid",name)==0)
-    {
-        return 1;
-    }
-    return 0;
+  QString name = file.suffix();
+  if(QString::compare("wav",name)==0 || QString::compare("mp3",name)==0 || QString::compare("wma",name)==0 || QString::compare("ogg",name)==0 || QString::compare("aac",name)==0 || QString::compare("mid",name)==0)
+  {
+    return 1;
+  }
+  return 0;
 }
 
 
