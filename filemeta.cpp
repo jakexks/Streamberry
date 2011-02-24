@@ -54,6 +54,7 @@ QList<QString> FileMeta::printMeta(QString file)
     //currmeta.f
     //currmeta.number(libvlc_media_player_get_length(_mp)/1000);
     meta.append(currmeta.number(libvlc_media_player_get_length(_mp)/1000));
+    meta.append(currmeta.fromAscii(libvlc_media_get_meta(_m, libvlc_meta_TrackNumber)));
     libvlc_media_player_stop (_mp);
     libvlc_media_player_release(_mp);
     libvlc_media_release(_m);
