@@ -29,7 +29,7 @@ void BeaconSender::send(bool online)
     sendme.append(n.getuniqid());
     sendme.append("|");
     // Gets the timestamp from the database, could be changed to get the timestamp from constructor and a slot for updates
-    if(online) sendme.append(db.lastUpdate("-1"));
+    if(online) sendme.append(db.lastUpdate("Local"));
     sendme.append("|");
     sendme.append(myip);
     qDebug() << "sending " + sendme;
