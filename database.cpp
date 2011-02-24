@@ -358,13 +358,13 @@ int Database::rowCount(QString tablename)
     }
 }
 
-void Database::addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString bitrate, QString filetype, QString table, QString UniqueID)
+void Database::addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString trackno, QString bitrate, QString filetype, QString table, QString UniqueID)
 {
     int timestamp = Utilities::getCurrentTimestamp();
     QString sql;
     sql = "INSERT OR REPLACE INTO ";
     sql += table;
-    sql += " (UniqueID, Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype) VALUES (\"";
+    sql += " (UniqueID, Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype, Track) VALUES (\"";
     sql += UniqueID;
     sql += "\", \"";
     sql += filepath;
@@ -392,7 +392,9 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     sql += QString::number(timestamp);
     sql += "\", \"";
     sql += filetype;
-    sql += "\");";
+    sql += "\", ";
+    sql += trackno;
+    sql += ");";
     qDebug() << sql;
     try
     {

@@ -19,6 +19,7 @@ class Filescan: public QObject
 {
 public:
    Filescan(Database &datab);
+   ~Filescan();
    //Filescan(Database &datab): db(datab){}
    int build_new(); //reads the list of folders to be scanned out of the database and adds media files in that
                     // folder and it's subfolders to it's library. Returns 1 if successful
@@ -34,6 +35,7 @@ private:
    int isalreadyindat(QDir file);
    int isdup(QDir file);
    QString localTable;
+   FileMeta file;
 };
 
 

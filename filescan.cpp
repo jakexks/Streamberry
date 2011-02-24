@@ -16,11 +16,10 @@ Filescan::Filescan(Database &datab): db(datab)
     localTable += db.getUniqueID();
 }
 
-//Connects to the database by being passed the database pointer.
-//filescan::filescan(Database &datab)
-//{
-//    db = datab;
-//}
+Filescan::~Filescan()
+{
+  file.~FileMeta();
+}
 
 //This method builds a database by scanning the TrackedFolders for media files to add
 //Doesn't add files stored in exluded folders
@@ -129,7 +128,7 @@ void Filescan::addFiles(QDir path, QString homeID)
     //FileMeta file;
     QList<QString> tags;
     ///TEST
-    QList<QString> test;
+   /* QList<QString> test;
     test.append("");
     test.append("");
     test.append("");
@@ -137,6 +136,7 @@ void Filescan::addFiles(QDir path, QString homeID)
     test.append("");
     test.append("");
     test.append("");
+    test.append("");*/
     ///TEST ENDS
     path.setFilter(QDir::Files);
     fileList = path.entryInfoList();
@@ -146,12 +146,13 @@ void Filescan::addFiles(QDir path, QString homeID)
         {
             if(ismedia(fileList.at(i))==1)
             {
-                //tags = checktags(file.printMeta(fileList.at(i).absoluteFilePath()), fileList.at(i).fileName());
-                tags = checktags(test, fileList.at(i).fileName());
-                db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), (QString)"1411", fileList.at(i).suffix(), (QString)localTable, homeID);
+                tags = checktags(file.printMeta(fileList.at(i).absoluteFilePath()), fileList.at(i).fileName());
+                //tags = checktags(test, fileList.at(i).fileName());
+                db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", fileList.at(i).suffix(), (QString)localTable, homeID);
             }
         }
     }
+    //file.~FileMeta();
     return;
 }
 
@@ -174,6 +175,16 @@ QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
     tags.replace(5, "-1");
   if(tags.at(6) == "")
     tags.replace(6, "0");
+  if(tags.at(7) == "")
+    tags.replace(7, "0");
+  QString updated0 = tags.at(0);
+  QString updated1 = tags.at(1);
+  QString updated2 = tags.at(2);
+  QString updated3 = tags.at(3);
+  tags.replace(0, updated0.replace("\"", "'"));
+  tags.replace(1, updated1.replace("\"", "'"));
+  tags.replace(2, updated2.replace("\"", "'"));
+  tags.replace(3, updated3.replace("\"", "'"));
   return tags;
 }
 
