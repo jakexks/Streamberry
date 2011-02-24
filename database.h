@@ -56,7 +56,7 @@ public:
     //Returns the UniqueID of the local machine for the use of Filescan
     QString getUniqueID();
     //Only for testing purposes: Sets the unique ID of the local machine to a certain value.
-    void setUniqueID(QString id);
+    //void setUniqueID();
     //This takes a playlist name and returns a QSqlQuery containing information about the playlists type and filter.
     QSqlQuery GetPlaylistInfo(QString playlistName);
     //This takes a playlist name and returns an QSqlQuery containing the IDs and Unique IDs of all the tracks in the playlist
@@ -83,6 +83,7 @@ public:
     bool connected;
     //file name not including path
     QString dbfilename;
+    QString localUniqueId;
 };
 
 #endif // DATABASE_H

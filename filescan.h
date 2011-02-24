@@ -7,7 +7,9 @@
 #include <QString>
 #include <QFile>
 #include <QDir>
+#include <QList>
 #include "sbexception.h"
+#include "filemeta.h"
 #include "crossplatform.h"
 
 using namespace std;
@@ -16,7 +18,6 @@ using namespace std;
 class Filescan: public QObject
 {
 public:
-   //Filescan();
    Filescan(Database &datab);
    //Filescan(Database &datab): db(datab){}
    int build_new(); //reads the list of folders to be scanned out of the database and adds media files in that
@@ -25,12 +26,14 @@ public:
    int build_new_clean();
 
 private:
+   QList<QString> checktags(QList<QString> tags, QString filename);
    Database& db;
    int scanFolder(QDir path, QStringList Expaths, QString homeid);
-   int addFiles(QDir path, QString homeID);
+   void addFiles(QDir path, QString homeID);
    int ismedia(QFileInfo file);
    int isalreadyindat(QDir file);
    int isdup(QDir file);
+   QString localTable;
 };
 
 

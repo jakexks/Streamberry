@@ -1,6 +1,4 @@
 #include "filescan.h"
-#include "database.h"
-//#include "libvlc/vlc/libvlc_media.h"
 #include <QtDebug>
 #include <QtSql>
 #include <QString>
@@ -14,6 +12,8 @@ using namespace std;
 Filescan::Filescan(Database &datab): db(datab)
 {
     db = datab;
+    localTable = "Lib";
+    localTable += db.getUniqueID();
 }
 
 //Connects to the database by being passed the database pointer.
@@ -62,13 +62,16 @@ int Filescan::build_new_clean()
     QString homeid;
     try
     {
-      QString sql = "DELETE FROM sqlite_sequence WHERE name=\"LibLocal\";";
+      QString sql = "DELETE FROM sqlite_sequence WHERE name=\"";
+      sql += localTable;
+      sql += "\";";
       db.query(sql);
-      sql = "DELETE FROM LibLocal;";
+      sql = "DELETE FROM ";
+      sql += localTable;
       db.query(sql);
       TrackedFolders = db.getFolders(0);
       ExFolders = db.getFolders(1);
-      homeid = db.getUniqueID();
+      homeid = "-1";
       for(int i=0; i<TrackedFolders.size(); i++)
       {
         QDir passpath = QDir(TrackedFolders.at(i));
@@ -107,6 +110,7 @@ int Filescan::scanFolder(QDir path, QStringList expaths, QString homeid)
     {
         for(int j=0; j<folderList.size(); j++)
         {
+
             scanFolder(QDir(folderList.at(j).absoluteFilePath()), expaths, homeid);
         }
     }
@@ -119,9 +123,21 @@ int Filescan::scanFolder(QDir path, QStringList expaths, QString homeid)
 //If a duplicate file is found, e.g. one matching certain criteria, then it is added to the database with a dup flag set 1
 //returns 1 if files are added.
 //TODO Deal with album art in some way. Look at meta.c in VLC
-int Filescan::addFiles(QDir path, QString homeID)
+void Filescan::addFiles(QDir path, QString homeID)
 {
     QFileInfoList fileList;
+    //FileMeta file;
+    QList<QString> tags;
+    ///TEST
+    QList<QString> test;
+    test.append("");
+    test.append("");
+    test.append("");
+    test.append("");
+    test.append("");
+    test.append("");
+    test.append("");
+    ///TEST ENDS
     path.setFilter(QDir::Files);
     fileList = path.entryInfoList();
     if(!fileList.isEmpty())
@@ -130,11 +146,35 @@ int Filescan::addFiles(QDir path, QString homeID)
         {
             if(ismedia(fileList.at(i))==1)
             {
-                db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), (QString)"ARTIST", (QString)"ALBUM", (QString)"TITLE", (QString)"GENRE", (QString)"5", (QString)"1991", (QString)"123", (QString)"2400", fileList.at(i).suffix(), (QString)"LibLocal", homeID);
+                //tags = checktags(file.printMeta(fileList.at(i).absoluteFilePath()), fileList.at(i).fileName());
+                tags = checktags(test, fileList.at(i).fileName());
+                db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), (QString)"1411", fileList.at(i).suffix(), (QString)localTable, homeID);
             }
         }
     }
-    return 1;
+    return;
+}
+
+QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
+{
+  bool ok;
+  if(tags.at(0) == "")
+    tags.replace(0, "Unknown Artist");
+  if(tags.at(1) == "")
+    tags.replace(1, "Unknown Album");
+  if(tags.at(2) == "")
+    tags.replace(2, filename);
+  if(tags.at(3) == "")
+    tags.replace(3, "Unknown Genre");
+  if(tags.at(4).toInt(&ok, 10) == 0)
+    tags.replace(4, "0");
+  if(tags.at(4) == "")
+    tags.replace(4, "0");
+  if(tags.at(5) == "")
+    tags.replace(5, "-1");
+  if(tags.at(6) == "")
+    tags.replace(6, "0");
+  return tags;
 }
 
 //TO DO: Many more compatible filetypes need adding

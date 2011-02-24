@@ -18,6 +18,7 @@ Database::Database()
 {
     db = QSqlDatabase::addDatabase( "QSQLITE" );
     connected = false;
+    localUniqueId = "-1"; //////REQUIRES CHANGE this should draw the actually unique ID from networking, but not yet!
     dbfilename = "database.sqlite";
     initialise();
 }
@@ -60,7 +61,9 @@ void Database::createDatabase(QString &path)
     //sql statements which creates structure. must be split as it doesn't seem to work with just one
     QString sql[sqlstatements];
     sql[0] = "DROP TABLE IF EXISTS \"HomeTable\";";
-    sql[1] = "CREATE TABLE \"LibLocal\" (\"UniqueID\" VARCHAR NOT NULL, \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
+    sql[1] = "CREATE TABLE \"Lib";
+    sql[1] += localUniqueId;
+    sql[1] += "\" (\"UniqueID\" VARCHAR NOT NULL, \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
     sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
     sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Local\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" INTEGER NOT NULL , \"TimeLastOnline\" INTEGER NOT NULL , \"UniqueID\" VARCHAR UNIQUE NOT NULL, \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL );";
     sql[4] = "INSERT INTO LibIndex (ID, Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES (\"1\", 1, \"";
@@ -112,7 +115,7 @@ void Database::initialise()
     QString filepath = path;
     filepath += dbfilename;
     QFile dbfile(filepath);
-    //qDebug() << path;
+    //() << path;
     try
     {
         //if the database doesn't exist, create it
@@ -137,11 +140,12 @@ QSqlQuery Database::query(QString sql)
     QSqlQuery query(db);
     for(i=0; i<queries.size(); i++)
     {
-      //qDebug() << queries.at(i);
       query.prepare(queries.at(i));
       //if it can't execute, throw exception
       if(!query.exec())
       {
+          qDebug() << queries.at(i);
+          qDebug() << "here in Database point 5";
           QString s = "SQL failed: ";
           s += query.lastError().text();
           throw SBException(DB, s);
@@ -389,6 +393,7 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     sql += "\", \"";
     sql += filetype;
     sql += "\");";
+    qDebug() << sql;
     try
     {
       query(sql);
@@ -494,16 +499,16 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
         }
 
         //get local library and add to files list
-        sql = "SELECT * FROM LibLocal";
-        sql += condition;
-        result = query(sql);
-        result.first();
+        //sql = "SELECT * FROM LibLocal";
+        //sql += condition;
+        //result = query(sql);
+        //result.first();
         files = new QList<QSqlRecord>();
-        while(result.isValid())
-        {
-            files->append(result.record());
-            result.next();
-        }
+       // while(result.isValid())
+        //{
+          //files->append(result.record());
+          //result.next();
+        //}
 
         //for every user
         while(!users.isEmpty())
@@ -514,6 +519,7 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
             sql += condition;
 
             result = query(sql);
+
             result.first();
             while(result.isValid())
             {
@@ -549,10 +555,10 @@ QString Database::getUniqueID()
   }
 }
 
-void Database::setUniqueID(QString id)
+/*void Database::setUniqueID()
 {
     QString sql;
-    sql = "DELETE FROM LibIndex";
+    /*sql = "DELETE FROM LibIndex";
     try
     {
       query(sql);
@@ -562,7 +568,7 @@ void Database::setUniqueID(QString id)
       throw e;
     }
     sql = "INSERT INTO LibIndex (UniqueID, TimeLastUpdated, Local, TimeLastOnline, Name, Online) VALUES (\"";
-    sql += id;
+    sql += localUniqueId;
     sql += "\", 11, 1, 12, \"Jim\", 1);";
     try
     {
@@ -572,7 +578,7 @@ void Database::setUniqueID(QString id)
     {
       throw e;
     }
-}
+}*/
 
 QString Database::changesSinceTime(int timestamp, QString uniqueID)
 {
@@ -580,7 +586,9 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
     QString final;
     QSqlQuery result;
 
-    sql = "SELECT * FROM LibLocal WHERE (Timestamp >";
+    sql = "SELECT * FROM Lib";
+    sql += localUniqueId;
+    sql += " WHERE (Timestamp >";
     sql += QString::number(timestamp);
     sql += ");";
 
@@ -746,15 +754,8 @@ QList<QSqlRecord> Database::getTracks( QList<QString> Tracks)
     QString id = list1.at(1);
     QString uniqueid = list1.at(0);
     QString sql = "SELECT * FROM ";
-    if(uniqueid == getUniqueID())
-    {
-      sql += "LibLocal";
-    }
-    else
-    {
-      sql += uniqueid; ///////////CORRECT THIS
-      sql += "table";
-    }
+    sql += "Lib";
+    sql += uniqueid;
     sql += " WHERE UniqueID = \"";
     sql += uniqueid;
     sql += "\" AND ID = ";

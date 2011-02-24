@@ -9,7 +9,7 @@ CrossPlatform::CrossPlatform() {}
 QString CrossPlatform::getAppDataPath()
 {
     #ifdef Q_WS_WIN
-    return QDir::homePath() + "/AppData/Streamberry/";
+    return QDir::homePath() + "/AppData/Local/Streamberry/";
     #endif
 
     #ifdef Q_WS_MAC

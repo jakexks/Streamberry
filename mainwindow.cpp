@@ -22,6 +22,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, QWidget *parent)
     QString temp;
     if((temp = db.getSetting("windowSize")) != NULL)
     {
+
         QStringList list = temp.split('|');
         if(list.size()==2)
         {
@@ -66,11 +67,13 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, QWidget *parent)
     order.append("DESC");
 
     QList<QSqlRecord> *result = db.searchDb(0, "", fields, order);
+
     librarycontroller->fillData(result);
 
     QObject::connect(librarycontroller, SIGNAL(needNewLibrary(QList<QString>*,QList<QString>*)), this, SLOT(giveNewLibrary(QList<QString>*,QList<QString>*)));
 
     setCentralWidget(centralwidget);
+
 }
 
 void MainWindow::initialiseGrid()

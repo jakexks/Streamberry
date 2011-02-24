@@ -15,8 +15,11 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
   Utilities util(argv[0]);
-  Database db;
+
+  Database db = Database();
+  qDebug() << "here point 2";
   MainWindow w(util, db);
+
   w.show();
 
   //StreamFile stream;
@@ -25,11 +28,11 @@ int main(int argc, char *argv[])
 
   try
   {
+
     db.setFolders("C:/Users/Jim/Music");
-    db.setUniqueID( (QString)"98" );
     Filescan fs(db);
-    QThread fsthread;
-    fs.moveToThread(&fsthread);
+    //QThread fsthread;
+    //fs.moveToThread(&fsthread);
     fs.build_new_clean();
 
     //importLib itunes("");//file name here.
