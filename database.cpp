@@ -314,7 +314,7 @@ QString Database::lastUpdate(QString uniqueid)
     }
 }
 
-/*void Database::setOnline(QString uniqueID, QString status)
+void Database::setOnline(QString uniqueID, QString status)
 {
     QSqlQuery result;
     QString sql;
@@ -334,7 +334,7 @@ QString Database::lastUpdate(QString uniqueid)
         qDebug() << e.getException();
         throw e;
     }
-}*/
+}
 
 int Database::rowCount(QString tablename)
 {
