@@ -14,7 +14,6 @@ mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
 win32:LIBS += -L"C:\Program files\VideoLAN\VLC"
 win32:LIBS += -L"C:\Program files (x86)\VideoLAN\VLC"
 win32:INCLUDEPATH += "C:\vlc-1.1.7\include"
-
 TARGET = Streamberry
 TEMPLATE = app
 
@@ -36,7 +35,12 @@ SOURCES += main.cpp\
            playlist.cpp \
            streamfile.cpp \
            filemeta.cpp \
-    player.cpp
+           librarysender.cpp \
+    libraryreceiver.cpp \
+    libraryrequester.cpp \
+    beaconreceiver.cpp \
+    beaconsender.cpp \
+    networking.cpp 
 
 HEADERS += mainwindow.h\
            database.h\
@@ -57,4 +61,9 @@ HEADERS += mainwindow.h\
            playlist.h \
            streamfile.h \
            filemeta.h \
-    player.h
+               librarysender.h \
+    libraryreceiver.h \
+    libraryrequester.h \
+    beaconreceiver.h \
+    beaconsender.h \
+    networking.h 
