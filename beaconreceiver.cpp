@@ -5,12 +5,21 @@
 #include <QtNetwork>
 #include <QUdpSocket>
 #include <QHashIterator>
+#include "libraryrequester.h"
 
 // Creates a beaconReceiver that will process all streambeacons received over the LAN
 BeaconReceiver::BeaconReceiver(Database &datab) : db(datab)
 {
     networking n;
     myid = n.getuniqid();
+
+    LibraryRequester *lr = new LibraryRequester(db);
+    QThread *lrthread = new QThread(this);
+    lr->moveToThread(lrthread);
+    lrthread->start();
+
+    connect(this, SIGNAL(getLibrary(QHostAddress,QString,QString)), lr, SLOT(getLibrary(QHostAddress,QString,QString)));
+
     // Creates a timer that tells the object when to check for timeouts
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(removeOfflineMachines()));
@@ -41,7 +50,7 @@ void BeaconReceiver::processPendingDatagrams()
                 if (id != myid)
                 {
                     QString dbtimestamp = n.parsebeacon(datastring, networking::timestamp);
-                    checkID(id, dbtimestamp);
+                    checkID(id, dbtimestamp, QHostAddress::QHostAddress(n.parsebeacon(datastring, networking::ip)));
                 }
             }
             // If offline beacon
@@ -64,14 +73,22 @@ void BeaconReceiver::processPendingDatagrams()
 }
 
 // Checks that the BeaconReceiver knows the machine is online and that we have the most recent version of their library
-void BeaconReceiver::checkID(QString id, QString dbtimestamp)
+void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress theirip)
 {
     try
     {
         int stamp = onlinemachines.value(id);
-        if (db.lastUpdate(id) == dbtimestamp)
+        if (db.lastUpdate(id) < dbtimestamp)
         {
-            //TODO: tell library requester to get their library
+            networking n;
+            QString sendme = "STREAMLIBRARY|";
+            sendme.append(n.getuniqid());
+            sendme.append("|");
+            sendme.append(dbtimestamp);
+            sendme.append("|");
+            sendme.append(n.getmyip());
+
+            n.send(theirip, 45455, sendme.toUtf8());
         }
         // If the machine has been seen before, but just come online then tell the database that it is online
         else if (stamp == 0)
@@ -83,9 +100,9 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp)
     {
         // Adds machine to database as it has not been seen before
         //TODO: enter real user name rather than Gary OR get the library requester to enter username as this would be more efficient
-        QString username = "Gary";
+        QString username = "Gary Oak";
         db.makeUser(dbtimestamp, QString::number(Utilities::getCurrentTimestamp()), id, username);
-        //TODO: tell library requester to get their library
+        getLibrary(theirip, id, dbtimestamp);
     }
     onlinemachines.insert(id, Utilities::getCurrentTimestamp());
 }

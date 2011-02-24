@@ -11,7 +11,7 @@ class BeaconReceiver : public QObject
 public:
     BeaconReceiver(Database &datab);
 signals:
-    void getLibrary(QString uid, QString dbtimestamp);
+    void getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
 private slots:
     void processPendingDatagrams();
     void removeOfflineMachines();
@@ -21,7 +21,7 @@ private:
     QHash<QString, int> onlinemachines;
     Database &db;
     QString myid;
-    void checkID(QString id, QString dbtimestamp);
+    void checkID(QString id, QString dbtimestamp, QHostAddress theirip);
     QUdpSocket *udpsocket;
     QTimer *timer;
 };

@@ -13,7 +13,7 @@ public:
     networking();
     static QString getuniqid();
     QString getmyip();
-    QByteArray receive();
+    QByteArray receive(int port);
     void send(QHostAddress, quint16, QByteArray);
     static QString parsebeacon(QString, int);
     enum beaconFields { beaconHeader, uid, timestamp, ip };

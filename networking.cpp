@@ -44,9 +44,9 @@ QString networking::getmyip()
 }
 
 // Generic receive function. Waits until there is something to receive from the network, then returns a byte array containing all the data received
-QByteArray networking::receive()
+QByteArray networking::receive(int port)
 {
-    tcpServer.listen(QHostAddress::Any,6567);
+    tcpServer.listen(QHostAddress::Any,port);
     QByteArray buf;
     while (!tcpServer.isListening() && !tcpServer.listen())
     {
@@ -74,6 +74,6 @@ void networking::send(QHostAddress host, quint16 port, QByteArray data)
 // Unique ID parser
 QString networking::parsebeacon(QString bc, int field)
 {
-    QStringList split = bc.split('|', QString::SkipEmptyParts, Qt::CaseInsensitive);
+    QStringList split = bc.split('|', QString::KeepEmptyParts, Qt::CaseInsensitive);
     return split.takeAt(field);
 }
