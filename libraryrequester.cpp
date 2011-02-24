@@ -56,7 +56,7 @@ void LibraryRequester::processNetworkActivity()
                 {
                     QString dbtimestamp = n.parsebeacon(datastring, networking::timestamp);
                     LibrarySender ls = LibrarySender::LibrarySender(db);
-                    qDebug()<<"Sending my library to " << id;
+                    qDebug() << "Sending my library to " << id;
                     ls.send(dbtimestamp.toInt(), QHostAddress::QHostAddress(n.parsebeacon(datastring, networking::ip)), id);
                 }
             }
