@@ -5,6 +5,9 @@
 #include <QUdpSocket>
 #include "database.h"
 
+Q_DECLARE_METATYPE(QHostAddress)
+
+
 class BeaconReceiver : public QObject
 {
     Q_OBJECT
