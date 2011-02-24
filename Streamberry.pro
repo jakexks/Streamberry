@@ -18,52 +18,54 @@ TARGET = Streamberry
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-           mainwindow.cpp\
-           database.cpp\
-           utilities.cpp\
-           sbexception.cpp\
-           crossplatform.cpp\
-           sbsearchbar.cpp \
-           sidebarcontroller.cpp \
-           albumpanel.cpp \
-           topbarcontroller.cpp \
-           librarycontroller.cpp \
-           playbackcontroller.cpp \
-           albumartdelegate.cpp \
-           filescan.cpp \
-           playlist.cpp \
-           streamfile.cpp \
-           filemeta.cpp \
-           librarysender.cpp \
-    libraryreceiver.cpp \
-    libraryrequester.cpp \
-    beaconreceiver.cpp \
-    beaconsender.cpp \
-    networking.cpp 
+SOURCES +=  main.cpp\
+            mainwindow.cpp\
+            database.cpp\
+            utilities.cpp\
+            sbexception.cpp\
+            crossplatform.cpp\
+            sbsearchbar.cpp \
+            sidebarcontroller.cpp \
+            albumpanel.cpp \
+            topbarcontroller.cpp \
+            librarycontroller.cpp \
+            playbackcontroller.cpp \
+            albumartdelegate.cpp \
+            filescan.cpp \
+            playlist.cpp \
+            streamfile.cpp \
+            filemeta.cpp \
+            librarysender.cpp \
+            libraryreceiver.cpp \
+            libraryrequester.cpp \
+            beaconreceiver.cpp \
+            beaconsender.cpp \
+            networking.cpp \
+            player.cpp
 
-HEADERS += mainwindow.h\
-           database.h\
-           utilities.h\
-           sbexception.h\
-           crossplatform.h\
-           sbsearchbar.h\
-           sidebarcontroller.h\
-           albumpanel.h \
-           sbsearchbar.h \
-           sidebarcontroller.h \
-           albumpanel.h \
-           topbarcontroller.h \
-           librarycontroller.h \
-           playbackcontroller.h \
-           albumartdelegate.h \
-           filescan.h \
-           playlist.h \
-           streamfile.h \
-           filemeta.h \
-               librarysender.h \
-    libraryreceiver.h \
-    libraryrequester.h \
-    beaconreceiver.h \
-    beaconsender.h \
-    networking.h 
+HEADERS +=  mainwindow.h\
+            database.h\
+            utilities.h\
+            sbexception.h\
+            crossplatform.h\
+            sbsearchbar.h\
+            sidebarcontroller.h\
+            albumpanel.h \
+            sbsearchbar.h \
+            sidebarcontroller.h \
+            albumpanel.h \
+            topbarcontroller.h \
+            librarycontroller.h \
+            playbackcontroller.h \
+            albumartdelegate.h \
+            filescan.h \
+            playlist.h \
+            streamfile.h \
+            filemeta.h \
+            librarysender.h \
+            libraryreceiver.h \
+            libraryrequester.h \
+            beaconreceiver.h \
+            beaconsender.h \
+            networking.h \
+            player.h
