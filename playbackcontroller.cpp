@@ -25,6 +25,7 @@ QWidget* PlaybackController::makeWidget()
     QHBoxLayout *playbackbox = new QHBoxLayout();
     playbackbox->setContentsMargins(15, 0, 15, 0);
     QSlider *playback = new QSlider(Qt::Horizontal);
+    playback->setMaximum(10000);
     playback->setObjectName("bottomBarPlayback");
     playbackbox->addWidget(playback);
 
@@ -103,7 +104,12 @@ QWidget* PlaybackController::makeWidget()
     temp->setRowStretch(0, 0);
 
     player.playFile("/home/vity/01-Metric-Help I'm Alive.mp3");
-    connect(playpause, SIGNAL(clicked()), player, SLOT(playControl()));
+    connect(playpause, SIGNAL(clicked()), &player, SLOT(playControl()));
+    connect(volumeslider, SIGNAL(valueChanged(int)), &player, SLOT(changeVolume(int)));
+    connect(playback, SIGNAL(sliderMoved(int)), &player, SLOT(changePosition(int)));
+    connect(mute, SIGNAL(clicked()), &player, SLOT(muteAudio()));
+    connect(&player, SIGNAL(sliderChanged(int)), playback, SLOT(setValue(int)));
+
 
     return tempw;
 }
