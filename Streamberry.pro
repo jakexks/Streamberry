@@ -12,6 +12,7 @@ mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
 mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
 
 win32:LIBS += -L"C:\Program files\VideoLAN\VLC"
+win32:LIBS += -L"C:\Program files (x86)\VideoLAN\VLC"
 win32:INCLUDEPATH += "C:\vlc-1.1.7\include"
 
 TARGET = Streamberry
@@ -31,8 +32,10 @@ SOURCES += main.cpp\
            librarycontroller.cpp \
            playbackcontroller.cpp \
            albumartdelegate.cpp \
-    streamfile.cpp \
-    filemeta.cpp
+           filescan.cpp \
+           playlist.cpp \
+           streamfile.cpp \
+           filemeta.cpp
 
 HEADERS += mainwindow.h\
            database.h\
@@ -49,5 +52,7 @@ HEADERS += mainwindow.h\
            librarycontroller.h \
            playbackcontroller.h \
            albumartdelegate.h \
-    streamfile.h \
-    filemeta.h
+           filescan.h \
+           playlist.h \
+           streamfile.h \
+           filemeta.h

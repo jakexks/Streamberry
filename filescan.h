@@ -1,7 +1,6 @@
 #ifndef FILESCAN_H
 #define FILESCAN_H
 
-#include "filescan.h"
 #include "database.h"
 #include <QtDebug>
 #include <QtSql>
@@ -14,7 +13,7 @@
 using namespace std;
 
 
-class Filescan
+class Filescan: public QObject
 {
 public:
    //Filescan();
