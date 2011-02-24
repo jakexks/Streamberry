@@ -28,11 +28,11 @@ int main(int argc, char *argv[])
   try
   {
 
-    db.setFolders("C:/Users/Jim/Music");
+    db.setFolders("/home/vity/Music/Metric - Fantasies [320]");
     Filescan fs(db);
     QThread fsthread;
     fs.moveToThread(&fsthread);
-    fs.build_new_clean();
+    fs.build_new();
 
     //importLib itunes("");//file name here.
     //QList<QString> allFiles = itunes.libFileList();

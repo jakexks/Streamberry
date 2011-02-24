@@ -48,6 +48,7 @@ QList<QString> FileMeta::printMeta(QString file)
     _mp = libvlc_media_player_new_from_media(_m);
     libvlc_media_player_play (_mp);
 
+
     if(libvlc_media_player_get_length(_mp)==-1)
     {
         throw new SBException(GENERIC, "Invalid file");

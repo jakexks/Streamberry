@@ -363,9 +363,7 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     QString sql;
     sql = "INSERT OR REPLACE INTO ";
     sql += table;
-    sql += " (UniqueID, Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype, Track) VALUES (\"";
-    sql += UniqueID;
-    sql += "\", \"";
+    sql += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype, Track) VALUES (\"";
     sql += filepath;
     sql += "\", \"";
     sql += artist;

@@ -35,7 +35,8 @@ SOURCES += main.cpp\
            filescan.cpp \
            playlist.cpp \
            streamfile.cpp \
-           filemeta.cpp
+           filemeta.cpp \
+    player.cpp
 
 HEADERS += mainwindow.h\
            database.h\
@@ -55,4 +56,5 @@ HEADERS += mainwindow.h\
            filescan.h \
            playlist.h \
            streamfile.h \
-           filemeta.h
+           filemeta.h \
+    player.h

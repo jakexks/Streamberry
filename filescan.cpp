@@ -148,13 +148,15 @@ void Filescan::addFiles(QDir path, QString homeID)
       {
         try
         {
-          tags = checktags(file.printMeta(fileList.at(i).absoluteFilePath()), fileList.at(i).fileName());
+            tags = checktags(file.printMeta(fileList.at(i).absoluteFilePath()), fileList.at(i).fileName());
+
           //tags = checktags(test, fileList.at(i).fileName());
           db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", fileList.at(i).suffix(), (QString)localTable, homeID);
         }
         catch (SBException e)
         {
-          qDebug() << "broken file found";
+            qDebug() << e.getException();
+            qDebug() << "broken file found";
         }
       }
     }
