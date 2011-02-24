@@ -4,6 +4,7 @@
 #include <QString>
 #include <QList>
 #include <vlc/vlc.h>
+#include "sbexception.h"
 
 class FileMeta
 {

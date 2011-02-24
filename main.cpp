@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
   try
   {
 
-    /*db.setFolders("C:/Users/Jim/Music");
+    db.setFolders("C:/Users/Jim/Music");
     Filescan fs(db);
     QThread fsthread;
     fs.moveToThread(&fsthread);
@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
     //importLib itunes("");//file name here.
     //QList<QString> allFiles = itunes.libFileList();
     //PLAYLIST TEST
+    /*
     Playlist test1 = Playlist(db);
     test1.setPlaylistName("test1");
     test1.setPlaylistType("nothing");
