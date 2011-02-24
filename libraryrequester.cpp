@@ -23,6 +23,15 @@ void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString
     {
         gettinglibraries.append(theirid);
         qDebug() << "Attempting to receive library from " << theirid;
+        networking n;
+        QString sendme = "STREAMLIBRARY|";
+        sendme.append(n.getuniqid());
+        sendme.append("|");
+        sendme.append(dbtimestamp);
+        sendme.append("|");
+        sendme.append(n.getmyip());
+        qDebug() << "Requesting library from " << theirip ;
+        n.send(theirip, 45455, sendme.toUtf8());
         LibraryReceiver lr = LibraryReceiver(db);
         lr.receive();
         gettinglibraries.removeOne(theirid);
