@@ -10,13 +10,29 @@
 #include "filescan.h"
 #include "playlist.h"
 #include "filemeta.h"
+#include "beaconsender.h"
+#include "beaconreceiver.h"
 
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
   Utilities util(argv[0]);
 
-  Database db = Database();
+  Database db;
+
+    BeaconSender *bs = new BeaconSender(db);
+    QThread *bsthread = new QThread(&a);
+    bs->moveToThread(bsthread);
+    bsthread->start();
+
+    BeaconReceiver *br = new BeaconReceiver(db);
+    QThread *brthread = new QThread(&a);
+    br->moveToThread(brthread);
+    brthread->start();
+
+    QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
+
+
   MainWindow w(util, db);
 
   w.show();
@@ -28,11 +44,11 @@ int main(int argc, char *argv[])
   try
   {
 
-    db.setFolders("/home/vity/Music/Metric - Fantasies [320]");
-    Filescan fs(db);
-    QThread fsthread;
-    fs.moveToThread(&fsthread);
-    fs.build_new();
+//    db.setFolders("/Users/Robbie/Music/Albums");
+//    Filescan fs(db);
+//    QThread fsthread;
+//    fs.moveToThread(&fsthread);
+//    fs.build_new_clean();
 
     //importLib itunes("");//file name here.
     //QList<QString> allFiles = itunes.libFileList();
@@ -78,4 +94,6 @@ int main(int argc, char *argv[])
   }
 
   return a.exec();
+
+
 }
