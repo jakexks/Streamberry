@@ -87,7 +87,7 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress their
             sendme.append(dbtimestamp);
             sendme.append("|");
             sendme.append(n.getmyip());
-
+            qDebug() << "Trying to send library to " << theirip ;
             n.send(theirip, 45455, sendme.toUtf8());
         }
         // If the machine has been seen before, but just come online then tell the database that it is online
