@@ -10,6 +10,7 @@
 // Creates a beaconReceiver that will process all streambeacons received over the LAN
 BeaconReceiver::BeaconReceiver(Database &datab) : db(datab)
 {
+    qRegisterMetaType<QHostAddress>();
     networking n;
     myid = n.getuniqid();
 
