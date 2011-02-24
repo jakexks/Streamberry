@@ -14,7 +14,7 @@ LibraryRequester::LibraryRequester(Database &datab): db(datab)
     udpsocket = new QUdpSocket(this);
     udpsocket->bind(45455, QUdpSocket::ShareAddress);
     connect(udpsocket, SIGNAL(readyRead()), this, SLOT(processNetworkActivity()));
-
+    qDebug() << "LibraryRequester initialised";
 }
 
 void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate)
@@ -22,6 +22,7 @@ void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString
     if(!gettinglibraries.contains(theirid))
     {
         gettinglibraries.append(theirid);
+        qDebug() << "Attempting to receive library from " << theirid;
         LibraryReceiver lr = LibraryReceiver(db);
         lr.receive();
         gettinglibraries.removeOne(theirid);
@@ -31,6 +32,7 @@ void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString
 void LibraryRequester::sendLibrary(QHostAddress theirip, QString theirid, QString dblastupdate)
 {
     LibrarySender ls = LibrarySender(db);
+    qDebug()<<"Sending my library to " << theirid << " " << theirip;
     ls.send(dblastupdate.toInt(), theirip, theirid);
 }
 
@@ -54,6 +56,7 @@ void LibraryRequester::processNetworkActivity()
                 {
                     QString dbtimestamp = n.parsebeacon(datastring, networking::timestamp);
                     LibrarySender ls = LibrarySender::LibrarySender(db);
+                    qDebug()<<"Sending my library to " << id;
                     ls.send(dbtimestamp.toInt(), QHostAddress::QHostAddress(n.parsebeacon(datastring, networking::ip)), id);
                 }
             }
