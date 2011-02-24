@@ -6,7 +6,7 @@
 #include <QUdpSocket>
 #include "database.h"
 
-class LibraryRequester : public QThread
+class LibraryRequester : public QObject
 {
     Q_OBJECT
 public:
