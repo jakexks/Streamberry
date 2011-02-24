@@ -12,6 +12,7 @@
 #include "filemeta.h"
 #include "beaconsender.h"
 #include "beaconreceiver.h"
+#include "player.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
   Utilities util(argv[0]);
 
   Database db;
+  Player player;
 
     BeaconSender *bs = new BeaconSender(db);
     QThread *bsthread = new QThread(&a);
@@ -32,8 +34,7 @@ int main(int argc, char *argv[])
 
     QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
-
-  MainWindow w(util, db);
+  MainWindow w(util, db, player);
 
   w.show();
 

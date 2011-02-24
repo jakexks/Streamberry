@@ -2,7 +2,7 @@
 #include <QString>
 #include <QtGui>
 
-PlaybackController::PlaybackController(Utilities &utilities) : util(utilities)
+PlaybackController::PlaybackController(Utilities &utilities, Player &p) : util(utilities), player(p)
 {
     widget = makeWidget();
 }
@@ -101,5 +101,9 @@ QWidget* PlaybackController::makeWidget()
     temp->addLayout(playbackbox, 0, 0, Qt::AlignHCenter | Qt::AlignTop);
     temp->setRowMinimumHeight(2, 5);
     temp->setRowStretch(0, 0);
+
+    player.playFile("/home/vity/01-Metric-Help I'm Alive.mp3");
+    connect(playpause, SIGNAL(clicked()), player, SLOT(playControl()));
+
     return tempw;
 }
