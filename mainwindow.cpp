@@ -90,20 +90,29 @@ void MainWindow::initialiseGrid()
     mainlayout->setColumnStretch(1, 1);
 }
 
+// Defines all the actions available in the menus
+//void MainWindow::createActions()
+//{
+//    openaction = new QAction(tr("&Open"), this);
+//    openaction->setShortcut(tr("Ctrl+O"));
+//    openaction->setStatusTip(tr("Open a media file stored on your PC"));
+    //connect(openaction, SIGNAL(), this, SLOT(openFile()));
+//}
+
 QMenuBar* MainWindow::createMenuBar()
 {
-    QMenuBar* menu = new QMenuBar();
-    menu->setNativeMenuBar(true);
-//    QMenu* file = menu->addMenu("File");
+//    QMenuBar* menubar = new QMenuBar();
+//    menu->setNativeMenuBar(true);
+//    QMenu* menu = menubar->addMenu("Menu");
+//    menu->addAction("Open");
 //    QMenu* view = menu->addMenu("View");
-//    QMenu* controls = menu->addMenu("View");
 //    QMenu* window = menu->addMenu("Window");
 //    QMenu* help = menu->addMenu("Help");
-    menu->addMenu("File");
-    menu->addMenu("View");
-    menu->addMenu("View");
-    menu->addMenu("Window");
-    menu->addMenu("Help");
+//    menu->addMenu("File");
+//    menu->addMenu("Settings");
+//    menu->addMenu("View");
+//    menu->addMenu("Window");
+//    menu->addMenu("Help");
     return menu;
 }
 
