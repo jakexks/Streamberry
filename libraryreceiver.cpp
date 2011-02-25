@@ -19,7 +19,8 @@ int LibraryReceiver::receive()
     {
         for(int i = 0; i < queries.length(); i++)
         {
-            db.query(data);
+           qDebug() << data;
+           db.query(data);
         }
     }
     catch(SBException e)

@@ -53,6 +53,7 @@ QByteArray networking::receive(int port)
         qDebug() << "Could not listen";
         return NULL;
     }
+    while(!tcpServer.hasPendingConnections());
     while(tcpServer.hasPendingConnections())
     {
         tcpServerConnection = tcpServer.nextPendingConnection();
