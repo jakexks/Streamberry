@@ -16,6 +16,10 @@ private:
     Utilities& util;
     Player& player;
     QWidget* widget;
+
+signals:
+    void nextFile();
+    void prevFile();
 };
 
 #endif // PLAYBACKCONTROLLER_H

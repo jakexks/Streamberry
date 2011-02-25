@@ -13,8 +13,8 @@
 #define DEFAULT_WIDTH 170
 #define DEFAULT_ARTPANEL_WIDTH 160
 
-LibraryController::LibraryController(Utilities& utilities, Database& datab)
-    : util(utilities), db(datab)
+LibraryController::LibraryController(Utilities& utilities, Database& datab, Player& p)
+    : util(utilities), db(datab), player(p)
 {
     curheaders = NULL;
 
@@ -71,6 +71,7 @@ void LibraryController::makeWidget()
 
     QObject::connect(tablewidget, SIGNAL(itemSelectionChanged(void)), this, SLOT(deselectFirst(void)));
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
+    QObject::connect(tablewidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(itemClicked(int,int)));
 
     container->addWidget(curview, 0, 0);
 }
@@ -310,6 +311,67 @@ void LibraryController::sectionResized(int logicalindex, int oldsize, int newsiz
     {
         //qDebug() << e.getException();
     }
+}
+
+void LibraryController::itemClicked(int row, int column)
+{
+    //Title = x2, Artist = x3, Album = x4
+    //QTableWidgetItem *record;
+
+    QSqlRecord record = currentdata->at(row);
+    QString filePath = record.value(1).toString();
+    player.playFile(filePath.toAscii());
+    currentlyplaying = row;
+    /*QString query = "SELECT * FROM LibLocal WHERE Title=\'";
+    query += tablewidget->item(row, 2)->text();
+    query += "\' AND Artist=\'";
+    query += tablewidget->item(row, 3)->text();
+    query += "\' AND Album=\'";
+    query += tablewidget->item(row, 4)->text();
+    query += "\' LIMIT 1";
+    QSqlQuery result("SELECT * FROM LibLocal");
+    //QSqlQuery result = db.query("SELECT * FROM LibLocal");
+    QSqlRecord record = result.record();
+
+    qDebug() << record;
+    while (result.next())
+         qDebug() << result.value(4).toString();*/
+
+    //record = tablewidget->item(row, column);
+
+    //qDebug() << record->text();
+    //qDebug() << "Row: "<< row << " Column: "<< column;
+}
+
+
+void LibraryController::playNextFile()
+{
+    currentlyplaying += 1;
+    if (currentlyplaying >= currentdata->length())
+    {
+        currentlyplaying = 0;
+    }
+    QSqlRecord record = currentdata->at(currentlyplaying);
+    //TODO: Add checking at the end
+    QString filePath = record.value(1).toString();
+    qDebug() << "Currently playing: " << record.value(1).toString();
+    player.playFile(filePath.toAscii());
+
+}
+
+void LibraryController::playPrevFile()
+{
+    currentlyplaying -= 1;//Decrement by 1
+    if (currentlyplaying < 0)
+    {
+        currentlyplaying = currentdata->length()-1;
+    }
+    QSqlRecord record = currentdata->at(currentlyplaying);
+    //TODO: Add checking at the end
+    QString filePath = record.value(1).toString();
+    qDebug() << "Currently playing: " << record.value(1).toString();
+    player.playFile(filePath.toAscii());
+
 }
 
 LibraryController::~LibraryController()

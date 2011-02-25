@@ -8,13 +8,14 @@
 #include <QSqlRecord>
 #include <QList>
 #include <QObject>
+#include <player.h>
 
 class LibraryController : public QObject
 {
     Q_OBJECT
 
 public:
-    LibraryController(Utilities& utilities, Database& datab);
+    LibraryController(Utilities& utilities, Database& datab, Player& p);
     ~LibraryController();
     QWidget* getWidget();
     void addHeaders();
@@ -27,6 +28,9 @@ public slots:
     void deselectFirst();
     void sortIndicatorChanged(int index,Qt::SortOrder order);
     void sectionResized(int logicalindex, int oldsize, int newsize);
+    void itemClicked(int row, int column);
+    void playNextFile();
+    void playPrevFile();
 private:
     Utilities& util;
     QWidget* widget;
@@ -34,12 +38,14 @@ private:
     QGridLayout* container;
     int headercount;
     int sortcolumn;
+    int currentlyplaying;
     Qt::SortOrder sortorder;
     QString** curheaders;
     QTableWidget* tablewidget;
     QList<QSqlRecord>* currentdata;
     AlbumArtDelegate* paneldelegate;
     Database& db;
+    Player& player;
 };
 
 #endif // LIBRARYCONTROLLER_H
