@@ -1,6 +1,7 @@
 #include "networking.h"
 #include <QCryptographicHash>
 #include <QStringList>
+#include <QUdpSocket>
 
 // Constructor, needs no arguments
 networking::networking()
@@ -70,6 +71,13 @@ void networking::send(QHostAddress host, quint16 port, QByteArray data)
 {
     tcpClient.connectToHost(host, port);
     tcpClient.write(data);
+}
+
+void networking::udpSend(QHostAddress host, quint16 port, QByteArray data)
+{
+    QUdpSocket anus;
+    anus.connectToHost(host, port);
+    anus.write(data);
 }
 
 // Unique ID parser
