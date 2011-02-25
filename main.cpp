@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
   Database db;
   Player player;
 
-    /*BeaconSender *bs = new BeaconSender(db);
+    BeaconSender *bs = new BeaconSender(db);
     QThread *bsthread = new QThread(&a);
     bs->moveToThread(bsthread);
     bsthread->start();
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     br->moveToThread(brthread);
     brthread->start();
 
-    QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));*/
+    QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
   MainWindow w(util, db, player);
 
