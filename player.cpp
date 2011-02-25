@@ -27,7 +27,6 @@ Player::Player()
 
 Player::~Player()
 {
-    qDebug() << "Destruct Player";
     // Stop playing
     libvlc_media_player_stop (_mp);
 

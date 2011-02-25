@@ -54,7 +54,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, QWidget
 
     //initialise controllers and add widgets to window
     sidebarcontroller = new SidebarController(util);
-    librarycontroller = new LibraryController(util, db);
+    librarycontroller = new LibraryController(util, db, player);
     playbackcontroller = new PlaybackController(util, player);
 
     mainlayout->addWidget(sidebarcontroller->getWidget(), 0, 0, 2, 1);
@@ -71,6 +71,8 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, QWidget
     librarycontroller->fillData(result);
 
     QObject::connect(librarycontroller, SIGNAL(needNewLibrary(QList<QString>*,QList<QString>*)), this, SLOT(giveNewLibrary(QList<QString>*,QList<QString>*)));
+    QObject::connect(playbackcontroller, SIGNAL(nextFile()), librarycontroller, SLOT(playNextFile()));
+    QObject::connect(playbackcontroller, SIGNAL(prevFile()), librarycontroller, SLOT(playPrevFile()));
 
     setCentralWidget(centralwidget);
 
