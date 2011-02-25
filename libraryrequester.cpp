@@ -52,6 +52,7 @@ void LibraryRequester::processNetworkActivity()
     qDebug() << "Received send request";
     while (udpsocket->hasPendingDatagrams())
     {
+        qDebug() << "DICKS";
         try
         {
             QByteArray datagram;
@@ -69,6 +70,10 @@ void LibraryRequester::processNetworkActivity()
                     LibrarySender ls = LibrarySender::LibrarySender(db);
                     qDebug() << "Sending my library to " << id;
                     ls.send(dbtimestamp.toInt(), QHostAddress::QHostAddress(n.parsebeacon(datastring, networking::ip)), id);
+                }
+                else
+                {
+                    qDebug() << "From myself";
                 }
             }
         }
