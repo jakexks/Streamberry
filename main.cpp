@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
   try
   {
 
-//    db.setFolders("/Users/Robbie/Music/Albums");
+//    db.setFolders("/home/jakexks/Desktop/THE LOCAL CHEESE PLAYLIST THAT EVER WAS");
 //    Filescan fs(db);
 //    QThread fsthread;
 //    fs.moveToThread(&fsthread);

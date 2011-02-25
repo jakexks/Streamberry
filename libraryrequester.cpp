@@ -49,6 +49,7 @@ void LibraryRequester::sendLibrary(QHostAddress theirip, QString theirid, QStrin
 
 void LibraryRequester::processNetworkActivity()
 {
+    qDebug() << "Received send request";
     while (udpsocket->hasPendingDatagrams())
     {
         try
@@ -62,7 +63,6 @@ void LibraryRequester::processNetworkActivity()
             QString myid = n.getuniqid();
             if (n.parsebeacon(datastring, networking::beaconHeader) == "STREAMLIBRARY")
             {
-                // Checks that beacon is not our own
                 if (id != myid)
                 {
                     QString dbtimestamp = n.parsebeacon(datastring, networking::timestamp);
