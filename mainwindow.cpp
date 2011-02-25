@@ -11,8 +11,8 @@
 #define TOPBARHEIGHT 36
 #define BOTTOMBARHEIGHT 90
 
-MainWindow::MainWindow(Utilities& utilities, Database &datab, QWidget *parent)
-    : QMainWindow(parent), util(utilities), db(datab)
+MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, QWidget *parent)
+    : QMainWindow(parent), util(utilities), db(datab), player(p)
 {
     //set window properties
     menubar = createMenuBar();
@@ -55,7 +55,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, QWidget *parent)
     //initialise controllers and add widgets to window
     sidebarcontroller = new SidebarController(util);
     librarycontroller = new LibraryController(util, db);
-    playbackcontroller = new PlaybackController(util);
+    playbackcontroller = new PlaybackController(util, player);
 
     mainlayout->addWidget(sidebarcontroller->getWidget(), 0, 0, 2, 1);
     mainlayout->addWidget(librarycontroller->getWidget(), 1, 1);
