@@ -103,10 +103,13 @@ void MainWindow::initialiseGrid()
 
 QMenuBar* MainWindow::createMenuBar()
 {
-//    QMenuBar* menubar = new QMenuBar();
-//    menu->setNativeMenuBar(true);
-//    QMenu* menu = menubar->addMenu("Menu");
-//    menu->addAction("Open");
+    QMenuBar* menubar = new QMenuBar();
+    menubar->setNativeMenuBar(true);
+    QMenu* menu = menubar->addMenu("Menu");
+    //menu->addAction("Open");
+    menu->addAction("Settings");
+    menu->addAction("Help");
+    menu->addAction("Exit");
 //    QMenu* view = menu->addMenu("View");
 //    QMenu* window = menu->addMenu("Window");
 //    QMenu* help = menu->addMenu("Help");
@@ -115,7 +118,7 @@ QMenuBar* MainWindow::createMenuBar()
 //    menu->addMenu("View");
 //    menu->addMenu("Window");
 //    menu->addMenu("Help");
-    return menu;
+    return menubar;
 }
 
 void MainWindow::giveNewLibrary(QList<QString> *sortcols, QList<QString> *order)
