@@ -105,19 +105,19 @@ QMenuBar* MainWindow::createMenuBar()
 {
     QMenuBar* menubar = new QMenuBar();
     menubar->setNativeMenuBar(true);
-    QMenu* menu = menubar->addMenu("Menu");
-    //menu->addAction("Open");
-    menu->addAction("Settings");
-    menu->addAction("Help");
-    menu->addAction("Exit");
+//    QMenu* menu = menubar->addMenu("Menu");
+//    menu->addAction("Open");
+//    menu->addAction("Settings");
+//    menu->addAction("Help");
+//    menu->addAction("Exit");
 //    QMenu* view = menu->addMenu("View");
 //    QMenu* window = menu->addMenu("Window");
 //    QMenu* help = menu->addMenu("Help");
-//    menu->addMenu("File");
-//    menu->addMenu("Settings");
-//    menu->addMenu("View");
-//    menu->addMenu("Window");
-//    menu->addMenu("Help");
+    menubar->addMenu("File");
+    menubar->addMenu("Settings");
+    menubar->addMenu("View");
+    menubar->addMenu("Window");
+    menubar->addMenu("Help");
     return menubar;
 }
 

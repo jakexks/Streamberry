@@ -18,7 +18,6 @@ Filescan::Filescan(Database &datab): db(datab)
 
 Filescan::~Filescan()
 {
-  file.~FileMeta();
 }
 
 //This method builds a database by scanning the TrackedFolders for media files to add
@@ -161,8 +160,6 @@ void Filescan::addFiles(QDir path, QString homeID)
       }
     }
   }
-  //file.~FileMeta();
-  return;
 }
 
 QList<QString> Filescan::checktags(QList<QString> tags, QString filename)

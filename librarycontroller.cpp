@@ -319,8 +319,8 @@ void LibraryController::itemClicked(int row, int column)
     //QTableWidgetItem *record;
 
     QSqlRecord record = currentdata->at(row);
-    QString filePath = record.value(1).toString();
-    player.playFile(filePath.toAscii());
+    QString filepath = record.field("FilePath").value().toString();
+    player.playFile(filepath.toAscii());
     currentlyplaying = row;
     /*QString query = "SELECT * FROM LibLocal WHERE Title=\'";
     query += tablewidget->item(row, 2)->text();
@@ -353,9 +353,9 @@ void LibraryController::playNextFile()
     }
     QSqlRecord record = currentdata->at(currentlyplaying);
     //TODO: Add checking at the end
-    QString filePath = record.value(1).toString();
-    qDebug() << "Currently playing: " << record.value(1).toString();
-    player.playFile(filePath.toAscii());
+    QString filepath = record.field("FilePath").value().toString();
+    qDebug() << "Currently playing: " << filepath;
+    player.playFile(filepath.toAscii());
 
 }
 
@@ -368,9 +368,9 @@ void LibraryController::playPrevFile()
     }
     QSqlRecord record = currentdata->at(currentlyplaying);
     //TODO: Add checking at the end
-    QString filePath = record.value(1).toString();
-    qDebug() << "Currently playing: " << record.value(1).toString();
-    player.playFile(filePath.toAscii());
+    QString filepath = record.field("FilePath").value().toString();
+    qDebug() << "Currently playing: " << filepath;
+    player.playFile(filepath.toAscii());
 
 }
 

@@ -45,11 +45,11 @@ int main(int argc, char *argv[])
   try
   {
 
-//    db.setFolders("/home/jakexks/Desktop/THE LOCAL CHEESE PLAYLIST THAT EVER WAS");
-//    Filescan fs(db);
-//    QThread fsthread;
-//    fs.moveToThread(&fsthread);
-//    fs.build_new_clean();
+    db.setFolders("/streamberrytest/");
+    Filescan fs(db);
+    QThread fsthread;
+    //fs.moveToThread(&fsthread);
+    //fs.build_new_clean();
 
     //importLib itunes("");//file name here.
     //QList<QString> allFiles = itunes.libFileList();
