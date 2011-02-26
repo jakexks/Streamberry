@@ -12,7 +12,8 @@ FileMeta::FileMeta()
 
 FileMeta::~FileMeta()
 {
-    libvlc_media_release (_m);
+    //commented out line below as it was causing a segfault
+    //libvlc_media_release (_m);
     libvlc_release (_vlcinstance);
 }
 

@@ -63,7 +63,7 @@ void Database::createDatabase(QString &path)
     sql[0] = "DROP TABLE IF EXISTS \"LibLocal\";";
     sql[1] = "CREATE TABLE \"Lib";
     sql[1] += localUniqueId;
-    sql[1] += "\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
+    sql[1] += "\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
     sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
     sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Local\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" INTEGER NOT NULL , \"TimeLastOnline\" INTEGER NOT NULL , \"UniqueID\" VARCHAR UNIQUE NOT NULL, \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL );";
     sql[4] = "INSERT INTO LibIndex (ID, Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES (\"1\", 1, \"";
@@ -597,7 +597,9 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
 
         final = "CREATE TABLE IF NOT EXISTS \"Lib";
         final += uniqueID;
-        final += "\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Track\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0); \x1D";
+        final += "\" (\"UniqueID\" VARCHAR DEFAULT \"";
+        final += uniqueID;
+        final += "\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Track\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0); \x1D";
 
         while(result.isValid())
         {

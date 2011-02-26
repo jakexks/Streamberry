@@ -31,7 +31,7 @@ void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString
         sendme.append("|");
         sendme.append(n.getmyip());
         qDebug() << "Requesting library from " << theirip ;
-        n.send(theirip, 45455, sendme.toUtf8());
+        n.udpSend(theirip, 45455, sendme.toUtf8());
         LibraryReceiver lr = LibraryReceiver(db);
         qDebug() << "Before";
         lr.receive();
@@ -49,8 +49,10 @@ void LibraryRequester::sendLibrary(QHostAddress theirip, QString theirid, QStrin
 
 void LibraryRequester::processNetworkActivity()
 {
+    qDebug() << "Received send request";
     while (udpsocket->hasPendingDatagrams())
     {
+        qDebug() << "DICKS";
         try
         {
             QByteArray datagram;
@@ -62,13 +64,16 @@ void LibraryRequester::processNetworkActivity()
             QString myid = n.getuniqid();
             if (n.parsebeacon(datastring, networking::beaconHeader) == "STREAMLIBRARY")
             {
-                // Checks that beacon is not our own
                 if (id != myid)
                 {
                     QString dbtimestamp = n.parsebeacon(datastring, networking::timestamp);
                     LibrarySender ls = LibrarySender::LibrarySender(db);
                     qDebug() << "Sending my library to " << id;
                     ls.send(dbtimestamp.toInt(), QHostAddress::QHostAddress(n.parsebeacon(datastring, networking::ip)), id);
+                }
+                else
+                {
+                    qDebug() << "From myself";
                 }
             }
         }
