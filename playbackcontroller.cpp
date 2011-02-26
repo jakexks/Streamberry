@@ -90,6 +90,7 @@ QWidget* PlaybackController::makeWidget()
     QSlider *volumeslider = new QSlider(Qt::Horizontal);
     volumeslider->setObjectName("bottomBarVolumeslider");
     volumeslider->setFixedWidth(125);
+    volumeslider->setValue(50);
     left->addWidget(repeat);
     left->addWidget(shuffle);
     middle->addWidget(previous);

@@ -13,6 +13,8 @@ class Player : public QObject
 
 private:
     bool _isPlaying;
+    QString currIP;
+    QString remoteIP;
     libvlc_instance_t *_vlcinstance;
     //libvlc_exception_t *_vlcexcep;
     libvlc_media_player_t *_mp;
@@ -20,11 +22,13 @@ private:
 
 public:
     QTimer *poller;
+    //void playFile(QString file);
+    void playFile(QString file, QString uniqueID="local", QString ipaddress="local");
     Player();
     ~Player();
 
 public slots:
-    void playFile(QString file);
+
     void changePosition(int newPosition);
     void changeVolume(int newVolume);
     void playControl();

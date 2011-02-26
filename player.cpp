@@ -5,6 +5,7 @@
 
 Player::Player()
 {
+    currIP = "";
     const char * const vlc_args[] = {
                   "-I", "dummy", /* Don't use any interface */
                   "--ignore-config", /* Don't use VLC's config */
@@ -38,14 +39,56 @@ Player::~Player()
     //raise (&_vlcexcep);
 }
 
-void Player::playFile(QString file)
+/*void Player::playFile(QString file)
 {
     _m = libvlc_media_new_location (_vlcinstance, file.toAscii());
     libvlc_media_player_set_media (_mp, _m);
     //libvlc_media_parse (_m);
-    //libvlc_media_release (_m);
+    libvlc_media_release (_m);
     libvlc_media_player_play (_mp);
     _isPlaying=true;
+    currIP="";//Set IP to empty
+}*/
+
+void Player::playFile(QString file, QString uniqueID, QString ipaddress)
+{
+    //Check if playing already, if remote, send stop
+    //set up address if remote, send command to the other
+    //if localplayback, give filename, if remote, set filename to 127.0.0.1
+    //give filename normally
+    if(currIP == "127.0.0.1")
+    {
+        //Send command to other computer to stop. Use remoteIP variable
+    }
+
+    currIP = "local"; //Change to local
+
+    if(ipaddress != "local")
+    {
+        //Send command + filename to other computer to start playing new song using ipaddress variable
+        file = "rtp://@";
+        currIP = "127.0.0.1";
+        remoteIP = ipaddress;
+    }
+
+
+    _m = libvlc_media_new_location (_vlcinstance, file.toAscii());
+    libvlc_media_player_set_media (_mp, _m);
+    //libvlc_media_parse (_m);
+    libvlc_media_release (_m);
+    libvlc_media_player_play (_mp);
+    _isPlaying=true;
+
+    /*if(remote)
+    {
+        if(libvlc_media_player_is_playing)
+        {
+            libvlc_media_player_stop(_mp);
+        }
+
+    } else {
+        playFile(file);
+    }*/
 }
 
 void Player::changeVolume(int newVolume)
