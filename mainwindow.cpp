@@ -146,3 +146,11 @@ void MainWindow::moveEvent(QMoveEvent *move)
     winpos += QString::number(pos.y());
     db.storeSetting("windowPos", winpos);
 }
+
+// Alerts the quit manager that the main window has been closed
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    event->accept();
+    hide();
+    emit quitSignal();
+}

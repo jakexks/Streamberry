@@ -13,6 +13,7 @@
 #include "beaconsender.h"
 #include "beaconreceiver.h"
 #include "player.h"
+#include "quitmanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,9 +33,10 @@ int main(int argc, char *argv[])
     br->moveToThread(brthread);
     brthread->start();
 
-    QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
-
   MainWindow w(util, db, player);
+  QuitManager qm();
+
+  qm.connect(w, SIGNAL(quitSignal()), SLOT(quitSlot()));
 
   w.show();
 
@@ -94,6 +96,7 @@ int main(int argc, char *argv[])
     qDebug() << e.getException();
   }
 
+  a.setQuitOnLastWindowClosed(false);
   return a.exec();
 
 

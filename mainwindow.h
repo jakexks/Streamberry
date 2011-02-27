@@ -18,8 +18,12 @@ public:
     MainWindow(Utilities& util, Database &datab, Player &p, QWidget *parent = 0);
     void setPath(char* path);
     QMenuBar* createMenuBar();
+protected:
+    void closeEvent(QCloseEvent *event);
 public slots:
     void giveNewLibrary(QList<QString>* sortcols, QList<QString>* order);
+signals:
+    void quitSignal();
 private:
     //layout of the main window
     QWidget* centralwidget;
