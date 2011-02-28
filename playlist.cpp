@@ -59,7 +59,17 @@ void Playlist::removeTrack(int index)
 
 QList<QSqlRecord> Playlist::getAllTracks()
 {
-  return db.getTracks(Tracks);
+  if(smart == false)
+    return db.getTracks(Tracks);
+  else
+  {
+    QList<QString> fields;
+    QList<QString> order;
+    fields.append("Album");
+    order.append("DESC");
+    QList<QSqlRecord> result = *db.searchDb(0, filter, fields, order);
+    return result;
+  }
 }
 
 void Playlist::deletePlaylist()
