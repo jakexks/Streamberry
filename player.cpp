@@ -41,7 +41,7 @@ Player::~Player()
 
 /*void Player::playFile(QString file)
 {
-    _m = libvlc_media_new_location (_vlcinstance, file.toAscii());
+    _m = libvlc_media_new_location (_vlcinstance, file.toUtf8());
     libvlc_media_player_set_media (_mp, _m);
     //libvlc_media_parse (_m);
     libvlc_media_release (_m);

@@ -319,12 +319,32 @@ void LibraryController::sectionResized(int logicalindex, int oldsize, int newsiz
 
 void LibraryController::itemClicked(int row, int column)
 {
+    //Title = x2, Artist = x3, Album = x4
+    //QTableWidgetItem *record;
+
     QSqlRecord record = currentdata->at(row);
-    QString filePath = record.field("Filepath").value().toString();
-    qDebug() << "Currently playing: " << filePath;
-    //CHANGE THIS TO playFiles with 3 arguments: filePath, uniqueID and IP ("local" by default)
-    player.playFile(filePath.toAscii());
+    QString filepath = record.field("FilePath").value().toString();
+    player.playFile(filepath.toUtf8());
     currentlyplaying = row;
+    /*QString query = "SELECT * FROM LibLocal WHERE Title=\'";
+    query += tablewidget->item(row, 2)->text();
+    query += "\' AND Artist=\'";
+    query += tablewidget->item(row, 3)->text();
+    query += "\' AND Album=\'";
+    query += tablewidget->item(row, 4)->text();
+    query += "\' LIMIT 1";
+    QSqlQuery result("SELECT * FROM LibLocal");
+    //QSqlQuery result = db.query("SELECT * FROM LibLocal");
+    QSqlRecord record = result.record();
+
+    qDebug() << record;
+    while (result.next())
+         qDebug() << result.value(4).toString();*/
+
+    //record = tablewidget->item(row, column);
+
+    //qDebug() << record->text();
+    //qDebug() << "Row: "<< row << " Column: "<< column;
 }
 
 
@@ -336,11 +356,11 @@ void LibraryController::playNextFile()
         currentlyplaying = 0;
     }
     QSqlRecord record = currentdata->at(currentlyplaying);
-    QString filePath = record.field("Filepath").value().toString();
-    qDebug() << "Currently playing: " << filePath;
-    //CHANGE THIS TO playFiles with 3 arguments: filePath, uniqueID and IP ("local" by default)
-    player.playFile(filePath.toAscii());
-    tablewidget->selectRow(currentlyplaying);
+    //TODO: Add checking at the end
+    QString filepath = record.field("FilePath").value().toString();
+    qDebug() << "Currently playing: " << filepath;
+    player.playFile(filepath.toUtf8());
+
 }
 
 void LibraryController::playPrevFile()
@@ -351,15 +371,19 @@ void LibraryController::playPrevFile()
         currentlyplaying = currentdata->length()-1;
     }
     QSqlRecord record = currentdata->at(currentlyplaying);
-    QString filePath = record.field("Filepath").value().toString();
-    qDebug() << "Currently playing: " << filePath;
-    //CHANGE THIS TO playFiles with 3 arguments: filePath, uniqueID and IP ("local" by default)
-    player.playFile(filePath.toAscii());
-    tablewidget->selectRow(currentlyplaying);
+    //TODO: Add checking at the end
+    QString filepath = record.field("FilePath").value().toString();
+    qDebug() << "Currently playing: " << filepath;
+    player.playFile(filepath.toUtf8());
 
 }
 
 LibraryController::~LibraryController()
 {
+    if(currentdata!=NULL)
+    {
+        delete currentdata;
+    }
+
     delete paneldelegate;
 }
