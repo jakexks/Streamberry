@@ -9,6 +9,7 @@
 #include <QList>
 #include <QObject>
 #include <player.h>
+#include "streamrequest.h"
 
 class LibraryController : public QObject
 {
@@ -46,6 +47,7 @@ private:
     AlbumArtDelegate* paneldelegate;
     Database& db;
     Player& player;
+    StreamRequest stream1;
 };
 
 #endif // LIBRARYCONTROLLER_H

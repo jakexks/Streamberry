@@ -5,15 +5,18 @@ StreamFile::StreamFile()
     const char * vlc_args[] = {
                         "--ignore-config",
                         "--no-plugins-cache",
-                        "--verbose=2"};
+                        "--verbose=0"};
 
     //const char * sout = "#duplicate{dst=display,dst=rtp{mux=ts,dst=127.0.0.1}}";
     _vlcinstance = libvlc_new(sizeof(vlc_args) / sizeof(vlc_args[0]), vlc_args);
+
+    stream.startServer();
+    connect(&stream, SIGNAL(messageReceived(QString)), this, SLOT(parseMessage(QString)));
 }
 
 void StreamFile::addStream(QString fileName, QString compID, QString ipAddress)
 {
-    QString sout = "#duplicate{dst=nodisplay,dst=rtp{mux=ts,dst=";
+    QString sout = "#rtp{mux=ts,dst=";
     sout += ipAddress.toUtf8();
     sout += "}}";
     libvlc_vlm_add_broadcast(_vlcinstance, compID.toUtf8(), fileName.toUtf8(),
@@ -29,7 +32,7 @@ void StreamFile::removeStream(QString compID)
 
 void StreamFile::changeStream(QString compID, QString newFileName)
 {
-    libvlc_vlm_set_input(_vlcinstance, compID.toUtf8(), newFileName.toUtf8());
+    libvlc_vlm_set_input(_vlcinstance, compID.toAscii(), newFileName.toUtf8());
 }
 
 void StreamFile::playStream(QString compID)
@@ -69,6 +72,26 @@ int StreamFile::getStreamLength(QString compID)
         length = libvlc_vlm_get_media_instance_length(_vlcinstance, compID.toUtf8(), 0)/1000000;
     }
     return length;
+}
+
+void StreamFile::parseMessage(QString message)
+{
+    QStringList split = message.split('|', QString::KeepEmptyParts, Qt::CaseInsensitive);
+    QString uniqueID = split.at(3);
+    QString ipaddress = split.at(2);
+    QString filepath = split.at(4);
+    if(split.at(1)=="PLAY")
+    {
+        if(libvlc_vlm_show_media(_vlcinstance, "comp1")!=NULL)
+        {
+            stopStream(uniqueID);
+            removeStream(uniqueID);
+        }
+        addStream(filepath, uniqueID, ipaddress);
+    } else if (split.at(1)=="STOP") {
+        stopStream(uniqueID);
+    }
+    //qDebug() << message;
 }
 
 StreamFile::~StreamFile()

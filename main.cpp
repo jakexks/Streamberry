@@ -13,6 +13,7 @@
 #include "beaconsender.h"
 #include "beaconreceiver.h"
 #include "player.h"
+#include "streamfile.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,25 +22,34 @@ int main(int argc, char *argv[])
 
   Database db;
   Player player;
+  StreamFile stream;
 
     BeaconSender *bs = new BeaconSender(db);
     QThread *bsthread = new QThread(&a);
     bs->moveToThread(bsthread);
-    //bsthread->start();
+    bsthread->start();
 
     BeaconReceiver *br = new BeaconReceiver(db);
     QThread *brthread = new QThread(&a);
     br->moveToThread(brthread);
-    //brthread->start();
+    brthread->start();
 
     QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
     MainWindow w(util, db, player);
 
     w.show();
+    //StreamRequest stream;
+    //stream.startServer();
+    //stream.sendConnect();
+    //stream.send("127.0.0.1", 45455, "STOP");
 
-    networking n;
-    n.send(QHostAddress("10.42.43.89"), 45455, QByteArray("STREAMBERRY|STOP"));
+//    StreamRequest stream1;
+//    stream1.startServer();
+    //stream.send("127.0.0.1", 45455, "STOP");
+    //networking n;
+    //n.receive(45455);
+    //n.send(QHostAddress("10.42.43.89"), 45455, QByteArray("STREAMBERRY|STOP"));
    //qDebug() << n.receive(45455);
     //networking n;
     //n.send(QHostAddress(), 45455, QByteArray("STREAMBERRY|STOP"));
@@ -51,12 +61,12 @@ int main(int argc, char *argv[])
   {
 
     //db.setFolders("/streamberrytest/");
-    db.setFolders("C:\\Users\\Jim\\Music");
+    //db.setFolders("/home/vity/Music/Metric - Fantasies [320]");
     //db.setFolders("C:\\Users\\Jim\\Music\\TEST");
-    Filescan fs(db);
-    QThread fsthread;
-    fs.moveToThread(&fsthread);
-    fs.build_new_clean();
+//    Filescan fs(db);
+//    QThread fsthread;
+//    fs.moveToThread(&fsthread);
+//    fs.build_new();
 
     //importLib itunes("");//file name here.
     //QList<QString> allFiles = itunes.libFileList();

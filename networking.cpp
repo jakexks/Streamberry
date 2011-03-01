@@ -47,7 +47,7 @@ QString networking::getmyip()
 // Generic receive function. Waits until there is something to receive from the network, then returns a byte array containing all the data received
 QByteArray networking::receive(int port)
 {
-    tcpServer.listen(QHostAddress::Any,port);
+    tcpServer.listen(QHostAddress::LocalHost,port);
     QByteArray buf;
     while (!tcpServer.isListening() && !tcpServer.listen())
     {
@@ -70,6 +70,7 @@ QByteArray networking::receive(int port)
 void networking::send(QHostAddress host, quint16 port, QByteArray data)
 {
     tcpClient.connectToHost(host, port);
+    qDebug() << port;
     tcpClient.write(data);
 }
 

@@ -326,6 +326,9 @@ void LibraryController::itemClicked(int row, int column)
     QString filepath = record.field("FilePath").value().toString();
     player.playFile(filepath.toUtf8());
     currentlyplaying = row;
+
+    tablewidget->selectRow(row);
+
     /*QString query = "SELECT * FROM LibLocal WHERE Title=\'";
     query += tablewidget->item(row, 2)->text();
     query += "\' AND Artist=\'";
@@ -360,7 +363,7 @@ void LibraryController::playNextFile()
     QString filepath = record.field("FilePath").value().toString();
     qDebug() << "Currently playing: " << filepath;
     player.playFile(filepath.toUtf8());
-
+    tablewidget->selectRow(currentlyplaying);
 }
 
 void LibraryController::playPrevFile()
@@ -375,6 +378,7 @@ void LibraryController::playPrevFile()
     QString filepath = record.field("FilePath").value().toString();
     qDebug() << "Currently playing: " << filepath;
     player.playFile(filepath.toUtf8());
+    tablewidget->selectRow(currentlyplaying);
 
 }
 

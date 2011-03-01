@@ -4,6 +4,7 @@
 #include <vlc/vlc.h>
 #include <QTimer>
 #include <QObject>
+#include "streamrequest.h"
 #include "networking.h"
 
 #define POSITION_RESOLUTION 10000
@@ -20,6 +21,7 @@ private:
     //libvlc_exception_t *_vlcexcep;
     libvlc_media_player_t *_mp;
     libvlc_media_t *_m;
+    StreamRequest stream;
     networking n;
 
 public:

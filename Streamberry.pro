@@ -41,7 +41,8 @@ SOURCES +=  main.cpp\
             beaconreceiver.cpp \
             beaconsender.cpp \
             networking.cpp \
-            player.cpp
+            player.cpp \
+    streamrequest.cpp
 
 HEADERS +=  mainwindow.h\
             database.h\
@@ -68,4 +69,5 @@ HEADERS +=  mainwindow.h\
             beaconreceiver.h \
             beaconsender.h \
             networking.h \
-            player.h
+            player.h \
+    streamrequest.h
