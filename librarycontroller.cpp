@@ -376,5 +376,10 @@ void LibraryController::playPrevFile()
 
 LibraryController::~LibraryController()
 {
+    if(currentdata!=NULL)
+    {
+        delete currentdata;
+    }
+
     delete paneldelegate;
 }
