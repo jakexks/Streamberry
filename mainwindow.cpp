@@ -8,7 +8,7 @@
 #include "utilities.h"
 #include "database.h"
 
-#define TOPBARHEIGHT 36
+#define TOPBARHEIGHT 26
 #define BOTTOMBARHEIGHT 90
 
 MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, QWidget *parent)
@@ -18,6 +18,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, QWidget
     menubar = createMenuBar();
     this->setWindowTitle("Streamberry");
     this->setMenuBar(menubar);
+    setStyleSheet(util.getStylesheet());
 
     QString temp;
     if((temp = db.getSetting("windowSize")) != NULL)
@@ -47,16 +48,23 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, QWidget
         }
     }
 
+
     //initialise window layout
     centralwidget = new QWidget();
+    centralwidget->setObjectName("centralWidget");
+    centralwidget->setStyleSheet(util.getStylesheet());
     mainlayout = new QGridLayout(centralwidget);
+    mainlayout->setMargin(0);
+    mainlayout->setSpacing(0);
     initialiseGrid();
 
     //initialise controllers and add widgets to window
+    topbarcontroller = new TopbarController(util);
     sidebarcontroller = new SidebarController(util);
     librarycontroller = new LibraryController(util, db, player);
     playbackcontroller = new PlaybackController(util, player);
 
+    mainlayout->addWidget(topbarcontroller->getWidget(), 0, 1, 1, 1);
     mainlayout->addWidget(sidebarcontroller->getWidget(), 0, 0, 2, 1);
     mainlayout->addWidget(librarycontroller->getWidget(), 1, 1);
     mainlayout->addWidget(playbackcontroller->getWidget(), 2, 0, 1, 2);

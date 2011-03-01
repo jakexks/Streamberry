@@ -25,6 +25,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     setHeaders(headers, 2);
     widget = new QWidget();
     container = new QGridLayout(widget);
+    container->setMargin(0);
     curview = NULL;
     currentdata = NULL;
     paneldelegate = new AlbumArtDelegate();

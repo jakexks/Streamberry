@@ -19,7 +19,7 @@ QWidget* TopbarController::makeWidget()
 {
     QWidget *temp = new QWidget();
     temp->setObjectName("topBarWidget");
-
+    temp->setStyleSheet(util.getStylesheet());
     //Grids to hold objects in
     QGridLayout *outer = new QGridLayout(temp);
     outer->setMargin(0);
@@ -39,12 +39,16 @@ QWidget* TopbarController::makeWidget()
     //Buttons for menu
     QPushButton *back = new QPushButton();
     back->setObjectName("topBarBack");
+    back->setStyleSheet(util.getStylesheet());
     QPushButton *forward = new QPushButton();
     forward->setObjectName("topBarForward");
+    forward->setStyleSheet(util.getStylesheet());
     QPushButton *music = new QPushButton();
     music->setObjectName("topBarMusic");
-    QPushButton *videos = new QPushButton();
+    music->setStyleSheet(util.getStylesheet());
+ /*   QPushButton *videos = new QPushButton();
     videos->setObjectName("topBarVideos");
+    videos->setStyleSheet(util.getStylesheet());*/
     SBSearchBar *search = new SBSearchBar(expath);
 
     //Split it into three sections
@@ -59,34 +63,33 @@ QWidget* TopbarController::makeWidget()
     outer->setColumnStretch(1, 1);
     outer->setColumnStretch(2, 0);
     //Set which are stretchy in inner layouts
-    innermiddle->setColumnStretch(0, 1);
+    innermiddle->setColumnStretch(0, 244);
     innermiddle->setColumnStretch(1, 0);
-    innermiddle->setColumnStretch(2, 0);
-    innermiddle->setColumnStretch(3, 1);
+    innermiddle->setColumnStretch(2, 164);
     //Set measurements of spacer columns
-    innerleft->setColumnMinimumWidth(0, 15);
-    innerleft->setColumnMinimumWidth(2, 5);
-    innermiddle->setColumnMinimumWidth(0, 40);
-    innermiddle->setColumnMinimumWidth(3, 40);
-    innerright->setColumnMinimumWidth(1, 15);
+    innerleft->setColumnMinimumWidth(0, 35);
+    innermiddle->setColumnMinimumWidth(0, 35);
+    innermiddle->setColumnMinimumWidth(1, 140);
+    innermiddle->setColumnMinimumWidth(2, 24);
+    innerright->setColumnMinimumWidth(1, 35);
     //style the buttons
-    back->setMaximumSize(35, 29);
-    back->setMinimumSize(35, 29);
+    back->setMaximumSize(26, 24);
+    back->setMinimumSize(26, 24);
     back->setFlat(true);
-    forward->setMaximumSize(35, 29);
-    forward->setMinimumSize(35, 29);
+    forward->setMaximumSize(26, 24);
+    forward->setMinimumSize(26, 24);
     forward->setFlat(true);
-    music->setMaximumSize(106, 33);
-    music->setMinimumSize(106, 33);
+    music->setMaximumSize(140, 24);
+    music->setMinimumSize(140, 24);
     music->setFlat(true);
-    videos->setMaximumSize(114, 33);
-    videos->setMinimumSize(114, 33);
-    videos->setFlat(true);
+   // videos->setMaximumSize(114, 33);
+   // videos->setMinimumSize(114, 33);
+  //  videos->setFlat(true);
     //Add buttons to each section
     innerleft->addWidget(back, 0, 1);
-    innerleft->addWidget(forward, 0, 3);
+    innerleft->addWidget(forward, 0, 2);
     innermiddle->addWidget(music, 0, 1);
-    innermiddle->addWidget(videos, 0, 2);
+    //innermiddle->addWidget(videos, 0, 2);
     innerright->addWidget(search, 0, 0);
 
     return temp;

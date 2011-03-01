@@ -19,24 +19,31 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
     cross = new QPushButton();
     textbox = new QLineEdit();
 
-    setFrameShadow(QFrame::Sunken);
-    setFrameShape(QFrame::StyledPanel);
-    setStyleSheet("background-color: white;");
-    setMinimumSize(180, 25);
-    setMaximumSize(180, 25);
+    setFrameStyle(QFrame::Box | QFrame::Plain);
+    setLineWidth(1);
+    setStyleSheet("QFrame {background-color: white; color:#969696}");
+    setMinimumSize(121, 21);
+    setMaximumSize(121, 21);
 
     layout->setSpacing(3);
-    layout->setMargin(3);
+    layout->setMargin(2);
     layout->setColumnStretch(0,0);
     layout->setColumnStretch(1,1);
     layout->setColumnStretch(2,0);
 
     icondisplay->setIcon(QIcon(QPixmap::fromImage(icon)));
     //icondisplay->setPixmap(QPixmap::fromImage(icon));
+
+    QFont textfont = textbox->font();
+    textfont.setPointSize(9);
+
     textbox->setPlaceholderText("Search...");
     textbox->setModified(true);
     textbox->setFrame(false);
     textbox->setTextMargins(0,0,0,0);
+    textbox->setFont(textfont);
+    textbox->setFixedHeight(17);
+    textbox->setStyleSheet("margin:0px; padding:0px;");
     #ifdef Q_OS_MAC
       QMacStyle::setFocusRectPolicy(textbox, QMacStyle::FocusDisabled);
     #endif
