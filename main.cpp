@@ -25,12 +25,12 @@ int main(int argc, char *argv[])
     BeaconSender *bs = new BeaconSender(db);
     QThread *bsthread = new QThread(&a);
     bs->moveToThread(bsthread);
-    bsthread->start();
+    //bsthread->start();
 
     BeaconReceiver *br = new BeaconReceiver(db);
     QThread *brthread = new QThread(&a);
     br->moveToThread(brthread);
-    brthread->start();
+    //brthread->start();
 
     QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
@@ -45,16 +45,18 @@ int main(int argc, char *argv[])
   try
   {
 
-    db.setFolders("/streamberrytest/");
+    //db.setFolders("/streamberrytest/");
+    db.setFolders("C:\\Users\\Jim\\Music");
+    //db.setFolders("C:\\Users\\Jim\\Music\\TEST");
     Filescan fs(db);
     QThread fsthread;
-    //fs.moveToThread(&fsthread);
-    //fs.build_new_clean();
+    fs.moveToThread(&fsthread);
+    fs.build_new_clean();
 
     //importLib itunes("");//file name here.
     //QList<QString> allFiles = itunes.libFileList();
     //PLAYLIST TEST
-    /*
+
     Playlist test1 = Playlist(db);
     test1.setPlaylistName("test1");
     test1.setPlaylistType("nothing");
@@ -87,7 +89,7 @@ int main(int argc, char *argv[])
     {
       //qDebug() << tracks.at(i).value(2).toString();
     }
-    qDebug() << "Tests completed";*/
+    qDebug() << "Tests completed";
   }
   catch(SBException e)
   {

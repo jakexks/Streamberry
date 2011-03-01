@@ -321,7 +321,7 @@ void LibraryController::itemClicked(int row, int column)
 
     QSqlRecord record = currentdata->at(row);
     QString filepath = record.field("FilePath").value().toString();
-    player.playFile(filepath.toAscii());
+    player.playFile(filepath.toUtf8());
     currentlyplaying = row;
     /*QString query = "SELECT * FROM LibLocal WHERE Title=\'";
     query += tablewidget->item(row, 2)->text();
@@ -356,7 +356,7 @@ void LibraryController::playNextFile()
     //TODO: Add checking at the end
     QString filepath = record.field("FilePath").value().toString();
     qDebug() << "Currently playing: " << filepath;
-    player.playFile(filepath.toAscii());
+    player.playFile(filepath.toUtf8());
 
 }
 
@@ -371,11 +371,16 @@ void LibraryController::playPrevFile()
     //TODO: Add checking at the end
     QString filepath = record.field("FilePath").value().toString();
     qDebug() << "Currently playing: " << filepath;
-    player.playFile(filepath.toAscii());
+    player.playFile(filepath.toUtf8());
 
 }
 
 LibraryController::~LibraryController()
 {
+    if(currentdata!=NULL)
+    {
+        delete currentdata;
+    }
+
     delete paneldelegate;
 }
