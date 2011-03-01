@@ -34,10 +34,15 @@ int main(int argc, char *argv[])
 
     QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
-  MainWindow w(util, db, player);
+    MainWindow w(util, db, player);
 
-  w.show();
+    w.show();
 
+    networking n;
+    n.send(QHostAddress("10.42.43.89"), 45455, QByteArray("STREAMBERRY|STOP"));
+   //qDebug() << n.receive(45455);
+    //networking n;
+    //n.send(QHostAddress(), 45455, QByteArray("STREAMBERRY|STOP"));
   //StreamFile stream;
   //stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");
   //qDebug() << stream.getStreamLength("test");

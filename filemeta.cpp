@@ -5,7 +5,8 @@ FileMeta::FileMeta()
 {
     const char* vlc_args[] = {
                   "--ignore-config",
-                  "--verbose=0"
+                  "--verbose=0",
+                  "--noaudio"
                       };
     _vlcinstance=libvlc_new(sizeof(vlc_args) / sizeof(vlc_args[0]), vlc_args);
 }

@@ -56,8 +56,12 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     //set up address if remote, send command to the other
     //if localplayback, give filename, if remote, set filename to 127.0.0.1
     //give filename normally
+
+    n.send(QHostAddress(remoteIP), 45455, QByteArray("STREAMBERRY|STOP"));
+
     if(currIP == "127.0.0.1")
     {
+        n.send(QHostAddress(remoteIP), 45455, QByteArray("STREAMBERRY|STOP"));
         //Send command to other computer to stop. Use remoteIP variable
     }
 
@@ -65,6 +69,10 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
 
     if(ipaddress != "local")
     {
+        QString toSend = "";
+        toSend += "STREAMBERRY|PLAY|";
+        toSend += n.getmyip();
+        n.send(QHostAddress(ipaddress), 45455, QByteArray(toSend.toAscii()));
         //Send command + filename to other computer to start playing new song using ipaddress variable
         file = "rtp://@";
         currIP = "127.0.0.1";
