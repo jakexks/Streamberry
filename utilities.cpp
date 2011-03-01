@@ -2,9 +2,13 @@
 #include "crossplatform.h"
 #include <QDateTime>
 #include <QString>
+#include <QDebug>
 
-Utilities::Utilities(char* exec): execpath(QString(exec))
+Utilities::Utilities(char* exec)
 {
+    execpath = QString(exec);
+    execpath.resize(execpath.lastIndexOf('/'));
+    execpath += "/";
     stylesheet = makeStylesheet();
 }
 
@@ -20,7 +24,13 @@ QString Utilities::getExecutePath()
 
 QString Utilities::makeStylesheet()
 {
-    QString style = "";
+
+    QString style = "#topBarBack {background: url(EXECPATHimages/topBarBackUp.png) no-repeat; border: none; padding:0;}";
+    style+="#topBarForward {background: url(EXECPATHimages/topBarForwardUp.png) no-repeat;border: none; padding:0;}";
+    style+="#topBarMusic{background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat;border: none; padding:0;}";
+    style+="#topBarWidget{background:url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
+    style.replace("EXECPATH", execpath);
+    qDebug()<<execpath<<" "<<style;
     return style;
 }
 
