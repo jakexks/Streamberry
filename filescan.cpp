@@ -6,6 +6,7 @@
 #include <QDir>
 #include "sbexception.h"
 #include "crossplatform.h"
+#include <QTextCodec>
 
 using namespace std;
 
@@ -70,6 +71,7 @@ int Filescan::build_new_clean()
     TrackedFolders = db.getFolders(0);
     ExFolders = db.getFolders(1);
     homeid = "-1";
+    qDebug() << "Clean File Scan Begun";
     for(int i=0; i<TrackedFolders.size(); i++)
     {
       QDir passpath = QDir(TrackedFolders.at(i));
@@ -138,24 +140,25 @@ void Filescan::addFiles(QDir path, QString homeID)
     test.append("");*/
   ///TEST ENDS
   path.setFilter(QDir::Files);
+  QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
   fileList = path.entryInfoList();
   if(!fileList.isEmpty())
   {
+
     for(int i = 0; i<fileList.size(); i++)
     {
       if(ismedia(fileList.at(i))==1)
       {
         try
         {
-            tags = checktags(file.printMeta(fileList.at(i).absoluteFilePath()), fileList.at(i).fileName());
-
-          //tags = checktags(test, fileList.at(i).fileName());
+          tags = checktags(file.printMeta(fileList.at(i).absoluteFilePath()), fileList.at(i).fileName());
           db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", fileList.at(i).suffix(), (QString)localTable, homeID);
         }
         catch (SBException e)
         {
             qDebug() << e.getException();
-            qDebug() << "broken file found";
+            qDebug() << fileList.at(i).fileName();
+            qDebug() << " is broken";
         }
       }
     }
@@ -191,6 +194,14 @@ QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
   tags.replace(1, updated1.replace("\"", "'"));
   tags.replace(2, updated2.replace("\"", "'"));
   tags.replace(3, updated3.replace("\"", "'"));
+  QString updated00 = tags.at(0);
+  QString updated10 = tags.at(1);
+  QString updated20 = tags.at(2);
+  QString updated30 = tags.at(3);
+  tags.replace(0, updated00.replace(";", ","));
+  tags.replace(1, updated10.replace(";", ","));
+  tags.replace(2, updated20.replace(";", ","));
+  tags.replace(3, updated30.replace(";", ","));
   return tags;
 }
 
