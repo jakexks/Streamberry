@@ -327,7 +327,10 @@ void LibraryController::itemClicked(int row, int column)
     QString filepath = record.field("FilePath").value().toString();
     if(record.field("UniqueID").value() != "Local")
     {
-        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), record.field("IPAddress").value().toString());
+        qDebug() << "NOT LOCAL";
+        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+        qDebug() << ipaddress;
+        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), ipaddress);
     } else {
         player.playFile(filepath.toUtf8());
     }

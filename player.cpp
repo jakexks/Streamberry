@@ -69,6 +69,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     }
 
     currIP = "local"; //Change to local
+    qDebug() << ipaddress;
 
     if(ipaddress != "local")
     {
@@ -82,9 +83,9 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         toSend += file;
         //Send IP, uniqueID, file path
         stream.send(ipaddress, 45455, toSend);
-        //file = "rtp://@";
-        //currIP = "127.0.0.1";
-        //remoteIP = ipaddress;
+        file = "rtp://@";
+        currIP = "127.0.0.1";
+        remoteIP = ipaddress;
     }
 
 
