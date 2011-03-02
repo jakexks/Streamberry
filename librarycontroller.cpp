@@ -325,30 +325,15 @@ void LibraryController::itemClicked(int row, int column)
 
     QSqlRecord record = currentdata->at(row);
     QString filepath = record.field("FilePath").value().toString();
-    player.playFile(filepath.toUtf8());
+    if(record.field("UniqueID").value() != "Local")
+    {
+        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), record.field("IPAddress").value().toString());
+    } else {
+        player.playFile(filepath.toUtf8());
+    }
     currentlyplaying = row;
 
     tablewidget->selectRow(row);
-
-    /*QString query = "SELECT * FROM LibLocal WHERE Title=\'";
-    query += tablewidget->item(row, 2)->text();
-    query += "\' AND Artist=\'";
-    query += tablewidget->item(row, 3)->text();
-    query += "\' AND Album=\'";
-    query += tablewidget->item(row, 4)->text();
-    query += "\' LIMIT 1";
-    QSqlQuery result("SELECT * FROM LibLocal");
-    //QSqlQuery result = db.query("SELECT * FROM LibLocal");
-    QSqlRecord record = result.record();
-
-    qDebug() << record;
-    while (result.next())
-         qDebug() << result.value(4).toString();*/
-
-    //record = tablewidget->item(row, column);
-
-    //qDebug() << record->text();
-    //qDebug() << "Row: "<< row << " Column: "<< column;
 }
 
 
@@ -363,7 +348,12 @@ void LibraryController::playNextFile()
     //TODO: Add checking at the end
     QString filepath = record.field("FilePath").value().toString();
     qDebug() << "Currently playing: " << filepath;
-    player.playFile(filepath.toUtf8());
+    if(record.field("UniqueID").value() != "Local")
+    {
+        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), record.field("IPAddress").value().toString());
+    } else {
+        player.playFile(filepath.toUtf8());
+    }
     tablewidget->selectRow(currentlyplaying);
 }
 
@@ -378,7 +368,12 @@ void LibraryController::playPrevFile()
     //TODO: Add checking at the end
     QString filepath = record.field("FilePath").value().toString();
     qDebug() << "Currently playing: " << filepath;
-    player.playFile(filepath.toUtf8());
+    if(record.field("UniqueID").value() != "Local")
+    {
+        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), record.field("IPAddress").value().toString());
+    } else {
+        player.playFile(filepath.toUtf8());
+    }
     tablewidget->selectRow(currentlyplaying);
 
 }
