@@ -82,10 +82,11 @@ void StreamFile::parseMessage(QString message)
     QString filepath = split.at(4);
     if(split.at(1)=="PLAY")
     {
-        if(libvlc_vlm_show_media(_vlcinstance, uniqueID)!=NULL)
+        if(libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii())!=NULL)
         {
             stopStream(uniqueID);
             removeStream(uniqueID);
+            sleep(2);
         }
         addStream(filepath, uniqueID, ipaddress);
     } else if (split.at(1)=="STOP") {
