@@ -65,7 +65,7 @@ void Database::createDatabase(QString &path)
     sql[1] += localUniqueId;
     sql[1] += "\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
     sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
-    sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Local\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" INTEGER NOT NULL , \"TimeLastOnline\" INTEGER NOT NULL , \"UniqueID\" VARCHAR UNIQUE NOT NULL, \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL );";
+    sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Local\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" INTEGER NOT NULL , \"TimeLastOnline\" INTEGER NOT NULL , \"UniqueID\" VARCHAR UNIQUE NOT NULL, \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL , \"IPAddress\" VARCHAR UNIQUE);";
     sql[4] = "INSERT INTO LibIndex (ID, Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES (\"1\", 1, \"";
     sql[4] += QString::number(Utilities::getCurrentTimestamp());
     sql[4] += "\", \"0\", \"Local\", \"Local\", 1);";
@@ -335,6 +335,54 @@ void Database::setOnline(QString uniqueID, QString status)
         throw e;
     }
 }
+
+void Database::setIPaddress(QString uniqueID, QString ipaddress)
+{
+    QString sql;
+
+    sql = "UPDATE LibIndex SET IPAddress='";
+    sql += ipaddress;
+    sql += "' WHERE UniqueID='";
+    sql += uniqueID;
+    sql += "';";
+
+    try
+    {
+        query(sql);
+    }
+    catch(SBException e)
+    {
+        qDebug() << e.getException();
+        throw e;
+    }
+}
+
+QString Database::getIPfromUID(QString uniqueID)
+{
+    QSqlQuery result;
+    QString sql;
+
+    sql = "SELECT IPAddress FROM LibIndex WHERE UniqueID='";
+    sql += uniqueID;
+    sql += "' LIMIT 1;";
+
+    try
+    {
+        result = query(sql);
+        if(!result.first())
+        {
+            return NULL;
+        }
+        const QSqlRecord r = result.record();
+        return r.value("IPAddress").toString();
+    }
+    catch(SBException e)
+    {
+        qDebug() << e.getException();
+        throw e;
+    }
+}
+
 int Database::rowCount(QString tablename)
 {
     QSqlQuery result;
