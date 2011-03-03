@@ -35,7 +35,7 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
     //icondisplay->setPixmap(QPixmap::fromImage(icon));
 
     QFont textfont = textbox->font();
-    textfont.setPointSize(9);
+    textfont.setPixelSize(12);
 
     textbox->setPlaceholderText("Search...");
     textbox->setModified(true);

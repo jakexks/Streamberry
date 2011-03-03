@@ -48,12 +48,13 @@ void LibraryController::makeWidget()
 
     curview = new QWidget();
     curview->setObjectName("library");
-
+    curview->setStyleSheet(util.getStylesheet());
     QGridLayout *temp = new QGridLayout(curview);
     temp->setMargin(0);
 
     tablewidget = new QTableWidget();
     tablewidget->setObjectName("libraryTableWidget");
+    tablewidget->setStyleSheet(util.getStylesheet());
     //tablewidget->setGridStyle(Qt::NoPen);
     tablewidget->setShowGrid(false);
     tablewidget->horizontalHeader()->setHighlightSections(false);

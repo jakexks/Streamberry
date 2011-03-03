@@ -24,13 +24,33 @@ QString Utilities::getExecutePath()
 
 QString Utilities::makeStylesheet()
 {
-
-    QString style = "#topBarBack {background: url(EXECPATHimages/topBarBackUp.png) no-repeat; border: none; padding:0;}";
-    style+="#topBarForward {background: url(EXECPATHimages/topBarForwardUp.png) no-repeat;border: none; padding:0;}";
-    style+="#topBarMusic{background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat;border: none; padding:0;}";
-    style+="#topBarWidget{background:url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
+    //top bar
+    QString style = "#topBarBack {background: url(EXECPATHimages/topBarBackUp.png) no-repeat; border: none; padding:0px;}";
+    style+= "#topBarBack:pressed {background: url(EXECPATHimages/topBarBackDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#topBarForward {background: url(EXECPATHimages/topBarForwardUp.png) no-repeat; border: none; padding:0px;}";
+    style+="#topBarForward:pressed {background: url(EXECPATHimages/topBarForwardDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#topBarMusic {background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat; border: none; padding:0px;}";
+    style+="#topBarWidget {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
+    //bottom bar
+    style+="#bottomBarWidget {background: url(EXECPATHimages/botBarBackground.png); border: none; padding:0px;}";
+    style+="#bottomBarRepeat {background: url(EXECPATHimages/botBarRepeatAllUp.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarRepeat:pressed {background: url(EXECPATHimages/botBarRepeatAllDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarShuffle {background: url(EXECPATHimages/botBarShuffleOnUp.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarShuffle:pressed {background: url(EXECPATHimages/botBarShuffleOnDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarPrevious {background: url(EXECPATHimages/botBarBackUp.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarPrevious:pressed {background: url(EXECPATHimages/botBarBackDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarNext {background: url(EXECPATHimages/botBarNextUp.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarNext:pressed {background: url(EXECPATHimages/botBarNextDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarMute {background: url(EXECPATHimages/botBarVolumeOnUp.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarMute:pressed {background: url(EXECPATHimages/botBarVolumeOnDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarPlaypause {background: url(EXECPATHimages/botBarPlayUp.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarPlaypause:pressed {background: url(EXECPATHimages/botBarPlayDown.png) no-repeat; border: none; padding:0px;}";
+    //library
+    style+="#libraryTableWidget {background: red; border: none; padding:0px;}";
+    //playbutton
+    style+="#progressback {background:url(EXECPATHimages/botBarProgress.png) no-repeat; border: none; padding:0px;}";
+    style+="#playbutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayUp.png); border: none; padding:0px;}";
     style.replace("EXECPATH", execpath);
-    qDebug()<<execpath<<" "<<style;
     return style;
 }
 
