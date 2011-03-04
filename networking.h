@@ -19,8 +19,8 @@ public:
     static QString parsebeacon(QString, int);
     enum beaconFields { beaconHeader, uid, timestamp, ip };
 private:
-    QTcpServer tcpServer;
-    QTcpSocket tcpClient;
+    QTcpServer *tcpServer;
+    QTcpSocket *tcpClient;
     QTcpSocket *tcpServerConnection;
 };
 

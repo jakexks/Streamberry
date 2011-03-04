@@ -87,7 +87,8 @@ void LibraryController::addHeaders()
     QTableWidgetItem* header;
     QFont font;
     font.setStyleHint(QFont::System, QFont::PreferAntialias);
-    font.setPointSize(11);
+    font.setPixelSize(10);
+
     tablewidget->setColumnCount(headercount + 2);
     sortorder = Qt::AscendingOrder;
     tablewidget->verticalHeader()->setVisible(false);
@@ -112,7 +113,8 @@ void LibraryController::addHeaders()
     tablewidget->setHorizontalHeaderItem(1, header);
     tablewidget->horizontalHeader()->setResizeMode(1, QHeaderView::Fixed);
     QFontMetrics fontm = QFontMetrics(font);
-    tablewidget->verticalHeader()->setDefaultSectionSize(fontm.lineSpacing()+fontm.height());
+    //tablewidget->verticalHeader()->setDefaultSectionSize(fontm.lineSpacing()+fontm.height());
+    tablewidget->verticalHeader()->setDefaultSectionSize(20);
 
     for(int i = 0; i<headercount; i++)
     {

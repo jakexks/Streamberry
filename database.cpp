@@ -140,15 +140,15 @@ QSqlQuery Database::query(QString sql)
     QSqlQuery query(db);
     for(i=0; i<queries.size(); i++)
     {
-      query.prepare(queries.at(i));
-      //if it can't execute, throw exception
-      if(!query.exec())
-      {
-          qDebug() << queries.at(i);
-          QString s = "SQL failed: ";
-          s += query.lastError().text();
-          throw SBException(DB, s);
-      }
+        query.prepare(queries.at(i));
+        //if it can't execute, throw exception
+        if(!query.exec())
+        {
+            qDebug() << queries.at(i);
+            QString s = "SQL failed: ";
+            s += query.lastError().text();
+            throw SBException(DB, s);
+        }
     }
     return query;
 }
@@ -394,11 +394,11 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     qDebug() << sql;
     try
     {
-      query(sql);
+        query(sql);
     }
     catch(SBException e)
     {
-      throw e;
+        throw e;
     }
 }
 
@@ -502,10 +502,10 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
         //result = query(sql);
         //result.first();
         files = new QList<QSqlRecord>();
-       // while(result.isValid())
+        // while(result.isValid())
         //{
-          //files->append(result.record());
-          //result.next();
+        //files->append(result.record());
+        //result.next();
         //}
 
         //for every user
@@ -539,18 +539,18 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
 
 QString Database::getUniqueID()
 {
-  QString sql = "SELECT UniqueID FROM LibIndex WHERE Local = 1";
-  try
-  {
-    QSqlQuery result1 = query(sql);
-    result1.first();
-    QString result = result1.value(0).toString();
-    return result;
-  }
-  catch(SBException e)
-  {
-    throw e;
-  }
+    QString sql = "SELECT UniqueID FROM LibIndex WHERE Local = 1";
+    try
+    {
+        QSqlQuery result1 = query(sql);
+        result1.first();
+        QString result = result1.value(0).toString();
+        return result;
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
 }
 
 /*void Database::setUniqueID()
@@ -578,203 +578,216 @@ QString Database::getUniqueID()
     }
 }*/
 
-QString Database::changesSinceTime(int timestamp, QString uniqueID)
-{
-    QString sql;
-    QString final;
-    QSqlQuery result;
 
-    sql = "SELECT * FROM Lib";
-    sql += localUniqueId;
-    sql += " WHERE (Timestamp >";
-    sql += QString::number(timestamp);
-    sql += ");";
-
-    try
+    QString Database::changesSinceTime(int timestamp, QString uniqueID)
     {
-        result = query(sql);
-        result.first();
+        QString sql;
+        QString final;
+        QSqlQuery result;
 
-        final = "CREATE TABLE IF NOT EXISTS \"Lib";
-        final += uniqueID;
-        final += "\" (\"UniqueID\" VARCHAR DEFAULT \"";
-        final += uniqueID;
-        final += "\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Track\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0); \x1D";
+        sql = "SELECT * FROM Lib";
+        sql += localUniqueId;
+        sql += " WHERE (Timestamp >";
+        sql += QString::number(timestamp);
+        sql += ");";
 
-        while(result.isValid())
+        try
         {
-            final += "INSERT OR REPLACE INTO Lib";
+            result = query(sql);
+            result.first();
+
+            final = "CREATE TABLE IF NOT EXISTS \"Lib";
             final += uniqueID;
-            final += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Track, Length , Bitrate , Filesize , Timestamp , Filetype) VALUES (\"";
-            final += result.record().value("Filepath").toString();
-            final += "\", \"";
-            final += result.record().value("Artist").toString();
-            final += "\", \"";
-            final += result.record().value("Album").toString();
-            final += "\", \"";
-            final += result.record().value("Title").toString();
-            final += "\", \"";
-            final += result.record().value("Genre").toString();
-            final += "\", \"";
-            final += result.record().value("Rating").toString();
-            final += "\", \"";
-            final += result.record().value("Filename").toString();
-            final += "\", \"";
-            final += result.record().value("Year").toString();
-            final += "\", \"";
-            final += result.record().value("Track").toString();
-            final += "\", \"";
-            final += result.record().value("Length").toString();
-            final += "\", \"";
-            final += result.record().value("Bitrate").toString();
-            final += "\", \"";
-            final += result.record().value("Filesize").toString();
-            final += "\", \"";
-            final += result.record().value("Timestamp").toString();
-            final += "\", \"";
-            final += result.record().value("Filetype").toString();
-            //group separator
-            final += "\"); \x1D";
-            result.next();
+            final += "\" (\"UniqueID\" VARCHAR DEFAULT \"";
+            final += uniqueID;
+            final += "\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Track\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0); \x1D";
+
+            while(result.isValid())
+            {
+                final += "INSERT OR REPLACE INTO Lib";
+                final += uniqueID;
+                final += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Track, Length , Bitrate , Filesize , Timestamp , Filetype) VALUES (\"";
+                final += result.record().value("Filepath").toString();
+                final += "\", \"";
+                final += result.record().value("Artist").toString();
+                final += "\", \"";
+                final += result.record().value("Album").toString();
+                final += "\", \"";
+                final += result.record().value("Title").toString();
+                final += "\", \"";
+                final += result.record().value("Genre").toString();
+                final += "\", \"";
+                final += result.record().value("Rating").toString();
+                final += "\", \"";
+                final += result.record().value("Filename").toString();
+                final += "\", \"";
+                final += result.record().value("Year").toString();
+                final += "\", \"";
+                final += result.record().value("Track").toString();
+                final += "\", \"";
+                final += result.record().value("Length").toString();
+                final += "\", \"";
+                final += result.record().value("Bitrate").toString();
+                final += "\", \"";
+                final += result.record().value("Filesize").toString();
+                final += "\", \"";
+                final += result.record().value("Timestamp").toString();
+                final += "\", \"";
+                final += result.record().value("Filetype").toString();
+                //group separator
+                final += "\"); \x1D";
+                result.next();
+            }
+
+        }
+        catch(SBException e)
+        {
+            throw e;
         }
 
+        return final;
     }
-    catch(SBException e)
+    void Database::makeUser(QString timeLastUpdated, QString timeLastOnline, QString uniqueID, QString name)
     {
-        throw e;
-    }
-
-    return final;
-}
-
-void Database::makeUser(QString timeLastUpdated, QString timeLastOnline, QString uniqueID, QString name)
-{
-    try
-    {
-        QSqlQuery result;
-        QString sql = "SELECT COUNT(*) FROM LibIndex WHERE UniqueID='";
-        sql += uniqueID;
-        sql += "';";
-
-        result = query(sql);
-        result.first();
-        if(result.isValid())
+        try
         {
-            if(result.value(0).toInt()<=0)
-            {
-                sql = "INSERT INTO LibIndex (Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES ('0', '";
-                sql += timeLastUpdated;
-                sql += "', '";
-                sql += timeLastOnline;
-                sql += "', '";
-                sql += uniqueID;
-                sql += "', '";
-                sql += name;
-                sql += "', '0');";
+            QSqlQuery result;
+            QString sql = "SELECT COUNT(*) FROM LibIndex WHERE UniqueID='";
+            sql += uniqueID;
+            sql += "';";
 
-                result = query(sql);
+            result = query(sql);
+            result.first();
+            if(result.isValid())
+            {
+                if(result.value(0).toInt()<=0)
+                {
+                    sql = "INSERT INTO LibIndex (Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES ('0', '";
+                    sql += timeLastUpdated;
+                    sql += "', '";
+                    sql += timeLastOnline;
+                    sql += "', '";
+                    sql += uniqueID;
+                    sql += "', '";
+                    sql += name;
+                    sql += "', '0');";
+
+                    result = query(sql);
+                }
             }
         }
+        catch(SBException e)
+        {
+            throw e;
+        }
     }
-    catch(SBException e)
+
+    QSqlQuery Database::GetPlaylistInfo(QString playlistName)
     {
-        throw e;
+        QString sql = "SELECT * FROM Playlist WHERE Name =\"";
+        sql += playlistName;
+        sql += "\";";
+
+        QSqlQuery result = query(sql);
+        return result;
     }
-}
 
-QSqlQuery Database::GetPlaylistInfo(QString playlistName)
-{
-    QString sql = "SELECT * FROM Playlist WHERE Name =\"";
-    sql += playlistName;
-    sql += "\";";
+    QSqlQuery Database::GetPlaylistTracks(QString playlistName)
+    {
+        QSqlQuery result;
+        QString sql = "SELECT * FROM PlaylistTracks WHERE Playlist =\"";
+        sql += playlistName;
+        sql += "\";";
+        result = query(sql);
+        return result;
+    }
 
-    QSqlQuery result = query(sql);
-    return result;
-}
+    void Database::PlaylistSave(QString name, int smart, QString filter)
+    {
+        QString value;
+        if(smart == 1)
+            value = "1";
+        else
+            value = "0";
+        QString sql = "INSERT OR REPLACE INTO Playlist (Name, Smart, Filter) VALUES (\"";
+        sql += name;
+        sql += "\",";
+        sql += value;
+        sql += ",\"";
+        sql += filter;
+        sql += "\");";
+        query(sql);
+    }
 
-QSqlQuery Database::GetPlaylistTracks(QString playlistName)
-{
-  QSqlQuery result;
-  QString sql = "SELECT * FROM PlaylistTracks WHERE Playlist =\"";
-  sql += playlistName;
-  sql += "\";";
-  result = query(sql);
-  return result;
-}
+    void Database::PlaylistAddTracks(QList<QString> Tracks, QString Playlist)
+    {
+        int i=0;
+        QString sql = "DELETE FROM PlaylistTracks WHERE Playlist = \"";
+        sql += Playlist;
+        sql += "\";";
+        for(i = 0; i < Tracks.size() ; i++)
+        {
+            QString trackid = Tracks.at(i);
+            QStringList list1 = trackid.split(":");
+            QString id = list1.at(0);
+            QString uniqueid = list1.at(1);
+            sql += "INSERT INTO PlaylistTracks (UniqueID, ID, Playlist) VALUES (\"";
+            sql += uniqueid;
+            sql += "\", ";
+            sql += id;
+            sql += ", \"";
+            sql += Playlist;
+            sql += "\");";
+        }
+        query(sql);
+    }
 
-void Database::PlaylistSave(QString name, int smart, QString filter)
-{
-  QString value;
-  if(smart == 1)
-    value = "1";
-  else
-    value = "0";
-  QString sql = "INSERT OR REPLACE INTO Playlist (Name, Smart, Filter) VALUES (\"";
-  sql += name;
-  sql += "\",";
-  sql += value;
-  sql += ",\"";
-  sql += filter;
-  sql += "\");";
-  query(sql);
-}
+    QList<QSqlRecord>* Database::getTracks( QList<QString> Tracks)
+    {
+        QString trackid;
+        QList<QSqlRecord>* result = new QList<QSqlRecord>();
+        int i =0;
+        for(i = 0; i < (Tracks.size()) ; i++)
+        {
+            trackid = Tracks.at(i);
+            QStringList list1 = trackid.split(":");
+            QString id = list1.at(1);
+            QString uniqueid = list1.at(0);
+            QString sql = "SELECT * FROM ";
+            sql += "Lib";
+            sql += uniqueid;
+            sql += " WHERE UniqueID = \"";
+            sql += uniqueid;
+            sql += "\" AND ID = ";
+            sql += id;
+            sql += ";";
+            QSqlQuery queryresult = query(sql);
+            queryresult.first();
+            result->append(queryresult.record());
+        }
+        return result;
+    }
 
-void Database::PlaylistAddTracks(QList<QString> Tracks, QString Playlist)
-{
-  int i=0;
-  QString sql = "DELETE FROM PlaylistTracks WHERE Playlist = \"";
-  sql += Playlist;
-  sql += "\";";
-  for(i = 0; i < Tracks.size() ; i++)
-  {
-    QString trackid = Tracks.at(i);
-    QStringList list1 = trackid.split(":");
-    QString id = list1.at(0);
-    QString uniqueid = list1.at(1);
-    sql += "INSERT INTO PlaylistTracks (UniqueID, ID, Playlist) VALUES (\"";
-    sql += uniqueid;
-    sql += "\", ";
-    sql += id;
-    sql += ", \"";
-    sql += Playlist;
-    sql += "\");";
-  }
-  query(sql);
-}
+    void Database::removePlaylist(QString name)
+    {
+        QString sql = "DELETE FROM Playlist WHERE Name =\"";
+        sql += name;
+        sql += "\";";
+        sql += "DELETE FROM PlaylistTracks WHERE Playlist = \"";
+        sql += name;
+        sql += "\";";
+        query(sql);
+    }
 
-QList<QSqlRecord> Database::getTracks( QList<QString> Tracks)
-{
-  QString trackid;
-  QList<QSqlRecord> result;
-  int i =0;
-  for(i = 0; i < (Tracks.size()) ; i++)
-  {
-    trackid = Tracks.at(i);
-    QStringList list1 = trackid.split(":");
-    QString id = list1.at(1);
-    QString uniqueid = list1.at(0);
-    QString sql = "SELECT * FROM ";
-    sql += "Lib";
-    sql += uniqueid;
-    sql += " WHERE UniqueID = \"";
-    sql += uniqueid;
-    sql += "\" AND ID = ";
-    sql += id;
-    sql += ";";
-    QSqlQuery queryresult = query(sql);
-    queryresult.first();
-    result.append(queryresult.record());
-  }
-  return result;
-}
 
-void Database::removePlaylist(QString name)
-{
-  QString sql = "DELETE FROM Playlist WHERE Name =\"";
-  sql += name;
-  sql += "\";";
-  sql += "DELETE FROM PlaylistTracks WHERE Playlist = \"";
-  sql += name;
-  sql += "\";";
-  query(sql);
-}
+    QList<QSqlRecord> Database::getAllPlaylists()
+    {
+        QList<QSqlRecord> result;
+        int i =0;
+        //QString sql = "SELECT * FROM Playlist ORDER BY Played DESC";
+        QString sql = "SELECT * FROM Playlist";
+        QSqlQuery queryresult = query(sql);
+        while(queryresult.next())
+            result.append(queryresult.record());
+        return result;
+    }

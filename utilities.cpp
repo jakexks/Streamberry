@@ -4,9 +4,9 @@
 #include <QString>
 #include <QDebug>
 
-Utilities::Utilities(char* exec)
+
+Utilities::Utilities(QString execpath)
 {
-    execpath = QString(exec);
     execpath.resize(execpath.lastIndexOf('/'));
     execpath += "/";
     stylesheet = makeStylesheet();
@@ -49,9 +49,8 @@ QString Utilities::makeStylesheet()
     style+="#bottomBarPlaypause:pressed {background: url(EXECPATHimages/botBarPlayDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarSongInfoLine {background-color: #222222; border: none; padding:0px;}";
     //library
-    style+="#libraryTableWidget {background: #222222; border: none; padding:0px;}";
-    style+="#albumArt {background-color: #1e1e1e; border-bottom:1px solid #AAAAAA}";
-    style+="#horizontalHeader  {background-color: red; border: none;  padding:0px;}";
+    style+="#libraryTableWidget {background: #292929; border: none; padding:0px; color:#e1e1e1; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
+    style+="#albumArt {background-color: #181818; border-bottom:1px solid #121212}";
     //playbutton
     //style+="#separatorSongInfo {background:#222222; border:none; padding:0px;}";
     style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png); separator-color:red;  padding:10px;}";
@@ -69,10 +68,11 @@ QString Utilities::getStylesheet()
 // function that specifies the colors of the background of the library rows
 QString Utilities::getColor(int inputVar)
 {
+//dark
 if(inputVar==1)
-    return "#222222";
-
+    return "#1C1C1C";
+//light
 if(inputVar==2)
-    return "#2d2d2d";
+    return "#292929";
 return "#000000";
 }

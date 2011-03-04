@@ -5,6 +5,7 @@
 #include <QHash>
 #include <QUdpSocket>
 #include "database.h"
+#include <QTcpServer>
 
 class LibraryRequester : public QObject
 {
@@ -19,7 +20,7 @@ private slots:
 private:
     QList<QString> gettinglibraries;
     Database& db;
-    QUdpSocket *udpsocket;
+    QTcpServer *server;
 };
 
 #endif // LIBRARYREQUESTER_H
