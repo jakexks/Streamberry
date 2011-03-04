@@ -18,7 +18,7 @@ QWidget* SidebarController::makeWidget()
 {
   QWidget* main = new QWidget();
   sidebarlayout = new QGridLayout(main);
-  main->setMaximumWidth(222;
+  main->setMaximumWidth(222);
 
   sidebarlayout->setRowMinimumHeight(0, TOPBARHEIGHT);
   sidebarlayout->setRowStretch(0, 0);

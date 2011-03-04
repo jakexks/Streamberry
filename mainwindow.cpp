@@ -60,7 +60,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, QWidget
 
     //initialise controllers and add widgets to window
     topbarcontroller = new TopbarController(util);
-    sidebarcontroller = new SidebarController(util);
+    sidebarcontroller = new SidebarController(util, db, *librarycontroller);
     librarycontroller = new LibraryController(util, db, player);
     playbackcontroller = new PlaybackController(util, player);
 
