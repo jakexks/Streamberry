@@ -4,9 +4,9 @@
 #include <QString>
 #include <QDebug>
 
-Utilities::Utilities(char* exec)
+
+Utilities::Utilities(QString execpath)
 {
-    execpath = QString(exec);
     execpath.resize(execpath.lastIndexOf('/'));
     execpath += "/";
     stylesheet = makeStylesheet();

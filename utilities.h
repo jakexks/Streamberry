@@ -5,7 +5,7 @@
 class Utilities
 {
 public:
-    Utilities(char* exec);
+    Utilities(QString exec);
     //get timestamp (represented by seconds since 1am 1970)
     int static getCurrentTimestamp();
     QString getExecutePath();
