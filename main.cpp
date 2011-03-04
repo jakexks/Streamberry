@@ -46,12 +46,12 @@ int main(int argc, char *argv[])
   {
 
     //db.setFolders("/streamberrytest/");
-    db.setFolders("C:\\Users\\Jim\\Music");
+    //db.setFolders("");
     //db.setFolders("C:\\Users\\Jim\\Music\\TEST");
-    Filescan fs(db);
-    QThread fsthread;
-    fs.moveToThread(&fsthread);
-    fs.build_new_clean();
+//    Filescan fs(db);
+//    QThread fsthread;
+//    fs.moveToThread(&fsthread);
+//    fs.build_new_clean();
 
     //importLib itunes("");//file name here.
     //QList<QString> allFiles = itunes.libFileList();

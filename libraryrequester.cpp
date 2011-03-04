@@ -11,9 +11,11 @@
 LibraryRequester::LibraryRequester(Database &datab): db(datab)
 {
     QList<QString> gettinglibraries;
-    udpsocket = new QUdpSocket(this);
-    udpsocket->bind(45455, QUdpSocket::ShareAddress);
-    connect(udpsocket, SIGNAL(readyRead()), this, SLOT(processNetworkActivity()));
+    server = new QTcpServer();
+    if(!server->listen(QHostAddress::Any,45455))
+    {
+        qDebug() << "Could not Listen (in processnetworkactivity)";
+    }
     qDebug() << "LibraryRequester initialised";
 }
 
@@ -50,36 +52,40 @@ void LibraryRequester::sendLibrary(QHostAddress theirip, QString theirid, QStrin
 void LibraryRequester::processNetworkActivity()
 {
     qDebug() << "Received send request";
-    while (udpsocket->hasPendingDatagrams())
+
+    server->waitForNewConnection(-1);
+    QByteArray buf;
+    try
     {
-        qDebug() << "DICKS";
-        try
+        while(server->hasPendingConnections())
         {
-            QByteArray datagram;
-            datagram.resize(udpsocket->pendingDatagramSize());
-            udpsocket->readDatagram(datagram.data(), datagram.size());
-            QString datastring = (QString) datagram.data();
-            networking n;
-            QString id = n.parsebeacon(datastring, networking::uid);
-            QString myid = n.getuniqid();
-            if (n.parsebeacon(datastring, networking::beaconHeader) == "STREAMLIBRARY")
+            QTcpSocket *connection = server->nextPendingConnection();
+            buf.resize(buf.size() + connection->bytesAvailable());
+            buf.append(connection->readAll());
+            connection->close();
+        }
+        QString datastring = (QString) buf.data();
+        networking n;
+        QString id = n.parsebeacon(datastring, networking::uid);
+        QString myid = n.getuniqid();
+        if (n.parsebeacon(datastring, networking::beaconHeader) == "STREAMLIBRARY")
+        {
+            if (id != myid)
             {
-                if (id != myid)
-                {
-                    QString dbtimestamp = n.parsebeacon(datastring, networking::timestamp);
-                    LibrarySender ls = LibrarySender::LibrarySender(db);
-                    qDebug() << "Sending my library to " << id;
-                    ls.send(dbtimestamp.toInt(), QHostAddress::QHostAddress(n.parsebeacon(datastring, networking::ip)), id);
-                }
-                else
-                {
-                    qDebug() << "From myself";
-                }
+                QString dbtimestamp = n.parsebeacon(datastring, networking::timestamp);
+                LibrarySender ls = LibrarySender::LibrarySender(db);
+                qDebug() << "Sending my library to " << id;
+                ls.send(dbtimestamp.toInt(), QHostAddress::QHostAddress(n.parsebeacon(datastring, networking::ip)), id);
+            }
+            else
+            {
+                qDebug() << "From myself";
             }
         }
-        catch (SBException e)
-        {
-            std::cerr << e.getException().toStdString();
-        }
     }
+    catch (SBException e)
+    {
+        std::cerr << e.getException().toStdString();
+    }
+
 }

@@ -48,22 +48,23 @@ QString networking::getmyip()
 // Generic receive function. Waits until there is something to receive from the network, then returns a byte array containing all the data received
 QByteArray networking::receive(int port)
 {
-    tcpServer.listen(QHostAddress::Any,port);
-    QByteArray buf;
-    while (!tcpServer.isListening() && !tcpServer.listen())
+    tcpServer = new QTcpServer();
+    if(!tcpServer->listen(QHostAddress::Any,port))
     {
-        qDebug() << "Could not listen";
-        return NULL;
+        qDebug() << "Could not Listen";
     }
-    tcpServer.waitForNewConnection(-1);
-    while(tcpServer.hasPendingConnections())
+    QByteArray buf;
+
+    tcpServer->waitForNewConnection(-1);
+    while(tcpServer->hasPendingConnections())
     {
-        tcpServerConnection = tcpServer.nextPendingConnection();
+        tcpServerConnection = tcpServer->nextPendingConnection();
         buf.resize(buf.size() + tcpServerConnection->bytesAvailable());
         buf.append(tcpServerConnection->readAll());
         tcpServerConnection->close();
     }
-    tcpServer.close();
+    tcpServer->close();
+    tcpServer->~QTcpServer();
     return buf;
 }
 
@@ -71,15 +72,16 @@ QByteArray networking::receive(int port)
 void networking::send(QHostAddress host, quint16 port, QByteArray data)
 {
     const int timeout = 5000;
-    tcpClient.connectToHost(host, port);
-    if(tcpClient.waitForConnected(timeout))
+    tcpClient = new QTcpSocket();
+    tcpClient->connectToHost(host, port);
+    if(tcpClient->waitForConnected(timeout))
     {
-        tcpClient.write(data);
-        tcpClient.close();
+        tcpClient->write(data);
+        tcpClient->close();
     }
     else
     {
-        std::cerr << tcpClient.errorString().toStdString();
+        std::cerr << tcpClient->errorString().toStdString() << std::endl;
     }
 }
 
