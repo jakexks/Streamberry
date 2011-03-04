@@ -3,7 +3,8 @@
 Playlist::Playlist(Database &datab) : db(datab)
 {
     db = datab;
-    smart = false;
+    smart = 0;
+    filter = "";
 }
 
 Playlist::Playlist(Database &datab, QString playlistName) : db(datab)
@@ -12,7 +13,7 @@ Playlist::Playlist(Database &datab, QString playlistName) : db(datab)
   QSqlQuery result = db.GetPlaylistInfo(playlistName);
   result.first();
   name = result.value(0).toString();
-  smart = result.value(1).toBool();
+  smart = result.value(1).toInt();
   filter = result.value(2).toString();
   QSqlQuery result2 = db.GetPlaylistTracks(playlistName);
   while ( result2.next() )
@@ -29,7 +30,7 @@ Playlist::Playlist(Database &datab, QString playlistName) : db(datab)
 
 void Playlist::SavePlaylist()
 {
-  db.PlaylistSave(name,(smart == true ? 1 : 0),filter);
+  db.PlaylistSave(name,smart,filter);
   db.PlaylistAddTracks(Tracks, name);
 }
 
@@ -57,9 +58,9 @@ void Playlist::removeTrack(int index)
   Tracks.removeAt(index);
 }
 
-QList<QSqlRecord> Playlist::getAllTracks()
+QList<QSqlRecord>* Playlist::getAllTracks()
 {
-  if(smart == false)
+  if(smart == 0)
     return db.getTracks(Tracks);
   else
   {
@@ -67,7 +68,7 @@ QList<QSqlRecord> Playlist::getAllTracks()
     QList<QString> order;
     fields.append("Album");
     order.append("DESC");
-    QList<QSqlRecord> result = *db.searchDb(0, filter, fields, order);
+    QList<QSqlRecord>* result = db.searchDb(0, filter, fields, order);
     return result;
   }
 }
@@ -87,7 +88,7 @@ void Playlist::setPlaylistName(QString newname)
    name = newname;
 }
 
-bool Playlist::getPlaylistType()
+int Playlist::getPlaylistType()
 {
    return smart;
 }
@@ -97,17 +98,13 @@ int Playlist::getPlaylistLength()
   return Tracks.size();
 }
 
-void Playlist::setPlaylistType(QString type)
+void Playlist::setPlaylistType(int type)
 {
-  if(type == "smart")
-    smart = true;
-  else
-    smart = false;
+  smart = type;
 }
 
 void Playlist::setFilter(QString newfilter)
 {
-  smart = true;
   filter = newfilter;
 }
 
