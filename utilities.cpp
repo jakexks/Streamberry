@@ -48,8 +48,8 @@ QString Utilities::makeStylesheet()
     style+="#bottomBarPlaypause:pressed {background: url(EXECPATHimages/botBarPlayDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarSongInfoLine {background-color: #222222; border: none; padding:0px;}";
     //library
-    style+="#libraryTableWidget {background: #1e1e1e; border: none; padding:0px;}";
-    style+="#albumArt {background-color: #1e1e1e; border-bottom:1px solid #AAAAAA}";
+    style+="#libraryTableWidget {background: #292929; border: none; padding:0px;}";
+    style+="#albumArt {background-color: #181818; border-bottom:1px solid #121212}";
     //playbutton
     style+="#progressback {background:url(EXECPATHimages/botBarProgress.png) no-repeat; border: none; padding:0px;}";
     style+="#playbutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayUp.png); border: none; padding:0px;}";
@@ -65,10 +65,11 @@ QString Utilities::getStylesheet()
 // function that specifies the colors of the background of the library rows
 QString Utilities::getColor(int inputVar)
 {
+//dark
 if(inputVar==1)
-    return "#222222";
-
+    return "#1C1C1C";
+//light
 if(inputVar==2)
-    return "#2d2d2d";
+    return "#292929";
 return "#000000";
 }
