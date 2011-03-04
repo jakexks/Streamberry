@@ -59,33 +59,33 @@ int main(int argc, char *argv[])
 
     Playlist test1 = Playlist(db);
     test1.setPlaylistName("test1");
-    test1.setPlaylistType("nothing");
+    test1.setPlaylistType(0);
     test1.setFilter("");
-    test1.addTrack(1, "98");
-    test1.addTrack(12, "98");
-    test1.addTrack(13, "98");
-    test1.addTrack(16, "98");
-    test1.addTrack(10, "98");
+    test1.addTrack(1, "Local");
+    test1.addTrack(12, "Local");
+    test1.addTrack(13, "Local");
+    test1.addTrack(16, "Local");
+    test1.addTrack(10, "Local");
     test1.SavePlaylist();
-    test1.addTrack(56, "98");
-    test1.addTrack(120, "98");
+    test1.addTrack(56, "Local");
+    test1.addTrack(120, "Local");
     test1.SavePlaylist();
     test1.removeTrack(3);
-    test1.removeTrack(56, "98");
+    test1.removeTrack(56, "Local");
     test1.SavePlaylist();
     Playlist test2 = Playlist(db);
     test2.setPlaylistName("test2");
-    test2.setPlaylistType("nothing");
+    test2.setPlaylistType(0);
     test2.setFilter("");
-    test2.addTrack(145, "98");
-    test2.addTrack(146, "98");
-    test2.addTrack(147, "98");
+    test2.addTrack(145, "Local");
+    test2.addTrack(146, "Local");
+    test2.addTrack(147, "Local");
     test2.SavePlaylist();
     test1.deletePlaylist();
     Playlist test3 = Playlist(db, "test2");
-    QList<QSqlRecord> tracks = test3.getAllTracks();
+    QList<QSqlRecord>* tracks = test3.getAllTracks();
     int i=0;
-    for(i=0; i<(tracks.size()); i++)
+    for(i=0; i<(tracks->size()); i++)
     {
       //qDebug() << tracks.at(i).value(2).toString();
     }
