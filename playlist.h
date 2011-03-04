@@ -32,23 +32,23 @@ public:
 
   //Returns a QList of QSqlRecords containing all the tracks in this playlist. This contains all the needed data and should be
   //used for display in the main window.
-  QList<QSqlRecord> getAllTracks();
+  QList<QSqlRecord>* getAllTracks();
   //The next few methods are obvious in their function. Playlist length is the number of tracks in the playlist
   QString getPlaylistName();
-  bool getPlaylistType();
+  int getPlaylistType();
   int getPlaylistLength();
   QString getFilter();
 
   //The next few methods are obvious in their function.
   void setPlaylistName(QString newname);
   //Takes "smart" as a parameter if the playlist is a smart playlist
-  void setPlaylistType(QString type);
+  void setPlaylistType(int type);
   void setFilter(QString newfilter);
 
 private:
   Database& db;
   QString name;
-  bool smart;
+  int smart;
   QString filter;
   QList<QString> Tracks;
 };

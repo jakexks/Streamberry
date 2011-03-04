@@ -42,8 +42,11 @@ SOURCES +=  main.cpp\
             beaconsender.cpp \
             networking.cpp \
             player.cpp \
-    playbackprogress.cpp \
-    playbackbutton.cpp
+            playlistscontext.cpp\
+            streamrequest.cpp \
+            playbackprogress.cpp \
+            playbackbutton.cpp
+
 
 HEADERS +=  mainwindow.h\
             database.h\
@@ -71,5 +74,7 @@ HEADERS +=  mainwindow.h\
             beaconsender.h \
             networking.h \
             player.h \
-    playbackprogress.h \
-    playbackbutton.h
+            playlistscontext.h \
+            streamrequest.h \ 
+            playbackprogress.h \
+            playbackbutton.h
