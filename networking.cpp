@@ -55,7 +55,10 @@ QByteArray networking::receive(int port)
     }
     QByteArray buf;
 
-    tcpServer->waitForNewConnection(-1);
+    if(!tcpServer->waitForNewConnection(3000))
+    {
+        qDebug() << "Could not receive";
+    }
     while(tcpServer->hasPendingConnections())
     {
         tcpServerConnection = tcpServer->nextPendingConnection();
