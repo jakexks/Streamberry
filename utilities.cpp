@@ -3,7 +3,7 @@
 #include <QDateTime>
 #include <QString>
 #include <QDebug>
-#include <windows.h>
+
 
 Utilities::Utilities(QString execpath)
 {
