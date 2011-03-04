@@ -28,31 +28,25 @@ QWidget* PlaybackController::makeWidget()
     temp->setSpacing(0);
     temp->setMargin(0);
 
-    QGridLayout *songInfoArea = new QGridLayout();
-    //playback controls
-//    QGridLayout *controlsContainer = new QGridLayout();
-//    QGridLayout* controls = new QGridLayout();
-//    QHBoxLayout* left = new QHBoxLayout();
-//    QHBoxLayout* middle = new QHBoxLayout();
-//    QHBoxLayout* right = new QHBoxLayout();
+    QTableWidget *songInfo = new QTableWidget();
+    songInfo->setObjectName("songInfoArea");
+    songInfo->setMaximumWidth(222);
+   // songInfo->verticalHeader()->setObjectName("separatorSongInfo");
+   // songInfo->verticalHeader()->setMinimumWidth(1);
+   // songInfo->verticalHeader()->setMinimumWidth(1);
+   // songInfo->verticalHeader()->setStyleSheet(util.getStylesheet());
+    songInfo->setColumnCount(1);
+    songInfo->setRowCount(3);
+    songInfo->setRowHeight(0,20);
+    songInfo->setRowHeight(1,20);
+    songInfo->setRowHeight(2,20);
+    QTableWidgetItem* item = new QTableWidgetItem("xxx");
+    item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+    item->setTextAlignment(Qt::AlignLeft);
+    songInfo->setItem(0,0,item);
+    songInfo->horizontalHeader()->hide();
+    songInfo->verticalHeader()->hide();
 
-//    controlsContainer->setSpacing(0);
-//    controlsContainer->setMargin(0);
-    songInfoArea->setSpacing(0);
-    songInfoArea->setMargin(10);
-//    left->setSpacing(35);
-//    left->setMargin(0);
-//    left->setContentsMargins(40,0,0,0);
-//    middle->setSpacing(0);
-//    middle->setContentsMargins(37,0,37,0);
-//    middle->setMargin(0);
-//    right->setSpacing(10);
-//    right->setMargin(0);
-//    controls->addLayout(left, 0, 1, Qt::AlignRight | Qt::AlignVCenter);
-//    controls->addLayout(middle, 0, 3, Qt::AlignCenter | Qt::AlignVCenter);
-//    controls->addLayout(right, 0, 5, Qt::AlignLeft | Qt::AlignVCenter);
-//    controls->setSpacing(0);
-//    controls->setMargin(0);
     temp->setColumnStretch(0, 0);
     temp->setColumnStretch(1, 1);
     temp->setColumnStretch(2, 0);
@@ -68,8 +62,6 @@ QWidget* PlaybackController::makeWidget()
     temp->setColumnStretch(12, 0);
     temp->setColumnStretch(13, 0);
     temp->setColumnStretch(14, 1);
-//    controls->setColumnMinimumWidth(2, 35);
-//    controls->setColumnMinimumWidth(4, 35);
 
     QPushButton *repeat = new QPushButton();
     repeat->setObjectName("bottomBarRepeat");
@@ -111,23 +103,7 @@ QWidget* PlaybackController::makeWidget()
     volumeslider->setFixedWidth(110);
     volumeslider->setValue(50);
 
-    QLabel *songInfoLine = new QLabel();
-    songInfoLine->setObjectName("bottomBarSongInfoLine");
-    songInfoLine->setMinimumWidth(1);
-    songInfoLine->setMaximumWidth(1);
-    songInfoLine->setMinimumHeight(64);
-    songInfoLine->setStyleSheet(util.getStylesheet());
-
-    songInfoArea->addWidget(songInfoLine);
-//    left->addWidget(shuffle);
-//    left->addWidget(repeat);
-//    middle->addWidget(previous);
-//    middle->addWidget(progressBar);
-//    middle->addWidget(next);
-//    right->addWidget(mute);
-//    right->addWidget(volumeslider);
-
-    temp->addLayout(songInfoArea, 0, 0);
+    temp->addWidget(songInfo, 0, 0);
     temp->setColumnMinimumWidth(0, 222);
     temp->setColumnMinimumWidth(2, 70);
     temp->addWidget(shuffle, 0, 3);
@@ -141,10 +117,6 @@ QWidget* PlaybackController::makeWidget()
     temp->addWidget(mute, 0, 11);
     temp->setColumnMinimumWidth(12, BUTTON_DISTANCE);
     temp->addWidget(volumeslider, 0, 13);
-//    temp->addLayout(controlsContainer,1,1);
-//    controlsContainer->addLayout(controls, 1, 0, Qt::AlignHCenter | Qt::AlignVCenter);
-//    temp->setRowMinimumHeight(2, 5);
-//    temp->setRowStretch(0, 0);
 
     //player.playFile("/home/vity/01-Metric-Help I'm Alive.mp3");
     connect(playbutton, SIGNAL(clicked()), &player, SLOT(playControl()));

@@ -10,6 +10,7 @@ Utilities::Utilities(char* exec)
     execpath.resize(execpath.lastIndexOf('/'));
     execpath += "/";
     stylesheet = makeStylesheet();
+    qDebug()<<execpath;
 }
 
 int Utilities::getCurrentTimestamp()
@@ -48,9 +49,12 @@ QString Utilities::makeStylesheet()
     style+="#bottomBarPlaypause:pressed {background: url(EXECPATHimages/botBarPlayDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarSongInfoLine {background-color: #222222; border: none; padding:0px;}";
     //library
-    style+="#libraryTableWidget {background: #1e1e1e; border: none; padding:0px;}";
+    style+="#libraryTableWidget {background: #222222; border: none; padding:0px;}";
     style+="#albumArt {background-color: #1e1e1e; border-bottom:1px solid #AAAAAA}";
+    style+="#horizontalHeader  {background-color: red; border: none;  padding:0px;}";
     //playbutton
+    //style+="#separatorSongInfo {background:#222222; border:none; padding:0px;}";
+    style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png); separator-color:red;  padding:10px;}";
     style+="#progressback {background:url(EXECPATHimages/botBarProgress.png) no-repeat; border: none; padding:0px;}";
     style+="#playbutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayUp.png); border: none; padding:0px;}";
     style.replace("EXECPATH", execpath);

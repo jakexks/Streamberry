@@ -88,13 +88,13 @@ void LibraryController::addHeaders()
     QFont font;
     font.setStyleHint(QFont::System, QFont::PreferAntialias);
     font.setPointSize(11);
-
     tablewidget->setColumnCount(headercount + 2);
     sortorder = Qt::AscendingOrder;
-
     tablewidget->verticalHeader()->setVisible(false);
     header = new QTableWidgetItem("");
     tablewidget->setHorizontalHeaderItem(0, header);
+    tablewidget->horizontalHeader()->setObjectName("horizontalHeader");
+    tablewidget->horizontalHeader()->setStyleSheet(util.getStylesheet());
 
     QString setting;
 
@@ -108,6 +108,7 @@ void LibraryController::addHeaders()
     }
 
     header = new QTableWidgetItem("");
+
     tablewidget->setHorizontalHeaderItem(1, header);
     tablewidget->horizontalHeader()->setResizeMode(1, QHeaderView::Fixed);
     QFontMetrics fontm = QFontMetrics(font);
@@ -133,6 +134,7 @@ void LibraryController::addHeaders()
 
     tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, Qt::AscendingOrder);
     tablewidget->horizontalHeader()->setMovable(true);
+
 }
 
 void LibraryController::fillData(QList<QSqlRecord> *values)
