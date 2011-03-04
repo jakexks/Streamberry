@@ -48,7 +48,7 @@ QString Utilities::makeStylesheet()
     style+="#bottomBarPlaypause:pressed {background: url(EXECPATHimages/botBarPlayDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarSongInfoLine {background-color: #222222; border: none; padding:0px;}";
     //library
-    style+="#libraryTableWidget {background: #292929; border: none; padding:0px;}";
+    style+="#libraryTableWidget {background: #292929; border: none; padding:0px; color:#e1e1e1; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#albumArt {background-color: #181818; border-bottom:1px solid #121212}";
     //playbutton
     style+="#progressback {background:url(EXECPATHimages/botBarProgress.png) no-repeat; border: none; padding:0px;}";
