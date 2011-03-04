@@ -17,7 +17,7 @@
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
-  Utilities util(argv[0]);
+  Utilities util(a.applicationDirPath());
 
   Database db;
   Player player;
