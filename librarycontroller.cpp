@@ -111,7 +111,8 @@ void LibraryController::addHeaders()
     tablewidget->setHorizontalHeaderItem(1, header);
     tablewidget->horizontalHeader()->setResizeMode(1, QHeaderView::Fixed);
     QFontMetrics fontm = QFontMetrics(font);
-    tablewidget->verticalHeader()->setDefaultSectionSize(fontm.lineSpacing()+fontm.height());
+    //tablewidget->verticalHeader()->setDefaultSectionSize(fontm.lineSpacing()+fontm.height());
+    tablewidget->verticalHeader()->setDefaultSectionSize(25);
 
     for(int i = 0; i<headercount; i++)
     {
