@@ -41,7 +41,8 @@ void BeaconSender::send(bool online)
 // Sends offline beacons to all machines on local network
 void BeaconSender::sendOfflineBeacon()
 {
-    timer->stop();
+    free(timer);
+    //timer->stop();
     send(false);
     exit(0);
 }

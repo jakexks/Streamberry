@@ -17,7 +17,7 @@
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
-  Utilities util(argv[0]);
+  Utilities util(a.applicationDirPath());
 
   Database db;
   Player player;
@@ -25,12 +25,12 @@ int main(int argc, char *argv[])
     BeaconSender *bs = new BeaconSender(db);
     QThread *bsthread = new QThread(&a);
     bs->moveToThread(bsthread);
-    //bsthread->start();
+    bsthread->start();
 
     BeaconReceiver *br = new BeaconReceiver(db);
     QThread *brthread = new QThread(&a);
     br->moveToThread(brthread);
-    //brthread->start();
+    brthread->start();
 
     QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 

@@ -2,6 +2,7 @@
 #include <QCryptographicHash>
 #include <QStringList>
 #include <QUdpSocket>
+#include <iostream>
 
 // Constructor, needs no arguments
 networking::networking()
@@ -54,7 +55,7 @@ QByteArray networking::receive(int port)
         qDebug() << "Could not listen";
         return NULL;
     }
-    while(!tcpServer.hasPendingConnections());
+    tcpServer.waitForNewConnection(-1);
     while(tcpServer.hasPendingConnections())
     {
         tcpServerConnection = tcpServer.nextPendingConnection();
@@ -69,15 +70,17 @@ QByteArray networking::receive(int port)
 // Generic send function
 void networking::send(QHostAddress host, quint16 port, QByteArray data)
 {
+    const int timeout = 5000;
     tcpClient.connectToHost(host, port);
-    tcpClient.write(data);
-}
-
-void networking::udpSend(QHostAddress host, quint16 port, QByteArray data)
-{
-    QUdpSocket anus;
-    anus.connectToHost(host, port);
-    anus.write(data);
+    if(tcpClient.waitForConnected(timeout))
+    {
+        tcpClient.write(data);
+        tcpClient.close();
+    }
+    else
+    {
+        std::cerr << tcpClient.errorString().toStdString();
+    }
 }
 
 // Unique ID parser

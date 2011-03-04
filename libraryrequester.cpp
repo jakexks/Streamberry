@@ -31,7 +31,7 @@ void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString
         sendme.append("|");
         sendme.append(n.getmyip());
         qDebug() << "Requesting library from " << theirip ;
-        n.udpSend(theirip, 45455, sendme.toUtf8());
+        n.send(theirip, 45455, sendme.toUtf8());
         LibraryReceiver lr = LibraryReceiver(db);
         qDebug() << "Before";
         lr.receive();
