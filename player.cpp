@@ -8,7 +8,7 @@ Player::Player()
     const char * const vlc_args[] = {
                   "-I", "dummy", /* Don't use any interface */
                   "--ignore-config", /* Don't use VLC's config */
-                  "--extraintf=logger", //log anything
+                  //"--extraintf=logger", //log anything
                   "--verbose=1",
                   //"--aout=/dev/dsp"
                   //"--plugin-path=C:\\vlc-0.9.9-win32\\plugins\\"
