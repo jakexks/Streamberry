@@ -11,6 +11,7 @@ public:
     QString getExecutePath();
     QString makeStylesheet();
     QString getStylesheet();
+    QString getColor(int inputVar);
 
 private:
     QString execpath;

@@ -7,16 +7,20 @@
 #include <QModelIndex>
 #include <QAbstractItemModel>
 #include <QDoubleValidator>
+#include "utilities.h"
 
 class AlbumArtDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
 public:
-    AlbumArtDelegate(QObject* parent = 0);
+    AlbumArtDelegate(Utilities &utilities, QObject* parent = 0);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+private:
+    Utilities& util;
 };
 
 #endif // ALBUMARTDELEGATE_H

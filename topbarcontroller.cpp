@@ -24,6 +24,9 @@ QWidget* TopbarController::makeWidget()
     QGridLayout *outer = new QGridLayout(temp);
     outer->setMargin(0);
     outer->setSpacing(0);
+    QGridLayout *separatorLayout = new QGridLayout();
+    separatorLayout->setMargin(0);
+    separatorLayout->setSpacing(0);
     QGridLayout *innerleft = new QGridLayout();
     innerleft->setMargin(0);
     innerleft->setSpacing(0);
@@ -36,6 +39,10 @@ QWidget* TopbarController::makeWidget()
     innerright->setMargin(0);
     innerright->setSpacing(0);
 
+//    separator
+    QLabel *separator = new QLabel();
+    separator->setObjectName("topBarSeparatorRight");
+    separator->setStyleSheet(util.getStylesheet());
     //Buttons for menu
     QPushButton *back = new QPushButton();
     back->setObjectName("topBarBack");
@@ -52,9 +59,10 @@ QWidget* TopbarController::makeWidget()
     SBSearchBar *search = new SBSearchBar(expath);
 
     //Split it into three sections
-    outer->addLayout(innerleft, 1, 0);
-    outer->addLayout(innermiddle, 0, 1, 3, 1);
-    outer->addLayout(innerright, 1, 2);
+    outer->addLayout(separatorLayout, 1, 0);
+    outer->addLayout(innerleft, 1, 1);
+    outer->addLayout(innermiddle, 0, 2, 3, 1);
+    outer->addLayout(innerright, 1, 3);
     //set which rows and columns in outer layout are stretchy
     outer->setRowStretch(0, 1);
     outer->setRowStretch(1, 0);
@@ -67,6 +75,7 @@ QWidget* TopbarController::makeWidget()
     innermiddle->setColumnStretch(1, 0);
     innermiddle->setColumnStretch(2, 164);
     //Set measurements of spacer columns
+    separatorLayout->setColumnMinimumWidth(0,1);
     innerleft->setColumnMinimumWidth(0, 35);
     innermiddle->setColumnMinimumWidth(0, 35);
     innermiddle->setColumnMinimumWidth(1, 140);
@@ -85,9 +94,12 @@ QWidget* TopbarController::makeWidget()
    // videos->setMaximumSize(114, 33);
    // videos->setMinimumSize(114, 33);
   //  videos->setFlat(true);
+    separator->setMinimumSize(1,26);
+    separator->setMaximumSize(1,26);
     //Add buttons to each section
-    innerleft->addWidget(back, 0, 1);
-    innerleft->addWidget(forward, 0, 2);
+    separatorLayout->addWidget(separator, 0, 0);
+    innerleft->addWidget(back, 0, 2);
+    innerleft->addWidget(forward, 0, 3);
     innermiddle->addWidget(music, 0, 1);
     //innermiddle->addWidget(videos, 0, 2);
     innerright->addWidget(search, 0, 0);

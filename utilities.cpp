@@ -31,6 +31,7 @@ QString Utilities::makeStylesheet()
     style+="#topBarForward:pressed {background: url(EXECPATHimages/topBarForwardDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarMusic {background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarWidget {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
+    style+="#topBarSeparatorRight  {background: url(EXECPATHimages/topBarPlaylistsSeparatorRightAlignLeft.png); border: none; padding:0px;}";
     //bottom bar
     style+="#bottomBarWidget {background: url(EXECPATHimages/botBarBackground.png); border: none; padding:0px;}";
     style+="#bottomBarRepeat {background: url(EXECPATHimages/botBarRepeatAllUp.png) no-repeat; border: none; padding:0px;}";
@@ -45,8 +46,10 @@ QString Utilities::makeStylesheet()
     style+="#bottomBarMute:pressed {background: url(EXECPATHimages/botBarVolumeOnDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarPlaypause {background: url(EXECPATHimages/botBarPlayUp.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarPlaypause:pressed {background: url(EXECPATHimages/botBarPlayDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarSongInfoLine {background-color: #222222; border: none; padding:0px;}";
     //library
-    style+="#libraryTableWidget {background: red; border: none; padding:0px;}";
+    style+="#libraryTableWidget {background: #1e1e1e; border: none; padding:0px;}";
+    style+="#albumArt {background-color: #1e1e1e; border-bottom:1px solid #AAAAAA}";
     //playbutton
     style+="#progressback {background:url(EXECPATHimages/botBarProgress.png) no-repeat; border: none; padding:0px;}";
     style+="#playbutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayUp.png); border: none; padding:0px;}";
@@ -57,4 +60,15 @@ QString Utilities::makeStylesheet()
 QString Utilities::getStylesheet()
 {
     return stylesheet;
+}
+
+// function that specifies the colors of the background of the library rows
+QString Utilities::getColor(int inputVar)
+{
+if(inputVar==1)
+    return "#222222";
+
+if(inputVar==2)
+    return "#2d2d2d";
+return "#000000";
 }

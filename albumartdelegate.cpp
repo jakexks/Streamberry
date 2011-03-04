@@ -7,7 +7,7 @@
 #include <QDoubleValidator>
 #include <QDebug>
 
-AlbumArtDelegate::AlbumArtDelegate(QObject *parent) : QStyledItemDelegate(parent)
+AlbumArtDelegate::AlbumArtDelegate(Utilities &utilities, QObject *parent) : util(utilities), QStyledItemDelegate(parent)
 {
 }
 
@@ -28,7 +28,8 @@ void AlbumArtDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     painter->save();
     QWidget *editor = new QWidget();
     editor->setFixedSize(option.rect.size());
-    editor->setStyleSheet("background-color: #D5DFE4; border-bottom:1px solid #AAAAAA");
+    editor->setObjectName("albumArt");
+    editor->setStyleSheet(util.getStylesheet());
     AlbumPanel *p = new AlbumPanel("", editor);
     QGridLayout grid(editor);
     grid.setMargin(0);

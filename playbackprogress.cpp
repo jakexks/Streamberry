@@ -3,7 +3,7 @@
 #include <QtGui>
 #include <cmath>
 
-PlaybackProgress::PlaybackProgress(Utilities &utilities, QWidget *parent) : util(utilities), QFrame(parent)
+PlaybackProgress::PlaybackProgress(Utilities &utilities, QWidget *parent) : QFrame(parent), util(utilities)
 {
    // setStyleSheet("#progressback {background:url(/home/byalkov/Documents/Streamberry-build-desktop/images/botBarProgress.png); background-repeat:none} #playbutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(/home/byalkov/Documents/Streamberry-build-desktop/images/botBarPlayUp.png) }");
     setStyleSheet(util.getStylesheet());

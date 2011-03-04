@@ -29,7 +29,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     container->setMargin(0);
     curview = NULL;
     currentdata = NULL;
-    paneldelegate = new AlbumArtDelegate();
+    paneldelegate = new AlbumArtDelegate(util);
     makeWidget();
 
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
@@ -149,8 +149,8 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
     int length = values->length();
     QString lastalbum;
     int albumstart = -1;
-    QColor background("#DCE5EA");
-    QColor background2("#FEFEFE");
+    QColor background(util.getColor(1));
+    QColor background2(util.getColor(2));
     QFont font;
     font.setStyleHint(QFont::System, QFont::PreferAntialias);
     font.setPointSize(11);

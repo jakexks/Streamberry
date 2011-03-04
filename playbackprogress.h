@@ -21,6 +21,10 @@ private:
     Utilities& util;
     int pieangle;
 
+signals:
+    void mousePressEvent();
+    void mouseReleaseEvent();
+
 };
 
 #endif // PLAYBACKPROGRESS_H
