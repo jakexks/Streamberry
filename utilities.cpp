@@ -53,12 +53,14 @@ QString Utilities::makeStylesheet()
     style+="#libraryTableWidget {background: #292929; border: none; padding:0px; color:#e1e1e1; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#albumArt {background-color: #181818; border-bottom:1px solid #121212}";
     //side bar
+    style+="#sideBarMainWidget {background-color: #DAE3E7; border-right: solid 1px #000000 ; padding:0px;}";
+
     style+="#previewBarTitleWidget {background: url(EXECPATHimages/sideBarPreviewLabel.png); border: none; padding:0px;}";
-    style+="#sideBarPlaylistTableWidget {background-color: #DAE3E7; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
+    style+="#sideBarPlaylistTableWidget {background-color: #DAE3E7; border: none; padding:0px; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#sideBarPreviewPane {background-color: #DAE3E7; border: none; padding:0px;}";
     style+="#sideBarCell {background-color: #DAE3E7; border: none; padding:0px;}";
     style+="#sideBarPlaylistsPane {background-color: #DAE3E7;; border: none; padding:0px;}";
-    style+="#sideBarTopButtons {background-color: #DAE3E7; border: none; padding:0px;}";
+    style+="#sideBarTopButtons {background-color: #DAE3E7; border: none; padding:0px; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#sideBarPreviewTitle {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
     style+="#sideBarPlaylistsTitle {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
     //playbutton

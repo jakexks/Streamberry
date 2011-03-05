@@ -86,7 +86,7 @@ void StreamFile::parseMessage(QString message)
         {
             stopStream(uniqueID);
             removeStream(uniqueID);
-            sleep(2);
+            //sleep(2);
         }
         addStream(filepath, uniqueID, ipaddress);
     } else if (split.at(1)=="STOP") {
