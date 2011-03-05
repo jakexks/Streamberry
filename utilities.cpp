@@ -4,12 +4,12 @@
 #include <QString>
 #include <QDebug>
 
-#include <QMessageBox>
-
 
 Utilities::Utilities(QString path) : execpath(path)
 {
-    //execpath.resize(execpath.lastIndexOf('/'));
+#ifndef Q_WS_WIN
+    execpath.resize(execpath.lastIndexOf('/'));
+#endif
     execpath += "/";
     stylesheet = makeStylesheet();
 }

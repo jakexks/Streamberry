@@ -6,7 +6,7 @@
 
 QT += core gui network sql
 
-LIBS += -plugin -sql -sqlite -lvlc
+LIBS += -lvlc
 mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
 
 mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
