@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
 #ifdef Q_WS_WIN
-    QString execpath = a.applicationDirPath());
+    QString execpath = a.applicationDirPath();
 #else
     QString execpath(argv[0]);
 #endif
