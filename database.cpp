@@ -556,7 +556,7 @@ QString Database::getUniqueID()
 /*void Database::setUniqueID()
 {
     QString sql;
-    /*sql = "DELETE FROM LibIndex";
+    sql = "DELETE FROM LibIndex";
     try
     {
       query(sql);
@@ -783,7 +783,6 @@ QString Database::getUniqueID()
     QList<QSqlRecord> Database::getAllPlaylists()
     {
         QList<QSqlRecord> result;
-        int i =0;
         //QString sql = "SELECT * FROM Playlist ORDER BY Played DESC";
         QString sql = "SELECT * FROM Playlist";
         QSqlQuery queryresult = query(sql);

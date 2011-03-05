@@ -8,7 +8,8 @@
 #include <QSqlRecord>
 #include <QList>
 #include <QObject>
-#include <player.h>
+class Player;
+
 
 class LibraryController : public QObject
 {

@@ -51,6 +51,15 @@ QString Utilities::makeStylesheet()
     //library
     style+="#libraryTableWidget {background: #292929; border: none; padding:0px; color:#e1e1e1; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#albumArt {background-color: #181818; border-bottom:1px solid #121212}";
+    //side bar
+    style+="#previewBarTitleWidget {background: url(EXECPATHimages/sideBarPreviewLabel.png); border: none; padding:0px;}";
+    style+="#sideBarPlaylistTableWidget {background: url(EXECPATHimages/sideBarBackground.png); border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
+    style+="#sideBarPreviewPane {background: url(EXECPATHimages/sideBarBackground.png); border: none; padding:0px;}";
+    //style+="#sideBarPlaylistCell {background: url(EXECPATHimages/sideBarBackground.png); border: none; padding:0px;}";
+    style+="#sideBarPlaylistsPane {background: url(EXECPATHimages/sideBarBackground.png); border: none; padding:0px;}";
+    style+="#sideBarTopButtons {background: url(EXECPATHimages/sideBarBackground.png); border: none; padding:0px;}";
+    style+="#sideBarPreviewTitle {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
+    style+="#sideBarPlaylistsTitle {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
     //playbutton
     //style+="#separatorSongInfo {background:#222222; border:none; padding:0px;}";
     style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png); separator-color:red;  padding:10px;}";

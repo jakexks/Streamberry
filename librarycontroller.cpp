@@ -9,6 +9,7 @@
 #include <QSqlField>
 #include <QDebug>
 #include <QFontMetrics>
+#include "player.h"
 
 #define DEFAULT_WIDTH 170
 #define DEFAULT_ARTPANEL_WIDTH 160

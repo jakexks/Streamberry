@@ -18,7 +18,7 @@ public:
     void updateplaylistbar(int i);
 
   public slots:
-    //void Clicked(int row, int column);
+    void Clicked(int row, int column);
     void DoubleClicked(int row, int column);
     void ShowContextMenu(const QPoint&);
 
@@ -36,12 +36,9 @@ private:
     QWidget* playlistbtn;
     QWidget* previewbtn;
 
-    QPushButton* makeAllMediaBtn();
-    QPushButton* makeAllPlaylistsBtn();
+    QTableWidget* topButtons;
 
-    QPushButton* allmediabtn;
-    QPushButton* allplaylistsbtn;
-
+    QTableWidget* buildButtons();
     QGridLayout* sidebarlayout;
     QGridLayout* playlistbarlayout;
     QTableWidget* tablewidget;
