@@ -362,7 +362,9 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     QString sql;
     sql = "INSERT OR REPLACE INTO ";
     sql += table;
-    sql += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype, Track) VALUES (\"";
+    sql += " (UniqueID, Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype, Track) VALUES (\"";
+    sql += UniqueID;
+    sql += "\", \"";
     sql += filepath;
     sql += "\", \"";
     sql += artist;
@@ -549,6 +551,53 @@ QString Database::getUniqueID()
     }
     catch(SBException e)
     {
+        throw e;
+    }
+}
+
+void Database::setIPaddress(QString uniqueID, QString ipaddress)
+{
+    QString sql;
+
+    sql = "UPDATE LibIndex SET IPAddress='";
+    sql += ipaddress;
+    sql += "' WHERE UniqueID='";
+    sql += uniqueID;
+    sql += "';";
+
+    try
+    {
+        query(sql);
+    }
+    catch(SBException e)
+    {
+        qDebug() << e.getException();
+        throw e;
+    }
+}
+
+QString Database::getIPfromUID(QString uniqueID)
+{
+    QSqlQuery result;
+    QString sql;
+
+    sql = "SELECT IPAddress FROM LibIndex WHERE UniqueID='";
+    sql += uniqueID;
+    sql += "' LIMIT 1;";
+
+    try
+    {
+        result = query(sql);
+        if(!result.first())
+        {
+            return NULL;
+        }
+        const QSqlRecord r = result.record();
+        return r.value("IPAddress").toString();
+    }
+    catch(SBException e)
+    {
+        qDebug() << e.getException();
         throw e;
     }
 }
