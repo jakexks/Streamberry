@@ -4,13 +4,14 @@
 #include <QString>
 #include <QDebug>
 
+#include <QMessageBox>
 
-Utilities::Utilities(QString execpath)
+
+Utilities::Utilities(QString path) : execpath(path)
 {
     execpath.resize(execpath.lastIndexOf('/'));
     execpath += "/";
     stylesheet = makeStylesheet();
-    qDebug()<<execpath;
 }
 
 int Utilities::getCurrentTimestamp()
@@ -66,6 +67,7 @@ QString Utilities::makeStylesheet()
     style+="#progressback {background:url(EXECPATHimages/botBarProgress.png) no-repeat; border: none; padding:0px;}";
     style+="#playbutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayUp.png); border: none; padding:0px;}";
     style.replace("EXECPATH", execpath);
+
     return style;
 }
 
