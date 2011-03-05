@@ -3,9 +3,13 @@
 
 #include <vlc/vlc.h>
 #include <QString>
+#include <QObject>
 
-class StreamFile
+#include "streamrequest.h"
+
+class StreamFile : public QObject
 {
+    Q_OBJECT;
 public:
     StreamFile();
     ~StreamFile();
@@ -23,6 +27,10 @@ public:
 
 private:
     libvlc_instance_t *_vlcinstance;
+    StreamRequest stream;
+
+private slots:
+    void parseMessage(QString message);
 };
 
 #endif // STREAMFILE_H
