@@ -329,18 +329,17 @@ void LibraryController::itemClicked(int row, int column)
     //Title = x2, Artist = x3, Album = x4
     //QTableWidgetItem *record;
 
-//    QSqlRecord record = currentdata->at(row);
-//    QString filepath = record.field("FilePath").value().toString();
-//    if(record.field("UniqueID").value() != "Local")
-//    {
-//        qDebug() << "NOT LOCAL";
-//        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-//        qDebug() << ipaddress;
-//        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), ipaddress);
-//    } else {
-//        player.playFile(filepath.toUtf8());
-//    }
-//    currentlyplaying = row;
+    QSqlRecord record = currentdata->at(row);
+    QString filepath = record.field("FilePath").value().toString();
+    if(record.field("UniqueID").value() != "Local")
+    {
+        qDebug() << "NOT LOCAL";
+        QString ipaddress = db.getIPfromUID(QString("bah"));
+        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), ipaddress);
+    } else {
+        player.playFile(filepath.toUtf8());
+    }
+    currentlyplaying = row;
 
 //    tablewidget->selectRow(row);
 }
