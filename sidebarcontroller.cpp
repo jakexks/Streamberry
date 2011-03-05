@@ -92,7 +92,7 @@ QTableWidget* SidebarController::buildButtons()
   tablewidget->setItem(1, 0, item);
 
   return tablewidget;
- }
+}
 
 QWidget* SidebarController::getWidget()
 {
@@ -153,8 +153,13 @@ QWidget* SidebarController::makePlaylistBar()
   buildplaylistbar(temp);
 
   QString sizestring = db.getSetting("windowSize");
-  double size = sizestring.split("|").at(1).toDouble();
-  updateplaylistbar( (int)(size/89.25) );
+  if( sizestring.compare("") )
+    updateplaylistbar( 7 );
+  else
+  {
+    double size = sizestring.split("|").at(1).toDouble();
+    updateplaylistbar( (int)(size/89.25) );
+  }
   return temp;
 }
 
@@ -227,7 +232,7 @@ void SidebarController::buildplaylistbar(QWidget* playlistbar)
   playlistbarlayout->addWidget(tablewidget, 0, 0, Qt::AlignTop);
   tablewidget->setObjectName("sideBarPlaylistTableWidget");
   tablewidget->setStyleSheet(util.getStylesheet());
- }
+}
 
 void SidebarController::ShowContextMenu(const QPoint& pos)
 {
