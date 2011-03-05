@@ -753,6 +753,8 @@ QString Database::getIPfromUID(QString uniqueID)
 
     void Database::PlaylistSave(QString name, int smart, QString filter)
     {
+        QString test;
+        test.setNum(Utilities::getCurrentTimestamp());
         QString value;
         if(smart == 1)
             value = "1";
@@ -765,7 +767,7 @@ QString Database::getIPfromUID(QString uniqueID)
         sql += ",\"";
         sql += filter;
         sql += "\",";
-        sql += Utilities::getCurrentTimestamp();
+        sql += test;
         sql += ");";
         query(sql);
     }

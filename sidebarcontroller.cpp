@@ -24,10 +24,9 @@ QWidget* SidebarController::makeWidget()
   sidebarlayout->setRowMinimumHeight(0, TOPBARHEIGHT);
   sidebarlayout->setRowStretch(0, 0);
   sidebarlayout->setRowStretch(1, 0);
-  sidebarlayout->setRowStretch(2, 0);
-  sidebarlayout->setRowStretch(3, 2);
+  sidebarlayout->setRowStretch(2, 2);
+  sidebarlayout->setRowStretch(3, 0);
   sidebarlayout->setRowStretch(4, 0);
-  sidebarlayout->setRowStretch(5, 0);
 
   sidebarlayout->setRowMinimumHeight(5, 220);
   sidebarlayout->setColumnMinimumWidth(0, 220);
@@ -262,9 +261,9 @@ void SidebarController::Clicked(int row, int column)
 {
   QString test1;
   test1.setNum(row);
-  QString test = "Playlist ";
+  QString test = "Button ";
   test += test1;
-  test +=" has been double clicked";
+  test +=" has been clicked";
   qDebug() << test;
 }
 

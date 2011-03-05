@@ -55,14 +55,16 @@ QString Utilities::makeStylesheet()
     //side bar
     style+="#sideBarMainWidget {background-color: #DAE3E7; border-right: solid 1px #000000 ; padding:0px;}";
 
-    style+="#previewBarTitleWidget {background: url(EXECPATHimages/sideBarPreviewLabel.png); border: none; padding:0px;}";
-    style+="#sideBarPlaylistTableWidget {background-color: #DAE3E7; border: none; padding:0px; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
-    style+="#sideBarPreviewPane {background-color: #DAE3E7; border: none; padding:0px;}";
-    style+="#sideBarCell {background-color: #DAE3E7; border: none; padding:0px;}";
-    style+="#sideBarPlaylistsPane {background-color: #DAE3E7;; border: none; padding:0px;}";
-    style+="#sideBarTopButtons {background-color: #DAE3E7; border: none; padding:0px; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#sideBarPreviewTitle {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
     style+="#sideBarPlaylistsTitle {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
+
+    style+="#sideBarPlaylistTableWidget {background-color: #DAE3E7; border: none; padding:0px; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
+    //style+="#sideBarPreviewPane {background-color: #DAE3E7; border: none; padding:0px;}";
+    //style+="#sideBarCell {background-color: #DAE3E7; border: none; padding:0px;}";
+    //style+="#sideBarPlaylistsPane {background-color: #DAE3E7;; border: none; padding:0px;}";
+    style+="#sideBarTopButtons {background-color: #DAE3E7; border: none; padding:0px; border: none; padding:0px; selection-background-color:#DAE3E7; selection-color:#000000;}";
+
+
     //playbutton
     //style+="#separatorSongInfo {background:#222222; border:none; padding:0px;}";
     style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png); separator-color:red;  padding:10px;}";
