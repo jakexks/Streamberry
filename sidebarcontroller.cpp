@@ -152,7 +152,7 @@ QWidget* SidebarController::makePlaylistBar()
   buildplaylistbar(temp);
 
   QString sizestring = db.getSetting("windowSize");
-  if( sizestring.compare("") )
+  if( sizestring=="" )
     updateplaylistbar( 7 );
   else
   {
@@ -242,8 +242,13 @@ void SidebarController::ShowContextMenu(const QPoint& pos)
   else
     normalmenu->playlistrightclicked(&pass, &libpass);
   QString sizestring = db.getSetting("windowSize");
-  double size = sizestring.split("|").at(1).toDouble();
-  updateplaylistbar( (int)(size/89.25) );
+  if( sizestring=="" )
+    updateplaylistbar( 7 );
+  else
+  {
+    double size = sizestring.split("|").at(1).toDouble();
+    updateplaylistbar( (int)(size/89.25) );
+  }
 }
 
 
