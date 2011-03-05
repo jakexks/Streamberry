@@ -9,7 +9,7 @@
 
 Utilities::Utilities(QString path) : execpath(path)
 {
-    execpath.resize(execpath.lastIndexOf('/'));
+    //execpath.resize(execpath.lastIndexOf('/'));
     execpath += "/";
     stylesheet = makeStylesheet();
 }
@@ -54,11 +54,11 @@ QString Utilities::makeStylesheet()
     style+="#albumArt {background-color: #181818; border-bottom:1px solid #121212}";
     //side bar
     style+="#previewBarTitleWidget {background: url(EXECPATHimages/sideBarPreviewLabel.png); border: none; padding:0px;}";
-    style+="#sideBarPlaylistTableWidget {background: url(EXECPATHimages/sideBarBackground.png); border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
-    style+="#sideBarPreviewPane {background: url(EXECPATHimages/sideBarBackground.png); border: none; padding:0px;}";
-    //style+="#sideBarPlaylistCell {background: url(EXECPATHimages/sideBarBackground.png); border: none; padding:0px;}";
-    style+="#sideBarPlaylistsPane {background: url(EXECPATHimages/sideBarBackground.png); border: none; padding:0px;}";
-    style+="#sideBarTopButtons {background: url(EXECPATHimages/sideBarBackground.png); border: none; padding:0px;}";
+    style+="#sideBarPlaylistTableWidget {background-color: #DAE3E7; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
+    style+="#sideBarPreviewPane {background-color: #DAE3E7; border: none; padding:0px;}";
+    style+="#sideBarCell {background-color: #DAE3E7; border: none; padding:0px;}";
+    style+="#sideBarPlaylistsPane {background-color: #DAE3E7;; border: none; padding:0px;}";
+    style+="#sideBarTopButtons {background-color: #DAE3E7; border: none; padding:0px;}";
     style+="#sideBarPreviewTitle {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
     style+="#sideBarPlaylistsTitle {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
     //playbutton

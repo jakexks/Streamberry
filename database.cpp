@@ -709,13 +709,15 @@ QString Database::getUniqueID()
             value = "1";
         else
             value = "0";
-        QString sql = "INSERT OR REPLACE INTO Playlist (Name, Smart, Filter) VALUES (\"";
+        QString sql = "INSERT OR REPLACE INTO Playlist (Name, Smart, Filter, Played) VALUES (\"";
         sql += name;
         sql += "\",";
         sql += value;
         sql += ",\"";
         sql += filter;
-        sql += "\");";
+        sql += "\",";
+        sql += Utilities::getCurrentTimestamp();
+        sql += ");";
         query(sql);
     }
 
