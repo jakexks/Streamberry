@@ -74,7 +74,7 @@ void Database::createDatabase(QString &path)
     sql[7] = "DROP TABLE IF EXISTS \"TrackedFolders\";";
     sql[8] = "CREATE TABLE \"TrackedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";
     sql[9] = "CREATE TABLE \"ExcludedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";
-    sql[10] = "CREATE TABLE \"Playlist\" (\"Name\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE , \"Smart\" BOOL NOT NULL  DEFAULT 0, \"Filter\" VARCHAR)";
+    sql[10] = "CREATE TABLE \"Playlist\" (\"Name\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE , \"Smart\" BOOL NOT NULL  DEFAULT 0, \"Filter\" VARCHAR, \"Played\" INTEGER NOT NULL)";
     sql[11] = "CREATE TABLE \"PlaylistTracks\" (\"UniqueID\" VARCHAR NOT NULL, \"ID\" INTEGER NOT NULL,\"Playlist\" VARCHAR NOT NULL )";
     //sql[9] = "DROP TABLE IF EXISTS \"UserTable\";";
     //sql[10] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"Deleted\" BOOL DEFAULT 0);";
