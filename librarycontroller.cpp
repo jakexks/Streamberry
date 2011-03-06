@@ -331,6 +331,7 @@ void LibraryController::itemClicked(int row, int column)
 
     QSqlRecord record = currentdata->at(row);
     QString filepath = record.field("FilePath").value().toString();
+    qDebug() << "Currently playing: " << filepath;
     if(record.field("UniqueID").value() != "Local")
     {
         qDebug() << "NOT LOCAL";
@@ -341,7 +342,7 @@ void LibraryController::itemClicked(int row, int column)
     }
     currentlyplaying = row;
 
-//    tablewidget->selectRow(row);
+    //tablewidget->selectRow(row);
 }
 
 
@@ -358,9 +359,11 @@ void LibraryController::playNextFile()
     qDebug() << "Currently playing: " << filepath;
     if(record.field("UniqueID").value() != "Local")
     {
-//        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), record.field("IPAddress").value().toString());
+        qDebug() << "NOT LOCAL";
+        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), ipaddress);
     } else {
-//        player.playFile(filepath.toUtf8());
+        player.playFile(filepath.toUtf8());
     }
     tablewidget->selectRow(currentlyplaying);
 }
@@ -373,12 +376,13 @@ void LibraryController::playPrevFile()
         currentlyplaying = currentdata->length()-1;
     }
     QSqlRecord record = currentdata->at(currentlyplaying);
-    //TODO: Add checking at the end
     QString filepath = record.field("FilePath").value().toString();
     qDebug() << "Currently playing: " << filepath;
     if(record.field("UniqueID").value() != "Local")
     {
-//        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), record.field("IPAddress").value().toString());
+        qDebug() << "NOT LOCAL";
+        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+        player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), ipaddress);
     } else {
         player.playFile(filepath.toUtf8());
     }
