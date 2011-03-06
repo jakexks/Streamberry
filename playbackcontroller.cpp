@@ -84,8 +84,8 @@ QWidget* PlaybackController::makeWidget()
     previous->setStyleSheet(util.getStylesheet());
     previous->setFlat(true);
 
-    PlaybackProgress::PlaybackProgress *progressbar = new PlaybackProgress(util);
-    PlaybackButton::PlaybackButton *playbutton = new PlaybackButton(progressbar);
+    PlaybackProgress *progressbar = new PlaybackProgress(util);
+    PlaybackButton *playbutton = new PlaybackButton(progressbar);
     QPushButton *next = new QPushButton();
     next->setObjectName("bottomBarNext");
     next->setMaximumSize(45, 37);
