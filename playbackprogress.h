@@ -14,8 +14,10 @@ public:
     void recalculateAngle(QPointF);
     void paintEvent(QPaintEvent *);
 signals:
+    void newAngle(int pieangle);
 
 public slots:
+    void setAngle(int angle);
 
 private:
     Utilities& util;
