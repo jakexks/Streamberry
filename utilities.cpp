@@ -7,9 +7,6 @@
 
 Utilities::Utilities(QString path) : execpath(path)
 {
-#ifndef Q_WS_WIN
-    execpath.resize(execpath.lastIndexOf('/'));
-#endif
     execpath += "/";
     stylesheet = makeStylesheet();
 }
