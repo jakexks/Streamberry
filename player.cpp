@@ -58,14 +58,12 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     //if localplayback, give filename, if remote, set filename to 127.0.0.1
     //give filename normally
 
-    //n.send(QHostAddress(remoteIP), 45455, QByteArray("STREAMBERRY|STOP"));
-
     if(currIP == "127.0.0.1")
     {
         //Send command to other computer to stop. Use remoteIP variable
         QString toSend = "STREAMBERRY|STOP|";
         toSend += n.getuniqid();
-        stream.send(remoteIP, 45455, toSend);
+        stream.send(remoteIP, 45456, toSend);
     }
 
     currIP = "local"; //Change to local
@@ -82,14 +80,15 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         toSend += "|";
         toSend += file;
         //Send IP, uniqueID, file path
-        stream.send(ipaddress, 45455, toSend);
+        stream.send(ipaddress, 45456, toSend);
         file = "rtp://@";
         currIP = "127.0.0.1";
         remoteIP = ipaddress;
     }
 
 
-    _m = libvlc_media_new_location (_vlcinstance, file.toAscii());
+
+    _m = libvlc_media_new_location (_vlcinstance, file.toUtf8());
     libvlc_media_player_set_media (_mp, _m);
     //libvlc_media_parse (_m);
     libvlc_media_release (_m);
@@ -140,17 +139,6 @@ void Player::playControl()
     } else {
         libvlc_media_player_play(_mp);
     }
-    //qDebug() << libvlc_media_player_is_playing(_mp);
-    //libvlc_media_player_pause(_mp);
-    /*libvlc_media_player_set_media(_mp, _m);
-    libvlc_media_player_play(_mp);*/
-    /*if(play == true){
-        libvlc_media_player_set_pause(_mp, 0);
-        _isPlaying=true;
-    } else {
-        libvlc_media_player_set_pause(_mp, 1);
-        _isPlaying=false;
-    }*/
 }
 
 void Player::muteAudio()
@@ -180,7 +168,8 @@ void Player::sliderUpdate()
     if(libvlc_media_player_get_state(_mp) == 6)//Stop if ended
     {
         libvlc_media_player_stop(_mp);
-        //Signal to go to next here
+        //TODO: Check if on loop
+        emit getNextFile();
     }
     sliderChanged(sliderPos);
 }

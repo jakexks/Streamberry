@@ -7,7 +7,7 @@
 #include "streamrequest.h"
 #include "networking.h"
 
-#define POSITION_RESOLUTION 10000
+#define POSITION_RESOLUTION 5760
 
 class Player : public QObject
 {
@@ -42,6 +42,7 @@ public slots:
 
 signals:
     void sliderChanged(int newValue);
+    void getNextFile();
 
 };
 
