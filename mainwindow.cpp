@@ -7,15 +7,20 @@
 #include "librarycontroller.h"
 #include "utilities.h"
 #include "database.h"
+#include "filescan.h";
 
 #define TOPBARHEIGHT 26
 #define BOTTOMBARHEIGHT 90
 
-MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, QWidget *parent)
-  : QMainWindow(parent), util(utilities), db(datab), player(p)
+MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filescan &fsinit, QWidget *parent)
+  : QMainWindow(parent), util(utilities), db(datab), player(p), fs(fsinit)
 {
+
+
     //set window properties
     menubar = createMenuBar();
+
+
     this->setWindowTitle("Streamberry");
     this->setMenuBar(menubar);
     setStyleSheet(util.getStylesheet());
@@ -88,6 +93,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, QWidget
 
 }
 
+
 void MainWindow::initialiseGrid()
 {
   mainlayout->setMargin(0);
@@ -116,6 +122,7 @@ QMenuBar* MainWindow::createMenuBar()
   QMenuBar* menubar = new QMenuBar();
   menubar->setNativeMenuBar(true);
   QMenu* menus[6];
+  QAction* actions[23];
   menus[0] = menubar->addMenu("File");
   menus[1] = menubar->addMenu("Edit");
   menus[2] = menubar->addMenu("Controls");
@@ -123,34 +130,68 @@ QMenuBar* MainWindow::createMenuBar()
   menus[4] = menubar->addMenu("Window");
   menus[5] = menubar->addMenu("Help");
 
-  menus[0]->addAction("Exit Streamberry");
+  actions[0] = menus[0]->addAction("Exit Streamberry");
 
-  menus[1]->addAction("Scan Folders for Media");
-  menus[1]->addAction("Fresh Scan for Media");
-  menus[1]->addAction("Add Individual File");
+  actions[1] = menus[1]->addAction("Scan Folders for Media");
+  actions[2] = menus[1]->addAction("Fresh Scan for Media");
+  actions[3] = menus[1]->addAction("Add Individual File");
   menus[2]->addSeparator();
-  menus[1]->addAction("Options");
+  actions[5] = menus[1]->addAction("Options");
 
-  menus[2]->addAction("Play/Pause");
+  actions[6] = menus[2]->addAction("Play/Pause");
   menus[2]->addSeparator();
-  menus[2]->addAction("Next Track");
-  menus[2]->addAction("Previous Track");
+  actions[8] = menus[2]->addAction("Next Track");
+  actions[9] = menus[2]->addAction("Previous Track");
   menus[2]->addSeparator();
-  menus[2]->addAction("Volume Up");
-  menus[2]->addAction("Volume Down");
+  actions[11] = menus[2]->addAction("Volume Up");
+  actions[12] = menus[2]->addAction("Volume Down");
   menus[2]->addSeparator();
-  menus[2]->addAction("Toggle Repeat");
-  menus[2]->addAction("Toggle Shuffle");
+  actions[13] = menus[2]->addAction("Toggle Repeat");
+  actions[14] = menus[2]->addAction("Toggle Shuffle");
 
-  menus[3]->addAction("Show File Providers");
-  menus[3]->addAction("Show Offline Files");
+  actions[15] = menus[3]->addAction("Show File Providers");
+  actions[16] = menus[3]->addAction("Show Offline Files");
 
-  menus[4]->addAction("Maximise");
-  menus[4]->addAction("Minimise");
-  menus[4]->addAction("Minimise to Tray");
+  actions[17] = menus[4]->addAction("Maximise");
+  actions[18] = menus[4]->addAction("Minimise");
+  actions[19] = menus[4]->addAction("Minimise to Tray");
 
-  menus[5]->addAction("Documentation");
-  menus[5]->addAction("About Streamberry");
+  actions[20] = menus[5]->addAction("Documentation");
+  actions[21] = menus[5]->addAction("About Streamberry");
+
+
+
+  QObject::connect(actions[0], SIGNAL(triggered()), this, SLOT(menuExitStreamberry()));
+
+
+  QObject::connect(actions[1], SIGNAL(triggered()), this, SLOT(menuScan()));
+
+  QObject::connect(actions[2], SIGNAL(triggered()), this, SLOT(menuCleanScan()));
+
+  QObject::connect(actions[3], SIGNAL(triggered()), this, SLOT(menuAddFile()));
+  qDebug() << "HEre";
+  QObject::connect(actions[5], SIGNAL(triggered()), this, SLOT(menuOptions()));
+qDebug() << "HEre2";
+
+
+  //QObject::connect(actions[6], SIGNAL(triggered()), player, SLOT(playControl()));
+ /* QObject::connect(actions[7], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
+  QObject::connect(actions[8], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
+  QObject::connect(actions[9], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
+  QObject::connect(actions[10], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
+  QObject::connect(actions[11], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
+  QObject::connect(actions[12], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
+*/
+  QObject::connect(actions[15], SIGNAL(triggered()), this, SLOT(menuShowFileProviders()));
+  QObject::connect(actions[16], SIGNAL(triggered()), this, SLOT(menuShowOfflineFiles()));
+
+  QObject::connect(actions[17], SIGNAL(triggered()), this, SLOT(menuMaximise()));
+  QObject::connect(actions[18], SIGNAL(triggered()), this, SLOT(menuMinimise()));
+  QObject::connect(actions[19], SIGNAL(triggered()), this, SLOT(menuMinimiseToTray()));
+
+  QObject::connect(actions[20], SIGNAL(triggered()), this, SLOT(menuDocumentation()));
+  QObject::connect(actions[21], SIGNAL(triggered()), this, SLOT(menuAbout()));
+
   return menubar;
 }
 
@@ -182,3 +223,46 @@ void MainWindow::moveEvent(QMoveEvent *move)
   winpos += QString::number(pos.y());
   db.storeSetting("windowPos", winpos);
 }
+
+void MainWindow::menuExitStreamberry()
+{
+}
+
+void MainWindow::menuScan()
+{
+  fs.build_new();
+}
+
+void MainWindow::menuCleanScan()
+{
+  fs.build_new_clean();
+}
+
+void MainWindow::menuAddFile()
+{
+}
+
+void MainWindow::menuOptions()
+{
+}
+
+void MainWindow::menuMaximise()
+{
+}
+
+void MainWindow::menuMinimise()
+{
+}
+
+void MainWindow::menuMinimiseToTray()
+{
+}
+
+void MainWindow::menuDocumentation()
+{
+}
+
+void MainWindow::menuAbout()
+{
+}
+
