@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     QString execpath = a.applicationDirPath();
 #else
     QString execpath(argv[0]);
+    execpath.resize(execpath.lastIndexOf('/'));
 #endif
 
     Utilities util(execpath);
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
 
     w.show();
 
-    //StreamFile stream;
+    StreamFile stream;
     //stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");
     //qDebug() << stream.getStreamLength("test");
 
