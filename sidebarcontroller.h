@@ -27,7 +27,7 @@ signals:
 
 private:
     QWidget* widget;
-
+    QWidget* makePlaylistRow(QString name);
     QWidget* main;
     QTableWidget* playlistbar;
     QWidget* previewbar;
