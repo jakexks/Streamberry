@@ -5,11 +5,13 @@
 
 Player::Player()
 {
+    currIP = "";
     const char * const vlc_args[] = {
                   "-I", "dummy", /* Don't use any interface */
                   "--ignore-config", /* Don't use VLC's config */
-                  //"--extraintf=logger", //log anything
+                  "--extraintf=logger", //log anything
                   "--verbose=1",
+                  //"--noaudio"
                   //"--aout=/dev/dsp"
                   //"--plugin-path=C:\\vlc-0.9.9-win32\\plugins\\"
               };
@@ -38,14 +40,71 @@ Player::~Player()
     //raise (&_vlcexcep);
 }
 
-void Player::playFile(QString file)
+/*void Player::playFile(QString file)
 {
     _m = libvlc_media_new_location (_vlcinstance, file.toUtf8());
     libvlc_media_player_set_media (_mp, _m);
     //libvlc_media_parse (_m);
-    //libvlc_media_release (_m);
+    libvlc_media_release (_m);
     libvlc_media_player_play (_mp);
     _isPlaying=true;
+    currIP="";//Set IP to empty
+}*/
+
+void Player::playFile(QString file, QString uniqueID, QString ipaddress)
+{
+    //Check if playing already, if remote, send stop
+    //set up address if remote, send command to the other
+    //if localplayback, give filename, if remote, set filename to 127.0.0.1
+    //give filename normally
+
+    if(currIP == "127.0.0.1")
+    {
+        //Send command to other computer to stop. Use remoteIP variable
+        QString toSend = "STREAMBERRY|STOP|";
+        toSend += n.getuniqid();
+        stream.send(remoteIP, 45456, toSend);
+    }
+
+    currIP = "local"; //Change to local
+    qDebug() << ipaddress;
+
+    if(ipaddress != "local")
+    {
+
+        QString toSend = "";
+        toSend += "STREAMBERRY|PLAY|";
+        toSend += n.getmyip();
+        toSend += "|";
+        toSend += n.getuniqid();
+        toSend += "|";
+        toSend += file;
+        //Send IP, uniqueID, file path
+        stream.send(ipaddress, 45456, toSend);
+        file = "rtp://@";
+        currIP = "127.0.0.1";
+        remoteIP = ipaddress;
+    }
+
+
+
+    _m = libvlc_media_new_location (_vlcinstance, file.toUtf8());
+    libvlc_media_player_set_media (_mp, _m);
+    //libvlc_media_parse (_m);
+    libvlc_media_release (_m);
+    libvlc_media_player_play (_mp);
+    _isPlaying=true;
+
+    /*if(remote)
+    {
+        if(libvlc_media_player_is_playing)
+        {
+            libvlc_media_player_stop(_mp);
+        }
+
+    } else {
+        playFile(file);
+    }*/
 }
 
 void Player::changeVolume(int newVolume)
@@ -80,17 +139,6 @@ void Player::playControl()
     } else {
         libvlc_media_player_play(_mp);
     }
-    //qDebug() << libvlc_media_player_is_playing(_mp);
-    //libvlc_media_player_pause(_mp);
-    /*libvlc_media_player_set_media(_mp, _m);
-    libvlc_media_player_play(_mp);*/
-    /*if(play == true){
-        libvlc_media_player_set_pause(_mp, 0);
-        _isPlaying=true;
-    } else {
-        libvlc_media_player_set_pause(_mp, 1);
-        _isPlaying=false;
-    }*/
 }
 
 void Player::muteAudio()
@@ -120,6 +168,8 @@ void Player::sliderUpdate()
     if(libvlc_media_player_get_state(_mp) == 6)//Stop if ended
     {
         libvlc_media_player_stop(_mp);
+        //TODO: Check if on loop
+        emit getNextFile();
     }
     sliderChanged(sliderPos);
 }

@@ -3,7 +3,6 @@
 StreamRequest::StreamRequest()
 {
     connect(&client, SIGNAL(connected()),this, SLOT(startSend()));
-
 }
 
 void StreamRequest::sendConnect()
@@ -13,21 +12,25 @@ void StreamRequest::sendConnect()
 
 void StreamRequest::send(QString ipaddress, quint16 port, QString message)
 {
+
+
     //connect(&client, SIGNAL(connected()),this, SLOT(startSend()));
     toSend = message;
     QHostAddress addr(ipaddress);
     client.connectToHost(addr, port);
+
 }
 
 void StreamRequest::startSend()
 {
     client.write(toSend.toAscii());
+
 }
 
 void StreamRequest::startServer()
 {
     connect(&server, SIGNAL(newConnection()),this, SLOT(acceptConnection()));
-    server.listen(QHostAddress::Any, 45455);
+    server.listen(QHostAddress::Any, 45456);
 }
 
 void StreamRequest::acceptConnection()

@@ -6,109 +6,135 @@
 #include <QContextMenuEvent>
 
 #define TOPBARHEIGHT 26
-#define BOTTOMBARHEIGHT 34
+
+
+
+/*
+ TO DO:
+ Highlight the playlist, button or whatever when you are viewing it in the main pane
+ Link up the buttons
+
+ grainy title images
+ text size
+ */
 
 SidebarController::SidebarController(Utilities &utilities, Database& datab, LibraryController& lib) : util(utilities), db(datab), libpass(lib)
 {
   expath = utilities.getExecutePath();
   widget = makeWidget();
+
 }
 
 QWidget* SidebarController::makeWidget()
 {
-  QWidget* main = new QWidget();
+  main = new QWidget();
+  main->setMaximumWidth(220);
+  main->setObjectName("sideBarMainWidget");
+  main->setStyleSheet(util.getStylesheet());
   sidebarlayout = new QGridLayout(main);
-  main->setMaximumWidth(222);
 
   sidebarlayout->setRowMinimumHeight(0, TOPBARHEIGHT);
-  sidebarlayout->setRowStretch(0, 0);
-  sidebarlayout->setRowStretch(1, 0);
-  sidebarlayout->setRowStretch(2, 0);
-  sidebarlayout->setRowStretch(3, 2);
-  sidebarlayout->setRowStretch(4, 0);
-  sidebarlayout->setRowStretch(5, 0);
-  sidebarlayout->setRowMinimumHeight(2, BOTTOMBARHEIGHT);
-  sidebarlayout->setRowMinimumHeight(5, 222);
-  sidebarlayout->setColumnMinimumWidth(0, 222);
+  sidebarlayout->setRowMinimumHeight(3, TOPBARHEIGHT);
+  sidebarlayout->setRowMinimumHeight(4, 220);
+  sidebarlayout->setColumnMinimumWidth(0, 220);
   sidebarlayout->setMargin(0);
   sidebarlayout->setSpacing(0);
 
   playlistbtn = makePlaylistBtn();
-  allmediabtn = makeAllMediaBtn();
-  allplaylistsbtn = makeAllPlaylistsBtn();
-  playlistbar = makePlaylistBar();
-  previewbar = makePreviewBar();
+  playlistbar = buildplaylistbar();
   previewbtn = makePreviewBtn();
-
+  previewbar = makePreviewBar();
   smartmenu = new PlaylistMenu(true);
   normalmenu = new PlaylistMenu(false);
 
+  sidebarlayout->setRowStretch(0, 0);
+  sidebarlayout->setRowStretch(1, 0);
+  sidebarlayout->setRowStretch(2, 1);
+  sidebarlayout->setRowStretch(3, 0);
+  sidebarlayout->setRowStretch(4, 0);
+  //updateplaylistbar(7);
   sidebarlayout->addWidget(playlistbtn, 0, 0);
-  sidebarlayout->addWidget(allmediabtn, 1, 0);
-  sidebarlayout->addWidget(allplaylistsbtn, 2, 0);
-  sidebarlayout->addWidget(playlistbar, 3, 0);
-  sidebarlayout->addWidget(previewbtn, 4, 0);
-  sidebarlayout->addWidget(previewbar, 5, 0);
 
+  sidebarlayout->addWidget(playlistbar, 1, 0);
+  sidebarlayout->addWidget(previewbtn, 3, 0);
+  sidebarlayout->addWidget(previewbar, 4, 0);
   return main;
 }
 
-QWidget* SidebarController::getWidget()
+QTableWidget* SidebarController::buildplaylistbar()
 {
-  return widget;
-};
+  int trimsize = 0;
+  QFont font;
+  font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
+#ifdef Q_WS_WIN
+  font.setPointSize(10);
+#else
+  font.setPointSize(11);
+#endif
 
-QWidget* SidebarController::makePreviewBtn()
-{
-  QWidget *temp = new QWidget();
-  temp->setObjectName("previewBarTitleWidget");
-  return temp;
-}
+  playlistTableWidget = new QTableWidget(4, 1);
 
-QPushButton* SidebarController::makeAllMediaBtn()
-{
-  QPushButton* temp = new QPushButton();
-  temp->setObjectName("playlistBarAllMediaBtn");
-  temp->setMaximumSize(222, 35);
-  temp->setMinimumSize(222, 35);
-  temp->setFlat(true);
-  return temp;
-}
+  playlistTableWidget->setShowGrid(false);
+  playlistTableWidget->horizontalHeader()->setHighlightSections(false);
+  playlistTableWidget->horizontalHeader()->setSortIndicatorShown(false);
+  playlistTableWidget->setWordWrap(false);
+  playlistTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+  playlistTableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  playlistTableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  playlistTableWidget->verticalHeader()->hide();
+  playlistTableWidget->horizontalHeader()->hide();
+  playlistTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+  playlistTableWidget->setFrameStyle(QFrame::Plain | QFrame::Plain);
+  playlistTableWidget->setLineWidth(0);
+  playlistTableWidget->setMidLineWidth(0);
+  playlistTableWidget->setFocusPolicy(Qt::NoFocus);
 
-QPushButton* SidebarController::makeAllPlaylistsBtn()
-{
-  QPushButton* temp = new QPushButton();
-  temp->setObjectName("playlistBarAllPlaylistBtn");
-  temp->setMaximumSize(222, 26);
-  temp->setMinimumSize(222, 26);
-  temp->setFlat(true);
-  return temp;
-}
+  playlistTableWidget->setObjectName("sideBarTopButtons");
+  playlistTableWidget->setStyleSheet(util.getStylesheet());
 
-QWidget* SidebarController::makePlaylistBtn()
-{
-  QWidget *temp = new QWidget();
-  temp->setObjectName("playlistBarTitleWidget");
-  return temp;
-}
+  playlistTableWidget->setColumnWidth(0, 220);
+  playlistTableWidget->setRowHeight(0, 25);
+  playlistTableWidget->setRowHeight(1, 25);
+  //playlistTableWidget->setRowHeight(2, 5);
+  playlistTableWidget->setRowHeight(2, 25);
 
-QWidget* SidebarController::makePreviewBar()
-{
-  QWidget *temp = new QWidget();
-  temp->setObjectName("previewBarWidget");
-  return temp;
-}
+  playlistTableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+  QObject::connect(playlistTableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(Clicked(int,int)));
+  QObject::connect(playlistTableWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowContextMenu(const QPoint&)));
+  QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
 
-QWidget* SidebarController::makePlaylistBar()
-{
-  QWidget *temp = new QWidget();
-  temp->setObjectName("playlistBarWidget");
-  buildplaylistbar(temp);
+  QTableWidgetItem* btns[4];
+  btns[0] = new QTableWidgetItem("Display All Media");
+  btns[0]->setFont(font);
+  btns[0]->setFlags(btns[0]->flags() & (~Qt::ItemIsEditable));
+  btns[0]->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+  btns[1] = new QTableWidgetItem("Display All Playlists");
+  btns[1]->setFont(font);
+  btns[1]->setFlags(btns[1]->flags() & (~Qt::ItemIsEditable));
+  btns[1]->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+  btns[2] = new QTableWidgetItem("");
+  btns[2]->setFlags(btns[2]->flags() & (~Qt::ItemIsEditable));
+  btns[2]->setFlags(btns[2]->flags() & (~Qt::ItemIsSelectable));
+  font.setBold(true);
+  btns[3] = new QTableWidgetItem("Recent Playlists");
+  btns[3]->setFont(font);
+  btns[3]->setFlags(btns[3]->flags() & (~Qt::ItemIsEditable));
+  btns[3]->setFlags(btns[3]->flags() & (~Qt::ItemIsSelectable));
+  btns[3]->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-  QString sizestring = db.getSetting("windowSize");
-  double size = sizestring.split("|").at(1).toDouble();
-  updateplaylistbar( (int)(size/89.25) );
-  return temp;
+  playlistTableWidget->setItem(0, 0, btns[0]);
+  playlistTableWidget->setItem(1, 0,btns[1]);
+  //playlistTableWidget->setItem(2, 0,btns[2]);
+  playlistTableWidget->setItem(2, 0,btns[3]);
+
+  return playlistTableWidget;
+
+  //QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
+  //displayTableWidget->setMaximumHeight(77);
+  //QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
+  //playlistbarlayout = new QGridLayout(playlistbar);
+  //playlistbarlayout->setColumnMinimumWidth(0, 220);
+  //playlistbarlayout->setSpacing(0);
 }
 
 void SidebarController::updateplaylistbar(int shownumber)
@@ -125,87 +151,209 @@ void SidebarController::updateplaylistbar(int shownumber)
   {
     trimsize = playlists.size();
   }
-  tablewidget->setMaximumHeight(trimsize*30);
-  tablewidget->setRowCount(trimsize);
+  trimsize = trimsize + 3;
+
+  playlistTableWidget->setMaximumHeight(trimsize*25);   //////CAUSING ISSUES
+  playlistTableWidget->setMinimumHeight(trimsize*25);
+  playlistTableWidget->setRowCount(trimsize);
+  qDebug() << trimsize;
   int  i;
 
-  for(i = 0; i<(trimsize); i++)
+//  for(i = 3; i<(trimsize); i++)
+//  {
+//    QSqlRecord currecord = playlists.at(i-3);
+//    typearray[i-3] = currecord.field(1).value().toBool();
+//    QString name = currecord.field(0).value().toString();
+//    QTableWidgetItem* item1 = new QTableWidgetItem(name);
+//    item1->setFont(font);
+//    item1->setFlags(item1->flags() & (~Qt::ItemIsEditable));
+//    item1->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+//    playlistTableWidget->setItem(i, 0, item1);
+//    playlistTableWidget->setRowHeight(i, 25);
+//  }
+
+  for(i = 3; i<(trimsize); i++)
   {
-    QSqlRecord currecord = playlists.at(i);
-    typearray[i] = currecord.field(1).value().toBool();
+    QSqlRecord currecord = playlists.at(i-3);
+    typearray[i-3] = currecord.field(1).value().toBool();
     QString name = currecord.field(0).value().toString();
-    QTableWidgetItem* item = new QTableWidgetItem(name);
+    QWidget* item1 = makePlaylistRow(name);
+    playlistTableWidget->setRowHeight(i, 25);
+    playlistTableWidget->setCellWidget(i, 0, item1);
 
-    QFont font;
-    font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
-    font.setPointSize(11);
-
-    item->setFont(font);
-    item->setBackgroundColor("#EEEEEE");
-    item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-    item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-    tablewidget->setItem(i, 0, item);
   }
 }
 
-void SidebarController::buildplaylistbar(QWidget* playlistbar)
+
+QWidget* SidebarController::makePlaylistRow(QString name)
 {
-  int trimsize = 5;
-  playlistbarlayout = new QGridLayout(playlistbar);
-  playlistbarlayout->setColumnMinimumWidth(0, 220);
-  playlistbarlayout->setSpacing(0);
+  QFont font;
+  font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
+#ifdef Q_WS_WIN
+  font.setPointSize(10);
+#else
+  font.setPointSize(11);
+#endif
 
-  tablewidget = new QTableWidget(trimsize, 1, playlistbar);
-  tablewidget->setShowGrid(false);
-  tablewidget->horizontalHeader()->setHighlightSections(false);
-  tablewidget->horizontalHeader()->setSortIndicatorShown(false);
-  tablewidget->setWordWrap(false);
-  tablewidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-  tablewidget->setColumnWidth(0, 203);
-  tablewidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  tablewidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  tablewidget->verticalHeader()->hide();
-  tablewidget->setFrameStyle(QFrame::Plain | QFrame::Plain);
+  QWidget *temp = new QWidget();
 
-  tablewidget->setLineWidth(0);
-  tablewidget->setMidLineWidth(0);
-  tablewidget->setFocusPolicy(Qt::NoFocus);
-  tablewidget->horizontalHeader()->hide();
+  temp->setMaximumHeight(25);
+  QGridLayout* playlistTitleLayout = new QGridLayout(temp);
+  playlistTitleLayout->setMargin(0);
+  playlistTitleLayout->setSpacing(0);
+  playlistTitleLayout->setColumnMinimumWidth(0, 30);
 
-  //QObject::connect(tablewidget, SIGNAL(cellClicked(int,int)), this, SLOT(Clicked(int,int)));
-  QObject::connect(tablewidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
+  QLabel* text = new QLabel(name);
+  text->setFont(font);
 
-  tablewidget->setContextMenuPolicy(Qt::CustomContextMenu);
-  QObject::connect(tablewidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowContextMenu(const QPoint&)));
+  QFrame* sideborder = new QFrame();
+  sideborder->setMaximumWidth(30);
+  sideborder->setObjectName("sideBarPlaylistCell");
+  temp->setStyleSheet(util.getStylesheet());
 
-  playlistbarlayout->addWidget(tablewidget, 0, 0, Qt::AlignTop);
- }
+  playlistTitleLayout->addWidget(sideborder, 0, 0);
+  playlistTitleLayout->addWidget(text, 0, 1, Qt::AlignLeft);
+  return temp;
+}
+
+QWidget* SidebarController::getWidget()
+{
+  return widget;
+};
+
+QWidget* SidebarController::makePreviewBtn()
+{
+  QWidget *temp = new QWidget();
+  temp->setObjectName("sideBarPreviewTitle");
+  temp->setStyleSheet(util.getStylesheet());
+  QGridLayout* previewTitleLayout = new QGridLayout(temp);
+  previewTitleLayout->setMargin(0);
+  previewTitleLayout->setSpacing(0);
+  previewTitleLayout->setRowMinimumHeight(0, 26);
+  previewTitleLayout->setColumnMinimumWidth(0, 64);
+  QFrame* text = new QFrame(temp);
+  text->setObjectName("sideBarPreviewText");
+  text->setStyleSheet(util.getStylesheet());
+  text->setMinimumSize(64, 26);
+  text->setMaximumSize(64, 26);
+  previewTitleLayout->addWidget(text, 0, 0);
+  return temp;
+}
+
+QWidget* SidebarController::makePreviewBar()
+{
+  QWidget *temp = new QWidget();
+  temp->setObjectName("sideBarPreviewPane");
+  temp->setStyleSheet(util.getStylesheet());
+  QGridLayout* previewPaneLayout = new QGridLayout(temp);
+  previewPaneLayout->setMargin(0);
+  previewPaneLayout->setSpacing(0);
+  QFrame* text = new QFrame(temp);
+  text->setObjectName("sideBarPreviewPic");
+  text->setStyleSheet(util.getStylesheet());
+  text->setMinimumSize(139, 139);
+  text->setMaximumSize(139, 139);
+  previewPaneLayout->addWidget(text, 0,0, 2, 1,  Qt::AlignHCenter);
+
+ /* QFrame* veil = new QFrame(temp);
+  veil->setObjectName("sideBarVeilPic");
+  veil->setStyleSheet(util.getStylesheet());
+  veil->setMinimumSize(220, 25);
+  veil->setMaximumSize(220, 25);
+  previewPaneLayout->addWidget(veil, 1, 0, Qt::AlignBottom);
+
+  QGridLayout* timebarLayout = new QGridLayout(veil);
+  timebarLayout->setMargin(0);
+  timebarLayout->setSpacing(0);
+  timetext = new QLabel("01:06 / 04:28");
+  QFont font;
+  font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
+  font.setBold(true);
+#ifdef Q_WS_WIN
+  font.setPointSize(10);
+#else
+  font.setPointSize(11);
+#endif
+  timetext->setFont(font);
+  timebarLayout->addWidget(timetext, 0,0, Qt::AlignHCenter);*/
+  return temp;
+}
+
+QWidget* SidebarController::makePlaylistBtn()
+{
+  QWidget *temp = new QWidget();
+  temp->setObjectName("sideBarPlaylistsTitle");
+  temp->setStyleSheet(util.getStylesheet());
+  QGridLayout* playlistTitleLayout = new QGridLayout(temp);
+  playlistTitleLayout->setMargin(0);
+  playlistTitleLayout->setSpacing(0);
+  playlistTitleLayout->setRowMinimumHeight(0, 26);
+  playlistTitleLayout->setColumnMinimumWidth(0, 64);
+  QFrame* text = new QFrame(temp);
+  text->setObjectName("sideBarPlaylistsText");
+  text->setStyleSheet(util.getStylesheet());
+  text->setMinimumSize(64, 26);
+  text->setMaximumSize(64, 26);
+  playlistTitleLayout->addWidget(text, 0, 0, Qt::AlignHCenter);
+
+  QFrame* tinything = new QFrame(temp);
+  tinything->setObjectName("sideBarDivided");
+  tinything->setStyleSheet(util.getStylesheet());
+  tinything->setMinimumSize(2, 26);
+  tinything->setMaximumSize(2, 26);
+  playlistTitleLayout->addWidget(tinything, 0, 0, Qt::AlignRight);
+  return temp;
+}
+
 
 void SidebarController::ShowContextMenu(const QPoint& pos)
 {
-  Playlist pass(db, (tablewidget->itemAt(pos)->text()));
-  bool type = typearray[tablewidget->rowAt((mapToGlobal(pos).y()))];
-  if(type == true)
-    smartmenu->playlistrightclicked(&pass, &libpass);
-  else
-    normalmenu->playlistrightclicked(&pass, &libpass);
-  QString sizestring = db.getSetting("windowSize");
-  double size = sizestring.split("|").at(1).toDouble();
-  updateplaylistbar( (int)(size/89.25) );
+  int row = playlistTableWidget->rowAt(mapToGlobal(pos).y());
+  if(row >= 3)
+  {
+    Playlist pass(db, (playlistTableWidget->itemAt(pos)->text()));
+    bool type = typearray[playlistTableWidget->rowAt((mapToGlobal(pos).y()))];
+    if(type == true)
+      smartmenu->playlistrightclicked(&pass, &libpass);
+    else
+      normalmenu->playlistrightclicked(&pass, &libpass);
+    QString sizestring = db.getSetting("windowSize");
+    if( sizestring=="" )
+      updateplaylistbar( 7 );
+    else
+    {
+      double size = sizestring.split("|").at(1).toDouble();
+      updateplaylistbar( (int)(size/89.25) );
+    }
+  }
 }
-
 
 void SidebarController::DoubleClicked(int row, int column)
 {
-  QString test1;
-  test1.setNum(row);
-  QString test = "Playlist ";
-  test += test1;
-  test +=" has been double clicked";
-  qDebug() << test;
+  if(row == 1)
+  {
+    qDebug() << "All Media Play";
+  }
+  if(row >= 3)
+  {
+    qDebug() << "Playlist Play";
+  }
 }
 
 
-
-
+void SidebarController::Clicked(int row, int column)
+{
+  if(row == 1)
+  {
+    //QList<QSqlRecord> *result = db.searchDb(0, "", fields, order);
+    //librarycontroller->fillData(result);
+  }
+  if(row == 2)
+  {
+    qDebug() << "View all Playlist Clicked";
+  }
+  if(row >= 3)
+  {
+    qDebug() << "Playlist Clicked";
+  }
+}

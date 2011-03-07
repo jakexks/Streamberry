@@ -3,6 +3,8 @@
 #include <QtGui>
 #include "playbackprogress.h"
 #include "playbackbutton.h"
+#include "songinfo.h"
+#include <QPalette>
 
 #define BUTTON_DISTANCE 25
 #define PLAYBACK_DISTANCE 50
@@ -27,32 +29,6 @@ QWidget* PlaybackController::makeWidget()
     QGridLayout *temp = new QGridLayout(tempw);
     temp->setSpacing(0);
     temp->setMargin(0);
-
-    QGridLayout *songInfoArea = new QGridLayout();
-    //playback controls
-//    QGridLayout *controlsContainer = new QGridLayout();
-//    QGridLayout* controls = new QGridLayout();
-//    QHBoxLayout* left = new QHBoxLayout();
-//    QHBoxLayout* middle = new QHBoxLayout();
-//    QHBoxLayout* right = new QHBoxLayout();
-
-//    controlsContainer->setSpacing(0);
-//    controlsContainer->setMargin(0);
-    songInfoArea->setSpacing(0);
-    songInfoArea->setMargin(10);
-//    left->setSpacing(35);
-//    left->setMargin(0);
-//    left->setContentsMargins(40,0,0,0);
-//    middle->setSpacing(0);
-//    middle->setContentsMargins(37,0,37,0);
-//    middle->setMargin(0);
-//    right->setSpacing(10);
-//    right->setMargin(0);
-//    controls->addLayout(left, 0, 1, Qt::AlignRight | Qt::AlignVCenter);
-//    controls->addLayout(middle, 0, 3, Qt::AlignCenter | Qt::AlignVCenter);
-//    controls->addLayout(right, 0, 5, Qt::AlignLeft | Qt::AlignVCenter);
-//    controls->setSpacing(0);
-//    controls->setMargin(0);
     temp->setColumnStretch(0, 0);
     temp->setColumnStretch(1, 1);
     temp->setColumnStretch(2, 0);
@@ -68,8 +44,6 @@ QWidget* PlaybackController::makeWidget()
     temp->setColumnStretch(12, 0);
     temp->setColumnStretch(13, 0);
     temp->setColumnStretch(14, 1);
-//    controls->setColumnMinimumWidth(2, 35);
-//    controls->setColumnMinimumWidth(4, 35);
 
     QPushButton *repeat = new QPushButton();
     repeat->setObjectName("bottomBarRepeat");
@@ -91,8 +65,8 @@ QWidget* PlaybackController::makeWidget()
     previous->setStyleSheet(util.getStylesheet());
     previous->setFlat(true);
 
-    PlaybackProgress::PlaybackProgress *progressbar = new PlaybackProgress(util);
-    PlaybackButton::PlaybackButton *playbutton = new PlaybackButton(progressbar);
+    PlaybackProgress *progressbar = new PlaybackProgress(util);
+    PlaybackButton *playbutton = new PlaybackButton(progressbar);
     QPushButton *next = new QPushButton();
     next->setObjectName("bottomBarNext");
     next->setMaximumSize(45, 37);
@@ -104,32 +78,17 @@ QWidget* PlaybackController::makeWidget()
     mute->setMaximumSize(40, 38);
     mute->setMinimumSize(40, 38);
     //works without the setStyleSheet
+    mute->setStyle(new QCleanlooksStyle);
     mute->setFlat(true);
 
+    SongInfo::SongInfo *songinfoarea = new SongInfo(util);
+    //songinfoarea->updatelabels("1111111111111111","2","3");
     QSlider *volumeslider = new QSlider(Qt::Horizontal);
     volumeslider->setObjectName("bottomBarVolumeslider");
     volumeslider->setFixedWidth(110);
     volumeslider->setValue(50);
 
-    QLabel *songInfoLine = new QLabel();
-    songInfoLine->setObjectName("bottomBarSongInfoLine");
-    songInfoLine->setMinimumWidth(1);
-    songInfoLine->setMaximumWidth(1);
-    songInfoLine->setMinimumHeight(64);
-    songInfoLine->setStyleSheet(util.getStylesheet());
-
-    songInfoArea->addWidget(songInfoLine);
-//    left->addWidget(shuffle);
-//    left->addWidget(repeat);
-//    middle->addWidget(previous);
-//    middle->addWidget(progressBar);
-//    middle->addWidget(next);
-//    right->addWidget(mute);
-//    right->addWidget(volumeslider);
-
-    temp->addLayout(songInfoArea, 0, 0);
-    temp->setColumnMinimumWidth(0, 222);
-    temp->setColumnMinimumWidth(2, 70);
+    temp->addWidget(songinfoarea->getWidget(), 0, 0);
     temp->addWidget(shuffle, 0, 3);
     temp->setColumnMinimumWidth(4, BUTTON_DISTANCE);
     temp->addWidget(repeat, 0, 5);
@@ -141,19 +100,18 @@ QWidget* PlaybackController::makeWidget()
     temp->addWidget(mute, 0, 11);
     temp->setColumnMinimumWidth(12, BUTTON_DISTANCE);
     temp->addWidget(volumeslider, 0, 13);
-//    temp->addLayout(controlsContainer,1,1);
-//    controlsContainer->addLayout(controls, 1, 0, Qt::AlignHCenter | Qt::AlignVCenter);
-//    temp->setRowMinimumHeight(2, 5);
-//    temp->setRowStretch(0, 0);
 
-    //player.playFile("/home/vity/01-Metric-Help I'm Alive.mp3");
+    //5760 is the highest
     connect(playbutton, SIGNAL(clicked()), &player, SLOT(playControl()));
+ //   connect(&player, SIGNAL(currentlyPlayingFile), &songinfoarea, SLOT(updatelabels(QString album, QString  artist, QString  song)));
     connect(volumeslider, SIGNAL(valueChanged(int)), &player, SLOT(changeVolume(int)));
 //    connect(dial, SIGNAL(progressBar.mousePressEvent(int)), &player, SLOT(changePosition(progressBar.mouseReleaseEvent)));
     connect(mute, SIGNAL(clicked()), &player, SLOT(muteAudio()));
-//    connect(&player, SIGNAL(sliderChanged(int)), playback, SLOT(setValue(int)));
+    connect(&player, SIGNAL(sliderChanged(int)), progressbar, SLOT(setAngle(int)));
+    connect(progressbar, SIGNAL(newAngle(int)), &player, SLOT(changePosition(int)));
     connect(next, SIGNAL(clicked()), this, SIGNAL(nextFile()));
     connect(previous, SIGNAL(clicked()), this, SIGNAL(prevFile()));
+    connect(&player, SIGNAL(getNextFile()), next, SLOT(click()));
 
     return tempw;
 }

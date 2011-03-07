@@ -55,6 +55,10 @@ public:
 
     //Returns the UniqueID of the local machine for the use of Filescan
     QString getUniqueID();
+    //Set the IPAddress in the LibIndex table
+    void setIPaddress(QString uniqueID, QString ipaddress);
+    //Gets IP address from uniqueID
+    QString getIPfromUID(QString uniqueID);
     //Only for testing purposes: Sets the unique ID of the local machine to a certain value.
     //void setUniqueID();
     //This takes a playlist name and returns a QSqlQuery containing information about the playlists type and filter.
