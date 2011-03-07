@@ -56,7 +56,6 @@ QString Utilities::makeStylesheet()
     //library
     style+="#libraryTableWidget {background: #292929; border: none; padding:0px; color:#e1e1e1; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#albumArt {background-color: #181818; border-bottom:1px solid #121212}";
-    style+="#horizontalHeader {background: url(EXECPATHimages/libraryHeaderBackground.png); color:#e4e4e4; margin:0px; padding:0px; border-bottom:1px solid #161616; }"; //434040
     //side bar
     style+="#sideBarMainWidget {background-color: #D7E4E8; padding:0px; border-right:1px solid #9c9c9c;}";
 
