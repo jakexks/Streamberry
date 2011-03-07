@@ -45,7 +45,8 @@ SOURCES +=  main.cpp\
             playlistscontext.cpp\
             streamrequest.cpp \
             playbackprogress.cpp \
-            playbackbutton.cpp
+            playbackbutton.cpp \
+            songinfo.cpp\
 
 
 HEADERS +=  mainwindow.h\
@@ -77,4 +78,5 @@ HEADERS +=  mainwindow.h\
             playlistscontext.h \
             streamrequest.h \ 
             playbackprogress.h \
-            playbackbutton.h
+            playbackbutton.h \
+            songinfo.h\

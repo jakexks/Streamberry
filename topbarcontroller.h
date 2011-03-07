@@ -15,6 +15,9 @@ private:
     QString expath;
     Utilities& util;
     QWidget* widget;
+
+public slots:
+    void musicvideo();
 };
 
 #endif // GUITOPBARCONTROLLER_H

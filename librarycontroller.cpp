@@ -21,8 +21,11 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
 
     QList<QString> headers;
     headers.append("Title");
+    headers.append("Time");
     headers.append("Artist");
     headers.append("Album");
+    headers.append("Genre");
+
     setHeaders(headers, 2);
     widget = new QWidget();
     container = new QGridLayout(widget);
@@ -288,6 +291,13 @@ void LibraryController::sortIndicatorChanged(int index, Qt::SortOrder order)
             orders->append(orderstr);
             orders->append("ASC");
             orders->append("ASC");
+            orders->append("ASC");
+        }
+        else if(*curheaders[index-2] == "Time")
+        {
+            sortcols->append("Length");
+            sortcols->append("Track");
+            orders->append(orderstr);
             orders->append("ASC");
         }
         else

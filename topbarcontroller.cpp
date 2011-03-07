@@ -51,11 +51,13 @@ QWidget* TopbarController::makeWidget()
     forward->setObjectName("topBarForward");
     forward->setStyleSheet(util.getStylesheet());
     QPushButton *music = new QPushButton();
+    music->setCheckable(true);
     music->setObjectName("topBarMusic");
     music->setStyleSheet(util.getStylesheet());
- /*   QPushButton *videos = new QPushButton();
+    QPushButton *videos = new QPushButton();
     videos->setObjectName("topBarVideos");
-    videos->setStyleSheet(util.getStylesheet());*/
+    videos->setStyleSheet(util.getStylesheet());
+    videos->setCheckable(true);
     SBSearchBar *search = new SBSearchBar(expath);
 
     //Split it into three sections
@@ -91,9 +93,9 @@ QWidget* TopbarController::makeWidget()
     music->setMaximumSize(140, 24);
     music->setMinimumSize(140, 24);
     music->setFlat(true);
-   // videos->setMaximumSize(114, 33);
-   // videos->setMinimumSize(114, 33);
-  //  videos->setFlat(true);
+    videos->setMaximumSize(140, 24);
+    videos->setMinimumSize(69, 24);
+    videos->setFlat(true);
     separator->setMinimumSize(1,26);
     separator->setMaximumSize(1,26);
     //Add buttons to each section
@@ -101,8 +103,16 @@ QWidget* TopbarController::makeWidget()
     innerleft->addWidget(back, 0, 2);
     innerleft->addWidget(forward, 0, 3);
     innermiddle->addWidget(music, 0, 1);
-    //innermiddle->addWidget(videos, 0, 2);
+    innermiddle->addWidget(videos, 0, 1);
+    innermiddle->setAlignment(videos,Qt::AlignRight);
     innerright->addWidget(search, 0, 0);
+//    connect(music, SIGNAL(clicked()), &music, SLOT(musicvieo()));
 
     return temp;
+}
+
+void TopbarController::musicvideo()
+{
+// if(music.clicked()) music.setObjectName("topBarMusicchecked");
+// if(videos.clicked()) music.setObjectName("topBarVideoschecked");
 }

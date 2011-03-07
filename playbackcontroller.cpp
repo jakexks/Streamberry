@@ -3,6 +3,7 @@
 #include <QtGui>
 #include "playbackprogress.h"
 #include "playbackbutton.h"
+#include "songinfo.h"
 
 #define BUTTON_DISTANCE 25
 #define PLAYBACK_DISTANCE 50
@@ -27,26 +28,6 @@ QWidget* PlaybackController::makeWidget()
     QGridLayout *temp = new QGridLayout(tempw);
     temp->setSpacing(0);
     temp->setMargin(0);
-
-    QTableWidget *songInfo = new QTableWidget();
-    songInfo->setObjectName("songInfoArea");
-    songInfo->setMaximumWidth(222);
-   // songInfo->verticalHeader()->setObjectName("separatorSongInfo");
-   // songInfo->verticalHeader()->setMinimumWidth(1);
-   // songInfo->verticalHeader()->setMinimumWidth(1);
-   // songInfo->verticalHeader()->setStyleSheet(util.getStylesheet());
-    songInfo->setColumnCount(1);
-    songInfo->setRowCount(3);
-    songInfo->setRowHeight(0,20);
-    songInfo->setRowHeight(1,20);
-    songInfo->setRowHeight(2,20);
-    QTableWidgetItem* item = new QTableWidgetItem("xxx");
-    item->setFlags(item->flags() & (~Qt::ItemIsEditable));
-    item->setTextAlignment(Qt::AlignLeft);
-    songInfo->setItem(0,0,item);
-    songInfo->horizontalHeader()->hide();
-    songInfo->verticalHeader()->hide();
-
     temp->setColumnStretch(0, 0);
     temp->setColumnStretch(1, 1);
     temp->setColumnStretch(2, 0);
@@ -98,14 +79,14 @@ QWidget* PlaybackController::makeWidget()
     //works without the setStyleSheet
     mute->setFlat(true);
 
+    SongInfo::SongInfo *songinfoarea = new SongInfo(util);
+    //songinfoarea->updatelabels("1111111111111111","2","3");
     QSlider *volumeslider = new QSlider(Qt::Horizontal);
     volumeslider->setObjectName("bottomBarVolumeslider");
     volumeslider->setFixedWidth(110);
     volumeslider->setValue(50);
 
-    temp->addWidget(songInfo, 0, 0);
-    temp->setColumnMinimumWidth(0, 222);
-    temp->setColumnMinimumWidth(2, 70);
+    temp->addWidget(songinfoarea->getWidget(), 0, 0);
     temp->addWidget(shuffle, 0, 3);
     temp->setColumnMinimumWidth(4, BUTTON_DISTANCE);
     temp->addWidget(repeat, 0, 5);
@@ -120,6 +101,7 @@ QWidget* PlaybackController::makeWidget()
 
     //player.playFile("/home/vity/01-Metric-Help I'm Alive.mp3");
     connect(playbutton, SIGNAL(clicked()), &player, SLOT(playControl()));
+ //   connect(&player, SIGNAL(currentlyPlayingFile), &songinfoarea, SLOT(updatelabels(QString album, QString  artist, QString  song)));
     connect(volumeslider, SIGNAL(valueChanged(int)), &player, SLOT(changeVolume(int)));
 //    connect(dial, SIGNAL(progressBar.mousePressEvent(int)), &player, SLOT(changePosition(progressBar.mouseReleaseEvent)));
     connect(mute, SIGNAL(clicked()), &player, SLOT(muteAudio()));

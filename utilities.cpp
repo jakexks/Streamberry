@@ -10,7 +10,7 @@ Utilities::Utilities(QString execpath)
     execpath.resize(execpath.lastIndexOf('/'));
     execpath += "/";
     stylesheet = makeStylesheet();
-    qDebug()<<execpath;
+//    qDebug()<<execpath;
 }
 
 int Utilities::getCurrentTimestamp()
@@ -31,6 +31,11 @@ QString Utilities::makeStylesheet()
     style+="#topBarForward {background: url(EXECPATHimages/topBarForwardUp.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarForward:pressed {background: url(EXECPATHimages/topBarForwardDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarMusic {background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat; border: none; padding:0px;}";
+//    style+="#topBarMusic:pressed {background: url(EXECPATHimages/topBarMusicDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#topBarMusicchecked {background: url(EXECPATHimages/topBarMusicDown.png) no-repeat; border: none; padding:0px;}";
+    //style+="#topBarVideos {background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat; border: none; padding:0px;}";
+//    style+="#topBarVideos:pressed {background: url(EXECPATHimages/topBarVideoDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#topBarVideoschecked {background: url(EXECPATHimages/topBarVideoDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarWidget {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
     style+="#topBarSeparatorRight  {background: url(EXECPATHimages/topBarPlaylistsSeparatorRightAlignLeft.png); border: none; padding:0px;}";
     //bottom bar
@@ -52,8 +57,9 @@ QString Utilities::makeStylesheet()
     style+="#libraryTableWidget {background: #292929; border: none; padding:0px; color:#e1e1e1; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#albumArt {background-color: #181818; border-bottom:1px solid #121212}";
     //playbutton
-    //style+="#separatorSongInfo {background:#222222; border:none; padding:0px;}";
-    style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png); separator-color:red;  padding:10px;}";
+    style+="#songInfoLine {background:#222222; border:none; margin:0px;}";
+    style+="#songInfoLabel {font-weight:bold; border:none; padding:0px;}";
+    style+="#songInfo{ padding:10px;}";
     style+="#progressback {background:url(EXECPATHimages/botBarProgress.png) no-repeat; border: none; padding:0px;}";
     style+="#playbutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayUp.png); border: none; padding:0px;}";
     style.replace("EXECPATH", execpath);
