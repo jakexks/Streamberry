@@ -50,11 +50,11 @@ QWidget* TopbarController::makeWidget()
     QPushButton *forward = new QPushButton();
     forward->setObjectName("topBarForward");
     forward->setStyleSheet(util.getStylesheet());
-    QPushButton *music = new QPushButton();
-    music->setCheckable(true);
+    music= new QPushButton();
+//    music->setCheckable(true);
     music->setObjectName("topBarMusic");
     music->setStyleSheet(util.getStylesheet());
-    QPushButton *videos = new QPushButton();
+    videos = new QPushButton();
     videos->setObjectName("topBarVideos");
     videos->setStyleSheet(util.getStylesheet());
     videos->setCheckable(true);
@@ -106,13 +106,19 @@ QWidget* TopbarController::makeWidget()
     innermiddle->addWidget(videos, 0, 1);
     innermiddle->setAlignment(videos,Qt::AlignRight);
     innerright->addWidget(search, 0, 0);
-//    connect(music, SIGNAL(clicked()), &music, SLOT(musicvieo()));
+    connect(music, SIGNAL(clicked()), this, SLOT(musicVideo()));
 
     return temp;
 }
 
-void TopbarController::musicvideo()
+void TopbarController::musicVideo()
 {
-// if(music.clicked()) music.setObjectName("topBarMusicchecked");
+ music->setObjectName("topBarMusicchecked");
+ music->setStyleSheet(util.getStylesheet());
+// if(music->pressed())
+// {
+//     music->setObjectName("topBarMusic");
+//     music->setStyleSheet(util.getStylesheet());
+// }
 // if(videos.clicked()) music.setObjectName("topBarVideoschecked");
 }

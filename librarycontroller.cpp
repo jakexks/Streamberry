@@ -128,6 +128,7 @@ void LibraryController::addHeaders()
   for(int i = 0; i<headercount; i++)
   {
     header = new QTableWidgetItem(*curheaders[i]);
+    header->setBackground(QBrush(QImage("THINGGOESHERE")));
     QString settingname = "header";
     settingname += *curheaders[i];
 
@@ -142,7 +143,6 @@ void LibraryController::addHeaders()
 
     tablewidget->setHorizontalHeaderItem(i+2, header);
   }
-
   tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, Qt::AscendingOrder);
   tablewidget->horizontalHeader()->setMovable(true);
 
