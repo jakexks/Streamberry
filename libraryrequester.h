@@ -15,9 +15,9 @@ public:
     LibraryRequester(Database &datab);
 public slots:
     void getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
-    void sendLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
+    //void sendLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
 private slots:
-    void processNetworkActivity();
+    void receiveRequest(QString message);
 private:
     QList<QString> gettinglibraries;
     Database& db;

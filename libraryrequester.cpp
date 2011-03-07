@@ -2,9 +2,8 @@
 #include <QList>
 #include <QUdpSocket>
 #include <iostream>
+#include <QList>
 #include "libraryrequester.h"
-#include "libraryreceiver.h"
-#include "librarysender.h"
 #include "sbexception.h"
 #include "networking.h"
 #include "newnetworking.h"
@@ -18,77 +17,40 @@ LibraryRequester::LibraryRequester(Database &datab): db(datab)
 //    }
 //    connect(server,SIGNAL(newConnection()),this,SLOT(processNetworkActivity()));
     nn.startServer(45455);
+    connect(&nn,SIGNAL(messageReceived(QString)),this,SLOT(receiveRequest(QString)));
     qDebug() << "LibraryRequester initialised";
-
 }
 
 void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate)
 {
-    if(!gettinglibraries.contains(theirid))
-    {
-        gettinglibraries.append(theirid);
-        qDebug() << "Attempting to receive library from " << theirid;
-        networking n;
-        QString sendme = "STREAMLIBRARY|";
-        sendme.append(n.getuniqid());
-        sendme.append("|");
-        sendme.append(dblastupdate);
-        sendme.append("|");
-        sendme.append(n.getmyip());
-        qDebug() << "Requesting library from " << theirip ;
-        nn.send(theirip, 45455, sendme);
-        LibraryReceiver lr = LibraryReceiver(db);
-        qDebug() << "Before";
-        lr.receive();
-        qDebug() << "After";
-        gettinglibraries.removeOne(theirid);
-    }
+    networking n;
+    // Beacon structure is "STREAMLIBRARYREQ|<my ip>|<database timestamp>
+    QString message = "STREAMLIBRARYREQ|";
+    message += n.getmyip();
+    message += "|";
+    message += dblastupdate;
+    nn.send(theirip,45455, message);
+
 }
 
-void LibraryRequester::sendLibrary(QHostAddress theirip, QString theirid, QString dblastupdate)
+void LibraryRequester::receiveRequest(QString message)
 {
-    LibrarySender ls = LibrarySender(db);
-    qDebug()<<"Sending my library to " << theirid << " " << theirip;
-    ls.send(dblastupdate.toInt(), theirip, theirid);
-}
-
-void LibraryRequester::processNetworkActivity()
-{
-    qDebug() << "Received send request";
-    QByteArray buf;
-    try
+    if(message.startsWith("STREAMLIBRARY"))
     {
-        while(server->hasPendingConnections())
-        {
-            qDebug() << "Proceesing pending connection";
-            QTcpSocket *connection = server->nextPendingConnection();
-            buf.resize(buf.size() + connection->bytesAvailable());
-            buf.append(connection->readAll());
-            connection->close();
-        }
-        QString datastring = (QString) buf.data();
-        qDebug() << "Datastring: " << datastring;
+        qDebug() << "Library Request Received";
         networking n;
-        QString id = n.parsebeacon(datastring, 0);
-        QString myid = n.getuniqid();
-        if (n.parsebeacon(datastring, networking::beaconHeader) == "STREAMLIBRARY")
-        {
-            if (id != myid)
-            {
-                QString dbtimestamp = n.parsebeacon(datastring, networking::timestamp);
-                LibrarySender ls = LibrarySender::LibrarySender(db);
-                qDebug() << "Sending my library to " << id;
-                ls.send(dbtimestamp.toInt(), QHostAddress::QHostAddress(n.parsebeacon(datastring, networking::ip)), id);
-            }
-            else
-            {
-                qDebug() << "From myself";
-            }
-        }
+        QList<QString> parts = message.split('|',QString::KeepEmptyParts);
+        QHostAddress theirip = QHostAddress(parts.at(1));
+        QString changes = "STREAMCHANGES|";
+        changes += db.changesSinceTime(parts.at(2).toInt(),n.getuniqid());
+        nn.send(theirip,45455,changes);
     }
-    catch (SBException e)
+    else if (message.startsWith("STREAMCHANGES"))
     {
-        std::cerr << e.getException().toStdString();
+        qDebug() << "TODO: Sync Library";
     }
-
+    else
+    {
+        qDebug() << "Rubbish received " << message;
+    }
 }
