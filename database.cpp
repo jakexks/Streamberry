@@ -453,6 +453,10 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
         condition = " WHERE (Album LIKE \"%";
         condition += searchtxt;
         condition += "%\")";
+    case 5:
+        condition = " WHERE (Length LIKE \"%";
+        condition += searchtxt;
+        condition += "%\")";
     default:
         condition = " WHERE (Artist LIKE \"%";
         condition += searchtxt;

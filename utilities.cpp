@@ -29,6 +29,11 @@ QString Utilities::makeStylesheet()
     style+="#topBarForward {background: url(EXECPATHimages/topBarForwardUp.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarForward:pressed {background: url(EXECPATHimages/topBarForwardDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarMusic {background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat; border: none; padding:0px;}";
+//    style+="#topBarMusic:pressed {background: url(EXECPATHimages/topBarMusicDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#topBarMusicchecked {background: url(EXECPATHimages/topBarMusicDown.png) no-repeat; border: none; padding:0px;}";
+    //style+="#topBarVideos {background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat; border: none; padding:0px;}";
+//    style+="#topBarVideos:pressed {background: url(EXECPATHimages/topBarVideoDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#topBarVideoschecked {background: url(EXECPATHimages/topBarVideoDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarWidget {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
     style+="#topBarSeparatorRight  {background: url(EXECPATHimages/topBarPlaylistsSeparatorRightAlignLeft.png); border: none; padding:0px;}";
     //bottom bar
@@ -67,6 +72,9 @@ QString Utilities::makeStylesheet()
     style+="#sideBarTopButtons {background-color: #DAE3E7; border-right:1px solid #9c9c9c;  margin-left:15px; margin-right:3px; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#sideBarDivided {background: url(EXECPATHimages/topBarPlaylistsSeparatorLeftAlignRight.png) no-repeat; padding:0px; margin:0px;}";
     //playbutton
+    style+="#songInfoLine {background:#222222; border:none; margin:0px;}";
+    style+="#songInfoLabel {font-weight:bold; border:none; padding:0px;}";
+    style+="#songInfo{ padding:10px;}";
     //style+="#separatorSongInfo {background:#222222; border:none; padding:0px;}"; separator-color:red;
     style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png);  border-left:1px solid #848484; padding:10px}";
     style+="#progressback {background:url(EXECPATHimages/botBarProgress.png) no-repeat; border: none; padding:0px;}";

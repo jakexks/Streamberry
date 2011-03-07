@@ -17,23 +17,26 @@
 LibraryController::LibraryController(Utilities& utilities, Database& datab, Player& p)
   : util(utilities), db(datab), player(p)
 {
-  curheaders = NULL;
-  currentlyplaying = 0;
+    curheaders = NULL;
+    currentlyplaying = 0;
 
-  QList<QString> headers;
-  headers.append("Title");
-  headers.append("Artist");
-  headers.append("Album");
-  setHeaders(headers, 2);
-  widget = new QWidget();
-  container = new QGridLayout(widget);
-  container->setMargin(0);
-  curview = NULL;
-  currentdata = NULL;
-  paneldelegate = new AlbumArtDelegate(util);
-  makeWidget();
+    QList<QString> headers;
+    headers.append("Title");
+    headers.append("Time");
+    headers.append("Artist");
+    headers.append("Album");
+    headers.append("Genre");
 
-  QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
+    setHeaders(headers, 2);
+    widget = new QWidget();
+    container = new QGridLayout(widget);
+    container->setMargin(0);
+    curview = NULL;
+    currentdata = NULL;
+    paneldelegate = new AlbumArtDelegate(util);
+    makeWidget();
+
+    QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
 }
 
 QWidget* LibraryController::getWidget()
@@ -269,43 +272,50 @@ void LibraryController::sortIndicatorChanged(int index, Qt::SortOrder order)
   }
   else if(index-2<headercount && !(index==sortcolumn+2 && order==sortorder))
   {
-    if(*curheaders[index-2] == "Artist")
-    {
-      sortcols->append("Artist");
-      sortcols->append("Album");
-      sortcols->append("Track");
-      orders->append(orderstr);
-      orders->append("ASC");
-      orders->append("ASC");
-    }
-    else if(*curheaders[index-2] == "Album")
-    {
-      sortcols->append("Album");
-      sortcols->append("Track");
-      orders->append(orderstr);
-      orders->append("ASC");
-    }
-    else if(*curheaders[index-2] == "Genre")
-    {
-      sortcols->append("Genre");
-      sortcols->append("Artist");
-      sortcols->append("Album");
-      sortcols->append("Track");
-      orders->append(orderstr);
-      orders->append("ASC");
-      orders->append("ASC");
-      orders->append("ASC");
-    }
-    else
-    {
-      sortcols->append(*curheaders[index-2]);
-      orders->append(orderstr);
-    }
+        if(*curheaders[index-2] == "Artist")
+        {
+            sortcols->append("Artist");
+            sortcols->append("Album");
+            sortcols->append("Track");
+            orders->append(orderstr);
+            orders->append("ASC");
+            orders->append("ASC");
+        }
+        else if(*curheaders[index-2] == "Album")
+        {
+            sortcols->append("Album");
+            sortcols->append("Track");
+            orders->append(orderstr);
+            orders->append("ASC");
+        }
+        else if(*curheaders[index-2] == "Genre")
+        {
+            sortcols->append("Genre");
+            sortcols->append("Artist");
+            sortcols->append("Album");
+            sortcols->append("Track");
+            orders->append(orderstr);
+            orders->append("ASC");
+            orders->append("ASC");
+            orders->append("ASC");
+        }
+        else if(*curheaders[index-2] == "Time")
+        {
+            sortcols->append("Length");
+            sortcols->append("Track");
+            orders->append(orderstr);
+            orders->append("ASC");
+        }
+        else
+        {
+            sortcols->append(*curheaders[index-2]);
+            orders->append(orderstr);
+        }
 
-    sortcolumn = index - 2;
-    sortorder = order;
-    emit needNewLibrary(sortcols, orders);
-  }
+        sortcolumn = index - 2;
+        sortorder = order;
+        emit needNewLibrary(sortcols, orders);
+    }
 }
 
 void LibraryController::sectionResized(int logicalindex, int oldsize, int newsize)
