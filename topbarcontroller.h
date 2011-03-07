@@ -2,6 +2,7 @@
 #define GUITOPBARCONTROLLER_H
 
 #include "utilities.h"
+#include <sbsearchbar.h>
 #include <QWidget>
 #include <QString>
 #include <QObject>
@@ -14,6 +15,7 @@ public:
     TopbarController(Utilities &utilities);
     QWidget* makeWidget();
     QWidget* getWidget();
+    SBSearchBar* getSearchbar();
 public slots:
     void musicButtonControl();
     void videosButtonControl();
@@ -25,6 +27,7 @@ private:
     QPushButton *videos;
     int musicState;
     int videosState;
+    SBSearchBar *search;
 };
 
 #endif // GUITOPBARCONTROLLER_H

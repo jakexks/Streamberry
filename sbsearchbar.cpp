@@ -68,6 +68,8 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
 }
 
 void SBSearchBar::checkText(QString text) {
+    emit newSearchString(text);
+
     if(text.length()>0) {
         cross->setVisible(true);
         return;
@@ -95,4 +97,5 @@ void SBSearchBar::crossReleased()
 void SBSearchBar::crossClicked()
 {
     textbox->setText("");
+    emit newSearchString("");
 }

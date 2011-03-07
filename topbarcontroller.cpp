@@ -56,7 +56,7 @@ QWidget* TopbarController::makeWidget()
     videos = new QPushButton();
     videos->setObjectName("topBarVideos");
     videos->setStyleSheet(util.getStylesheet());
-    SBSearchBar *search = new SBSearchBar(expath);
+    search = new SBSearchBar(expath);
 
     //Split it into three sections
     outer->addLayout(separatorLayout, 1, 0);
@@ -109,6 +109,12 @@ QWidget* TopbarController::makeWidget()
     connect(music, SIGNAL(clicked()), this, SLOT(musicButtonControl()));
     connect(videos, SIGNAL(clicked()), this, SLOT(videosButtonControl()));
     return temp;
+}
+
+
+SBSearchBar* TopbarController::getSearchbar()
+{
+    return search;
 }
 
 void TopbarController::musicButtonControl()

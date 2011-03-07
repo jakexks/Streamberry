@@ -65,10 +65,8 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
 
     //initialise controllers and add widgets to window
     topbarcontroller = new TopbarController(util);
-
     sidebarcontroller = new SidebarController(util, db, *librarycontroller);
-
-    librarycontroller = new LibraryController(util, db, player);
+    librarycontroller = new LibraryController(util, db, player, topbarcontroller->getSearchbar());
     playbackcontroller = new PlaybackController(util, player);
 
     mainlayout->addWidget(topbarcontroller->getWidget(), 0, 1, 1, 1);
@@ -86,13 +84,11 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
 
   librarycontroller->fillData(result);
 
-  QObject::connect(librarycontroller, SIGNAL(needNewLibrary(QList<QString>*,QList<QString>*)), this, SLOT(giveNewLibrary(QList<QString>*,QList<QString>*)));
+//  QObject::connect(librarycontroller, SIGNAL(needNewLibrary(QList<QString>*,QList<QString>*)), this, SLOT(giveNewLibrary(QList<QString>*,QList<QString>*)));
   QObject::connect(playbackcontroller, SIGNAL(nextFile()), librarycontroller, SLOT(playNextFile()));
   QObject::connect(playbackcontroller, SIGNAL(prevFile()), librarycontroller, SLOT(playPrevFile()));
 
   setCentralWidget(centralwidget);
-
-
 }
 
 
@@ -195,15 +191,6 @@ QMenuBar* MainWindow::createMenuBar()
   QObject::connect(actions[21], SIGNAL(triggered()), this, SLOT(menuAbout()));
 
   return menubar;
-}
-
-
-void MainWindow::giveNewLibrary(QList<QString> *sortcols, QList<QString> *order)
-{
-  QList<QSqlRecord> *result = db.searchDb(0, "", *sortcols, *order);
-  librarycontroller->fillData(result);
-  delete sortcols;
-  delete order;
 }
 
 void MainWindow::resizeEvent(QResizeEvent *resize)

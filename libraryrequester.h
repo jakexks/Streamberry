@@ -6,6 +6,7 @@
 #include <QUdpSocket>
 #include "database.h"
 #include <QTcpServer>
+#include "newnetworking.h"
 
 class LibraryRequester : public QObject
 {
@@ -14,13 +15,14 @@ public:
     LibraryRequester(Database &datab);
 public slots:
     void getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
-    void sendLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
+    //void sendLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
 private slots:
-    void processNetworkActivity();
+    void receiveRequest(QString message);
 private:
     QList<QString> gettinglibraries;
     Database& db;
     QTcpServer *server;
+    NewNetworking nn;
 };
 
 #endif // LIBRARYREQUESTER_H

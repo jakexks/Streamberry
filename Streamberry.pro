@@ -36,8 +36,6 @@ SOURCES +=  main.cpp\
             playlist.cpp \
             streamfile.cpp \
             filemeta.cpp \
-            librarysender.cpp \
-            libraryreceiver.cpp \
             libraryrequester.cpp \
             beaconreceiver.cpp \
             beaconsender.cpp \
@@ -48,7 +46,8 @@ SOURCES +=  main.cpp\
             playbackprogress.cpp \
             playbackbutton.cpp \
             songinfo.cpp\
-            quitmanager.cpp
+            quitmanager.cpp \
+    newnetworking.cpp
 
 
 HEADERS +=  mainwindow.h\
@@ -82,4 +81,5 @@ HEADERS +=  mainwindow.h\
             playbackprogress.h \
             playbackbutton.h \
             songinfo.h\
-            quitmanager.h
+            quitmanager.h \
+    newnetworking.h

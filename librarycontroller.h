@@ -4,6 +4,7 @@
 #include "utilities.h"
 #include "albumartdelegate.h"
 #include "database.h"
+#include <sbsearchbar.h>
 #include <QtGui>
 #include <QSqlRecord>
 #include <QList>
@@ -16,7 +17,7 @@ class LibraryController : public QObject
     Q_OBJECT
 
 public:
-    LibraryController(Utilities& utilities, Database& datab, Player& p);
+    LibraryController(Utilities& utilities, Database& datab, Player& p, SBSearchBar* searchbar);
     ~LibraryController();
     QWidget* getWidget();
     void addHeaders();
@@ -24,14 +25,16 @@ public:
     void makeWidget();
     void setHeaders(QList<QString>& headers, int sortcol);
 signals:
-    void needNewLibrary(QList<QString>* sortcols, QList<QString>* order);
+    void needNewLibrary();
 public slots:
+    void sortLibrary();
     void deselectFirst();
     void sortIndicatorChanged(int index,Qt::SortOrder order);
     void sectionResized(int logicalindex, int oldsize, int newsize);
     void itemClicked(int row, int column);
     void playNextFile();
     void playPrevFile();
+    void setSearchText(QString text);
 private:
     Utilities& util;
     QWidget* widget;
@@ -47,6 +50,10 @@ private:
     AlbumArtDelegate* paneldelegate;
     Database& db;
     Player& player;
+    QString searchtext;
+    QList<QString> *sortcols;
+    QList<QString> *orders;
+    void updateLibrary();
 };
 
 #endif // LIBRARYCONTROLLER_H
