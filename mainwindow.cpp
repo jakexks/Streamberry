@@ -233,11 +233,23 @@ void MainWindow::menuExitStreamberry()
 void MainWindow::menuScan()
 {
   fs.build_new();
+  QList<QString> fields;
+  QList<QString> order;
+  fields.append("Album");
+  order.append("DESC");
+  QList<QSqlRecord> *result = db.searchDb(0, "", fields, order);
+  librarycontroller->fillData(result);
 }
 
 void MainWindow::menuCleanScan()
 {
   fs.build_new_clean();
+  QList<QString> fields;
+  QList<QString> order;
+  fields.append("Album");
+  order.append("DESC");
+  QList<QSqlRecord> *result = db.searchDb(0, "", fields, order);
+  librarycontroller->fillData(result);
 }
 
 void MainWindow::menuAddFile()

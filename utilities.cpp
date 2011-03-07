@@ -61,6 +61,8 @@ QString Utilities::makeStylesheet()
     style+="#sideBarVeilPic {background: url(EXECPATHimages/sideBarTimeBackground.png); padding:0px; margin:0px;}";
 
     style+="#sideBarPreviewPane {background-color: #000000; border-right:1px solid #9c9c9c; padding:0px; margin:0px;}";
+    style+="#sideBarPlaylistCell {border-right:1px solid #9c9c9c; padding:0px; margin:0px;}";
+
     style+="#sideBarPlaylistTableWidget {background-color: #DAE3E7;  margin-left:33px; margin-right:2px ; selection-background-color:#8FB1BB; selection-color:#0b0b0b; padding:0px; border-left:1px solid #9DA0A2; }"; //
     style+="#sideBarTopButtons {background-color: #DAE3E7; border-right:1px solid #9c9c9c;  margin-left:15px; margin-right:3px; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#sideBarDivided {background: url(EXECPATHimages/topBarPlaylistsSeparatorLeftAlignRight.png) no-repeat; padding:0px; margin:0px;}";
