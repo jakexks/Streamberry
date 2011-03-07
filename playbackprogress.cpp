@@ -10,12 +10,18 @@ PlaybackProgress::PlaybackProgress(Utilities &utilities, QWidget *parent) : QFra
     setObjectName("progressback");
     setFixedSize(82, 83);
     pieangle = 0;
+    isentered = false;
+    isdragging = false;
+    QString imgpath = util.getExecutePath();
+    imgpath += "images/botBarPlaybackHandle.png";
+    handleimg = QImage(imgpath);
 }
 
 void PlaybackProgress::mousePressEvent(QMouseEvent *e)
 {
     grabMouse();
     recalculateAngle(e->posF());
+    isdragging = true;
 }
 
 void PlaybackProgress::mouseMoveEvent(QMouseEvent *e)
@@ -26,7 +32,21 @@ void PlaybackProgress::mouseMoveEvent(QMouseEvent *e)
 void PlaybackProgress::mouseReleaseEvent(QMouseEvent *e)
 {
     releaseMouse();
+    isdragging = false;
     emit newAngle(pieangle);
+    update();
+}
+
+void PlaybackProgress::enterEvent(QEvent *e)
+{
+    isentered = true;
+    update();
+}
+
+void PlaybackProgress::leaveEvent(QEvent *e)
+{
+    isentered = false;
+    update();
 }
 
 void PlaybackProgress::recalculateAngle(QPointF ptc)
@@ -76,6 +96,14 @@ void PlaybackProgress::paintEvent(QPaintEvent *e)
 
     painter.save();
     painter.drawPie(2, 2, 78, 78, 16*90, -pieangle);
+
+    qDebug() << "entered " << isentered << " isdragging" << isdragging;
+
+    if(isentered || isdragging)
+    {
+        painter.drawImage(QPoint(0, 0), handleimg);
+    }
+
     painter.restore();
 }
 

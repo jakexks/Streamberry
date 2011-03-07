@@ -13,6 +13,8 @@ public:
     void mouseReleaseEvent(QMouseEvent *);
     void recalculateAngle(QPointF);
     void paintEvent(QPaintEvent *);
+    void enterEvent(QEvent *);
+    void leaveEvent(QEvent *);
 signals:
     void newAngle(int pieangle);
 
@@ -22,6 +24,9 @@ public slots:
 private:
     Utilities& util;
     int pieangle;
+    bool isentered;
+    bool isdragging;
+    QImage handleimg;
 
 signals:
     void mousePressEvent();
