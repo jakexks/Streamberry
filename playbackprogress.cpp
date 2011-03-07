@@ -99,13 +99,9 @@ void PlaybackProgress::paintEvent(QPaintEvent *e)
 
 //    qDebug() << "entered " << isentered << " isdragging" << isdragging;
 
+    //draw handle code
     if(isentered || isdragging)
     {
-        //centre 41, 41
-        //width is 39
-        //image is 18, 18
-
-
         float x = 35*sin(pieangle /16 * 3.14159265 / 180.0) + 37;
         float y = -35*cos(pieangle /16 * 3.14159265 / 180.0) + 37;
 
