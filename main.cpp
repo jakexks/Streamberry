@@ -52,10 +52,11 @@ int main(int argc, char *argv[])
     brthread->start();
 
     QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
+
     //db.setFolders("/streamberrytest/");
-    //db.setFolders("");
+    db.setFolders("/home/vity/Music/viktor.tsoi.i.kino.36.albomov.mp3.96-320kbps");
     //db.setFolders("C:\\Users\\Jim\\Music\\TEST");
-    db.setFolders("/host/new/");
+    //db.setFolders("/host/new/");
 
     MainWindow w(util, db, player, fs);
 

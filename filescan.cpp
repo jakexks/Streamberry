@@ -33,7 +33,7 @@ int Filescan::build_new()
   {
     TrackedFolders = db.getFolders(0);
     ExFolders = db.getFolders(1);
-    homeid = db.getUniqueID();
+    homeid = "local";
     //For every folder to be tracked, run the scanFolder method
     for(int i=0; i<TrackedFolders.size(); i++)
     {
@@ -70,7 +70,7 @@ int Filescan::build_new_clean()
     db.query(sql);
     TrackedFolders = db.getFolders(0);
     ExFolders = db.getFolders(1);
-    homeid = "-1";
+    homeid = "local";
     qDebug() << "Clean File Scan Begun";
     for(int i=0; i<TrackedFolders.size(); i++)
     {

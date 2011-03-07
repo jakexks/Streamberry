@@ -28,6 +28,7 @@ public:
     QTimer *poller;
     //void playFile(QString file);
     void playFile(QString file, QString uniqueID="local", QString ipaddress="local");
+    bool isPlaying();
     Player();
     ~Player();
 
@@ -43,6 +44,7 @@ public slots:
 signals:
     void sliderChanged(int newValue);
     void getNextFile();
+    void getFirstSong();
 
 };
 
