@@ -15,9 +15,9 @@ BeaconReceiver::BeaconReceiver(Database &datab) : db(datab)
     myid = n.getuniqid();
 
     LibraryRequester *lr = new LibraryRequester(db);
-    QThread *lrthread = new QThread(this);
-    lr->moveToThread(lrthread);
-    lrthread->start();
+    //QThread *lrthread = new QThread(this);
+    //lr->moveToThread(lrthread);
+    //lrthread->start();
 
     connect(this, SIGNAL(getLibrary(QHostAddress,QString,QString)), lr, SLOT(getLibrary(QHostAddress,QString,QString)));
 

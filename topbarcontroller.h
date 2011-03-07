@@ -17,13 +17,16 @@ public:
     QWidget* getWidget();
     SBSearchBar* getSearchbar();
 public slots:
-    void musicVideo();
+    void musicButtonControl();
+    void videosButtonControl();
 private:
     QString expath;
     Utilities& util;
     QWidget* widget;
     QPushButton *music;
     QPushButton *videos;
+    int musicState;
+    int videosState;
     SBSearchBar *search;
 };
 

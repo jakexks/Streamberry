@@ -47,7 +47,22 @@ void LibraryRequester::receiveRequest(QString message)
     }
     else if (message.startsWith("STREAMCHANGES"))
     {
-        qDebug() << "TODO: Sync Library";
+        qDebug() << "Syncing Library";
+        QList<QString> parts = message.split('|', QString::KeepEmptyParts);
+        QString query = parts.at(1);
+        qDebug() << query;
+        QList<QString> queries = query.split('\x1D');
+        try
+        {
+            for(int i = 0; i < queries.length(); i++)
+            {
+                db.query(queries.at(i));
+            }
+        }
+        catch(SBException e)
+        {
+            qDebug() << "ERROR: " << e.getException();
+        }
     }
     else
     {

@@ -7,7 +7,7 @@ NewNetworking::NewNetworking()
 
 void NewNetworking::startSend()
 {
-    client.write(toSend.toAscii());
+    client.write(toSend.toUtf8());
 }
 
 void NewNetworking::send(QHostAddress ip, quint16 port, QString message)
@@ -32,8 +32,8 @@ void NewNetworking::read()
 {
     QString buffer;
     buffer += (inclient->readAll());
-    buffer.resize(buffer.lastIndexOf(';') + 1);
-    qDebug() << buffer;
+    //buffer.resize(buffer.lastIndexOf(';') + 1);
+    //qDebug() << buffer;
     emit messageReceived(buffer);
     inclient->close();
 }
