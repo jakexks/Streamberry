@@ -51,13 +51,11 @@ QWidget* TopbarController::makeWidget()
     forward->setObjectName("topBarForward");
     forward->setStyleSheet(util.getStylesheet());
     music= new QPushButton();
-//    music->setCheckable(true);
     music->setObjectName("topBarMusic");
     music->setStyleSheet(util.getStylesheet());
     videos = new QPushButton();
     videos->setObjectName("topBarVideos");
     videos->setStyleSheet(util.getStylesheet());
-    videos->setCheckable(true);
     SBSearchBar *search = new SBSearchBar(expath);
 
     //Split it into three sections
@@ -106,28 +104,45 @@ QWidget* TopbarController::makeWidget()
     innermiddle->addWidget(videos, 0, 1);
     innermiddle->setAlignment(videos,Qt::AlignRight);
     innerright->addWidget(search, 0, 0);
-    connect(music, SIGNAL(clicked()), this, SLOT(musicVideo()));
-    connect(videos, SIGNAL(clicked()), this, SLOT(musicVideo()));
+    musicState=0;
+    videosState=0;
+    connect(music, SIGNAL(clicked()), this, SLOT(musicButtonControl()));
+    connect(videos, SIGNAL(clicked()), this, SLOT(videosButtonControl()));
     return temp;
 }
 
-void TopbarController::musicVideo()
+void TopbarController::musicButtonControl()
 {
+    videosState=0;
+    if(musicState==0)
+    {
+        music->setObjectName("topBarMusicchecked");
+        music->setStyleSheet(util.getStylesheet());
+        musicState=1;
+    }
+    else
+    {
+        music->setObjectName("topBarMusic");
+        music->setStyleSheet(util.getStylesheet());
+        musicState=0;
+    }
 
-    if(!videos->isDown())
+}
+
+void TopbarController::videosButtonControl()
+{
+   // qDebug()<<videos->checkStateSet ();
+    musicState=0;
+    if(videosState==0)
     {
         music->setObjectName("topBarVideoschecked");
         music->setStyleSheet(util.getStylesheet());
+        videosState=1;
     }
-    if(!music->isChecked()){
- music->setObjectName("topBarMusicchecked");
- music->setStyleSheet(util.getStylesheet());
-}
- if(music->isChecked())
- {
-     qDebug()<<music->isChecked();
-     music->setObjectName("topBarMusic");
-     music->setStyleSheet(util.getStylesheet());
- }
- //if(videos.clicked()) music.setObjectName("topBarVideoschecked");
+    else
+    {
+        music->setObjectName("topBarMusic");
+        music->setStyleSheet(util.getStylesheet());
+        videosState=0;
+    }
 }
