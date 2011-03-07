@@ -16,7 +16,9 @@ LibraryRequester::LibraryRequester(Database &datab): db(datab)
     {
         qDebug() << "Could not Listen (in processnetworkactivity)";
     }
+    connect(server,SIGNAL(newConnection()),this,SLOT(processNetworkActivity()));
     qDebug() << "LibraryRequester initialised";
+
 }
 
 void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate)
