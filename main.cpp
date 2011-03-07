@@ -13,10 +13,17 @@
 #include "beaconsender.h"
 #include "beaconreceiver.h"
 #include "player.h"
+#include <QCleanlooksStyle>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+#ifdef Q_WS_X11
+    //fix styling on linux
+    a.setStyle(new QCleanlooksStyle());
+#endif
+
 
 #ifdef Q_WS_WIN
     QString execpath = a.applicationDirPath();
