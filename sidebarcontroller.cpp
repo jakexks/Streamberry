@@ -311,7 +311,9 @@ void SidebarController::ShowContextMenu(const QPoint& pos)
   int row = playlistTableWidget->rowAt(mapToGlobal(pos).y());
   if(row >= 3)
   {
-    Playlist pass(db, (playlistTableWidget->itemAt(pos)->text()));
+    QTableWidgetItem* tempitem = playlistTableWidget->itemAt(pos);
+    qDebug() << tempitem->text();
+    Playlist pass(db, tempitem->text());
     bool type = typearray[playlistTableWidget->rowAt((mapToGlobal(pos).y()))];
     if(type == true)
       smartmenu->playlistrightclicked(&pass, &libpass);

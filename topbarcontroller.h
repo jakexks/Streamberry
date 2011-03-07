@@ -4,20 +4,24 @@
 #include "utilities.h"
 #include <QWidget>
 #include <QString>
+#include <QObject>
+#include <QPushButton>
 
-class TopbarController
+class TopbarController : public QObject
 {
+    Q_OBJECT
 public:
     TopbarController(Utilities &utilities);
     QWidget* makeWidget();
     QWidget* getWidget();
+public slots:
+    void musicVideo();
 private:
     QString expath;
     Utilities& util;
     QWidget* widget;
-
-public slots:
-    void musicvideo();
+    QPushButton *music;
+    QPushButton *videos;
 };
 
 #endif // GUITOPBARCONTROLLER_H

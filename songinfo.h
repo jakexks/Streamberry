@@ -22,7 +22,6 @@ private:
 
 public slots:
     void updatelabels(QString album, QString artist, QString song);
-
 };
 
 #endif // SONGINFO_H

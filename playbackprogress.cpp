@@ -113,6 +113,9 @@ void PlaybackProgress::paintEvent(QPaintEvent *e)
 
 void PlaybackProgress::setAngle(int angle)
 {
-    pieangle = angle;
-    update();
+    if(!isdragging)
+    {
+        pieangle = angle;
+        update();
+    }
 }

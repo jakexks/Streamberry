@@ -54,8 +54,8 @@ int main(int argc, char *argv[])
 
     QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
-    //db.setFolders("/streamberrytest/");
-    db.setFolders("/home/vity/Music/viktor.tsoi.i.kino.36.albomov.mp3.96-320kbps");
+    db.setFolders("/Users/Robbie/Music/Albums/");
+    //db.setFolders("/home/vity/Music/viktor.tsoi.i.kino.36.albomov.mp3.96-320kbps");
     //db.setFolders("C:\\Users\\Jim\\Music\\TEST");
     //db.setFolders("/host/new/");
 
