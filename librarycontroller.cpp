@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QFontMetrics>
 #include "player.h"
+#include <QGradient>
 
 #define DEFAULT_WIDTH 170
 #define DEFAULT_ARTPANEL_WIDTH 160
@@ -82,7 +83,6 @@ void LibraryController::makeWidget()
 
   tablewidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-
   container->addWidget(curview, 0, 0);
 }
 
@@ -96,15 +96,21 @@ void LibraryController::addHeaders()
 #else
   font.setPixelSize(10);
 #endif
-
+  QLinearGradient blend(QPointF(0,0), QPointF(0,26));
+  blend.setColorAt(0, QColor(141, 141, 141));
+  blend.setColorAt(1, QColor(92, 92, 92));
+  QBrush backgroundBrush(blend);
 
   tablewidget->setColumnCount(headercount + 2);
   sortorder = Qt::AscendingOrder;
   tablewidget->verticalHeader()->setVisible(false);
   header = new QTableWidgetItem("");
   tablewidget->setHorizontalHeaderItem(0, header);
+  header->setBackground(backgroundBrush);
+
   tablewidget->horizontalHeader()->setObjectName("horizontalHeader");
   tablewidget->horizontalHeader()->setStyleSheet(util.getStylesheet());
+  tablewidget->horizontalHeader()->setMaximumHeight(20);
 
   QString setting;
 
@@ -118,17 +124,16 @@ void LibraryController::addHeaders()
   }
 
   header = new QTableWidgetItem("");
-
+  header->setBackground(backgroundBrush);
   tablewidget->setHorizontalHeaderItem(1, header);
   tablewidget->horizontalHeader()->setResizeMode(1, QHeaderView::Fixed);
   QFontMetrics fontm = QFontMetrics(font);
   //tablewidget->verticalHeader()->setDefaultSectionSize(fontm.lineSpacing()+fontm.height());
   tablewidget->verticalHeader()->setDefaultSectionSize(20);
-
-  for(int i = 0; i<headercount; i++)
+    for(int i = 0; i<headercount; i++)
   {
     header = new QTableWidgetItem(*curheaders[i]);
-    header->setBackground(QBrush(QImage("THINGGOESHERE")));
+    header->setBackground(backgroundBrush);
     QString settingname = "header";
     settingname += *curheaders[i];
 

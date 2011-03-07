@@ -29,11 +29,13 @@ QString Utilities::makeStylesheet()
     style+="#topBarForward {background: url(EXECPATHimages/topBarForwardUp.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarForward:pressed {background: url(EXECPATHimages/topBarForwardDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarMusic {background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat; border: none; padding:0px;}";
+
+    style+="#horizontalHeader {background: url(EXECPATHimages/libraryHeaderBackground.png); color:#e4e4e4; margin:0px; padding:0px; border-bottom:1px solid #161616; }"; //434040
     //style+="#topBarMusic:pressed {background: url(EXECPATHimages/topBarMusicDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarMusicchecked {background: url(EXECPATHimages/topBarMusicDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarVideos {background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarVideos:pressed {background: url(EXECPATHimages/topBarVideoDown.png) no-repeat; border: none; padding:0px;}";
-    style+="#topBarVideos:checked {background: url(EXECPATHimages/topBarVideoDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#topBarVideoschecked {background: url(EXECPATHimages/topBarVideoDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarWidget {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";
     style+="#topBarSeparatorRight  {background: url(EXECPATHimages/topBarPlaylistsSeparatorRightAlignLeft.png); border: none; padding:0px;}";
     //bottom bar

@@ -5,7 +5,7 @@ StreamFile::StreamFile()
     const char * vlc_args[] = {
                         "--ignore-config",
                         "--no-plugins-cache",
-                        "--verbose=2",
+                        "--verbose=0",
                         "--ts-out-mtu=10",
                         "--sout-rtp-caching=10",
                         "--sout-keep",

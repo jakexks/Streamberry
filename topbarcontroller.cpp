@@ -107,18 +107,27 @@ QWidget* TopbarController::makeWidget()
     innermiddle->setAlignment(videos,Qt::AlignRight);
     innerright->addWidget(search, 0, 0);
     connect(music, SIGNAL(clicked()), this, SLOT(musicVideo()));
-
+    connect(videos, SIGNAL(clicked()), this, SLOT(musicVideo()));
     return temp;
 }
 
 void TopbarController::musicVideo()
 {
+
+    if(!videos->isDown())
+    {
+        music->setObjectName("topBarVideoschecked");
+        music->setStyleSheet(util.getStylesheet());
+    }
+    if(!music->isChecked()){
  music->setObjectName("topBarMusicchecked");
  music->setStyleSheet(util.getStylesheet());
-// if(music->pressed())
-// {
-//     music->setObjectName("topBarMusic");
-//     music->setStyleSheet(util.getStylesheet());
-// }
-// if(videos.clicked()) music.setObjectName("topBarVideoschecked");
+}
+ if(music->isChecked())
+ {
+     qDebug()<<music->isChecked();
+     music->setObjectName("topBarMusic");
+     music->setStyleSheet(util.getStylesheet());
+ }
+ //if(videos.clicked()) music.setObjectName("topBarVideoschecked");
 }
