@@ -10,8 +10,10 @@
 PlaylistMenu::PlaylistMenu(bool smart)
 {
   //db = datab;
+  setup = 0;
   if(smart == false)
   {
+
     QAction* menuitems[5];
     menuitems[0] = this->addAction("Play");
     menuitems[1] = this->addSeparator();
@@ -40,12 +42,20 @@ PlaylistMenu::PlaylistMenu(bool smart)
     QObject::connect(menuitems[4], SIGNAL(triggered()), this, SLOT(SmartEdit()));
     QObject::connect(menuitems[5], SIGNAL(triggered()), this, SLOT(SmartDelete()));
   }
+
+
+
 }
 
 void PlaylistMenu::playlistrightclicked(Playlist* passplaylist, LibraryController* passlib)
 {
   PL = passplaylist;
-  LibCont = passlib;
+  if(setup == 0)
+  {
+    LibCont = passlib;
+    QObject::connect(this, SIGNAL(playthis(QList<QSqlRecord>*)), LibCont, SLOT(displaythis(QList<QSqlRecord>*)));
+    setup = 1;
+  }
   this->exec(QCursor::pos());
 }
 
@@ -57,7 +67,8 @@ void PlaylistMenu::SmartPlay()
 
 void PlaylistMenu::SmartView()
 {
-  qDebug() << "click";
+  QList<QSqlRecord>* alltracks = PL->getAllTracks();
+  emit(playthis(alltracks));
 }
 
 void PlaylistMenu::SmartRename()
@@ -85,8 +96,7 @@ void PlaylistMenu::NormalPlay()
 void PlaylistMenu::NormalView()
 {
   QList<QSqlRecord>* alltracks = PL->getAllTracks();
-  //qDebug() << *alltracks;
-  LibCont->fillData(alltracks);
+  emit(playthis(alltracks));
 }
 
 void PlaylistMenu::NormalRename()

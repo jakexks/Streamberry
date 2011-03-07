@@ -18,12 +18,11 @@
  text size
  */
 
-SidebarController::SidebarController(Utilities &utilities, Database& datab, LibraryController& lib) : util(utilities), db(datab), libpass(lib)
+SidebarController::SidebarController(Utilities &utilities, Database& datab, LibraryController* lib) : util(utilities), db(datab), libpass(lib)
 {
-  expath = utilities.getExecutePath();
   widget = makeWidget();
-
 }
+
 
 QWidget* SidebarController::makeWidget()
 {
@@ -47,6 +46,7 @@ QWidget* SidebarController::makeWidget()
   smartmenu = new PlaylistMenu(true);
   normalmenu = new PlaylistMenu(false);
 
+
   sidebarlayout->setRowStretch(0, 0);
   sidebarlayout->setRowStretch(1, 0);
   sidebarlayout->setRowStretch(2, 1);
@@ -58,6 +58,7 @@ QWidget* SidebarController::makeWidget()
   sidebarlayout->addWidget(playlistbar, 1, 0);
   sidebarlayout->addWidget(previewbtn, 3, 0);
   sidebarlayout->addWidget(previewbar, 4, 0);
+
   return main;
 }
 
@@ -102,6 +103,10 @@ QTableWidget* SidebarController::buildplaylistbar()
   QObject::connect(playlistTableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(Clicked(int,int)));
   QObject::connect(playlistTableWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowContextMenu(const QPoint&)));
   QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
+
+  //QObject::connect(this, SIGNAL(playthis(QList<QSqlRecord>*)), libpass, SLOT(displaythis(QList<QSqlRecord>*)) );
+
+
 
   QTableWidgetItem* btns[4];
   btns[0] = new QTableWidgetItem("Display All Media");
@@ -177,10 +182,10 @@ void SidebarController::updateplaylistbar(int shownumber)
     QSqlRecord currecord = playlists.at(i-3);
     typearray[i-3] = currecord.field(1).value().toBool();
     QString name = currecord.field(0).value().toString();
+    namearray[i-3] = name;
     QWidget* item1 = makePlaylistRow(name);
     playlistTableWidget->setRowHeight(i, 25);
     playlistTableWidget->setCellWidget(i, 0, item1);
-
   }
 }
 
@@ -309,16 +314,16 @@ QWidget* SidebarController::makePlaylistBtn()
 void SidebarController::ShowContextMenu(const QPoint& pos)
 {
   int row = playlistTableWidget->rowAt(mapToGlobal(pos).y());
+  qDebug() << row;
   if(row >= 3)
   {
-    QTableWidgetItem* tempitem = playlistTableWidget->itemAt(pos);
-    qDebug() << tempitem->text();
-    Playlist pass(db, tempitem->text());
-    bool type = typearray[playlistTableWidget->rowAt((mapToGlobal(pos).y()))];
+    bool type = typearray[row-3];
+    QString text = namearray[row-3];
+    Playlist pass(db, text);
     if(type == true)
-      smartmenu->playlistrightclicked(&pass, &libpass);
+      smartmenu->playlistrightclicked(&pass, libpass);
     else
-      normalmenu->playlistrightclicked(&pass, &libpass);
+      normalmenu->playlistrightclicked(&pass, libpass);
     QString sizestring = db.getSetting("windowSize");
     if( sizestring=="" )
       updateplaylistbar( 7 );
@@ -345,12 +350,16 @@ void SidebarController::DoubleClicked(int row, int column)
 
 void SidebarController::Clicked(int row, int column)
 {
-  if(row == 1)
+  if(row == 0)
   {
-    //QList<QSqlRecord> *result = db.searchDb(0, "", fields, order);
-    //librarycontroller->fillData(result);
+    QList<QString> fields;
+    QList<QString> order;
+    fields.append("Album");
+    order.append("DESC");
+    QList<QSqlRecord>* alltracks = db.searchDb(0, "", fields, order);
+    emit(playthis(alltracks));
   }
-  if(row == 2)
+  if(row == 1)
   {
     qDebug() << "View all Playlist Clicked";
   }

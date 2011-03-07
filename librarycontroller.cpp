@@ -86,6 +86,7 @@ void LibraryController::makeWidget()
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
     QObject::connect(tablewidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(itemClicked(int,int)));
 
+
     tablewidget->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     container->addWidget(curview, 0, 0);
@@ -436,6 +437,12 @@ void LibraryController::playPrevFile()
     }
     tablewidget->selectRow(currentlyplaying);
 
+}
+
+void LibraryController::displaythis(QList<QSqlRecord>* passedin)
+{
+  qDebug() << "Reached here";
+  fillData(passedin);
 }
 
 LibraryController::~LibraryController()

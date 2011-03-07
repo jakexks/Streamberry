@@ -65,8 +65,9 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
 
     //initialise controllers and add widgets to window
     topbarcontroller = new TopbarController(util);
-    sidebarcontroller = new SidebarController(util, db, *librarycontroller);
+
     librarycontroller = new LibraryController(util, db, player, topbarcontroller->getSearchbar());
+    sidebarcontroller = new SidebarController(util, db, librarycontroller);
     playbackcontroller = new PlaybackController(util, player);
 
     mainlayout->addWidget(topbarcontroller->getWidget(), 0, 1, 1, 1);
