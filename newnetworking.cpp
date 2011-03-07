@@ -32,7 +32,7 @@ void NewNetworking::read()
 {
     QString buffer;
     buffer += (inclient->readAll());
-    buffer.resize(buffer.lastIndexOf(';') + 1);
+    //buffer.resize(buffer.lastIndexOf(';') + 1);
     qDebug() << buffer;
     emit messageReceived(buffer);
     inclient->close();
