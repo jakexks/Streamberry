@@ -64,7 +64,3 @@ void PlaybackButton::propagateEvent(QMouseEvent *e)
     }
 }
 
-void PlaybackButton::enterEvent(QEvent *e)
-{
-
-}

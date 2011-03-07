@@ -11,7 +11,6 @@ public:
     explicit PlaybackButton(PlaybackProgress *parent = 0);
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
-    void enterEvent(QEvent *);
 signals:
 
 public slots:

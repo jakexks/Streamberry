@@ -97,11 +97,19 @@ void PlaybackProgress::paintEvent(QPaintEvent *e)
     painter.save();
     painter.drawPie(2, 2, 78, 78, 16*90, -pieangle);
 
-    qDebug() << "entered " << isentered << " isdragging" << isdragging;
+//    qDebug() << "entered " << isentered << " isdragging" << isdragging;
 
     if(isentered || isdragging)
     {
-        painter.drawImage(QPoint(0, 0), handleimg);
+        //centre 41, 41
+        //width is 39
+        //image is 18, 18
+
+
+        float x = 35*sin(pieangle /16 * 3.14159265 / 180.0) + 37;
+        float y = -35*cos(pieangle /16 * 3.14159265 / 180.0) + 37;
+
+        painter.drawImage(QPointF(x, y), handleimg);
     }
 
     painter.restore();
