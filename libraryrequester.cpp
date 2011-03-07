@@ -56,7 +56,9 @@ void LibraryRequester::receiveRequest(QString message)
         {
             for(int i = 0; i < queries.length(); i++)
             {
-                db.query(queries.at(i));
+                QString temp = queries.at(i);
+                temp.resize(temp.lastIndexOf(';')+1);
+                db.query(temp);
             }
         }
         catch(SBException e)

@@ -79,12 +79,22 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress their
     try
     {
         int stamp = onlinemachines.value(id);
-        if (db.lastUpdate(id) < dbtimestamp)
+        QString lasttimestamp = db.lastUpdate(id);
+
+        //if never seen before, add them to the database
+        if(lasttimestamp=="")
+        {
+            QString username = "Gary Oak";
+            db.makeUser(dbtimestamp, QString::number(Utilities::getCurrentTimestamp()), id, username);
+            getLibrary(theirip, id, dbtimestamp);
+        }
+        //if their timestamp is newer, get new one
+        else if (lasttimestamp.toInt() < dbtimestamp.toInt())
         {
             getLibrary(theirip, id, dbtimestamp);
         }
         // If the machine has been seen before, but just come online then tell the database that it is online
-        else if (stamp == 0)
+        else
         {
             db.setOnline(id, "1");
         }
@@ -93,9 +103,9 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress their
     {
         // Adds machine to database as it has not been seen before
         //TODO: enter real user name rather than Gary OR get the library requester to enter username as this would be more efficient
-        QString username = "Gary Oak";
-        db.makeUser(dbtimestamp, QString::number(Utilities::getCurrentTimestamp()), id, username);
-        getLibrary(theirip, id, dbtimestamp);
+//        QString username = "Gary Oak";
+//        db.makeUser(dbtimestamp, QString::number(Utilities::getCurrentTimestamp()), id, username);
+//        getLibrary(theirip, id, dbtimestamp);
     }
     onlinemachines.insert(id, Utilities::getCurrentTimestamp());
 }

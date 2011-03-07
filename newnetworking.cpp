@@ -30,10 +30,9 @@ void NewNetworking::acceptConnection()
 
 void NewNetworking::read()
 {
-    QString buffer;
-    buffer += (inclient->readAll());
+    QString buffer = QString::fromUtf8(inclient->readAll());
+    //buffer = inclient->readAll();
     //buffer.resize(buffer.lastIndexOf(';') + 1);
-    //qDebug() << buffer;
     emit messageReceived(buffer);
     inclient->close();
 }
