@@ -7,7 +7,7 @@ NewNetworking::NewNetworking()
 
 void NewNetworking::startSend()
 {
-    client.write(toSend.toAscii());
+    client.write(toSend.toUtf8());
 }
 
 void NewNetworking::send(QHostAddress ip, quint16 port, QString message)
