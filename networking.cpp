@@ -88,6 +88,14 @@ void networking::send(QHostAddress host, quint16 port, QByteArray data)
     }
 }
 
+void networking::udpSend(QHostAddress ip, quint16 port, QByteArray data)
+{
+    QUdpSocket *udpsocket = new QUdpSocket();
+    udpsocket->bind(QHostAddress::Broadcast, 45454, QUdpSocket::ShareAddress);
+    udpsocket->writeDatagram(data.data(), data.size(), ip, port);
+    delete udpsocket;
+}
+
 // Unique ID parser
 QString networking::parsebeacon(QString bc, int field)
 {
