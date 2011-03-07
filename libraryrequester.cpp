@@ -10,7 +10,6 @@
 
 LibraryRequester::LibraryRequester(Database &datab): db(datab)
 {
-    QList<QString> gettinglibraries;
     server = new QTcpServer();
     if(!server->listen(QHostAddress::Any,45455))
     {
