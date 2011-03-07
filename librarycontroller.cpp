@@ -28,7 +28,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     headers.append("Album");
     headers.append("Genre");
 
-    setHeaders(headers, 2);
+    setHeaders(headers, 3);
     widget = new QWidget();
     container = new QGridLayout(widget);
     container->setMargin(0);
@@ -111,7 +111,7 @@ void LibraryController::addHeaders()
 
   tablewidget->horizontalHeader()->setObjectName("horizontalHeader");
   tablewidget->horizontalHeader()->setStyleSheet(util.getStylesheet());
-  tablewidget->horizontalHeader()->setMaximumHeight(20);
+  tablewidget->horizontalHeader()->setMinimumHeight(20);
 
   QString setting;
 

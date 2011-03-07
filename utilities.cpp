@@ -30,7 +30,8 @@ QString Utilities::makeStylesheet()
     style+="#topBarForward:pressed {background: url(EXECPATHimages/topBarForwardDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarMusic {background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat; border: none; padding:0px;}";
 
-    style+="#horizontalHeader {background: url(EXECPATHimages/libraryHeaderBackground.png); color:#e4e4e4; margin:0px; padding:0px; border-bottom:1px solid #161616; }"; //434040
+    style+="#horizontalHeader {background: #737373; color:#e4e4e4; margin:0px; padding:0px; border-bottom:1px solid #161616; }";
+    style+="#horizontalHeader:section {background: url(EXECPATHimages/libraryHeaderBackground.png); color:#e4e4e4; margin:0px; padding:0px; border:none; height:20px; border-right:1px solid #434040; }";
     //style+="#topBarMusic:pressed {background: url(EXECPATHimages/topBarMusicDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarMusicchecked {background: url(EXECPATHimages/topBarMusicDown.png) no-repeat; border: none; padding:0px;}";
     style+="#topBarVideos {background: url(EXECPATHimages/topBarMusicVideoUp.png) no-repeat; border: none; padding:0px;}";
