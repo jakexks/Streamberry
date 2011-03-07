@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     NewNetworking nn;
     nn.startServer(9001);
 
-    nn.send(QHostAddress::QHostAddress("127.0.0.1"),9001,db.changesSinceTime(0,"348c03ea1a6ddd0ec29e1b9631fec3663252d084"));
+    //nn.send(QHostAddress::QHostAddress("127.0.0.1"),9001,db.changesSinceTime(0,"348c03ea1a6ddd0ec29e1b9631fec3663252d084"));
 
     db.setFolders("/Users/Robbie/Music/Albums/");
     //db.setFolders("/home/vity/Music/viktor.tsoi.i.kino.36.albomov.mp3.96-320kbps");
