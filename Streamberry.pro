@@ -48,7 +48,8 @@ SOURCES +=  main.cpp\
             playbackprogress.cpp \
             playbackbutton.cpp \
             songinfo.cpp\
-            quitmanager.cpp
+            quitmanager.cpp \
+    newnetworking.cpp
 
 
 HEADERS +=  mainwindow.h\
@@ -82,4 +83,5 @@ HEADERS +=  mainwindow.h\
             playbackprogress.h \
             playbackbutton.h \
             songinfo.h\
-            quitmanager.h
+            quitmanager.h \
+    newnetworking.h

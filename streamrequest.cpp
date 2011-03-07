@@ -24,7 +24,6 @@ void StreamRequest::send(QString ipaddress, quint16 port, QString message)
 void StreamRequest::startSend()
 {
     client.write(toSend.toAscii());
-
 }
 
 void StreamRequest::startServer()

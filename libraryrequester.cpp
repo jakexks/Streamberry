@@ -10,12 +10,12 @@
 
 LibraryRequester::LibraryRequester(Database &datab): db(datab)
 {
-    server = new QTcpServer();
-    if(!server->listen(QHostAddress::Any,45455))
-    {
-        qDebug() << "Could not Listen (in processnetworkactivity)";
-    }
-    connect(server,SIGNAL(newConnection()),this,SLOT(processNetworkActivity()));
+//    server = new QTcpServer();
+//    if(!server->listen(QHostAddress::Any,45455))
+//    {
+//        qDebug() << "Could not Listen (in processnetworkactivity)";
+//    }
+//    connect(server,SIGNAL(newConnection()),this,SLOT(processNetworkActivity()));
     qDebug() << "LibraryRequester initialised";
 
 }
@@ -67,7 +67,7 @@ void LibraryRequester::processNetworkActivity()
         QString datastring = (QString) buf.data();
         qDebug() << "Datastring: " << datastring;
         networking n;
-        QString id = n.parsebeacon(datastring, networking::uid);
+        QString id = n.parsebeacon(datastring, 0);
         QString myid = n.getuniqid();
         if (n.parsebeacon(datastring, networking::beaconHeader) == "STREAMLIBRARY")
         {

@@ -14,6 +14,7 @@
 #include "beaconreceiver.h"
 #include "player.h"
 #include <QCleanlooksStyle>
+#include <newnetworking.h>
 
 int main(int argc, char *argv[])
 {
