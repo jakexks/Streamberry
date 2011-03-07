@@ -10,7 +10,6 @@
 
 LibraryRequester::LibraryRequester(Database &datab): db(datab)
 {
-    QList<QString> gettinglibraries;
     server = new QTcpServer();
     if(!server->listen(QHostAddress::Any,45455))
     {
@@ -54,19 +53,19 @@ void LibraryRequester::sendLibrary(QHostAddress theirip, QString theirid, QStrin
 void LibraryRequester::processNetworkActivity()
 {
     qDebug() << "Received send request";
-
-    server->waitForNewConnection(-1);
     QByteArray buf;
     try
     {
         while(server->hasPendingConnections())
         {
+            qDebug() << "Proceesing pending connection";
             QTcpSocket *connection = server->nextPendingConnection();
             buf.resize(buf.size() + connection->bytesAvailable());
             buf.append(connection->readAll());
             connection->close();
         }
         QString datastring = (QString) buf.data();
+        qDebug() << "Datastring: " << datastring;
         networking n;
         QString id = n.parsebeacon(datastring, networking::uid);
         QString myid = n.getuniqid();

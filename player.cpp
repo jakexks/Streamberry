@@ -133,6 +133,11 @@ void Player::changePosition(int newPosition)
 
 void Player::playControl()
 {
+    if(libvlc_media_player_get_media(_mp) == NULL)
+    {
+        emit getFirstSong();
+    }
+
     if(libvlc_media_player_is_playing(_mp))
     {
         libvlc_media_player_pause(_mp);
@@ -172,4 +177,9 @@ void Player::sliderUpdate()
         emit getNextFile();
     }
     sliderChanged(sliderPos);
+}
+
+bool Player::isPlaying()
+{
+    return libvlc_media_player_is_playing(_mp);
 }

@@ -19,7 +19,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
   : util(utilities), db(datab), player(p)
 {
     curheaders = NULL;
-    currentlyplaying = 0;
+    currentlyplaying = -1;
 
     QList<QString> headers;
     headers.append("Title");
@@ -38,6 +38,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     makeWidget();
 
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
+    QObject::connect(&player, SIGNAL(getFirstSong()), this, SLOT(playNextFile()));
 }
 
 QWidget* LibraryController::getWidget()
@@ -352,13 +353,13 @@ void LibraryController::itemClicked(int row, int column)
   QSqlRecord record = currentdata->at(row);
   QString filepath = record.field("FilePath").value().toString();
   qDebug() << "Currently playing: " << filepath;
-  if(record.field("UniqueID").value() != "Local")
+  if(record.field("UniqueID").value() != "local")
   {
     qDebug() << "NOT LOCAL";
     QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-    player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), ipaddress);
+    player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
   } else {
-    player.playFile(filepath.toUtf8());
+    player.playFile(filepath);
   }
   currentlyplaying = row;
 
@@ -377,13 +378,13 @@ void LibraryController::playNextFile()
   //TODO: Add checking at the end
   QString filepath = record.field("FilePath").value().toString();
   qDebug() << "Currently playing: " << filepath;
-  if(record.field("UniqueID").value() != "Local")
+  if(record.field("UniqueID").value() != "local")
   {
     qDebug() << "NOT LOCAL";
     QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-    player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), ipaddress);
+    player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
   } else {
-    player.playFile(filepath.toUtf8());
+    player.playFile(filepath);
   }
   tablewidget->selectRow(currentlyplaying);
 }
@@ -398,13 +399,13 @@ void LibraryController::playPrevFile()
   QSqlRecord record = currentdata->at(currentlyplaying);
   QString filepath = record.field("FilePath").value().toString();
   qDebug() << "Currently playing: " << filepath;
-  if(record.field("UniqueID").value() != "Local")
+  if(record.field("UniqueID").value() != "local")
   {
     qDebug() << "NOT LOCAL";
     QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-    player.playFile(filepath.toUtf8(), record.field("UniqueID").value().toString(), ipaddress);
+    player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
   } else {
-    player.playFile(filepath.toUtf8());
+    player.playFile(filepath);
   }
   tablewidget->selectRow(currentlyplaying);
 
