@@ -18,7 +18,7 @@ public:
     void updateplaylistbar(int i);
 
   public slots:
-    //void Clicked(int row, int column);
+    void Clicked(int row, int column);
     void DoubleClicked(int row, int column);
     void ShowContextMenu(const QPoint&);
 
@@ -26,30 +26,34 @@ signals:
     void customContextMenuRequested ( const QPoint & pos  );
 
 private:
-    QWidget* makePlaylistBtn();
-    QWidget* makePreviewBtn();
-    QWidget* makePreviewBar();
-    QWidget* makePlaylistBar();
+    QWidget* widget;
 
-    QWidget* playlistbar;
+    QWidget* main;
+    QTableWidget* playlistbar;
     QWidget* previewbar;
     QWidget* playlistbtn;
     QWidget* previewbtn;
-
-    QPushButton* makeAllMediaBtn();
-    QPushButton* makeAllPlaylistsBtn();
-
-    QPushButton* allmediabtn;
-    QPushButton* allplaylistsbtn;
-
+    QLabel* timetext;
+    QTableWidget* topButtons;
     QGridLayout* sidebarlayout;
-    QGridLayout* playlistbarlayout;
-    QTableWidget* tablewidget;
+    //QGridLayout* playlistbarlayout;
+    QTableWidget* displayTableWidget;
+    QTableWidget* playlistTableWidget;
 
-    void buildplaylistbar(QWidget*);
+    QWidget* makePlaylistBtn();
+    QWidget* makePreviewBtn();
+    QWidget* makePreviewBar();
+    QTableWidget* buildButtons();
+
+
+    QTableWidget* buildplaylistbar();
+
+
+    //QTableWidget* makePlaylistBar();
+
     Utilities& util;
     QString expath;
-    QWidget* widget;
+
     PlaylistMenu* smartmenu;
     PlaylistMenu* normalmenu;
 

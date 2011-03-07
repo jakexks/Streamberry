@@ -26,6 +26,7 @@ void PlaybackProgress::mouseMoveEvent(QMouseEvent *e)
 void PlaybackProgress::mouseReleaseEvent(QMouseEvent *e)
 {
     releaseMouse();
+    emit newAngle(pieangle);
 }
 
 void PlaybackProgress::recalculateAngle(QPointF ptc)
@@ -64,6 +65,7 @@ void PlaybackProgress::recalculateAngle(QPointF ptc)
     update();
 }
 
+
 void PlaybackProgress::paintEvent(QPaintEvent *e)
 {
     QPainter painter(this);
@@ -75,4 +77,10 @@ void PlaybackProgress::paintEvent(QPaintEvent *e)
     painter.save();
     painter.drawPie(2, 2, 78, 78, 16*90, -pieangle);
     painter.restore();
+}
+
+void PlaybackProgress::setAngle(int angle)
+{
+    pieangle = angle;
+    update();
 }

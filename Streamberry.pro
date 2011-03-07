@@ -6,7 +6,7 @@
 
 QT += core gui network sql
 
-LIBS += -plugin -sql -sqlite -lvlc
+LIBS += -lvlc
 mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
 
 mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
@@ -14,6 +14,7 @@ mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
 win32:LIBS += -L"C:\Program files\VideoLAN\VLC"
 win32:LIBS += -L"C:\Program files (x86)\VideoLAN\VLC"
 win32:INCLUDEPATH += "C:\vlc-1.1.7\include"
+win32:INCLUDEPATH += "C:\Program Files (x86)\SmartGit 1.5\bin\Streamberry"
 TARGET = Streamberry
 TEMPLATE = app
 
@@ -76,7 +77,7 @@ HEADERS +=  mainwindow.h\
             networking.h \
             player.h \
             playlistscontext.h \
-            streamrequest.h \ 
+            streamrequest.h \
             playbackprogress.h \
             playbackbutton.h \
             songinfo.h\

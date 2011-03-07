@@ -8,7 +8,7 @@ PlaybackButton::PlaybackButton(PlaybackProgress *parent) :
     QPushButton(parent)
 {
     prog = parent;
-    setGeometry(10, 11, 62, 62);
+    setGeometry(10, 11, 65, 65);
     setFlat(true);
     setObjectName("playbutton");
     //setVisible(false);

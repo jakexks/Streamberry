@@ -4,6 +4,7 @@
 #include "playbackprogress.h"
 #include "playbackbutton.h"
 #include "songinfo.h"
+#include <QPalette>
 
 #define BUTTON_DISTANCE 25
 #define PLAYBACK_DISTANCE 50
@@ -64,8 +65,8 @@ QWidget* PlaybackController::makeWidget()
     previous->setStyleSheet(util.getStylesheet());
     previous->setFlat(true);
 
-    PlaybackProgress::PlaybackProgress *progressbar = new PlaybackProgress(util);
-    PlaybackButton::PlaybackButton *playbutton = new PlaybackButton(progressbar);
+    PlaybackProgress *progressbar = new PlaybackProgress(util);
+    PlaybackButton *playbutton = new PlaybackButton(progressbar);
     QPushButton *next = new QPushButton();
     next->setObjectName("bottomBarNext");
     next->setMaximumSize(45, 37);
@@ -77,6 +78,7 @@ QWidget* PlaybackController::makeWidget()
     mute->setMaximumSize(40, 38);
     mute->setMinimumSize(40, 38);
     //works without the setStyleSheet
+    mute->setStyle(new QCleanlooksStyle);
     mute->setFlat(true);
 
     SongInfo::SongInfo *songinfoarea = new SongInfo(util);
@@ -99,15 +101,17 @@ QWidget* PlaybackController::makeWidget()
     temp->setColumnMinimumWidth(12, BUTTON_DISTANCE);
     temp->addWidget(volumeslider, 0, 13);
 
-    //player.playFile("/home/vity/01-Metric-Help I'm Alive.mp3");
+    //5760 is the highest
     connect(playbutton, SIGNAL(clicked()), &player, SLOT(playControl()));
  //   connect(&player, SIGNAL(currentlyPlayingFile), &songinfoarea, SLOT(updatelabels(QString album, QString  artist, QString  song)));
     connect(volumeslider, SIGNAL(valueChanged(int)), &player, SLOT(changeVolume(int)));
 //    connect(dial, SIGNAL(progressBar.mousePressEvent(int)), &player, SLOT(changePosition(progressBar.mouseReleaseEvent)));
     connect(mute, SIGNAL(clicked()), &player, SLOT(muteAudio()));
-//    connect(&player, SIGNAL(sliderChanged(int)), playback, SLOT(setValue(int)));
+    connect(&player, SIGNAL(sliderChanged(int)), progressbar, SLOT(setAngle(int)));
+    connect(progressbar, SIGNAL(newAngle(int)), &player, SLOT(changePosition(int)));
     connect(next, SIGNAL(clicked()), this, SIGNAL(nextFile()));
     connect(previous, SIGNAL(clicked()), this, SIGNAL(prevFile()));
+    connect(&player, SIGNAL(getNextFile()), next, SLOT(click()));
 
     return tempw;
 }
