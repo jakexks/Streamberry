@@ -65,7 +65,9 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
 
     //initialise controllers and add widgets to window
     topbarcontroller = new TopbarController(util);
+
     sidebarcontroller = new SidebarController(util, db, *librarycontroller);
+
     librarycontroller = new LibraryController(util, db, player);
     playbackcontroller = new PlaybackController(util, player);
 
@@ -169,9 +171,9 @@ QMenuBar* MainWindow::createMenuBar()
   QObject::connect(actions[2], SIGNAL(triggered()), this, SLOT(menuCleanScan()));
 
   QObject::connect(actions[3], SIGNAL(triggered()), this, SLOT(menuAddFile()));
-  qDebug() << "HEre";
+
   QObject::connect(actions[5], SIGNAL(triggered()), this, SLOT(menuOptions()));
-qDebug() << "HEre2";
+
 
 
   //QObject::connect(actions[6], SIGNAL(triggered()), player, SLOT(playControl()));
@@ -251,6 +253,14 @@ void MainWindow::menuMaximise()
 }
 
 void MainWindow::menuMinimise()
+{
+}
+
+void MainWindow::menuShowFileProviders()
+{
+}
+
+void MainWindow::menuShowOfflineFiles()
 {
 }
 

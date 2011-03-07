@@ -32,6 +32,8 @@ public slots:
   void menuMinimiseToTray();
   void menuDocumentation();
   void menuAbout();
+  void menuShowFileProviders();
+  void menuShowOfflineFiles();
 
 private:
   //layout of the main window

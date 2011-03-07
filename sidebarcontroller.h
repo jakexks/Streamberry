@@ -26,27 +26,34 @@ signals:
     void customContextMenuRequested ( const QPoint & pos  );
 
 private:
-    QWidget* makePlaylistBtn();
-    QWidget* makePreviewBtn();
-    QWidget* makePreviewBar();
-    QWidget* makePlaylistBar();
+    QWidget* widget;
 
-    QWidget* playlistbar;
+    QWidget* main;
+    QTableWidget* playlistbar;
     QWidget* previewbar;
     QWidget* playlistbtn;
     QWidget* previewbtn;
-
+    QLabel* timetext;
     QTableWidget* topButtons;
-
-    QTableWidget* buildButtons();
     QGridLayout* sidebarlayout;
-    QGridLayout* playlistbarlayout;
-    QTableWidget* tablewidget;
+    //QGridLayout* playlistbarlayout;
+    QTableWidget* displayTableWidget;
+    QTableWidget* playlistTableWidget;
 
-    void buildplaylistbar(QWidget*);
+    QWidget* makePlaylistBtn();
+    QWidget* makePreviewBtn();
+    QWidget* makePreviewBar();
+    QTableWidget* buildButtons();
+
+
+    QTableWidget* buildplaylistbar();
+
+
+    //QTableWidget* makePlaylistBar();
+
     Utilities& util;
     QString expath;
-    QWidget* widget;
+
     PlaylistMenu* smartmenu;
     PlaylistMenu* normalmenu;
 

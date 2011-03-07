@@ -63,39 +63,33 @@ int main(int argc, char *argv[])
         //    QList<QString> allFiles = itunes.libFileList();
         //PLAYLIST TEST
 
-        Playlist test1 = Playlist(db);
-        test1.setPlaylistName("test1");
-        test1.setPlaylistType(0);
-        test1.setFilter("");
-        test1.addTrack(1, "Local");
-        test1.addTrack(12, "Local");
-        test1.addTrack(13, "Local");
-        test1.addTrack(16, "Local");
-        test1.addTrack(10, "Local");
-        test1.SavePlaylist();
-        test1.addTrack(56, "Local");
-        test1.addTrack(120, "Local");
-        test1.SavePlaylist();
-        test1.removeTrack(3);
-        test1.removeTrack(56, "Local");
-        test1.SavePlaylist();
-        Playlist test2 = Playlist(db);
-        test2.setPlaylistName("test2");
-        test2.setPlaylistType(0);
-        test2.setFilter("");
-        test2.addTrack(145, "Local");
-        test2.addTrack(146, "Local");
-        test2.addTrack(147, "Local");
-        test2.SavePlaylist();
-        test1.deletePlaylist();
-        Playlist test3 = Playlist(db, "test2");
-        QList<QSqlRecord>* tracks = test3.getAllTracks();
-        int i=0;
-        for(i=0; i<(tracks->size()); i++)
-        {
-            //qDebug() << tracks.at(i).value(2).toString();
-        }
-        qDebug() << "Tests completed";
+        Playlist* test2 = new Playlist(db);
+        test2->setPlaylistName("Mellow");
+        test2->setPlaylistType(0); test2->setFilter("");
+        test2->SavePlaylist();
+
+        test2 = new Playlist(db);
+        test2->setPlaylistName("Party Anthems");
+        test2->setPlaylistType(0); test2->setFilter("");
+        test2->SavePlaylist();
+
+        test2 = new Playlist(db);
+        test2->setPlaylistName("Christmas 2010");
+        test2->setPlaylistType(0); test2->setFilter("");
+        test2->SavePlaylist();
+
+        test2 = new Playlist(db);
+        test2->setPlaylistName("Classical");
+        test2->setPlaylistType(0); test2->setFilter("");
+        test2->SavePlaylist();
+
+        test2 = new Playlist(db);
+        test2->setPlaylistName("Best of 2009");
+        test2->setPlaylistType(0); test2->setFilter("");
+        test2->SavePlaylist();
+
+
+
     }
     catch(SBException e)
     {
