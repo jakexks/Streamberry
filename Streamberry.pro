@@ -36,8 +36,6 @@ SOURCES +=  main.cpp\
             playlist.cpp \
             streamfile.cpp \
             filemeta.cpp \
-            librarysender.cpp \
-            libraryreceiver.cpp \
             libraryrequester.cpp \
             beaconreceiver.cpp \
             beaconsender.cpp \

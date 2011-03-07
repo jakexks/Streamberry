@@ -7,6 +7,7 @@
 #include "librarysender.h"
 #include "sbexception.h"
 #include "networking.h"
+#include "newnetworking.h"
 
 LibraryRequester::LibraryRequester(Database &datab): db(datab)
 {
@@ -16,6 +17,7 @@ LibraryRequester::LibraryRequester(Database &datab): db(datab)
 //        qDebug() << "Could not Listen (in processnetworkactivity)";
 //    }
 //    connect(server,SIGNAL(newConnection()),this,SLOT(processNetworkActivity()));
+    nn.startServer(45455);
     qDebug() << "LibraryRequester initialised";
 
 }
@@ -34,7 +36,7 @@ void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString
         sendme.append("|");
         sendme.append(n.getmyip());
         qDebug() << "Requesting library from " << theirip ;
-        n.send(theirip, 45455, sendme.toUtf8());
+        nn.send(theirip, 45455, sendme);
         LibraryReceiver lr = LibraryReceiver(db);
         qDebug() << "Before";
         lr.receive();

@@ -6,6 +6,7 @@
 #include <QUdpSocket>
 #include "database.h"
 #include <QTcpServer>
+#include "newnetworking.h"
 
 class LibraryRequester : public QObject
 {
@@ -21,6 +22,7 @@ private:
     QList<QString> gettinglibraries;
     Database& db;
     QTcpServer *server;
+    NewNetworking nn;
 };
 
 #endif // LIBRARYREQUESTER_H
