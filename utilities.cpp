@@ -50,20 +50,20 @@ QString Utilities::makeStylesheet()
     style+="#libraryTableWidget {background: #292929; border: none; padding:0px; color:#e1e1e1; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#albumArt {background-color: #181818; border-bottom:1px solid #121212}";
     //side bar
-    style+="#sideBarMainWidget {background-color: #D7E4E8; border-right:1px solid #9DA0A2; padding:0px;}";
+    style+="#sideBarMainWidget {background-color: #D7E4E8; padding:0px; border-right:1px solid #9c9c9c;}";
 
-    //style+="#sideBarPreviewTitle {background: url(EXECPATHimages/topBarBackground.png); border-right:1px solid #9DA0A2; padding:0px;}";
     style+="#sideBarPreviewText {background: url(EXECPATHimages/sideBarPreviewLabel.png) no-repeat; padding:0px; margin:0px;}";
     style+="#sideBarPlaylistsText {background: url(EXECPATHimages/topBarPlaylistsLabel.png) no-repeat; padding:0px; margin:0px;}";
-    style+="#sideBarPlaylistsTitle {background: url(EXECPATHimages/topBarBackground.png); border-right:1px solid #9DA0A2; padding:0px;}";
+    style+="#sideBarPlaylistsTitle {background: url(EXECPATHimages/topBarBackground.png); border-right:1px solid #9c9c9c; padding:0px; border-bottom:1px solid #9c9c9c;}";  //border-top:1px solid #9c9c9c;
+    style+="#sideBarPreviewTitle {background: url(EXECPATHimages/topBarBackground.png);  border-right:1px solid #9c9c9c; border-top:1px solid #9c9c9c; padding:0px; border-bottom:1px solid #9c9c9c;}";
 
     style+="#sideBarPreviewPic {background: url(EXECPATHimages/sideBarStrawberry.png) no-repeat; padding:0px; margin:0px;}";
     style+="#sideBarVeilPic {background: url(EXECPATHimages/sideBarTimeBackground.png); padding:0px; margin:0px;}";
 
-    style+="#sideBarPreviewPane {background-color: #292929; border-right:1px solid #9DA0A2; padding:0px; margin:0px;}";
-    style+="#sideBarPlaylistTableWidget {background-color: #DAE3E7; margin-left:33px; selection-background-color:#8FB1BB; selection-color:#0b0b0b; padding:0px; border-left:1px solid #9DA0A2;}";
-    style+="#sideBarTopButtons {background-color: #DAE3E7; border: none; margin-left:15px; border: none; padding:0px; selection-background-color:#DAE3E7; selection-color:#000000;}";
-
+    style+="#sideBarPreviewPane {background-color: #000000; border-right:1px solid #9c9c9c; padding:0px; margin:0px;}";
+    style+="#sideBarPlaylistTableWidget {background-color: #DAE3E7;  margin-left:33px; margin-right:2px ; selection-background-color:#8FB1BB; selection-color:#0b0b0b; padding:0px; border-left:1px solid #9DA0A2; }"; //
+    style+="#sideBarTopButtons {background-color: #DAE3E7; border-right:1px solid #9c9c9c;  margin-left:15px; margin-right:3px; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
+    style+="#sideBarDivided {background: url(EXECPATHimages/topBarPlaylistsSeparatorLeftAlignRight.png) no-repeat; padding:0px; margin:0px;}";
     //playbutton
     //style+="#separatorSongInfo {background:#222222; border:none; padding:0px;}"; separator-color:red;
     style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png);  border-left:1px solid #848484; padding:10px}";

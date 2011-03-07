@@ -7,6 +7,17 @@
 
 #define TOPBARHEIGHT 26
 
+
+
+/*
+ TO DO:
+ Highlight the playlist, button or whatever when you are viewing it in the main pane
+ Link up the buttons
+
+ grainy title images
+ text size
+ */
+
 SidebarController::SidebarController(Utilities &utilities, Database& datab, LibraryController& lib) : util(utilities), db(datab), libpass(lib)
 {
   expath = utilities.getExecutePath();
@@ -64,8 +75,6 @@ QTableWidget* SidebarController::buildButtons()
 #else
   font.setPointSize(11);
 #endif
-
-
   displayTableWidget = new QTableWidget(4, 1);
   displayTableWidget->setShowGrid(false);
   displayTableWidget->horizontalHeader()->setHighlightSections(false);
@@ -76,14 +85,15 @@ QTableWidget* SidebarController::buildButtons()
   displayTableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   displayTableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   displayTableWidget->verticalHeader()->hide();
+  displayTableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
   displayTableWidget->setFrameStyle(QFrame::Plain | QFrame::Plain);
   displayTableWidget->setLineWidth(0);
-  displayTableWidget->setRowHeight(0, 34);
-  displayTableWidget->setRowHeight(1, 34);
-  displayTableWidget->setRowHeight(2, 7);
+  displayTableWidget->setRowHeight(0, 25);
+  displayTableWidget->setRowHeight(1, 25);
+  displayTableWidget->setRowHeight(2, 3);
   displayTableWidget->setRowHeight(3, 20);
   displayTableWidget->setMidLineWidth(0);
-  displayTableWidget->setMaximumHeight(96);
+  displayTableWidget->setMaximumHeight(77);
   displayTableWidget->setFocusPolicy(Qt::NoFocus);
   displayTableWidget->horizontalHeader()->hide();
   displayTableWidget->setObjectName("sideBarTopButtons");
@@ -105,12 +115,14 @@ QTableWidget* SidebarController::buildButtons()
 
   btns[2] = new QTableWidgetItem("");
   btns[2]->setFlags(btns[2]->flags() & (~Qt::ItemIsEditable));
+  btns[2]->setFlags(btns[2]->flags() & (~Qt::ItemIsSelectable));
   displayTableWidget->setItem(2, 0,btns[2]);
 
   font.setBold(true);
   btns[3] = new QTableWidgetItem("Recent Playlists");
   btns[3]->setFont(font);
   btns[3]->setFlags(btns[3]->flags() & (~Qt::ItemIsEditable));
+  btns[3]->setFlags(btns[3]->flags() & (~Qt::ItemIsSelectable));
   btns[3]->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
   displayTableWidget->setItem(3, 0,btns[3]);
 
@@ -125,7 +137,7 @@ QWidget* SidebarController::getWidget()
 QWidget* SidebarController::makePreviewBtn()
 {
   QWidget *temp = new QWidget();
-  temp->setObjectName("sideBarPlaylistsTitle");
+  temp->setObjectName("sideBarPreviewTitle");
   temp->setStyleSheet(util.getStylesheet());
   QGridLayout* previewTitleLayout = new QGridLayout(temp);
   previewTitleLayout->setMargin(0);
@@ -156,7 +168,7 @@ QWidget* SidebarController::makePreviewBar()
   text->setMaximumSize(139, 139);
   previewPaneLayout->addWidget(text, 0,0, 2, 1,  Qt::AlignHCenter);
 
-  QFrame* veil = new QFrame(temp);
+ /* QFrame* veil = new QFrame(temp);
   veil->setObjectName("sideBarVeilPic");
   veil->setStyleSheet(util.getStylesheet());
   veil->setMinimumSize(220, 25);
@@ -167,7 +179,16 @@ QWidget* SidebarController::makePreviewBar()
   timebarLayout->setMargin(0);
   timebarLayout->setSpacing(0);
   timetext = new QLabel("01:06 / 04:28");
-  timebarLayout->addWidget(timetext, 0,0, Qt::AlignHCenter);
+  QFont font;
+  font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
+  font.setBold(true);
+#ifdef Q_WS_WIN
+  font.setPointSize(10);
+#else
+  font.setPointSize(11);
+#endif
+  timetext->setFont(font);
+  timebarLayout->addWidget(timetext, 0,0, Qt::AlignHCenter);*/
   return temp;
 }
 
@@ -186,7 +207,14 @@ QWidget* SidebarController::makePlaylistBtn()
   text->setStyleSheet(util.getStylesheet());
   text->setMinimumSize(64, 26);
   text->setMaximumSize(64, 26);
-  playlistTitleLayout->addWidget(text, 0, 0);
+  playlistTitleLayout->addWidget(text, 0, 0, Qt::AlignHCenter);
+
+  QFrame* tinything = new QFrame(temp);
+  tinything->setObjectName("sideBarDivided");
+  tinything->setStyleSheet(util.getStylesheet());
+  tinything->setMinimumSize(2, 26);
+  tinything->setMaximumSize(2, 26);
+  playlistTitleLayout->addWidget(tinything, 0, 0, Qt::AlignRight);
   return temp;
 }
 
