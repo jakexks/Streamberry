@@ -11,7 +11,7 @@ class SBSearchBar : public QFrame
 public:
     explicit SBSearchBar(QString path, QFrame *parent = 0);
 signals:
-
+    void newSearchString(QString str);
 public slots:
     void checkText(QString text);
     void crossPressed();

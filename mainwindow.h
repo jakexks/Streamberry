@@ -21,7 +21,6 @@ public:
   void setPath(char* path);
   QMenuBar* createMenuBar();
 public slots:
-  void giveNewLibrary(QList<QString>* sortcols, QList<QString>* order);
   void menuExitStreamberry();
   void menuScan();
   void menuCleanScan();

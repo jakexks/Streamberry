@@ -24,7 +24,7 @@ Player::Player()
     connect(poller, SIGNAL(timeout()), this, SLOT(sliderUpdate()));
     //connect(_positionSlider, SIGNAL(sliderMoved(int)), this, SLOT(changePosition(int)));
     //connect(_volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(changeVolume(int)));
-    poller->start(1000);
+    poller->start(100);
 }
 
 Player::~Player()
