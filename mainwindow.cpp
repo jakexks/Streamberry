@@ -7,7 +7,7 @@
 #include "librarycontroller.h"
 #include "utilities.h"
 #include "database.h"
-#include "filescan.h";
+#include "filescan.h"
 
 #define TOPBARHEIGHT 26
 #define BOTTOMBARHEIGHT 90
