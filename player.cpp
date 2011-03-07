@@ -24,7 +24,7 @@ Player::Player()
     connect(poller, SIGNAL(timeout()), this, SLOT(sliderUpdate()));
     //connect(_positionSlider, SIGNAL(sliderMoved(int)), this, SLOT(changePosition(int)));
     //connect(_volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(changeVolume(int)));
-    poller->start(1000);
+    poller->start(100);
 }
 
 Player::~Player()
@@ -87,6 +87,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     }
 
 
+    libvlc_media_release(libvlc_media_player_get_media(_mp));
 
     _m = libvlc_media_new_location (_vlcinstance, file.toUtf8());
     libvlc_media_player_set_media (_mp, _m);
@@ -120,6 +121,7 @@ void Player::changePosition(int newPosition)
         qDebug() << "No media loaded";
         return;
     }
+    libvlc_media_release(curMedia);
 
     float pos = (float)(newPosition)/(float)POSITION_RESOLUTION;
     if(pos > 0.99 )

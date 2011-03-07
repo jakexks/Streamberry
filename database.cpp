@@ -462,6 +462,8 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
         condition += searchtxt;
         condition += "%\") OR (Title LIKE \"%";
         condition += searchtxt;
+        condition += "%\") OR (Album LIKE \"%";
+        condition += searchtxt;
         condition += "%\") OR (Genre LIKE \"%";
         condition += searchtxt;
         condition += "%\")";
