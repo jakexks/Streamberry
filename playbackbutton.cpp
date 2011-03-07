@@ -63,3 +63,4 @@ void PlaybackButton::propagateEvent(QMouseEvent *e)
         e->accept();
     }
 }
+
