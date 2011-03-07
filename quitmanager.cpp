@@ -4,7 +4,7 @@ QuitManager::QuitManager()
 {
 }
 
-QuitManager::quitSlot()
+void QuitManager::quitSlot()
 {
 
 }

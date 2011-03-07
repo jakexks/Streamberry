@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
     //db.setFolders("/streamberrytest/");
     //db.setFolders("");
     //db.setFolders("C:\\Users\\Jim\\Music\\TEST");
+    db.setFolders("/host/new/");
 
     MainWindow w(util, db, player, fs);
 
