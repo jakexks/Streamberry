@@ -89,7 +89,7 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress their
             getLibrary(theirip, id, dbtimestamp);
         }
         //if their timestamp is newer, get new one
-        else if (lasttimestamp.toInt() < dbtimestamp.toInt())
+        else if (stamp < dbtimestamp.toInt())
         {
             getLibrary(theirip, id, dbtimestamp);
         }

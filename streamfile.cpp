@@ -109,8 +109,9 @@ void StreamFile::parseMessage(QString message)
                 removeStream(uniqueID.toAscii());
                 addStream(filepath, uniqueID, ipaddress);
             } else {
-                changeStream(uniqueID.toAscii(), filepath.toUtf8());
-                playStream(uniqueID.toAscii());
+                stopStream(uniqueID.toAscii());
+                removeStream(uniqueID.toAscii());
+                addStream(filepath, uniqueID, ipaddress);
             }
 
             /*qDebug() << libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii());

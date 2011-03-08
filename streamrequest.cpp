@@ -12,13 +12,9 @@ void StreamRequest::sendConnect()
 
 void StreamRequest::send(QString ipaddress, quint16 port, QString message)
 {
-
-
-    //connect(&client, SIGNAL(connected()),this, SLOT(startSend()));
     toSend = message;
     QHostAddress addr(ipaddress);
     client.connectToHost(addr, port);
-
 }
 
 void StreamRequest::startSend()
