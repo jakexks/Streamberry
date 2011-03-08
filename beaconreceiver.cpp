@@ -98,6 +98,7 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress their
         {
             db.setOnline(id, "1");
         }
+        db.setIPaddress(id, theirip.toString());
     }
     catch (SBException e)
     {

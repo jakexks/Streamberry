@@ -63,7 +63,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         //Send command to other computer to stop. Use remoteIP variable
         QString toSend = "STREAMBERRY|STOP|";
         toSend += n.getuniqid();
-        stream.send(remoteIP, 45456, toSend);
+        stream.send(remoteIP, 45459, toSend);
     }
 
     currIP = "local"; //Change to local
@@ -80,7 +80,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         toSend += "|";
         toSend += file;
         //Send IP, uniqueID, file path
-        stream.send(ipaddress, 45456, toSend);
+        stream.send(ipaddress, 45459, toSend);
         file = "rtp://@";
         currIP = "127.0.0.1";
         remoteIP = ipaddress;
