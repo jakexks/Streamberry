@@ -2,14 +2,12 @@
 
 Playlist::Playlist(Database &datab) : db(datab)
 {
-    db = datab;
     smart = 0;
     filter = "";
 }
 
 Playlist::Playlist(Database &datab, QString playlistName) : db(datab)
 {
-  db = datab;
   QSqlQuery result = db.GetPlaylistInfo(playlistName);
   result.first();
   name = result.value(0).toString();

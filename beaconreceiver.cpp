@@ -119,7 +119,7 @@ void BeaconReceiver::removeOfflineMachines()
     while (i.hasNext())
     {
         i.next();
-        if (Utilities::getCurrentTimestamp() - i.value() > 10)
+        if (Utilities::getCurrentTimestamp() - i.value() > 12)
         {
             // Set machine offline in the database
             db.setOnline(i.key(), "0");
