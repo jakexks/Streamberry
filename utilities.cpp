@@ -33,7 +33,7 @@ QString Utilities::makeStylesheet()
     style+="#horizontalHeader {background: #737373; color:#e4e4e4; margin:0px; padding:0px; border-bottom:1px solid #161616; }";
     style+="#horizontalHeader:section {background: url(EXECPATHimages/libraryHeaderBackground.png); color:#e4e4e4; margin:0px; padding:0px; border:none; height:20px; border-right:1px solid #434040; }";
     style+="#topBarMusicchecked {background: url(EXECPATHimages/topBarMusicDown.png) no-repeat; border: none; padding:0px;}";
-    style+="#topBarVideos {visibility: hidden; border: none; padding:0px;}";
+    style+="#topBarVideos {border: none; padding:0px;}";
     style+="#topBarVideoschecked {background: url(EXECPATHimages/topBarVideoDown.png) no-repeat; border: none; padding:0px;}";
 
     style+="#topBarWidget {background: url(EXECPATHimages/topBarBackground.png); border: none; padding:0px;}";

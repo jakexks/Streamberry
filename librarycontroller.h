@@ -26,6 +26,7 @@ public:
     void setHeaders(QList<QString>& headers, int sortcol);
 signals:
     void needNewLibrary();
+
 public slots:
     void sortLibrary();
     void deselectFirst();
@@ -34,6 +35,7 @@ public slots:
     void itemClicked(int row, int column);
     void playNextFile();
     void playPrevFile();
+    void displaythis(QList<QSqlRecord>*);
     void setSearchText(QString text);
 private:
     Utilities& util;

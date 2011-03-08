@@ -3,6 +3,7 @@
 #include <QtGui>
 
 class QMenu;
+class QSqlRecord;
 class Playlist;
 class LibraryController;
 
@@ -15,6 +16,9 @@ public:
   //PlaylistMenu(bool smart, Database& datab);
   PlaylistMenu(bool smart);
   void playlistrightclicked(Playlist* pass, LibraryController* passlib);
+
+signals:
+  void playthis(QList<QSqlRecord>*);
 
  public slots:
   void SmartPlay();
@@ -30,6 +34,7 @@ public:
 private:
   //QString currentplaylist;
   bool currentsmart;
+  int setup;
   Playlist* PL;
   LibraryController* LibCont;
 
