@@ -45,6 +45,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     QObject::connect(&player, SIGNAL(getFirstSong()), this, SLOT(playNextFile()));
     QObject::connect(this, SIGNAL(needNewLibrary()), this, SLOT(sortLibrary()));
     QObject::connect(searchbar, SIGNAL(newSearchString(QString)), this, SLOT(setSearchText(QString)));
+    QObject::connect(&db, SIGNAL(onlineStatusChange()), this, SLOT(updateLibrary()));
 }
 
 QWidget* LibraryController::getWidget()

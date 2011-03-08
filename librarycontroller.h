@@ -37,6 +37,7 @@ public slots:
     void playPrevFile();
     void displaythis(QList<QSqlRecord>*);
     void setSearchText(QString text);
+    void updateLibrary();
 private:
     Utilities& util;
     QWidget* widget;
@@ -55,7 +56,6 @@ private:
     QString searchtext;
     QList<QString> *sortcols;
     QList<QString> *orders;
-    void updateLibrary();
 };
 
 #endif // LIBRARYCONTROLLER_H
