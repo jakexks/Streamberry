@@ -94,14 +94,15 @@ bool StreamFile::isSameStream(QString compID, QString filepath)
 void StreamFile::parseMessage(QString message)
 {
     QStringList split = message.split('|', QString::KeepEmptyParts, Qt::CaseInsensitive);
-    QString uniqueID = split.at(3);
-    QString ipaddress = split.at(2);
-    QString filepath = split.at(4);
 
     qDebug() << "RECEIVED IN STREAMER" << message;
 
     if(split.at(1)=="PLAY")
     {
+        QString uniqueID = split.at(3);
+        QString ipaddress = split.at(2);
+        QString filepath = split.at(4);
+
         if(libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii())!=NULL)
         {
             if(isSameStream(uniqueID.toAscii(), filepath)) {
@@ -109,8 +110,9 @@ void StreamFile::parseMessage(QString message)
                 removeStream(uniqueID.toAscii());
                 addStream(filepath, uniqueID, ipaddress);
             } else {
-                changeStream(uniqueID.toAscii(), filepath.toUtf8());
-                playStream(uniqueID.toAscii());
+                stopStream(uniqueID.toAscii());
+                removeStream(uniqueID.toAscii());
+                addStream(filepath, uniqueID, ipaddress);
             }
 
             /*qDebug() << libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii());
@@ -124,7 +126,7 @@ void StreamFile::parseMessage(QString message)
             addStream(filepath, uniqueID, ipaddress);
         }
     } else if (split.at(1)=="STOP") {
-        stopStream(uniqueID);
+        stopStream(split.at(2));
     }
     //qDebug() << message;
 }
