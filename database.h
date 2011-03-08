@@ -9,14 +9,16 @@
 
 using namespace std;
 
-class Database //: public QObject
+class Database : public QObject
 {
+    Q_OBJECT
 public:
     Database();
     virtual ~Database();
     //initialises the database
     void initialise();
     //updates or adds setting to database. please do not make typos in parameters, it would mess up the db.
+    void setAllOffline();
     void storeSetting(QString name, QString value);
     //returns value of setting given to name parameter. returns NULL if not found.
     QString getSetting(QString name);
@@ -74,6 +76,9 @@ public:
     //Deletes a playlist from the playlist table and it's tracks from the playlistTracks table
     void removePlaylist(QString name);
     QList<QSqlRecord> getAllPlaylists();
+
+signals:
+    void onlineStatusChange();
 
   private:
     //connects to database in given path

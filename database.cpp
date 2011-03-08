@@ -125,11 +125,18 @@ void Database::initialise()
         }
 
         connect(filepath);
+        setAllOffline();
     }
     catch (SBException e)
     {
         throw e;
     }
+}
+
+void Database::setAllOffline()
+{
+    QString sql = "UPDATE LibIndex SET Online='0';";
+    query(sql);
 }
 
 QSqlQuery Database::query(QString sql)
@@ -328,6 +335,7 @@ void Database::setOnline(QString uniqueID, QString status)
     try
     {
         result = query(sql);
+        emit onlineStatusChange();
     }
     catch(SBException e)
     {

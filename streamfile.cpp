@@ -7,7 +7,7 @@ StreamFile::StreamFile()
                         "--no-plugins-cache",
                         "--verbose=0",
                         "--ts-out-mtu=10",
-                        "--sout-rtp-caching=10",
+                        "--sout-rtp-caching=500",
                         "--sout-keep",
                     };
 
