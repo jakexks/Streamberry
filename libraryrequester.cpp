@@ -50,8 +50,8 @@ void LibraryRequester::receiveRequest(QString message)
         qDebug() << "Syncing Library";
         QList<QString> parts = message.split('|', QString::KeepEmptyParts);
         QString query = parts.at(1);
-        qDebug() << query;
-        QList<QString> queries = query.split('\x1D');
+        //qDebug() << query;
+        QList<QString> queries = query.split("\x1D");
         try
         {
             for(int i = 0; i < queries.length(); i++)

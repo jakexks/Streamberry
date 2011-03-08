@@ -71,7 +71,6 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
 
     if(ipaddress != "local")
     {
-
         QString toSend = "";
         toSend += "STREAMBERRY|PLAY|";
         toSend += n.getmyip();
