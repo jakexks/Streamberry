@@ -78,7 +78,6 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress their
 {
     try
     {
-        int stamp = onlinemachines.value(id);
         QString lasttimestamp = db.lastUpdate(id);
 
         //if never seen before, add them to the database
@@ -86,15 +85,15 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress their
         {
             QString username = "Gary Oak";
             db.makeUser("0", QString::number(Utilities::getCurrentTimestamp()), id, username);
-            getLibrary(theirip, id, dbtimestamp);
+            getLibrary(theirip, id, lasttimestamp);
         }
         //if their timestamp is newer, get new one
         else if (lasttimestamp.toInt() < dbtimestamp.toInt())
         {
-            getLibrary(theirip, id, dbtimestamp);
+            getLibrary(theirip, id, lasttimestamp);
         }
         // If the machine has been seen before, but just come online then tell the database that it is online
-        else if(stamp == 0)
+        else if(onlinemachines.value(id) == 0)
         {
             qDebug() << "setting machine online, lasttimestamp =" << lasttimestamp;
             db.setOnline(id, "1");

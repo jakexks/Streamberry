@@ -79,6 +79,7 @@ int Filescan::build_new_clean()
       scanFolder(passpath, ExFolders, homeid);
     }
     qDebug() << "Clean File Scan Completed";
+    db.updateLocalTimestamp(QString::number(Utilities::getCurrentTimestamp()));
     return 1;
   }
   catch(SBException e)
