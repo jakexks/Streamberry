@@ -46,7 +46,7 @@ void LibraryRequester::receiveRequest(QString message)
         QHostAddress theirip = QHostAddress(parts.at(1));
         QString changes = "STREAMCHANGES|";
         changes += n.getuniqid();
-        changes += "|"
+        changes += "|";
         changes += db.changesSinceTime(parts.at(2).toInt(),n.getuniqid());
         nn.send(theirip,45455,changes);
     }
