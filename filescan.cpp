@@ -7,6 +7,7 @@
 #include "sbexception.h"
 #include "crossplatform.h"
 #include <QTextCodec>
+#include "utilities.h"
 
 using namespace std;
 
@@ -39,6 +40,7 @@ int Filescan::build_new()
       QDir passpath = QDir(TrackedFolders.at(i));
       scanFolder(passpath, ExFolders, homeid);
     }
+    db.updateLocalTimestamp(QString::number(Utilities::getCurrentTimestamp()));
     qDebug() << "File Scan Completed";
     return 1;
   }
