@@ -36,7 +36,7 @@ void NewNetworking::read()
         buffer.append(inclient->readAll());
     }
     //buffer.resize(buffer.lastIndexOf(';') + 1);
-    //qDebug() << " BUFFER" << buffer << "ENDBUFFER";
+    qDebug() << " BUFFER" << buffer << "ENDBUFFER";
     emit messageReceived(buffer);
     inclient->close();
 }

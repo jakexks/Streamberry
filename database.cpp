@@ -694,6 +694,11 @@ QString Database::getIPfromUID(QString uniqueID)
                 result.next();
             }
 
+            final += "UPDATE LibIndex SET TimeLastUpdated='";
+            final += lastUpdate("Local");
+            final += "' WHERE UniqueID='";
+            final += uniqueID;
+            final += "';";
         }
         catch(SBException e)
         {
