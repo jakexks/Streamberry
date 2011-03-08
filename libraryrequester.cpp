@@ -65,6 +65,7 @@ void LibraryRequester::receiveRequest(QString message)
                 tempq.resize(tempq.lastIndexOf(';')+1);
                 db.query(tempq);
             }
+            db.setOnline(message.split("|").at(1),"1");
         }
         catch(SBException e)
         {
