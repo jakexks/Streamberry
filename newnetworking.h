@@ -23,7 +23,6 @@ private:
     QTcpSocket *inclient;
     QTcpServer server;
     QString toSend;
-    QList<QString> currentlibs;
 };
 
 #endif // NEWNETWORKING_H

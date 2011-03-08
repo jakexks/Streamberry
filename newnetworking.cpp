@@ -31,7 +31,7 @@ void NewNetworking::acceptConnection()
 void NewNetworking::read()
 {
     QString buffer = QString::fromUtf8(inclient->readAll());
-    while(inclient->waitForReadyRead(1000))
+    while(inclient->waitForReadyRead(100))
     {
         buffer.append(inclient->readAll());
     }
