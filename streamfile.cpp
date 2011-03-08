@@ -98,7 +98,7 @@ void StreamFile::parseMessage(QString message)
     QString ipaddress = split.at(2);
     QString filepath = split.at(4);
 
-    qDebug() << message;
+    qDebug() << "RECEIVED IN STREAMER" << message;
 
     if(split.at(1)=="PLAY")
     {

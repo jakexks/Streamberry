@@ -23,7 +23,7 @@ void StreamRequest::send(QString ipaddress, quint16 port, QString message)
 
 void StreamRequest::startSend()
 {
-    client.write(toSend.toAscii());
+    client.write(toSend.toUtf8());
 }
 
 void StreamRequest::startServer()
