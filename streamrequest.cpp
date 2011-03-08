@@ -23,13 +23,13 @@ void StreamRequest::send(QString ipaddress, quint16 port, QString message)
 
 void StreamRequest::startSend()
 {
-    client.write(toSend.toAscii());
+    client.write(toSend.toUtf8());
 }
 
 void StreamRequest::startServer()
 {
     connect(&server, SIGNAL(newConnection()),this, SLOT(acceptConnection()));
-    server.listen(QHostAddress::Any, 45456);
+    server.listen(QHostAddress::Any, 45459);
 }
 
 void StreamRequest::acceptConnection()
@@ -42,7 +42,8 @@ void StreamRequest::read()
 {
     //char buffer[1024];
     //qDebug() << inclient->bytesAvailable();
-    QString buf(inclient->readAll());
+    //QString buf(inclient->readAll());
+    QString buf = QString::fromUtf8(inclient->readAll());
     //inclient->readData(buffer, inclient->bytesAvailable());
     qDebug() << buf;
     emit messageReceived(buf);
