@@ -12,7 +12,6 @@ using namespace std;
 
 Filescan::Filescan(Database &datab): db(datab)
 {
-  db = datab;
   localTable = "Lib";
   localTable += db.getUniqueID();
 }
