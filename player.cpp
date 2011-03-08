@@ -84,7 +84,9 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         #ifdef Q_WS_WIN
             file = "rtp://";
             file += n.getmyip();
+            file += ":5004";
         #endif
+        qDebug() << file;
         currIP = "127.0.0.1";
         remoteIP = ipaddress;
     }
