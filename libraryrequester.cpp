@@ -24,13 +24,16 @@ LibraryRequester::LibraryRequester(Database &datab): db(datab)
 void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate)
 {
     networking n;
-    // Beacon structure is "STREAMLIBRARYREQ|<my ip>|<database timestamp>
-    QString message = "STREAMLIBRARYREQ|";
-    message += n.getmyip();
-    message += "|";
-    message += dblastupdate;
-    nn.send(theirip,45455, message);
-
+    if(!gettinglibraries.contains(theirid))
+    {
+        gettinglibraries.append(theirid);
+        // Beacon structure is "STREAMLIBRARYREQ|<my ip>|<database timestamp>
+        QString message = "STREAMLIBRARYREQ|";
+        message += n.getmyip();
+        message += "|";
+        message += dblastupdate;
+        nn.send(theirip,45455, message);
+    }
 }
 
 void LibraryRequester::receiveRequest(QString message)
@@ -42,14 +45,16 @@ void LibraryRequester::receiveRequest(QString message)
         QList<QString> parts = message.split('|',QString::KeepEmptyParts);
         QHostAddress theirip = QHostAddress(parts.at(1));
         QString changes = "STREAMCHANGES|";
+        changes += n.getuniqid();
+        changes += "|"
         changes += db.changesSinceTime(parts.at(2).toInt(),n.getuniqid());
         nn.send(theirip,45455,changes);
     }
     else if (message.startsWith("STREAMCHANGES"))
     {
         qDebug() << "Syncing Library";
-        QList<QString> parts = message.split('|', QString::KeepEmptyParts);
-        QString query = parts.at(1);
+        QList<QString> parts = message.split("|", QString::KeepEmptyParts);
+        QString query = parts.at(2);
         //qDebug() << query;
         QList<QString> queries = query.split("\x1D");
         try
@@ -65,6 +70,7 @@ void LibraryRequester::receiveRequest(QString message)
         {
             qDebug() << "ERROR: " << e.getException();
         }
+        gettinglibraries.removeAll(message.split("|").at(1));
     }
     else
     {
