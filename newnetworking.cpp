@@ -16,10 +16,10 @@ bool NewNetworking::send(QHostAddress ip, quint16 port, QString message)
     client.connectToHost(ip, port);
     if (client.waitForConnected(3000)) {
         startSend();
+        if (message.startsWith("STREAMCHANGES")) return false;
         return true;
     }
     else {
-        client.close();
         return false;
     }
 }
