@@ -32,7 +32,12 @@ void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString
         message += n.getmyip();
         message += "|";
         message += dblastupdate;
-        nn.send(theirip,45455, message);
+        if (nn.send(theirip,45455, message)) {
+            //gettinglibraries.append(theirid);
+        }
+        else {
+            gettinglibraries.removeAll(theirid);
+        }
     }
 }
 

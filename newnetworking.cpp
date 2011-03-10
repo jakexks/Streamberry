@@ -2,7 +2,7 @@
 
 NewNetworking::NewNetworking()
 {
-    connect(&client, SIGNAL(connected()),this, SLOT(startSend()));
+    //connect(&client, SIGNAL(connected()),this, SLOT(startSend()));
 }
 
 void NewNetworking::startSend()
@@ -10,10 +10,18 @@ void NewNetworking::startSend()
     client.write(toSend.toUtf8());
 }
 
-void NewNetworking::send(QHostAddress ip, quint16 port, QString message)
+bool NewNetworking::send(QHostAddress ip, quint16 port, QString message)
 {
     toSend = message;
     client.connectToHost(ip, port);
+    if (client.waitForConnected(3000)) {
+        startSend();
+        return true;
+    }
+    else {
+        client.close();
+        return false;
+    }
 }
 
 void NewNetworking::startServer(quint16 port)
