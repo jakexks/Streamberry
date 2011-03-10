@@ -14,7 +14,7 @@ class LibraryRequester : public QObject
 public:
     LibraryRequester(Database &datab);
 public slots:
-    void getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
+    bool getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
     //void sendLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
 private slots:
     void receiveRequest(QString message);

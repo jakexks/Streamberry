@@ -21,7 +21,7 @@ LibraryRequester::LibraryRequester(Database &datab): db(datab)
     qDebug() << "LibraryRequester initialised";
 }
 
-void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate)
+bool LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate)
 {
     networking n;
     if(!gettinglibraries.contains(theirid))
@@ -32,13 +32,15 @@ void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString
         message += n.getmyip();
         message += "|";
         message += dblastupdate;
-        if (nn.send(theirip,45455, message)) {
-            //gettinglibraries.append(theirid);
+        if (!nn.send(theirip,45455, message)) {
+            gettinglibraries.removeAll(theirid);
+            return false;
         }
         else {
-            gettinglibraries.removeAll(theirid);
+            return true;
         }
     }
+    return true;
 }
 
 void LibraryRequester::receiveRequest(QString message)
