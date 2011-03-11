@@ -50,6 +50,7 @@ QString Utilities::makeStylesheet()
     style+="#bottomBarNext:pressed {background: url(EXECPATHimages/botBarNextDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarMute {background: url(EXECPATHimages/botBarVolumeOnUp.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarMute:pressed {background: url(EXECPATHimages/botBarVolumeOnDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarMute:checked {background: url(EXECPATHimages/botBarVolumeOnDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarPlaypause {background: url(EXECPATHimages/botBarPlayUp.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarPlaypause:pressed {background: url(EXECPATHimages/botBarPlayDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarSongInfoLine {background-color: #222222; border: none; padding:0px;}";

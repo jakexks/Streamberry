@@ -5,6 +5,7 @@
 #include "playbackbutton.h"
 #include "songinfo.h"
 #include <QPalette>
+#include "volumeslider.h"
 
 #define BUTTON_DISTANCE 25
 #define PLAYBACK_DISTANCE 50
@@ -74,6 +75,7 @@ QWidget* PlaybackController::makeWidget()
     next->setStyleSheet(util.getStylesheet());
     next->setFlat(true);
     QPushButton *mute = new QPushButton();
+    mute->setCheckable(true);
     mute->setObjectName("bottomBarMute");
     mute->setMaximumSize(40, 38);
     mute->setMinimumSize(40, 38);
@@ -83,7 +85,7 @@ QWidget* PlaybackController::makeWidget()
 
     SongInfo::SongInfo *songinfoarea = new SongInfo(util);
     //songinfoarea->updatelabels("1111111111111111","2","3");
-    QSlider *volumeslider = new QSlider(Qt::Horizontal);
+    VolumeSlider::VolumeSlider *volumeslider = new VolumeSlider();
     volumeslider->setObjectName("bottomBarVolumeslider");
     volumeslider->setFixedWidth(110);
     volumeslider->setValue(50);

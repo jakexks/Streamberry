@@ -156,7 +156,7 @@ void Player::playControl()
     }
 }
 
-void Player::muteAudio()
+void Player::muteAudio(int i)
 {
     libvlc_audio_toggle_mute(_mp);
 }
