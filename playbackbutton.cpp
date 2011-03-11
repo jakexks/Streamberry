@@ -18,14 +18,12 @@ PlaybackButton::PlaybackButton(Utilities &utilities,PlaybackProgress *parent) :
 
 void PlaybackButton::changeNamePlay()
 {
-        qDebug()<<objectName();
         setObjectName("pausebutton");
         setStyleSheet(util.getStylesheet());
 }
 void PlaybackButton::changeNamePause()
 {
         setObjectName("playbutton");
-        qDebug()<<objectName();
         setStyleSheet(util.getStylesheet());
 }
 

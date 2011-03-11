@@ -74,7 +74,7 @@ QWidget* PlaybackController::makeWidget()
     next->setMinimumSize(45, 37);
     next->setStyleSheet(util.getStylesheet());
     next->setFlat(true);
-    QPushButton *mute = new QPushButton();
+    mute = new QPushButton();
     mute->setCheckable(true);
     mute->setObjectName("bottomBarMute");
     mute->setMaximumSize(40, 38);
@@ -83,12 +83,11 @@ QWidget* PlaybackController::makeWidget()
     mute->setStyle(new QCleanlooksStyle);
     mute->setFlat(true);
 
-    SongInfo::SongInfo *songinfoarea = new SongInfo(util);
+    SongInfo *songinfoarea = new SongInfo(util);
     //songinfoarea->updatelabels("1111111111111111","2","3");
-    VolumeSlider::VolumeSlider *volumeslider = new VolumeSlider();
+    volumeslider = new VolumeSlider();
     volumeslider->setObjectName("bottomBarVolumeslider");
     volumeslider->setFixedWidth(110);
-    volumeslider->setValue(50);
 
     temp->addWidget(songinfoarea->getWidget(), 0, 0);
     //makes the play button be in the middle, and not the widgets
@@ -112,12 +111,14 @@ QWidget* PlaybackController::makeWidget()
 
  //   connect(&player, SIGNAL(currentlyPlayingFile), &songinfoarea, SLOT(updatelabels(QString album, QString  artist, QString  song)));
     connect(volumeslider, SIGNAL(valueChanged(int)), &player, SLOT(changeVolume(int)));
+    connect(volumeslider, SIGNAL(valueChanged(int)), this, SLOT(muteSlider()));
     connect(&player, SIGNAL(paused()), playbutton, SLOT(changeNamePause()));
     connect(&player, SIGNAL(play()), playbutton, SLOT(changeNamePlay()));
     connect(&player, SIGNAL(getNextFile()), playbutton, SLOT(changeNamePlay()));
 
 //    connect(dial, SIGNAL(progressBar.mousePressEvent(int)), &player, SLOT(changePosition(progressBar.mouseReleaseEvent)));
     connect(mute, SIGNAL(clicked()), &player, SLOT(muteAudio()));
+    connect(mute, SIGNAL(clicked()), volumeslider, SLOT(muteVolSlider()));
     connect(&player, SIGNAL(sliderChanged(int)), progressbar, SLOT(setAngle(int)));
     connect(progressbar, SIGNAL(newAngle(int)), &player, SLOT(changePosition(int)));
     connect(next, SIGNAL(clicked()), this, SIGNAL(nextFile()));
@@ -126,6 +127,18 @@ QWidget* PlaybackController::makeWidget()
 
     return tempw;
 }
+
+
+void PlaybackController::muteSlider()
+{
+ if(volumeslider->sliderPosition()==0)
+ {
+   mute->setChecked(true);
+ }
+ else mute->setChecked(false);
+
+}
+
 
 /*void PlaybackController::nextFile()
 {
