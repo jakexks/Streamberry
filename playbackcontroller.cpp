@@ -117,7 +117,6 @@ QWidget* PlaybackController::makeWidget()
     connect(&player, SIGNAL(getNextFile()), playbutton, SLOT(changeNamePlay()));
 
 //    connect(dial, SIGNAL(progressBar.mousePressEvent(int)), &player, SLOT(changePosition(progressBar.mouseReleaseEvent)));
-    connect(mute, SIGNAL(clicked()), &player, SLOT(muteAudio()));
     connect(mute, SIGNAL(clicked()), volumeslider, SLOT(muteVolSlider()));
     connect(&player, SIGNAL(sliderChanged(int)), progressbar, SLOT(setAngle(int)));
     connect(progressbar, SIGNAL(newAngle(int)), &player, SLOT(changePosition(int)));
