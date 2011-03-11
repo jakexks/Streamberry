@@ -20,7 +20,7 @@ StreamFile::StreamFile()
 
 void StreamFile::addStream(QString fileName, QString compID, QString ipAddress)
 {
-    QString sout = "#gather:rtp{mux=ts,dst=";
+    QString sout = "#transcode{vcodec=none,acodec=mp3,ab=128,channels=2,samplerate=44100}:rtp{mux=ts,dst=";
     sout += ipAddress.toUtf8();
     sout += "}}";
     libvlc_vlm_add_broadcast(_vlcinstance, compID.toAscii(), fileName.toUtf8(),
