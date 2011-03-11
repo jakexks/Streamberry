@@ -66,7 +66,7 @@ QWidget* PlaybackController::makeWidget()
     previous->setFlat(true);
 
     PlaybackProgress *progressbar = new PlaybackProgress(util);
-    PlaybackButton *playbutton = new PlaybackButton(progressbar);
+    PlaybackButton *playbutton = new PlaybackButton(util, progressbar);
     QPushButton *next = new QPushButton();
     next->setObjectName("bottomBarNext");
     next->setMaximumSize(45, 37);
@@ -103,8 +103,13 @@ QWidget* PlaybackController::makeWidget()
 
     //5760 is the highest
     connect(playbutton, SIGNAL(clicked()), &player, SLOT(playControl()));
+
  //   connect(&player, SIGNAL(currentlyPlayingFile), &songinfoarea, SLOT(updatelabels(QString album, QString  artist, QString  song)));
     connect(volumeslider, SIGNAL(valueChanged(int)), &player, SLOT(changeVolume(int)));
+    connect(&player, SIGNAL(paused()), playbutton, SLOT(changeNamePause()));
+    connect(&player, SIGNAL(play()), playbutton, SLOT(changeNamePlay()));
+    connect(&player, SIGNAL(getNextFile()), playbutton, SLOT(changeNamePlay()));
+
 //    connect(dial, SIGNAL(progressBar.mousePressEvent(int)), &player, SLOT(changePosition(progressBar.mouseReleaseEvent)));
     connect(mute, SIGNAL(clicked()), &player, SLOT(muteAudio()));
     connect(&player, SIGNAL(sliderChanged(int)), progressbar, SLOT(setAngle(int)));
