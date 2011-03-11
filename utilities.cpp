@@ -81,6 +81,9 @@ QString Utilities::makeStylesheet()
     style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png);  border-left:1px solid #848484; padding:10px}";
     style+="#progressback {background:url(EXECPATHimages/botBarProgress.png) no-repeat; border: none; padding:0px;}";
     style+="#playbutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayUp.png); border: none; padding:0px;}";
+    style+="#playbutton:pressed {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayDown.png); border: none; padding:0px;}";
+    style+="#pausebutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPauseUp.png); border: none; padding:0px;}";
+    style+="#pausebutton:pressed {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPauseDown.png); border: none; padding:0px;}";
     style.replace("EXECPATH", execpath);
 
     return style;
