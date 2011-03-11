@@ -161,7 +161,6 @@ void SidebarController::updateplaylistbar(int shownumber)
   playlistTableWidget->setMaximumHeight(trimsize*25);   //////CAUSING ISSUES
   playlistTableWidget->setMinimumHeight(trimsize*25);
   playlistTableWidget->setRowCount(trimsize);
-  qDebug() << trimsize;
   int  i;
 
 //  for(i = 3; i<(trimsize); i++)
