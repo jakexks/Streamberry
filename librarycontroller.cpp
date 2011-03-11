@@ -95,7 +95,7 @@ void LibraryController::makeWidget()
     QObject::connect(tablewidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(itemClicked(int)));
 
     tablewidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-    updateLibrary();
+    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
 
     container->addWidget(curview, 0, 0);
 }
@@ -156,7 +156,6 @@ void LibraryController::addHeaders()
 
         tablewidget->setHorizontalHeaderItem(i+2, header);
     }
-    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
     tablewidget->horizontalHeader()->setMovable(true);
 }
 
@@ -261,7 +260,7 @@ void LibraryController::setHeaders(QStringList& headers, int sortcol)
         curheaders[i] = new QString(headers.at(i));
     }
 
-    sortIndicatorChanged(sortcol+2, sortorder);
+//    sortIndicatorChanged(sortcol+2, sortorder);
 }
 
 void LibraryController::deselectFirst()
