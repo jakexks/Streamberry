@@ -3,8 +3,7 @@
 VolumeSlider::VolumeSlider(QWidget *parent) :
     QSlider(parent)
 {
-
-volumeslider = new QSlider(Qt::Horizontal);
+    setOrientation(Qt::Horizontal);
 
 }
 
