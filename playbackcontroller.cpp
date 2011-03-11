@@ -91,6 +91,9 @@ QWidget* PlaybackController::makeWidget()
     volumeslider->setValue(50);
 
     temp->addWidget(songinfoarea->getWidget(), 0, 0);
+    //makes the play button be in the middle, and not the widgets
+    temp->setColumnMinimumWidth(1, 30);
+    //temp->setColumnMinimumWidth(2, 70);
     temp->addWidget(shuffle, 0, 3);
     temp->setColumnMinimumWidth(4, BUTTON_DISTANCE);
     temp->addWidget(repeat, 0, 5);
@@ -102,6 +105,7 @@ QWidget* PlaybackController::makeWidget()
     temp->addWidget(mute, 0, 11);
     temp->setColumnMinimumWidth(12, BUTTON_DISTANCE);
     temp->addWidget(volumeslider, 0, 13);
+    temp->setColumnMinimumWidth(14, 30);
 
     //5760 is the highest
     connect(playbutton, SIGNAL(clicked()), &player, SLOT(playControl()));
