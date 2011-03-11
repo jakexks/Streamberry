@@ -23,16 +23,14 @@ public:
     void addHeaders();
     void fillData(QList<QSqlRecord>* values);
     void makeWidget();
-    void setHeaders(QList<QString>& headers, int sortcol);
-signals:
-    void needNewLibrary();
+    void setHeaders(QStringList& headers, int sortcol);
 
 public slots:
     void sortLibrary();
     void deselectFirst();
     void sortIndicatorChanged(int index,Qt::SortOrder order);
     void sectionResized(int logicalindex, int oldsize, int newsize);
-    void itemClicked(int row, int column);
+    void itemClicked(int row);
     void playNextFile();
     void playPrevFile();
     void displaythis(QList<QSqlRecord>*);

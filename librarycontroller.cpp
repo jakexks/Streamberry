@@ -25,12 +25,20 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     sortcols = NULL;
     orders = NULL;
 
-    QList<QString> headers;
-    headers.append("Title");
-    headers.append("Time");
-    headers.append("Artist");
-    headers.append("Album");
-    headers.append("Genre");
+    QStringList headers;
+    QString headerstr;
+
+    if((headerstr = db.getSetting("TableHeaders"))==NULL)
+    {
+        headers.append("Title");
+        headers.append("Time");
+        headers.append("Artist");
+        headers.append("Album");
+        headers.append("Genre");
+        db.storeSetting("TableHeaders", "Title|Time|Artist|Album|Genre");
+    } else {
+        headers = headerstr.split("|", QString::SkipEmptyParts);
+    }
 
     setHeaders(headers, 3);
     widget = new QWidget();
@@ -43,7 +51,6 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
 
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
     QObject::connect(&player, SIGNAL(getFirstSong()), this, SLOT(playNextFile()));
-    QObject::connect(this, SIGNAL(needNewLibrary()), this, SLOT(sortLibrary()));
     QObject::connect(searchbar, SIGNAL(newSearchString(QString)), this, SLOT(setSearchText(QString)));
     QObject::connect(&db, SIGNAL(onlineStatusChange()), this, SLOT(updateLibrary()));
 }
@@ -85,10 +92,10 @@ void LibraryController::makeWidget()
 
     QObject::connect(tablewidget, SIGNAL(itemSelectionChanged(void)), this, SLOT(deselectFirst(void)));
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
-    QObject::connect(tablewidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(itemClicked(int,int)));
-
+    QObject::connect(tablewidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(itemClicked(int)));
 
     tablewidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    updateLibrary();
 
     container->addWidget(curview, 0, 0);
 }
@@ -225,7 +232,7 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
     tablewidget->resizeColumnToContents(1);
 }
 
-void LibraryController::setHeaders(QList<QString>& headers, int sortcol)
+void LibraryController::setHeaders(QStringList& headers, int sortcol)
 {
     int headerlen = headers.length();
     if(sortcol<1 || sortcol>=headerlen || headerlen<1)
@@ -254,7 +261,7 @@ void LibraryController::setHeaders(QList<QString>& headers, int sortcol)
         curheaders[i] = new QString(headers.at(i));
     }
 
-    sortIndicatorChanged(sortcol+2, Qt::AscendingOrder);
+    sortIndicatorChanged(sortcol+2, sortorder);
 }
 
 void LibraryController::deselectFirst()
@@ -288,7 +295,7 @@ void LibraryController::sortIndicatorChanged(int index, Qt::SortOrder order)
         //if they click on one of the untitled headers, change it back
         tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
     }
-    if(index-2<headercount)
+    else if(index-2<headercount)
     {
         if(*curheaders[index-2] == "Artist")
         {
@@ -332,12 +339,16 @@ void LibraryController::sortIndicatorChanged(int index, Qt::SortOrder order)
 
         sortcolumn = index - 2;
         sortorder = order;
-        emit needNewLibrary();
+
+        sortLibrary();
     }
 }
 
 void LibraryController::sectionResized(int logicalindex, int oldsize, int newsize)
 {
+    //gets unused parameter warning
+    oldsize = 0;
+
     try
     {
         if(logicalindex==0)
@@ -370,11 +381,14 @@ void LibraryController::setSearchText(QString text)
 
 void LibraryController::updateLibrary()
 {
-    QList<QSqlRecord> *result = db.searchDb(0, searchtext, *sortcols, *orders);
-    fillData(result);
+    if(sortcols!=NULL && orders!=NULL && tablewidget!=NULL)
+    {
+        QList<QSqlRecord> *result = db.searchDb(0, searchtext, *sortcols, *orders);
+        fillData(result);
+    }
 }
 
-void LibraryController::itemClicked(int row, int column)
+void LibraryController::itemClicked(int row)
 {
     //Title = x2, Artist = x3, Album = x4
     //QTableWidgetItem *record;

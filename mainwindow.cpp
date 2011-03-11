@@ -75,16 +75,6 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
     mainlayout->addWidget(librarycontroller->getWidget(), 1, 1);
     mainlayout->addWidget(playbackcontroller->getWidget(), 2, 0, 1, 2);
 
-
-  QList<QString> fields;
-  QList<QString> order;
-  fields.append("Album");
-  order.append("DESC");
-
-  QList<QSqlRecord> *result = db.searchDb(0, "", fields, order);
-
-  librarycontroller->fillData(result);
-
 //  QObject::connect(librarycontroller, SIGNAL(needNewLibrary(QList<QString>*,QList<QString>*)), this, SLOT(giveNewLibrary(QList<QString>*,QList<QString>*)));
   QObject::connect(playbackcontroller, SIGNAL(nextFile()), librarycontroller, SLOT(playNextFile()));
   QObject::connect(playbackcontroller, SIGNAL(prevFile()), librarycontroller, SLOT(playPrevFile()));
@@ -221,23 +211,11 @@ void MainWindow::menuExitStreamberry()
 void MainWindow::menuScan()
 {
   fs.build_new();
-  QList<QString> fields;
-  QList<QString> order;
-  fields.append("Album");
-  order.append("DESC");
-  QList<QSqlRecord> *result = db.searchDb(0, "", fields, order);
-  librarycontroller->fillData(result);
 }
 
 void MainWindow::menuCleanScan()
 {
   fs.build_new_clean();
-  QList<QString> fields;
-  QList<QString> order;
-  fields.append("Album");
-  order.append("DESC");
-  QList<QSqlRecord> *result = db.searchDb(0, "", fields, order);
-  librarycontroller->fillData(result);
 }
 
 void MainWindow::menuAddFile()
