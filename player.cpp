@@ -152,7 +152,7 @@ void Player::playControl()
         emit paused();
     } else {
         libvlc_media_player_play(_mp);
-        //emit play();
+        emit play();
     }
 }
 
