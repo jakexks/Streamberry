@@ -71,9 +71,9 @@ QWidget* TopbarController::makeWidget()
     outer->setColumnStretch(1, 1);
     outer->setColumnStretch(2, 0);
     //Set which are stretchy in inner layouts
-    innermiddle->setColumnStretch(0, 244);
+    innermiddle->setColumnStretch(0, 3);
     innermiddle->setColumnStretch(1, 0);
-    innermiddle->setColumnStretch(2, 164);
+    innermiddle->setColumnStretch(2, 2);
     //Set measurements of spacer columns
     separatorLayout->setColumnMinimumWidth(0,1);
     innerleft->setColumnMinimumWidth(0, 35);

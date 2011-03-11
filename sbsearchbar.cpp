@@ -22,8 +22,8 @@ SBSearchBar::SBSearchBar(QString path, QFrame *parent) :
     setFrameStyle(QFrame::Box | QFrame::Plain);
     setLineWidth(1);
     setStyleSheet("QFrame {background-color: white; color:#969696}");
-    setMinimumSize(121, 21);
-    setMaximumSize(121, 21);
+    setMinimumSize(170, 21);
+    setMaximumSize(170, 21);
 
     layout->setSpacing(3);
     layout->setMargin(2);
