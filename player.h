@@ -45,8 +45,6 @@ signals:
     void sliderChanged(int newValue);
     void getNextFile();
     void getFirstSong();
-    void paused();
-    void play();
 
 };
 
