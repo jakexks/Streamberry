@@ -100,6 +100,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     libvlc_media_release (_m);
     libvlc_media_player_play (_mp);
     _isPlaying=true;
+    emit play();
 
     /*if(remote)
     {
@@ -148,8 +149,10 @@ void Player::playControl()
     if(libvlc_media_player_is_playing(_mp))
     {
         libvlc_media_player_pause(_mp);
+        emit paused();
     } else {
         libvlc_media_player_play(_mp);
+        emit play();
     }
 }
 
