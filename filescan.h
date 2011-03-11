@@ -31,6 +31,8 @@ private:
    Database& db;
    int scanFolder(QDir path, QStringList Expaths, QString homeid);
    void addFiles(QDir path, QString homeID);
+   void addFile(QString filepath, QString homeID);
+   Filescan(QString filepath, QString homeID);
    int ismedia(QFileInfo file);
    int isalreadyindat(QDir file);
    int isdup(QDir file);
