@@ -61,7 +61,6 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
 
     //initialise controllers and add widgets to window
     topbarcontroller = new TopbarController(util);
-
     librarycontroller = new LibraryController(util, db, player, topbarcontroller->getSearchbar());
     sidebarcontroller = new SidebarController(util, db, librarycontroller);
     playbackcontroller = new PlaybackController(util, player);
@@ -73,6 +72,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
 
     QObject::connect(playbackcontroller, SIGNAL(nextFile()), librarycontroller, SLOT(playNextFile()));
     QObject::connect(playbackcontroller, SIGNAL(prevFile()), librarycontroller, SLOT(playPrevFile()));
+    QObject::connect(topbarcontroller, SIGNAL(musicVideoCheckStateChanged(int)), librarycontroller, SLOT(musicVideoFilter(int)));
 
     setCentralWidget(centralwidget);
 }

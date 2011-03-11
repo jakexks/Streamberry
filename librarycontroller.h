@@ -36,6 +36,7 @@ public slots:
     void displaythis(QList<QSqlRecord>*);
     void setSearchText(QString text);
     void updateLibrary();
+    void musicVideoFilter(int value);
 private:
     Utilities& util;
     QWidget* widget;
@@ -44,6 +45,7 @@ private:
     int headercount;
     int sortcolumn;
     int currentlyplaying;
+    int musicvideofilter;
     Qt::SortOrder sortorder;
     QString** curheaders;
     QTableWidget* tablewidget;

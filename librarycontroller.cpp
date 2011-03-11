@@ -21,6 +21,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
 {
     curheaders = NULL;
     currentlyplaying = -1;
+    musicvideofilter = 2;
     searchtext = "";
     sortcols = NULL;
     orders = NULL;
@@ -382,9 +383,15 @@ void LibraryController::updateLibrary()
 {
     if(sortcols!=NULL && orders!=NULL && tablewidget!=NULL)
     {
-        QList<QSqlRecord> *result = db.searchDb(0, searchtext, *sortcols, *orders);
+        QList<QSqlRecord> *result = db.searchDb(0, searchtext, *sortcols, *orders, musicvideofilter);
         fillData(result);
     }
+}
+
+void LibraryController::musicVideoFilter(int value)
+{
+    musicvideofilter = value;
+    updateLibrary();
 }
 
 void LibraryController::itemClicked(int row)

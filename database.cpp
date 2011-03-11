@@ -63,7 +63,7 @@ void Database::createDatabase(QString &path)
     sql[0] = "DROP TABLE IF EXISTS \"LibLocal\";";
     sql[1] = "CREATE TABLE \"Lib";
     sql[1] += localUniqueId;
-    sql[1] += "\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
+    sql[1] += "\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0);";
     sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
     sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Local\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" INTEGER NOT NULL , \"TimeLastOnline\" INTEGER NOT NULL , \"UniqueID\" VARCHAR UNIQUE NOT NULL, \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL , \"IPAddress\" VARCHAR);";
     sql[4] = "INSERT INTO LibIndex (ID, Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES (\"1\", 1, \"";
@@ -77,7 +77,7 @@ void Database::createDatabase(QString &path)
     sql[10] = "CREATE TABLE \"Playlist\" (\"Name\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE , \"Smart\" BOOL NOT NULL  DEFAULT 0, \"Filter\" VARCHAR, \"Played\" INTEGER NOT NULL)";
     sql[11] = "CREATE TABLE \"PlaylistTracks\" (\"UniqueID\" VARCHAR NOT NULL, \"ID\" INTEGER NOT NULL,\"Playlist\" VARCHAR NOT NULL )";
     //sql[9] = "DROP TABLE IF EXISTS \"UserTable\";";
-    //sql[10] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"Deleted\" BOOL DEFAULT 0);";
+    //sql[10] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"MusicOrVideo\" INTEGER NOT NULL, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL DEFAULT 0);";
 
     //file and directory objects to create file and directories
     QFile dbfile(filepath);
@@ -392,7 +392,7 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     QString sql;
     sql = "INSERT OR REPLACE INTO ";
     sql += table;
-    sql += " (UniqueID, Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype, Track) VALUES (\"";
+    sql += " (UniqueID, Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype, Track, MusicOrVideo) VALUES (\"";
     sql += UniqueID;
     sql += "\", \"";
     sql += filepath;
@@ -422,8 +422,8 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     sql += filetype;
     sql += "\", ";
     sql += trackno;
-    sql += ");";
-    qDebug() << sql;
+    sql += ", \"0\");";
+//    qDebug() << sql;
     try
     {
         query(sql);
@@ -454,7 +454,7 @@ int Database::deleteFile(QString id, QString table)
     }
 }
 
-QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString>& sortcols, QList<QString> order)
+QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString>& sortcols, QList<QString> order, int musicorvideo)
 {
     QString condition;
     QString sql;
@@ -488,7 +488,7 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
         condition += searchtxt;
         condition += "%\")";
     default:
-        condition = " WHERE (Artist LIKE \"%";
+        condition = " WHERE ((Artist LIKE \"%";
         condition += searchtxt;
         condition += "%\") OR (Title LIKE \"%";
         condition += searchtxt;
@@ -496,7 +496,18 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
         condition += searchtxt;
         condition += "%\") OR (Genre LIKE \"%";
         condition += searchtxt;
-        condition += "%\")";
+        condition += "%\"))";
+        break;
+    }
+
+    switch(musicorvideo)
+    {
+    case 0:
+    case 1:
+        condition += " AND MusicOrVideo=\"";
+        condition += QString::number(musicorvideo);
+        condition += "\"";
+    default:
         break;
     }
 
@@ -685,13 +696,13 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
         final += uniqueID;
         final += "\" (\"UniqueID\" VARCHAR DEFAULT \"";
         final += uniqueID;
-        final += "\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Track\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"Deleted\" BOOL NOT NULL DEFAULT 0); \x1D";
+        final += "\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Track\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0); \x1D";
 
         while(result.isValid())
         {
             final += "INSERT OR REPLACE INTO Lib";
             final += uniqueID;
-            final += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Track, Length , Bitrate , Filesize , Timestamp , Filetype) VALUES (\"";
+            final += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Track, Length , Bitrate , Filesize , Timestamp , Filetype, MusicOrVideo) VALUES (\"";
             final += result.record().value("Filepath").toString();
             final += "\", \"";
             final += result.record().value("Artist").toString();
@@ -720,7 +731,7 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
             final += "\", \"";
             final += result.record().value("Filetype").toString();
             //group separator
-            final += "\"); \x1D";
+            final += "\", \"0\"); \x1D";
             result.next();
         }
 

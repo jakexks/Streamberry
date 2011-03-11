@@ -108,8 +108,8 @@ QWidget* TopbarController::makeWidget()
     innerright->addWidget(search, 0, 0);
     musicState=0;
     videosState=0;
-    connect(music, SIGNAL(clicked()), this, SLOT(musicButtonControl()));
-    connect(videos, SIGNAL(clicked()), this, SLOT(videosButtonControl()));
+    connect(music, SIGNAL(pressed()), this, SLOT(musicButtonControl()));
+    connect(videos, SIGNAL(pressed()), this, SLOT(videosButtonControl()));
     return temp;
 }
 
@@ -127,14 +127,15 @@ void TopbarController::musicButtonControl()
         music->setObjectName("topBarMusicchecked");
         music->setStyleSheet(util.getStylesheet());
         musicState=1;
+        emit musicVideoCheckStateChanged(MusicChecked);
     }
     else
     {
         music->setObjectName("topBarMusic");
         music->setStyleSheet(util.getStylesheet());
         musicState=0;
+        emit musicVideoCheckStateChanged(MusicVideoNotChecked);
     }
-
 }
 
 void TopbarController::videosButtonControl()
@@ -146,11 +147,13 @@ void TopbarController::videosButtonControl()
         music->setObjectName("topBarVideoschecked");
         music->setStyleSheet(util.getStylesheet());
         videosState=1;
+        emit musicVideoCheckStateChanged(VideoChecked);
     }
     else
     {
         music->setObjectName("topBarMusic");
         music->setStyleSheet(util.getStylesheet());
         videosState=0;
+        emit musicVideoCheckStateChanged(MusicVideoNotChecked);
     }
 }

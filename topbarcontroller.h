@@ -16,6 +16,9 @@ public:
     QWidget* makeWidget();
     QWidget* getWidget();
     SBSearchBar* getSearchbar();
+    enum MusicVideoCheckState { MusicVideoNotChecked = 2, MusicChecked = 0, VideoChecked = 1 };
+signals:
+    void musicVideoCheckStateChanged(int);
 public slots:
     void musicButtonControl();
     void videosButtonControl();
