@@ -61,7 +61,8 @@ int main(int argc, char *argv[])
     //db.setFolders("C:\\Users\\Jim\\Music");
     //db.setFolders("/host/new/");
     //db.setFolders("C:\\Users\\2kah\\Music\\Led Zeppelin");
-    db.setFolders("/streamberrytest/");
+    //db.setFolders("/streamberrytest/");
+    db.setFolders("/home/jakexks/Music/Cruft/Scott Pilgrim vs. The World [2010] (V0)");
 
     MainWindow w(util, db, player, fs);
 
