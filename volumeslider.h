@@ -9,13 +9,16 @@ class VolumeSlider : public QSlider
 public:
     explicit VolumeSlider(QWidget *parent = 0);
     QSlider*volumeslider;
-    void get_widget();
 
+private:
+    int lastposition;
+    bool muted;
 
 signals:
 
 public slots:
-
+ void muteVolSlider();
+ void updateLastPos();
 };
 
 #endif // VOLUMESLIDER_H
