@@ -24,23 +24,16 @@ LibraryRequester::LibraryRequester(Database &datab): db(datab)
 void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate)
 {
     networking n;
-    qDebug() << "REQUEST SENT";
     bool status = 1;
 
     if(!gettinglibraries.contains(theirid))
     {
-        qDebug() << "REQUEST SENT";
-        gettinglibraries.append(theirid);
         // Beacon structure is "STREAMLIBRARYREQ|<my ip>|<database timestamp>
         QString message = "STREAMLIBRARYREQ|";
         message += n.getmyip();
         message += "|";
         message += dblastupdate;
         status = nn.send(theirip,45455, message);
-    }
-
-    if(status == false) {
-        gettinglibraries.removeAll(theirid);
     }
 }
 
@@ -62,6 +55,7 @@ void LibraryRequester::receiveRequest(QString message)
     {
         qDebug() << "Syncing Library";
         QList<QString> parts = message.split("|", QString::KeepEmptyParts);
+        gettinglibraries.append(parts.at(1));
         QString query = parts.at(2);
         //qDebug() << query;
         QList<QString> queries = query.split("\x1D");
