@@ -31,6 +31,7 @@ int Filescan::build_new()
   QString homeid;
   try
   {
+    db.query("BEGIN;");
     TrackedFolders = db.getFolders(0);
     ExFolders = db.getFolders(1);
     homeid = "local";
@@ -41,6 +42,7 @@ int Filescan::build_new()
       scanFolder(passpath, ExFolders, homeid);
     }
     db.updateLocalTimestamp(QString::number(Utilities::getCurrentTimestamp()));
+    db.query("COMMIT;");
     qDebug() << "File Scan Completed";
     return 1;
   }
@@ -62,6 +64,7 @@ int Filescan::build_new_clean()
   QString homeid;
   try
   {
+    db.query("BEGIN;");
     QString sql = "DELETE FROM sqlite_sequence WHERE name=\"";
     sql += localTable;
     sql += "\";";
@@ -79,7 +82,9 @@ int Filescan::build_new_clean()
       scanFolder(passpath, ExFolders, homeid);
     }
     qDebug() << "Clean File Scan Completed";
+    db.query("COMMIT;");
     db.updateLocalTimestamp(QString::number(Utilities::getCurrentTimestamp()));
+
     return 1;
   }
   catch(SBException e)

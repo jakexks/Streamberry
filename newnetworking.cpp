@@ -2,7 +2,7 @@
 
 NewNetworking::NewNetworking()
 {
-    connect(&client, SIGNAL(connected()),this, SLOT(startSend()));
+    //connect(&client, SIGNAL(connected()),this, SLOT(startSend()));
 }
 
 void NewNetworking::startSend()
@@ -10,10 +10,17 @@ void NewNetworking::startSend()
     client.write(toSend.toUtf8());
 }
 
-void NewNetworking::send(QHostAddress ip, quint16 port, QString message)
+bool NewNetworking::send(QHostAddress ip, quint16 port, QString message)
 {
     toSend = message;
     client.connectToHost(ip, port);
+    if (client.waitForConnected(3000)) {
+        startSend();
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 void NewNetworking::startServer(quint16 port)
@@ -30,11 +37,11 @@ void NewNetworking::acceptConnection()
 
 void NewNetworking::read()
 {
-    QString buffer = QString::fromUtf8(inclient->readAll());
-    while(inclient->waitForReadyRead(100))
-    {
-        buffer.append(inclient->readAll());
+    QString buffer;
+    do {
+        buffer.append(QString::fromUtf8(inclient->readAll()));
     }
+    while(inclient->waitForReadyRead(1000));
     //buffer.resize(buffer.lastIndexOf(';') + 1);
     qDebug() << " BUFFER" << buffer << "ENDBUFFER";
     emit messageReceived(buffer);

@@ -11,7 +11,7 @@ class NewNetworking : public QObject
 public:
     NewNetworking();
     void startServer(quint16 port);
-    void send(QHostAddress ip, quint16 port, QString message);
+    bool send(QHostAddress ip, quint16 port, QString message);
 signals:
     void messageReceived(QString message);
 public slots:
