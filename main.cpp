@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     //db.setFolders("/home/vity/Music/");
     //db.setFolders("C:\\Users\\Jim\\Music");
     //db.setFolders("/host/new/");
-    //db.setFolders("C:\\Users\\2kah\\Music");
+    //db.setFolders("C:\\Users\\2kah\\Music\\THE LOCAL CHEESE PLAYLIST THAT EVER WAS");
     //db.setFolders("/streamberrytest/");
 
     MainWindow w(util, db, player, fs);
