@@ -75,8 +75,10 @@ QString Utilities::makeStylesheet()
     style+="#sideBarTopButtons {background-color: #DAE3E7; border-right:1px solid #9c9c9c;  margin-left:15px; margin-right:3px; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#sideBarDivided {background: url(EXECPATHimages/topBarPlaylistsSeparatorLeftAlignRight.png) no-repeat; padding:0px; margin:0px;}";
     //playbutton
-    style+="#songInfoLine {background:#222222; border:none; margin:0px;}";
-    style+="#songInfoLabel {font-weight:bold; border:none; padding:0px;}";
+    style+="#songInfoBorder {border-left: solid 1px #949494;} ";
+    style+="#songInfoLine {background:#8c8c8c; margin:0px;}";
+    style+="#songInfoLabel {font-weight:normal; border:none; padding:0px; color: #333333}";
+    style+="#songInfoLabelBold {font-weight:bold; border:none; padding:0px; color: #333333}";
     style+="#songInfo{ padding:10px;}";
     //style+="#separatorSongInfo {background:#222222; border:none; padding:0px;}"; separator-color:red;
     style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png);  border-left:1px solid #848484; padding:10px}";

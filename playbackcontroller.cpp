@@ -83,7 +83,7 @@ QWidget* PlaybackController::makeWidget()
     mute->setStyle(new QCleanlooksStyle);
     mute->setFlat(true);
 
-    SongInfo *songinfoarea = new SongInfo(util);
+    songinfoarea = new SongInfo(util);
     //songinfoarea->updatelabels("1111111111111111","2","3");
     volumeslider = new VolumeSlider();
     volumeslider->setObjectName("bottomBarVolumeslider");
@@ -125,6 +125,11 @@ QWidget* PlaybackController::makeWidget()
     connect(&player, SIGNAL(getNextFile()), next, SLOT(click()));
 
     return tempw;
+}
+
+SongInfo* PlaybackController::getSongInfo()
+{
+    return songinfoarea;
 }
 
 

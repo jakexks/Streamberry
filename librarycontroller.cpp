@@ -401,6 +401,7 @@ void LibraryController::itemClicked(int row)
 
     QSqlRecord record = currentdata->at(row);
     QString filepath = record.field("FilePath").value().toString();
+    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
     qDebug() << "Currently playing: " << filepath;
     if(record.field("UniqueID").value() != "local")
     {
@@ -422,12 +423,16 @@ void LibraryController::playNextFile()
     currentlyplaying += 1;
     if (currentlyplaying >= currentdata->length())
     {
-        currentlyplaying = 0;
+        currentlyplaying = -1;
+        return;
     }
     QSqlRecord record = currentdata->at(currentlyplaying);
     //TODO: Add checking at the end
     QString filepath = record.field("FilePath").value().toString();
     qDebug() << "Currently playing: " << filepath;
+
+    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+
     if(record.field("UniqueID").value() != "local")
     {
         qDebug() << "NOT LOCAL";
@@ -449,6 +454,8 @@ void LibraryController::playPrevFile()
     QSqlRecord record = currentdata->at(currentlyplaying);
     QString filepath = record.field("FilePath").value().toString();
     qDebug() << "Currently playing: " << filepath;
+    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+
     if(record.field("UniqueID").value() != "local")
     {
         qDebug() << "NOT LOCAL";

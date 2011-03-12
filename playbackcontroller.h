@@ -4,6 +4,7 @@
 #include "utilities.h"
 #include "player.h"
 #include "volumeslider.h"
+#include "songinfo.h"
 #include <QtGui>
 
 class PlaybackController : public QObject
@@ -13,12 +14,14 @@ public:
     PlaybackController(Utilities& utilities, Player& p);
     QWidget* getWidget();
     QWidget* makeWidget();
+    SongInfo* getSongInfo();
 private:
     Utilities& util;
     Player& player;
     QWidget* widget;
     QPushButton *mute;
     VolumeSlider *volumeslider;
+    SongInfo *songinfoarea;
 
 signals:
     void nextFile();

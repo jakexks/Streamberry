@@ -25,6 +25,9 @@ public:
     void makeWidget();
     void setHeaders(QStringList& headers, int sortcol);
 
+signals:
+    void songInfoData(QString album, QString artist, QString title, QString track);
+
 public slots:
     void sortLibrary();
     void deselectFirst();
