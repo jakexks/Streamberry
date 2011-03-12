@@ -47,7 +47,8 @@ SOURCES +=  main.cpp\
             playbackbutton.cpp \
             songinfo.cpp\
             quitmanager.cpp \
-    newnetworking.cpp
+    newnetworking.cpp \
+    volumeslider.cpp
 
 
 HEADERS +=  mainwindow.h\
@@ -82,4 +83,5 @@ HEADERS +=  mainwindow.h\
             playbackbutton.h \
             songinfo.h\
             quitmanager.h \
-    newnetworking.h
+    newnetworking.h \
+    volumeslider.h

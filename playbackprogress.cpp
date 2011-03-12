@@ -102,8 +102,8 @@ void PlaybackProgress::paintEvent(QPaintEvent *e)
     //draw handle code
     if(isentered || isdragging)
     {
-        float x = 35*sin(pieangle /16 * 3.14159265 / 180.0) + 37;
-        float y = -35*cos(pieangle /16 * 3.14159265 / 180.0) + 37;
+        double x = 35*sin((double)pieangle /16.0 * 3.14159265 / 180.0) + 37.0;
+        double y = -35*cos((double)pieangle /16.0 * 3.14159265 / 180.0) + 37.0;
 
         painter.drawImage(QPointF(x, y), handleimg);
     }

@@ -5,6 +5,7 @@
 #include "playbackbutton.h"
 #include "songinfo.h"
 #include <QPalette>
+#include "volumeslider.h"
 
 #define BUTTON_DISTANCE 25
 #define PLAYBACK_DISTANCE 50
@@ -66,14 +67,15 @@ QWidget* PlaybackController::makeWidget()
     previous->setFlat(true);
 
     PlaybackProgress *progressbar = new PlaybackProgress(util);
-    PlaybackButton *playbutton = new PlaybackButton(progressbar);
+    PlaybackButton *playbutton = new PlaybackButton(util, progressbar);
     QPushButton *next = new QPushButton();
     next->setObjectName("bottomBarNext");
     next->setMaximumSize(45, 37);
     next->setMinimumSize(45, 37);
     next->setStyleSheet(util.getStylesheet());
     next->setFlat(true);
-    QPushButton *mute = new QPushButton();
+    mute = new QPushButton();
+    mute->setCheckable(true);
     mute->setObjectName("bottomBarMute");
     mute->setMaximumSize(40, 38);
     mute->setMinimumSize(40, 38);
@@ -81,14 +83,16 @@ QWidget* PlaybackController::makeWidget()
     mute->setStyle(new QCleanlooksStyle);
     mute->setFlat(true);
 
-    SongInfo::SongInfo *songinfoarea = new SongInfo(util);
+    songinfoarea = new SongInfo(util);
     //songinfoarea->updatelabels("1111111111111111","2","3");
-    QSlider *volumeslider = new QSlider(Qt::Horizontal);
+    volumeslider = new VolumeSlider();
     volumeslider->setObjectName("bottomBarVolumeslider");
     volumeslider->setFixedWidth(110);
-    volumeslider->setValue(50);
 
     temp->addWidget(songinfoarea->getWidget(), 0, 0);
+    //makes the play button be in the middle, and not the widgets
+    temp->setColumnMinimumWidth(1, 30);
+    //temp->setColumnMinimumWidth(2, 70);
     temp->addWidget(shuffle, 0, 3);
     temp->setColumnMinimumWidth(4, BUTTON_DISTANCE);
     temp->addWidget(repeat, 0, 5);
@@ -100,13 +104,20 @@ QWidget* PlaybackController::makeWidget()
     temp->addWidget(mute, 0, 11);
     temp->setColumnMinimumWidth(12, BUTTON_DISTANCE);
     temp->addWidget(volumeslider, 0, 13);
+    temp->setColumnMinimumWidth(14, 30);
 
     //5760 is the highest
     connect(playbutton, SIGNAL(clicked()), &player, SLOT(playControl()));
+
  //   connect(&player, SIGNAL(currentlyPlayingFile), &songinfoarea, SLOT(updatelabels(QString album, QString  artist, QString  song)));
     connect(volumeslider, SIGNAL(valueChanged(int)), &player, SLOT(changeVolume(int)));
+    connect(volumeslider, SIGNAL(valueChanged(int)), this, SLOT(muteSlider()));
+    connect(&player, SIGNAL(paused()), playbutton, SLOT(changeNamePause()));
+    connect(&player, SIGNAL(play()), playbutton, SLOT(changeNamePlay()));
+    connect(&player, SIGNAL(getNextFile()), playbutton, SLOT(changeNamePlay()));
+
 //    connect(dial, SIGNAL(progressBar.mousePressEvent(int)), &player, SLOT(changePosition(progressBar.mouseReleaseEvent)));
-    connect(mute, SIGNAL(clicked()), &player, SLOT(muteAudio()));
+    connect(mute, SIGNAL(clicked()), volumeslider, SLOT(muteVolSlider()));
     connect(&player, SIGNAL(sliderChanged(int)), progressbar, SLOT(setAngle(int)));
     connect(progressbar, SIGNAL(newAngle(int)), &player, SLOT(changePosition(int)));
     connect(next, SIGNAL(clicked()), this, SIGNAL(nextFile()));
@@ -115,6 +126,23 @@ QWidget* PlaybackController::makeWidget()
 
     return tempw;
 }
+
+SongInfo* PlaybackController::getSongInfo()
+{
+    return songinfoarea;
+}
+
+
+void PlaybackController::muteSlider()
+{
+ if(volumeslider->sliderPosition()==0)
+ {
+   mute->setChecked(true);
+ }
+ else mute->setChecked(false);
+
+}
+
 
 /*void PlaybackController::nextFile()
 {

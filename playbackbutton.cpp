@@ -1,18 +1,32 @@
 #include "playbackbutton.h"
 #include <QtGui>
 #include "playbackprogress.h"
+#include <QDebug>
+#include "utilities.h"
 
 PlaybackProgress *prog;
 
-PlaybackButton::PlaybackButton(PlaybackProgress *parent) :
-    QPushButton(parent)
+PlaybackButton::PlaybackButton(Utilities &utilities,PlaybackProgress *parent) :
+        QPushButton(parent), util(utilities)
 {
     prog = parent;
     setGeometry(10, 11, 65, 65);
     setFlat(true);
-    setObjectName("playbutton");
-    //setVisible(false);
+    setObjectName("bottomBarPlaypause");
+    //    setVisible(false);
 }
+
+void PlaybackButton::changeNamePlay()
+{
+        setObjectName("pausebutton");
+        setStyleSheet(util.getStylesheet());
+}
+void PlaybackButton::changeNamePause()
+{
+        setObjectName("playbutton");
+        setStyleSheet(util.getStylesheet());
+}
+
 
 void PlaybackButton::mousePressEvent(QMouseEvent *e)
 {

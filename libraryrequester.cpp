@@ -18,7 +18,6 @@ LibraryRequester::LibraryRequester(Database &datab): db(datab)
 //    connect(server,SIGNAL(newConnection()),this,SLOT(processNetworkActivity()));
     nn.startServer(45455);
     connect(&nn,SIGNAL(messageReceived(QString)),this,SLOT(receiveRequest(QString)));
-    qDebug() << "LibraryRequester initialised";
 }
 
 void LibraryRequester::getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate)

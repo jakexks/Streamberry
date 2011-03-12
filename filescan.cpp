@@ -129,23 +129,11 @@ int Filescan::scanFolder(QDir path, QStringList expaths, QString homeid)
 //Each file is checked before it is added to see if it is already in the database, if it is then it is skipped.
 //If a duplicate file is found, e.g. one matching certain criteria, then it is added to the database with a dup flag set 1
 //returns 1 if files are added.
-//TODO Deal with album art in some way. Look at meta.c in VLC
+//TODO Deal with album art in some way.
 void Filescan::addFiles(QDir path, QString homeID)
 {
   QFileInfoList fileList;
-  //FileMeta file;
   QList<QString> tags;
-  ///TEST
-  /* QList<QString> test;
-    test.append("");
-    test.append("");
-    test.append("");
-    test.append("");
-    test.append("");
-    test.append("");
-    test.append("");
-    test.append("");*/
-  ///TEST ENDS
   path.setFilter(QDir::Files);
   QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
   fileList = path.entryInfoList();
@@ -171,6 +159,30 @@ void Filescan::addFiles(QDir path, QString homeID)
     }
   }
 }
+
+void Filescan::addFile(QString filepath, QString homeID)
+{
+  //QDir* path = new QDir(filepath);
+  QList<QString> tags;
+  QFileInfo newfile(filepath);
+  QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+  if(ismedia(newfile)==1)
+  {
+    try
+    {
+      tags = checktags(file.printMeta(newfile.absoluteFilePath()), newfile.fileName());
+      db.addFile(newfile.absoluteFilePath(), newfile.fileName(), QString::number(newfile.size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", newfile.suffix(), (QString)localTable, homeID);
+    }
+    catch (SBException e)
+    {
+      qDebug() << e.getException();
+      qDebug() << newfile.fileName();
+      qDebug() << " is broken";
+    }
+  }
+}
+
+
 
 QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
 {
@@ -217,14 +229,27 @@ QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
 int Filescan::ismedia(QFileInfo file)
 {
   QString name = file.suffix();
-  if(QString::compare("wav",name)==0 || QString::compare("mp3",name)==0 || QString::compare("wma",name)==0 || QString::compare("ogg",name)==0 || QString::compare("aac",name)==0 || QString::compare("mid",name)==0)
+  if( QString::compare("wav",name)==0   || QString::compare("mp3",name)==0   ||
+      QString::compare("wma",name)==0   || QString::compare("ogg",name)==0   ||
+      QString::compare("aac",name)==0   || QString::compare("mid",name)==0   ||
+      QString::compare("m2v",name)==0   || QString::compare("m4v",name)==0   ||
+      QString::compare("flac",name)==0  || QString::compare("wmv",name)==0   ||
+      QString::compare("mpeg1",name)==0 || QString::compare("oma",name)==0   ||
+      QString::compare("mpeg2",name)==0 || QString::compare("ts",name)==0    ||
+      QString::compare("divx",name)==0  || QString::compare("vob",name)==0   ||
+      QString::compare("dv",name)==0    || QString::compare("avi",name)==0   ||
+      QString::compare("flv",name)==0   || QString::compare("mpeg",name)==0  ||
+      QString::compare("m1v",name)==0   || QString::compare("mpg",name)==0   ||
+      QString::compare("mov",name)==0   || QString::compare("m4a",name)==0   ||
+      QString::compare("mp1",name)==0   || QString::compare("mod",name)==0   ||
+      QString::compare("m4p",name)==0   || QString::compare("mpeg4",name)==0 ||
+      QString::compare("mid",name)==0   )
+
   {
     return 1;
   }
   return 0;
 }
-
-
 
 /*//This method takes a filepath and returns 1 if the exact file in question is already in the database
 int filescan::isalreadyindat(QDir file)
@@ -245,4 +270,3 @@ int filescan::isdup(QDir file)
     return 0;
 }
  */
-
