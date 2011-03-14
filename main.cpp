@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 
     w.show();
 
-    StreamFile stream;
+    StreamFile stream(player);
     //stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");
     //qDebug() << stream.getStreamLength("test");
 

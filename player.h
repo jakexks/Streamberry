@@ -23,12 +23,15 @@ private:
     libvlc_media_t *_m;
     StreamRequest stream;
     networking n;
+    int fileLength;
+    float currSecs;
 
 public:
     QTimer *poller;
     //void playFile(QString file);
     void playFile(QString file, QString uniqueID="local", QString ipaddress="local");
     bool isPlaying();
+    void setFileLength(int secs);
     Player();
     ~Player();
 

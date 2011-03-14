@@ -1,6 +1,6 @@
 #include "streamfile.h"
 
-StreamFile::StreamFile()
+StreamFile::StreamFile(Player& _player) : player(_player)
 {
     const char * vlc_args[] = {
                         "--ignore-config",
@@ -46,7 +46,17 @@ void StreamFile::playStream(QString compID)
 
 void StreamFile::pauseStream(QString compID)
 {
-    libvlc_vlm_pause_media(_vlcinstance, compID.toUtf8());
+    //If playing something, then pause
+    if(isplaying.value(compID))
+    {
+        libvlc_vlm_pause_media(_vlcinstance, compID.toAscii());
+        isplaying[compID] = false;
+    }
+    else
+    {
+        libvlc_vlm_play_media(_vlcinstance, compID.toAscii());
+        isplaying[compID] = true;
+    }
 }
 
 void StreamFile::stopStream(QString compID)
@@ -97,24 +107,26 @@ void StreamFile::parseMessage(QString message)
 
     qDebug() << "RECEIVED IN STREAMER" << message;
 
+    QString uniqueID = split.at(3);
+    QString ipaddress = split.at(2);
+    QString filepath = split.at(4);
+
     if(split.at(1)=="PLAY")
     {
-        QString uniqueID = split.at(3);
-        QString ipaddress = split.at(2);
-        QString filepath = split.at(4);
-
+        //Check if something is playing
         if(libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii())!=NULL)
         {
             if(isSameStream(uniqueID.toAscii(), filepath)) {
                 stopStream(uniqueID.toAscii());
                 removeStream(uniqueID.toAscii());
                 addStream(filepath, uniqueID, ipaddress);
+
             } else {
                 stopStream(uniqueID.toAscii());
                 removeStream(uniqueID.toAscii());
                 addStream(filepath, uniqueID, ipaddress);
             }
-
+            isplaying[uniqueID] = true;
             /*qDebug() << libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii());
             stopStream(uniqueID);
             removeStream(uniqueID);
@@ -123,10 +135,21 @@ void StreamFile::parseMessage(QString message)
             qDebug() << libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii());*/
             //sleep(2);
         } else {
+            isplaying[uniqueID] = true;
             addStream(filepath, uniqueID, ipaddress);
         }
+        QString tosend = "";
+        tosend += "STREAMBERRY|LENGTH|";
+        tosend += QString::number(getStreamLength(uniqueID));
+        stream.send(ipaddress, 45459, tosend);
     } else if (split.at(1)=="STOP") {
         stopStream(split.at(2));
+    } else if (split.at(1)=="PAUSE") {
+        pauseStream(split.at(2));
+    } else if (split.at(1)=="SEEK") {
+        seekStream(split.at(2), split.at(3).toFloat());
+    } else if (split.at(1)=="LENGTH") {
+        player.setFileLength(split.at(2).toInt());
     }
     //qDebug() << message;
 }
