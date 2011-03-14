@@ -89,6 +89,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         qDebug() << file;
         currIP = "127.0.0.1";
         remoteIP = ipaddress;
+        currSecs = 0;
     }
 
 
@@ -135,7 +136,19 @@ void Player::changePosition(int newPosition)
         pos = 0.9999;
         libvlc_media_player_stop(_mp);
     }
-    libvlc_media_player_set_position (_mp, pos);
+    if(currIP == "127.0.0.1")
+    {
+        QString tosend = "";
+        tosend += "STREAMBERRY|SEEK|";
+        tosend += n.getuniqid();
+        tosend += "|";
+        tosend += QString::number(pos);
+        qDebug() << "SEEKING TO: " << pos;
+        stream.send(remoteIP, 45459, tosend);
+        currSecs = pos*fileLength;
+    } else {
+        libvlc_media_player_set_position (_mp, pos);
+    }
     //libvlc_media_player_play(_mp);
 }
 
@@ -146,13 +159,21 @@ void Player::playControl()
         emit getFirstSong();
     }
 
-    if(libvlc_media_player_is_playing(_mp))
+    if(currIP == "127.0.0.1")
     {
-        libvlc_media_player_pause(_mp);
-        emit paused();
+        QString tosend = "";
+        tosend += "STREAMBERRY|PAUSE|";
+        tosend += n.getuniqid();
+        stream.send(remoteIP, 45459, tosend);
     } else {
-        libvlc_media_player_play(_mp);
-        emit play();
+        if(libvlc_media_player_is_playing(_mp))
+        {
+            libvlc_media_player_set_pause(_mp, 1);
+            emit paused();
+        } else {
+            libvlc_media_player_play(_mp);
+            emit play();
+        }
     }
 }
 
@@ -177,8 +198,16 @@ void Player::sliderUpdate()
         return;
     }
 
-    float pos=libvlc_media_player_get_position (_mp);
-    int sliderPos=(int)(pos*(float)(POSITION_RESOLUTION));
+    int sliderPos;
+    if(currIP == "127.0.0.1")
+    {
+        currSecs += (float)poller->interval()/1000;
+        float pos = currSecs/fileLength;
+        sliderPos = (int)(pos * (float)(POSITION_RESOLUTION));
+    } else {
+        float pos=libvlc_media_player_get_position (_mp);
+        sliderPos=(int)(pos * (float)(POSITION_RESOLUTION));
+    }
 
     if(libvlc_media_player_get_state(_mp) == 6)//Stop if ended
     {
@@ -192,4 +221,9 @@ void Player::sliderUpdate()
 bool Player::isPlaying()
 {
     return libvlc_media_player_is_playing(_mp);
+}
+
+void Player::setFileLength(int secs)
+{
+    fileLength = secs;
 }
