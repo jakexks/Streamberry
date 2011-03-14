@@ -50,6 +50,7 @@ QString Utilities::makeStylesheet()
     style+="#bottomBarNext:pressed {background: url(EXECPATHimages/botBarNextDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarMute {background: url(EXECPATHimages/botBarVolumeOnUp.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarMute:pressed {background: url(EXECPATHimages/botBarVolumeOnDown.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarMute:checked {background: url(EXECPATHimages/botBarVolumeOnDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarPlaypause {background: url(EXECPATHimages/botBarPlayUp.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarPlaypause:pressed {background: url(EXECPATHimages/botBarPlayDown.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarSongInfoLine {background-color: #222222; border: none; padding:0px;}";
@@ -74,13 +75,18 @@ QString Utilities::makeStylesheet()
     style+="#sideBarTopButtons {background-color: #DAE3E7; border-right:1px solid #9c9c9c;  margin-left:15px; margin-right:3px; border: none; padding:0px; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#sideBarDivided {background: url(EXECPATHimages/topBarPlaylistsSeparatorLeftAlignRight.png) no-repeat; padding:0px; margin:0px;}";
     //playbutton
-    style+="#songInfoLine {background:#222222; border:none; margin:0px;}";
-    style+="#songInfoLabel {font-weight:bold; border:none; padding:0px;}";
+    style+="#songInfoBorder {border-left: solid 1px #949494;} ";
+    style+="#songInfoLine {background:#8c8c8c; margin:0px;}";
+    style+="#songInfoLabel {font-weight:normal; border:none; padding:0px; color: #333333}";
+    style+="#songInfoLabelBold {font-weight:bold; border:none; padding:0px; color: #333333}";
     style+="#songInfo{ padding:10px;}";
     //style+="#separatorSongInfo {background:#222222; border:none; padding:0px;}"; separator-color:red;
     style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png);  border-left:1px solid #848484; padding:10px}";
     style+="#progressback {background:url(EXECPATHimages/botBarProgress.png) no-repeat; border: none; padding:0px;}";
     style+="#playbutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayUp.png); border: none; padding:0px;}";
+    style+="#playbutton:pressed {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayDown.png); border: none; padding:0px;}";
+    style+="#pausebutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPauseUp.png); border: none; padding:0px;}";
+    style+="#pausebutton:pressed {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPauseDown.png); border: none; padding:0px;}";
     style.replace("EXECPATH", execpath);
 
     return style;

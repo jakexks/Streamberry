@@ -52,7 +52,7 @@ public:
     //perform search.
     //type: 0 - all, 1 - artist, 2 - title, 3 - genre, 4 - album
     //return order: Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype
-    QList<QSqlRecord>* searchDb(int type, QString searchtxt, QList<QString>& sortcols, QList<QString> order);
+    QList<QSqlRecord>* searchDb(int type, QString searchtxt, QList<QString>& sortcols, QList<QString> order, int musicorvideo);
 
     QSqlQuery query(QString sql); //Shouldn't this be private?
 

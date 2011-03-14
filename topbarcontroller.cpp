@@ -71,15 +71,17 @@ QWidget* TopbarController::makeWidget()
     outer->setColumnStretch(1, 1);
     outer->setColumnStretch(2, 0);
     //Set which are stretchy in inner layouts
-    innermiddle->setColumnStretch(0, 244);
-    innermiddle->setColumnStretch(1, 0);
-    innermiddle->setColumnStretch(2, 164);
+    innermiddle->setColumnStretch(0, 0);
+    innermiddle->setColumnStretch(1, 1);
+    innermiddle->setColumnStretch(2, 0);
+    innermiddle->setColumnStretch(3, 1);
     //Set measurements of spacer columns
     separatorLayout->setColumnMinimumWidth(0,1);
     innerleft->setColumnMinimumWidth(0, 35);
-    innermiddle->setColumnMinimumWidth(0, 35);
-    innermiddle->setColumnMinimumWidth(1, 140);
-    innermiddle->setColumnMinimumWidth(2, 24);
+    innermiddle->setColumnMinimumWidth(0, 115);
+    innermiddle->setColumnMinimumWidth(1, 35);
+    innermiddle->setColumnMinimumWidth(2, 140);
+    innermiddle->setColumnMinimumWidth(3, 24);
     innerright->setColumnMinimumWidth(1, 35);
     //style the buttons
     back->setMaximumSize(26, 24);
@@ -100,14 +102,14 @@ QWidget* TopbarController::makeWidget()
     separatorLayout->addWidget(separator, 0, 0);
     innerleft->addWidget(back, 0, 2);
     innerleft->addWidget(forward, 0, 3);
-    innermiddle->addWidget(music, 0, 1);
-    innermiddle->addWidget(videos, 0, 1);
+    innermiddle->addWidget(music, 0, 2);
+    innermiddle->addWidget(videos, 0, 2);
     innermiddle->setAlignment(videos,Qt::AlignRight);
     innerright->addWidget(search, 0, 0);
     musicState=0;
     videosState=0;
-    connect(music, SIGNAL(clicked()), this, SLOT(musicButtonControl()));
-    connect(videos, SIGNAL(clicked()), this, SLOT(videosButtonControl()));
+    connect(music, SIGNAL(pressed()), this, SLOT(musicButtonControl()));
+    connect(videos, SIGNAL(pressed()), this, SLOT(videosButtonControl()));
     return temp;
 }
 
@@ -125,14 +127,15 @@ void TopbarController::musicButtonControl()
         music->setObjectName("topBarMusicchecked");
         music->setStyleSheet(util.getStylesheet());
         musicState=1;
+        emit musicVideoCheckStateChanged(MusicChecked);
     }
     else
     {
         music->setObjectName("topBarMusic");
         music->setStyleSheet(util.getStylesheet());
         musicState=0;
+        emit musicVideoCheckStateChanged(MusicVideoNotChecked);
     }
-
 }
 
 void TopbarController::videosButtonControl()
@@ -144,11 +147,13 @@ void TopbarController::videosButtonControl()
         music->setObjectName("topBarVideoschecked");
         music->setStyleSheet(util.getStylesheet());
         videosState=1;
+        emit musicVideoCheckStateChanged(VideoChecked);
     }
     else
     {
         music->setObjectName("topBarMusic");
         music->setStyleSheet(util.getStylesheet());
         videosState=0;
+        emit musicVideoCheckStateChanged(MusicVideoNotChecked);
     }
 }

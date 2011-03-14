@@ -37,7 +37,7 @@ public slots:
     void changePosition(int newPosition);
     void changeVolume(int newVolume);
     void playControl();
-    void muteAudio();
+    void muteAudio(int);
     void sliderUpdate();
     void test();
 
@@ -45,6 +45,8 @@ signals:
     void sliderChanged(int newValue);
     void getNextFile();
     void getFirstSong();
+    void paused();
+    void play();
 
 };
 

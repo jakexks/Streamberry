@@ -10,7 +10,7 @@ Player::Player()
                   //"-I", "dummy", /* Don't use any interface */
                   //"--ignore-config", /* Don't use VLC's config */
                   /*"--extraintf=logger", //log anything*/
-                  "--verbose=2",
+                  "--verbose=0",
                   //"--aout=pulse",
                   //"--noaudio"
                   //"--plugin-path=C:\\vlc-0.9.9-win32\\plugins\\"
@@ -100,6 +100,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     libvlc_media_release (_m);
     libvlc_media_player_play (_mp);
     _isPlaying=true;
+    emit play();
 
     /*if(remote)
     {
@@ -148,12 +149,14 @@ void Player::playControl()
     if(libvlc_media_player_is_playing(_mp))
     {
         libvlc_media_player_pause(_mp);
+        emit paused();
     } else {
         libvlc_media_player_play(_mp);
+        emit play();
     }
 }
 
-void Player::muteAudio()
+void Player::muteAudio(int i)
 {
     libvlc_audio_toggle_mute(_mp);
 }

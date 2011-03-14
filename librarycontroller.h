@@ -23,21 +23,23 @@ public:
     void addHeaders();
     void fillData(QList<QSqlRecord>* values);
     void makeWidget();
-    void setHeaders(QList<QString>& headers, int sortcol);
+    void setHeaders(QStringList& headers, int sortcol);
+
 signals:
-    void needNewLibrary();
+    void songInfoData(QString album, QString artist, QString title, QString track);
 
 public slots:
     void sortLibrary();
     void deselectFirst();
     void sortIndicatorChanged(int index,Qt::SortOrder order);
     void sectionResized(int logicalindex, int oldsize, int newsize);
-    void itemClicked(int row, int column);
+    void itemClicked(int row);
     void playNextFile();
     void playPrevFile();
     void displaythis(QList<QSqlRecord>*);
     void setSearchText(QString text);
     void updateLibrary();
+    void musicVideoFilter(int value);
 private:
     Utilities& util;
     QWidget* widget;
@@ -46,6 +48,7 @@ private:
     int headercount;
     int sortcolumn;
     int currentlyplaying;
+    int musicvideofilter;
     Qt::SortOrder sortorder;
     QString** curheaders;
     QTableWidget* tablewidget;

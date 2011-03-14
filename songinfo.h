@@ -9,19 +9,21 @@ class SongInfo: public QObject
     Q_OBJECT;
 public:
     SongInfo(Utilities& utilities);
-    ~SongInfo();
     QWidget* getWidget();
-    QWidget* settext(QString album, QString artist, QString song);
     void update();
+    void setText(QString album, QString artist, QString title, QString track);
 
 private:
     Utilities& util;
     QWidget* widget;
-    QFontMetrics* fontmetrics;
     QGridLayout *temp;
+    QLabel *titlelabel;
+    QLabel *artistlabel;
+    QLabel *albumlabel;
+    QFrame *line;
 
 public slots:
-    void updatelabels(QString album, QString artist, QString song);
+    void updateLabels(QString album, QString artist, QString title, QString track);
 };
 
 #endif // SONGINFO_H

@@ -11,28 +11,43 @@ SongInfo::SongInfo(Utilities &utilities) : util(utilities)
     widget->setStyleSheet(util.getStylesheet());
     widget->setObjectName("songInfo");
     widget->setFixedSize(222,96);
-    QFont font;
 
-    font.setStyleHint(QFont::System, QFont::PreferAntialias);
-    fontmetrics = new QFontMetrics(font);
-    QLabel *line = new QLabel();
+    line = new QFrame();
     line->setObjectName("songInfoLine");
     line->setStyleSheet(util.getStylesheet());
-    line->setMaximumWidth(1);
-    line->setMinimumHeight(70);
-    QWidget* labels = settext(" ", " ", " ");
-    temp->addWidget(line,0,0);
-    temp->setAlignment(line,Qt::AlignRight);
-    temp->addWidget(labels,0,1);
-//    labels=settext("1","2","3");
-//    temp->addWidget(labels,0,1);
-  //temp->update();
-}
+    line->hide();
+    line->setFixedSize(1, 70);
 
-SongInfo::~SongInfo()
-{
-    delete widget;
-    delete fontmetrics;
+    QGridLayout *layout = new QGridLayout();
+    layout->setSpacing(0);
+    layout->setMargin(0);
+
+    albumlabel= new QLabel();
+    artistlabel= new QLabel();
+    titlelabel= new QLabel();
+
+    albumlabel->setMaximumSize(180,20);
+    albumlabel->setMinimumSize(180,20);
+    albumlabel->setObjectName("songInfoLabelBold");
+    albumlabel->setStyleSheet(util.getStylesheet());
+
+    artistlabel->setMaximumSize(180,20);
+    artistlabel->setMinimumSize(180,20);
+    artistlabel->setObjectName("songInfoLabelBold");
+    artistlabel->setStyleSheet(util.getStylesheet());
+
+    titlelabel->setObjectName("songInfoLabel");
+    titlelabel->setStyleSheet(util.getStylesheet());
+    titlelabel->setMaximumSize(180,20);
+    titlelabel->setMinimumSize(180,20);
+
+    layout->addWidget(titlelabel, 0, 1);
+    layout->addWidget(artistlabel, 1, 1);
+    layout->addWidget(albumlabel, 2, 1);
+
+    temp->addLayout(layout, 0, 1);
+    temp->setAlignment(line, Qt::AlignVCenter | Qt::AlignRight);
+    temp->addWidget(line, 0, 0);
 }
 
 QWidget* SongInfo::getWidget()
@@ -40,40 +55,39 @@ QWidget* SongInfo::getWidget()
     return widget;
 }
 
-QWidget* SongInfo::settext(QString album, QString  artist, QString  song)
+void SongInfo::setText(QString album, QString artist, QString title, QString track)
 {
-    QWidget *tempw = new QWidget();
-    QGridLayout *temp = new QGridLayout(tempw);
-    temp->setSpacing(0);
-    temp->setMargin(0);
+    if(track!="")
+    {
+        track += ". ";
+        track += title;
+        title = track;
+    }
 
-    album=fontmetrics->elidedText(album,Qt::ElideRight,180);
-    artist=fontmetrics->elidedText(artist,Qt::ElideRight,180);
-    song=fontmetrics->elidedText(song,Qt::ElideRight,180);
+    if(album!="" || artist!="" || title!="" || track!="")
+    {
+        line->show();
+    }
+    else
+    {
+        line->hide();
+    }
 
-    QLabel *albumlabel= new QLabel(album);
-    albumlabel->setMaximumSize(180,20);
-    albumlabel->setMinimumSize(180,20);
-    albumlabel->setObjectName("songInfoLabel");
-    albumlabel->setStyleSheet(util.getStylesheet());
-    QLabel *artistlabel= new QLabel(artist);
-    artistlabel->setMaximumSize(180,20);
-    artistlabel->setMinimumSize(180,20);
-    artistlabel->setObjectName("songInfoLabel");
-    artistlabel->setStyleSheet(util.getStylesheet());
-    QLabel *songlabel= new QLabel(song);
-    songlabel->setMaximumSize(180,20);
-    songlabel->setMinimumSize(180,20);
+    QFont font;
+    font.setStyleHint(QFont::System, QFont::PreferAntialias);
+    QFontMetrics fontmetrics(font);
 
-    temp->addWidget(songlabel, 0, 1);
-    temp->addWidget(artistlabel, 1, 1);
-    temp->addWidget(albumlabel, 2, 1);
-    return tempw;
+    album=fontmetrics.elidedText(album,Qt::ElideRight,180);
+    artist=fontmetrics.elidedText(artist,Qt::ElideRight,180);
+    title=fontmetrics.elidedText(title,Qt::ElideRight,180);
+
+    albumlabel->setText(album);
+    artistlabel->setText(artist);
+    titlelabel->setText(title);
 }
 
-void SongInfo::updatelabels(QString album, QString  artist, QString  song)
+void SongInfo::updateLabels(QString album, QString artist, QString title, QString track)
 {
-QWidget* labels = settext(album, artist, song);
+    setText(album, artist, title, track);
 
- temp->addWidget(labels,0,1);
 }
