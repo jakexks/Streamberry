@@ -143,6 +143,7 @@ void Player::changePosition(int newPosition)
         tosend += n.getuniqid();
         tosend += "|";
         tosend += QString::number(pos);
+        qDebug() << "SEEKING TO: " << pos;
         stream.send(remoteIP, 45459, tosend);
         currSecs = pos*fileLength;
     } else {
@@ -161,7 +162,7 @@ void Player::playControl()
     if(currIP == "127.0.0.1")
     {
         QString tosend = "";
-        tosend += "STREAMBERRY|PLAY|";
+        tosend += "STREAMBERRY|PAUSE|";
         tosend += n.getuniqid();
         stream.send(remoteIP, 45459, tosend);
     } else {
@@ -200,11 +201,11 @@ void Player::sliderUpdate()
     int sliderPos;
     if(currIP == "127.0.0.1")
     {
-        currSecs += poller->interval()/1000;
+        currSecs += (float)poller->interval()/1000;
         sliderPos = (int)(currSecs * (float)(POSITION_RESOLUTION));
     } else {
         float pos=libvlc_media_player_get_position (_mp);
-        sliderPos=(int)(pos*(float)(POSITION_RESOLUTION));
+        sliderPos=(int)(pos * (float)(POSITION_RESOLUTION));
     }
 
     if(libvlc_media_player_get_state(_mp) == 6)//Stop if ended

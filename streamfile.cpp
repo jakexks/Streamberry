@@ -47,15 +47,19 @@ void StreamFile::playStream(QString compID)
 void StreamFile::pauseStream(QString compID)
 {
     //If playing something, then pause
-    if(isplaying.value(compID))
+    if(ispaused.value(compID)==0)
     {
+        int pos = getStreamPosition(compID)*10000;
         libvlc_vlm_pause_media(_vlcinstance, compID.toAscii());
-        isplaying[compID] = false;
+        qDebug() << pos;
+        ispaused[compID] = pos;
     }
     else
     {
+        qDebug() << ispaused.value(compID);
+        seekStream(compID, (float)ispaused.value(compID)/10000);
         libvlc_vlm_play_media(_vlcinstance, compID.toAscii());
-        isplaying[compID] = true;
+        ispaused[compID] = 0;
     }
 }
 
@@ -107,12 +111,13 @@ void StreamFile::parseMessage(QString message)
 
     qDebug() << "RECEIVED IN STREAMER" << message;
 
-    QString uniqueID = split.at(3);
-    QString ipaddress = split.at(2);
-    QString filepath = split.at(4);
+
 
     if(split.at(1)=="PLAY")
     {
+        QString uniqueID = split.at(3);
+        QString ipaddress = split.at(2);
+        QString filepath = split.at(4);
         //Check if something is playing
         if(libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii())!=NULL)
         {
@@ -126,7 +131,7 @@ void StreamFile::parseMessage(QString message)
                 removeStream(uniqueID.toAscii());
                 addStream(filepath, uniqueID, ipaddress);
             }
-            isplaying[uniqueID] = true;
+            ispaused[uniqueID] = 0;
             /*qDebug() << libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii());
             stopStream(uniqueID);
             removeStream(uniqueID);
@@ -135,7 +140,7 @@ void StreamFile::parseMessage(QString message)
             qDebug() << libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii());*/
             //sleep(2);
         } else {
-            isplaying[uniqueID] = true;
+            ispaused[uniqueID] = 0;
             addStream(filepath, uniqueID, ipaddress);
         }
         QString tosend = "";

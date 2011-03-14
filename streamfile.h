@@ -33,7 +33,7 @@ private:
     libvlc_instance_t *_vlcinstance;
     StreamRequest stream;
     Player& player;
-    QHash<QString, bool> isplaying;
+    QHash<QString, int> ispaused;
 
 private slots:
     void parseMessage(QString message);
