@@ -44,6 +44,7 @@ int Filescan::build_new()
     db.updateLocalTimestamp(QString::number(Utilities::getCurrentTimestamp()));
     db.query("COMMIT;");
     qDebug() << "File Scan Completed";
+    emit finishedFileScan();
     return 1;
   }
   catch(SBException e)
@@ -84,7 +85,7 @@ int Filescan::build_new_clean()
     qDebug() << "Clean File Scan Completed";
     db.query("COMMIT;");
     db.updateLocalTimestamp(QString::number(Utilities::getCurrentTimestamp()));
-
+    emit finishedFileScan();
     return 1;
   }
   catch(SBException e)
