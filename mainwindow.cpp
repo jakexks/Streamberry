@@ -74,6 +74,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
     QObject::connect(playbackcontroller, SIGNAL(prevFile()), librarycontroller, SLOT(playPrevFile()));
     QObject::connect(topbarcontroller, SIGNAL(musicVideoCheckStateChanged(int)), librarycontroller, SLOT(musicVideoFilter(int)));
     QObject::connect(librarycontroller, SIGNAL(songInfoData(QString,QString,QString,QString)), playbackcontroller->getSongInfo(), SLOT(updateLabels(QString,QString,QString,QString)));
+    QObject::connect(&fs, SIGNAL(finishedFileScan()), librarycontroller, SLOT(updateLibrary()));
 
     setCentralWidget(centralwidget);
 }
