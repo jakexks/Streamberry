@@ -84,9 +84,7 @@ QWidget* PlaybackController::makeWidget()
     mute->setFlat(true);
 
     songinfoarea = new SongInfo(util);
-    //songinfoarea->updatelabels("1111111111111111","2","3");
-    volumeslider = new VolumeSlider();
-    volumeslider->setObjectName("bottomBarVolumeslider");
+    volumeslider = new VolumeSlider(util);
     volumeslider->setFixedWidth(110);
 
     temp->addWidget(songinfoarea->getWidget(), 0, 0);
@@ -108,9 +106,8 @@ QWidget* PlaybackController::makeWidget()
 
     //5760 is the highest
     connect(playbutton, SIGNAL(clicked()), &player, SLOT(playControl()));
-
- //   connect(&player, SIGNAL(currentlyPlayingFile), &songinfoarea, SLOT(updatelabels(QString album, QString  artist, QString  song)));
     connect(volumeslider, SIGNAL(valueChanged(int)), &player, SLOT(changeVolume(int)));
+  //  connect(volumeslider, SIGNAL(sliderPressed()), &player, SLOT(updateLastPos()));
     connect(volumeslider, SIGNAL(valueChanged(int)), this, SLOT(muteSlider()));
     connect(&player, SIGNAL(paused()), playbutton, SLOT(changeNamePause()));
     connect(&player, SIGNAL(play()), playbutton, SLOT(changeNamePlay()));

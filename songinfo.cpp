@@ -75,6 +75,7 @@ void SongInfo::setText(QString album, QString artist, QString title, QString tra
 
     QFont font;
     font.setStyleHint(QFont::System, QFont::PreferAntialias);
+    font.setBold(true);
     QFontMetrics fontmetrics(font);
 
     album=fontmetrics.elidedText(album,Qt::ElideRight,180);

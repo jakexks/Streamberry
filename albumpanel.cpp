@@ -3,13 +3,14 @@
 #include <QWidget>
 #include <QColor>
 
-AlbumPanel::AlbumPanel(QString path, QWidget *parent) :
-    QWidget(parent)
+
+AlbumPanel::AlbumPanel(Utilities& utilities, QString path, QWidget *parent) :
+    util(utilities),QWidget(parent)
 {
     expath = path;
     grid = new QGridLayout(this);
     grid->setSpacing(0);
-    grid->setMargin(15);
+    grid->setMargin(8);
     QWidget *art = makeAlbumArt();
     grid->addWidget(art,0,0);
     grid->setRowStretch(0, 0);
@@ -20,7 +21,8 @@ AlbumPanel::AlbumPanel(QString path, QWidget *parent) :
 
 QWidget *AlbumPanel::makeAlbumArt() {
     QWidget *artwork = new QWidget();
-    artwork->setFixedSize(100,100);
-    artwork->setStyleSheet("background-color:green;");
+    artwork->setFixedSize(111,111);
+    artwork->setObjectName("AlbumArtPicture");
+    artwork->setStyleSheet(util.getStylesheet());
     return artwork;
 }

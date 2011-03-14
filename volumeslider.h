@@ -2,17 +2,19 @@
 #define VOLUMESLIDER_H
 
 #include <QSlider>
+#include "utilities.h"
 
 class VolumeSlider : public QSlider
 {
     Q_OBJECT
 public:
-    explicit VolumeSlider(QWidget *parent = 0);
+    explicit VolumeSlider(Utilities& utilities, QWidget *parent = 0);
     QSlider*volumeslider;
 
 private:
     int lastposition;
     bool muted;
+    Utilities& util;
 
 signals:
 

@@ -57,6 +57,7 @@ QString Utilities::makeStylesheet()
     //library
     style+="#libraryTableWidget {background: #292929; border: none; padding:0px; color:#e1e1e1; selection-background-color:#8FB1BB; selection-color:#0b0b0b;}";
     style+="#albumArt {background-color: #181818; border-bottom:1px solid #121212}";
+    style+="#AlbumArtPicture {background: url(EXECPATHimages/defaultAlbumArt02_111.png) no-repeat; border: none; padding:0px;}";
     //side bar
     style+="#sideBarMainWidget {background-color: #D7E4E8; padding:0px; border-right:1px solid #9c9c9c;}";
 
@@ -87,6 +88,15 @@ QString Utilities::makeStylesheet()
     style+="#playbutton:pressed {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPlayDown.png); border: none; padding:0px;}";
     style+="#pausebutton {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPauseUp.png); border: none; padding:0px;}";
     style+="#pausebutton:pressed {background-color:rbg(0,0,0,0); background-repeat:none; background-image:url(EXECPATHimages/botBarPauseDown.png); border: none; padding:0px;}";
+
+    style+="#bottomBarVolumeslider {height:16px; background:url(EXECPATHimages/volumeBorderTr.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarVolumeslider:groove:horizontal {background:url(EXECPATHimages/volumeBackgroundTr.png); height: 16px;width:110px; margin: 0px 1px 0px 2px;}";
+    style+="#bottomBarVolumeslider:handle:horizontal { background:url(EXECPATHimages/volumeHandle02.png); border: none; width: 15px; height:14px; margin: 0px 2px 2px 0px;}";
+    style+="#bottomBarVolumeslider:sub-page:horizontal {background-color:#50c1e0; margin:1px 0px 2px 3px;height:10px;border-radius:6px; }";
+    style+="#bottomBarVolumesliderMuted {height:16px; background:url(EXECPATHimages/volumeBorderTr.png) no-repeat; border: none; padding:0px;}";
+    style+="#bottomBarVolumesliderMuted:groove:horizontal {background:url(EXECPATHimages/volumeBackgroundTr.png); height: 16px;width:110px; margin: 0px 1px 0px 2px;}";
+    style+="#bottomBarVolumesliderMuted:handle:horizontal { background:url(EXECPATHimages/volumeHandle02.png); border: none; width: 15px; height:14px; margin: 0px 2px 2px 0px;}";
+    style+="#bottomBarVolumesliderMuted:sub-page:horizontal {}";
     style.replace("EXECPATH", execpath);
 
     return style;
