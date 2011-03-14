@@ -202,7 +202,8 @@ void Player::sliderUpdate()
     if(currIP == "127.0.0.1")
     {
         currSecs += (float)poller->interval()/1000;
-        sliderPos = (int)(currSecs * (float)(POSITION_RESOLUTION));
+        float pos = currSecs/fileLength;
+        sliderPos = (int)(pos * (float)(POSITION_RESOLUTION));
     } else {
         float pos=libvlc_media_player_get_position (_mp);
         sliderPos=(int)(pos * (float)(POSITION_RESOLUTION));

@@ -7,7 +7,7 @@ StreamFile::StreamFile(Player& _player) : player(_player)
                         "--no-plugins-cache",
                         "--verbose=0",
                         "--ts-out-mtu=10",
-                        "--sout-rtp-caching=500",
+                        "--sout-rtp-caching=10",
                         "--sout-keep",
                     };
 
@@ -50,15 +50,17 @@ void StreamFile::pauseStream(QString compID)
     if(ispaused.value(compID)==0)
     {
         int pos = getStreamPosition(compID)*10000;
-        libvlc_vlm_pause_media(_vlcinstance, compID.toAscii());
+        libvlc_vlm_stop_media(_vlcinstance, compID.toAscii());
         qDebug() << pos;
         ispaused[compID] = pos;
     }
     else
     {
         qDebug() << ispaused.value(compID);
+        //libvlc_vlm_stop_media(_vlcinstance, compID.toAscii());
+
+        playStream(compID);
         seekStream(compID, (float)ispaused.value(compID)/10000);
-        libvlc_vlm_play_media(_vlcinstance, compID.toAscii());
         ispaused[compID] = 0;
     }
 }
@@ -153,6 +155,7 @@ void StreamFile::parseMessage(QString message)
         pauseStream(split.at(2));
     } else if (split.at(1)=="SEEK") {
         seekStream(split.at(2), split.at(3).toFloat());
+
     } else if (split.at(1)=="LENGTH") {
         player.setFileLength(split.at(2).toInt());
     }
