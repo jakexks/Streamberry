@@ -3,17 +3,19 @@
 
 #include <QWidget>
 #include <QGridLayout>
+#include "utilities.h"
 
 
 class AlbumPanel : public QWidget
 {
     Q_OBJECT
 public:
-    explicit AlbumPanel(QString expath, QWidget *parent = 0);
+    explicit AlbumPanel(Utilities& utilities, QString expath, QWidget *parent = 0);
     QWidget *makeAlbumArt();
 private:
     QGridLayout* grid;
     QString expath;
+    Utilities& util;
 signals:
 
 public slots:

@@ -14,7 +14,7 @@
 #include <QGradient>
 
 #define DEFAULT_WIDTH 170
-#define DEFAULT_ARTPANEL_WIDTH 160
+#define DEFAULT_ARTPANEL_WIDTH 140
 
 LibraryController::LibraryController(Utilities& utilities, Database& datab, Player& p, SBSearchBar* searchbar)
     : util(utilities), db(datab), player(p)
@@ -133,6 +133,8 @@ void LibraryController::addHeaders()
     {
         tablewidget->setColumnWidth(0, DEFAULT_ARTPANEL_WIDTH);
     }
+    tablewidget->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
+    tablewidget->horizontalHeader()->setMovable(false);
 
     header = new QTableWidgetItem("");
     tablewidget->setHorizontalHeaderItem(1, header);

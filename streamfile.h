@@ -4,14 +4,16 @@
 #include <vlc/vlc.h>
 #include <QString>
 #include <QObject>
+#include <QHash>
 
 #include "streamrequest.h"
+#include "player.h"
 
 class StreamFile : public QObject
 {
     Q_OBJECT;
 public:
-    StreamFile();
+    StreamFile(Player& _player);
     ~StreamFile();
 
     void addStream(QString fileName, QString compID, QString ipAddress);
@@ -30,6 +32,8 @@ public slots:
 private:
     libvlc_instance_t *_vlcinstance;
     StreamRequest stream;
+    Player& player;
+    QHash<QString, int> ispaused;
 
 private slots:
     void parseMessage(QString message);

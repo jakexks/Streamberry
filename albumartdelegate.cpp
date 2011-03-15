@@ -30,7 +30,7 @@ void AlbumArtDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     editor->setFixedSize(option.rect.size());
     editor->setObjectName("albumArt");
     editor->setStyleSheet(util.getStylesheet());
-    AlbumPanel *p = new AlbumPanel("", editor);
+    AlbumPanel *p = new AlbumPanel(util,"", editor);
     QGridLayout grid(editor);
     grid.setMargin(0);
     grid.setContentsMargins(0,0,0,0);

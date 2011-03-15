@@ -17,6 +17,7 @@ using namespace std;
 
 class Filescan: public QObject
 {
+    Q_OBJECT
 public:
    Filescan(Database &datab);
    ~Filescan();
@@ -25,6 +26,9 @@ public:
                     // folder and it's subfolders to it's library. Returns 1 if successful
    //Same as the above function except cleans out the current database first
    int build_new_clean();
+
+signals:
+   void finishedFileScan();
 
 private:
    QList<QString> checktags(QList<QString> tags, QString filename);
