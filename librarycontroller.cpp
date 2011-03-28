@@ -12,6 +12,7 @@
 #include <QFontMetrics>
 #include "player.h"
 #include <QGradient>
+#include <QContextMenuEvent>
 
 #define DEFAULT_WIDTH 170
 #define DEFAULT_ARTPANEL_WIDTH 140
@@ -49,6 +50,8 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     currentdata = NULL;
     paneldelegate = new AlbumArtDelegate(util);
     makeWidget();
+
+    trackmenu = new TrackContext();
 
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
     QObject::connect(&player, SIGNAL(getFirstSong()), this, SLOT(playNextFile()));
@@ -91,6 +94,9 @@ void LibraryController::makeWidget()
 
     tablewidget->setItemDelegateForColumn(0, paneldelegate);
 
+
+    tablewidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(tablewidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowContextMenu(const QPoint&)));
     QObject::connect(tablewidget, SIGNAL(itemSelectionChanged(void)), this, SLOT(deselectFirst(void)));
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
     QObject::connect(tablewidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(itemClicked(int)));
@@ -191,6 +197,7 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
         {
             if(albumstart>-1)
             {
+              if( (i-albumstart)!=1 )
                 tablewidget->setSpan(albumstart, 0, (i-albumstart), 1);
             }
 
@@ -228,6 +235,7 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
 
     if(length>0)
     {
+      if( (length-albumstart)!=1 )
         tablewidget->setSpan(albumstart, 0, (length-albumstart), 1);
     }
 
@@ -494,4 +502,14 @@ LibraryController::~LibraryController()
     }
 
     delete paneldelegate;
+}
+
+void LibraryController::ShowContextMenu(const QPoint& pos)
+{
+  int row = tablewidget->rowAt(  widget->mapToGlobal(pos).y()  );
+  QSqlRecord record = currentdata->at(row);
+  QString file = record.field("ID").value().toString();
+  QString uniqueID = record.field("UniqueID").value().toString();
+
+  trackmenu->trackRightClicked(file, uniqueID, this);
 }

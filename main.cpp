@@ -58,8 +58,9 @@ int main(int argc, char *argv[])
 
 //    db.setFolders("/Users/Robbie/Music/Albums/");
     //db.setFolders("/home/vity/Music/");
-    //db.setFolders("C:\\Users\\Jim\\Music");
-    db.setFolders("/host/new/");
+    db.setFolders("C:\\Users\\Jim\\Music\\TEST");
+    db.setFolders("C:\\Users\\Jim\\Videos");
+    //db.setFolders("/host/new/");
     //db.setFolders("C:\\Users\\2kah\\Music\\THE LOCAL CHEESE PLAYLIST THAT EVER WAS");
 //    db.setFolders("/streamberrytest/");
 

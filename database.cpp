@@ -150,6 +150,21 @@ QSqlQuery Database::query(QString sql)
 {
     if(!connected) throw SBException(DB, "Cannot run query, not connected to database.");
     int i=0;
+    QSqlQuery query(db);
+    query.prepare(sql);
+    if(!query.exec())
+    {
+      QString s = "SQL failed: ";
+      s += query.lastError().text();
+      throw SBException(DB, s);
+    }
+    return query;
+}
+
+QSqlQuery Database::querysplit(QString sql)
+{
+    if(!connected) throw SBException(DB, "Cannot run query, not connected to database.");
+    int i=0;
     QList<QString> queries = sql.split(";", QString::SkipEmptyParts);
     QSqlQuery query(db);
     for(i=0; i<queries.size(); i++)
@@ -386,9 +401,14 @@ int Database::rowCount(QString tablename)
     }
 }
 
-void Database::addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString trackno, QString bitrate, QString filetype, QString table, QString UniqueID)
+void Database::addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString trackno, QString bitrate, QString filetype, QString table, QString UniqueID, int mov)
 {
     int timestamp = Utilities::getCurrentTimestamp();
+    QString musicorvideo;
+    if(mov == 2)
+      musicorvideo = "1";
+    else
+      musicorvideo = "0";
     QString sql;
     sql = "INSERT OR REPLACE INTO ";
     sql += table;
@@ -422,8 +442,11 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     sql += filetype;
     sql += "\", ";
     sql += trackno;
-    sql += ", \"0\");";
-//    qDebug() << sql;
+    sql += ", \"";
+    sql += musicorvideo;
+    sql += "\");";
+    //qDebug() << sql;
+    qDebug() << "QUERY ABOVE";
     try
     {
         query(sql);
@@ -830,12 +853,14 @@ void Database::PlaylistAddTracks(QList<QString> Tracks, QString Playlist)
     QString sql = "DELETE FROM PlaylistTracks WHERE Playlist = \"";
     sql += Playlist;
     sql += "\";";
+    query(sql);
     for(i = 0; i < Tracks.size() ; i++)
     {
         QString trackid = Tracks.at(i);
         QStringList list1 = trackid.split(":");
         QString id = list1.at(0);
         QString uniqueid = list1.at(1);
+        QString sql;
         sql += "INSERT INTO PlaylistTracks (UniqueID, ID, Playlist) VALUES (\"";
         sql += uniqueid;
         sql += "\", ";
@@ -843,8 +868,8 @@ void Database::PlaylistAddTracks(QList<QString> Tracks, QString Playlist)
         sql += ", \"";
         sql += Playlist;
         sql += "\");";
+        query(sql);
     }
-    query(sql);
 }
 
 QList<QSqlRecord>* Database::getTracks( QList<QString> Tracks)
