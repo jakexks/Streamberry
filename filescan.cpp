@@ -153,7 +153,7 @@ void Filescan::addFiles(QDir path, QString homeID)
 
           tags = checktags(file.printMeta(newfile.absoluteFilePath()), newfile.fileName());
           QString filepathnew = newfile.absoluteFilePath();
-          filepathnew.replace(";", "\;");
+          filepathnew.replace(";", "\\;");
 
           db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", newfile.suffix(), (QString)localTable, homeID, mov);
         }
@@ -169,7 +169,7 @@ void Filescan::addFiles(QDir path, QString homeID)
         try
         {
           QString filepathnew = newfile.absoluteFilePath();
-          filepathnew.replace(";", "\;");
+          filepathnew.replace(";", "\\;");
           qDebug() << "HERE Now";
           qDebug() << mov;
           db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), "Unknown Director", "Unknown Producer", newfile.fileName(), "Unknown Genre", "0", "-1", "0", "0", (QString)"1411", newfile.suffix(), (QString)localTable, homeID, mov);
@@ -199,7 +199,7 @@ void Filescan::addFile(QString filepath, QString homeID)
     {
       tags = checktags(file.printMeta(newfile.absoluteFilePath()), newfile.fileName());
       QString filepathnew = newfile.absoluteFilePath();
-      filepathnew.replace(";", "\;");
+      filepathnew.replace(";", "\\;");
       db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", newfile.suffix(), (QString)localTable, homeID, mov);
     }
     catch (SBException e)
@@ -214,7 +214,7 @@ void Filescan::addFile(QString filepath, QString homeID)
     try
     {
       QString filepathnew = newfile.absoluteFilePath();
-      filepathnew.replace(";", "\;");
+      filepathnew.replace(";", "\\;");
       db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), "Unknown Director", "Unknown Producer", newfile.fileName(), "Unknown Genre", "0", "-1", "0", "0", (QString)"1411", newfile.suffix(), (QString)localTable, homeID, mov);
     }
     catch (SBException e)
@@ -261,10 +261,10 @@ QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
   QString updated10 = tags.at(1);
   QString updated20 = tags.at(2);
   QString updated30 = tags.at(3);
-  tags.replace(0, updated00.replace(";", "\;"));
-  tags.replace(1, updated10.replace(";", "\;"));
-  tags.replace(2, updated20.replace(";", "\;,"));
-  tags.replace(3, updated30.replace(";", "\;"));
+  tags.replace(0, updated00.replace(";", "\\;"));
+  tags.replace(1, updated10.replace(";", "\\;"));
+  tags.replace(2, updated20.replace(";", "\\;,"));
+  tags.replace(3, updated30.replace(";", "\\;"));
   return tags;
 }
 

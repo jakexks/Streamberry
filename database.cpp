@@ -18,10 +18,11 @@ Database::Database()
 {
     db = QSqlDatabase::addDatabase( "QSQLITE" );
     connected = false;
-    localUniqueId = "Local"; //////REQUIRES CHANGE this should draw the actually unique ID from networking, but not yet!
+    localUniqueId = "Local";
     dbfilename = "database.sqlite";
     initialise();
 }
+
 
 //deconstructor
 Database::~Database()
@@ -32,6 +33,7 @@ Database::~Database()
         db.close();
     }
 }
+
 
 void Database::connect(QString &path)
 {
@@ -50,6 +52,7 @@ void Database::connect(QString &path)
         }
     }
 }
+
 
 //create database if one does not exist
 void Database::createDatabase(QString &path)
@@ -109,6 +112,7 @@ void Database::createDatabase(QString &path)
     }
 }
 
+
 void Database::initialise()
 {
     QString path = CrossPlatform::getAppDataPath();
@@ -133,6 +137,7 @@ void Database::initialise()
     }
 }
 
+
 void Database::setAllOffline()
 {
     try
@@ -145,6 +150,7 @@ void Database::setAllOffline()
         throw e;
     }
 }
+
 
 QSqlQuery Database::query(QString sql)
 {
@@ -182,6 +188,7 @@ QSqlQuery Database::querysplit(QString sql)
     return query;
 }
 
+
 void Database::updateLocalTimestamp(QString timestamp)
 {
     try
@@ -196,6 +203,7 @@ void Database::updateLocalTimestamp(QString timestamp)
         throw e;
     }
 }
+
 
 void Database::storeSetting(QString name, QString value)
 {
@@ -214,6 +222,7 @@ void Database::storeSetting(QString name, QString value)
         throw e;
     }
 }
+
 
 QString Database::getSetting(QString name)
 {
@@ -241,6 +250,7 @@ QString Database::getSetting(QString name)
 
 }
 
+
 void Database::setFolders(QString folders) {
     try
     {
@@ -251,6 +261,7 @@ void Database::setFolders(QString folders) {
         throw e;
     }
 }
+
 
 void Database::setFolders(QStringList folderlist)
 {
@@ -295,6 +306,7 @@ void Database::setFolders(QStringList folderlist)
 
 }
 
+
 QStringList Database::getFolders(int trackedOrExcluded)
 {
     QStringList folderlist;
@@ -333,6 +345,7 @@ QStringList Database::getFolders(int trackedOrExcluded)
     return folderlist;
 }
 
+
 QString Database::lastUpdate(QString uniqueid)
 {
     QString sql = "SELECT TimeLastUpdated FROM LibIndex WHERE UniqueID='";
@@ -358,6 +371,7 @@ QString Database::lastUpdate(QString uniqueid)
     }
 }
 
+
 void Database::setOnline(QString uniqueID, QString status)
 {
     QSqlQuery result;
@@ -380,6 +394,8 @@ void Database::setOnline(QString uniqueID, QString status)
         throw e;
     }
 }
+
+
 int Database::rowCount(QString tablename)
 {
     QSqlQuery result;
@@ -457,6 +473,7 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     }
 }
 
+
 int Database::deleteFile(QString id, QString table)
 {
     QSqlQuery result;
@@ -476,6 +493,7 @@ int Database::deleteFile(QString id, QString table)
         throw e;
     }
 }
+
 
 QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString>& sortcols, QList<QString> order, int musicorvideo)
 {
@@ -609,6 +627,7 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
 
 }
 
+
 QString Database::getUniqueID()
 {
     QString sql = "SELECT UniqueID FROM LibIndex WHERE Local = 1";
@@ -624,6 +643,7 @@ QString Database::getUniqueID()
         throw e;
     }
 }
+
 
 void Database::setIPaddress(QString uniqueID, QString ipaddress)
 {
@@ -645,6 +665,7 @@ void Database::setIPaddress(QString uniqueID, QString ipaddress)
         throw e;
     }
 }
+
 
 QString Database::getIPfromUID(QString uniqueID)
 {
@@ -671,6 +692,7 @@ QString Database::getIPfromUID(QString uniqueID)
         throw e;
     }
 }
+
 
 /*void Database::setUniqueID()
 {
@@ -771,6 +793,8 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
 
     return final;
 }
+
+
 void Database::makeUser(QString timeLastUpdated, QString timeLastOnline, QString uniqueID, QString name)
 {
     try
@@ -816,6 +840,7 @@ QSqlQuery Database::GetPlaylistInfo(QString playlistName)
     return result;
 }
 
+
 QSqlQuery Database::GetPlaylistTracks(QString playlistName)
 {
     QSqlQuery result;
@@ -825,6 +850,7 @@ QSqlQuery Database::GetPlaylistTracks(QString playlistName)
     result = query(sql);
     return result;
 }
+
 
 void Database::PlaylistSave(QString name, int smart, QString filter)
 {
@@ -846,6 +872,7 @@ void Database::PlaylistSave(QString name, int smart, QString filter)
     sql += ");";
     query(sql);
 }
+
 
 void Database::PlaylistAddTracks(QList<QString> Tracks, QString Playlist)
 {
@@ -872,6 +899,7 @@ void Database::PlaylistAddTracks(QList<QString> Tracks, QString Playlist)
     }
 }
 
+
 QList<QSqlRecord>* Database::getTracks( QList<QString> Tracks)
 {
     QString trackid;
@@ -897,6 +925,7 @@ QList<QSqlRecord>* Database::getTracks( QList<QString> Tracks)
     }
     return result;
 }
+
 
 void Database::removePlaylist(QString name)
 {
