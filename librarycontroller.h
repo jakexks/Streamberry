@@ -3,6 +3,7 @@
 
 #include "utilities.h"
 #include "albumartdelegate.h"
+#include "trackcontext.h"
 #include "database.h"
 #include <sbsearchbar.h>
 #include <QtGui>
@@ -40,6 +41,8 @@ public slots:
     void setSearchText(QString text);
     void updateLibrary();
     void musicVideoFilter(int value);
+    void ShowContextMenu(const QPoint& pos);
+
 private:
     Utilities& util;
     QWidget* widget;
@@ -59,6 +62,7 @@ private:
     QString searchtext;
     QList<QString> *sortcols;
     QList<QString> *orders;
+    TrackContext* trackmenu;
 };
 
 #endif // LIBRARYCONTROLLER_H

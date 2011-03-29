@@ -51,7 +51,8 @@ SOURCES +=  main.cpp\
     volumeslider.cpp \
 	settingsdialog.cpp \
 	misctab.cpp \
-    sharingtab.cpp
+    sharingtab.cpp \
+    trackcontext.cpp
 
 
 HEADERS +=  mainwindow.h\
@@ -90,4 +91,5 @@ HEADERS +=  mainwindow.h\
     volumeslider.h \
 	settingsdialog.h \
 	misctab.h \
-    sharingtab.h
+    sharingtab.h \
+    trackcontext.h

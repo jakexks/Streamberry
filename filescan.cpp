@@ -140,21 +140,45 @@ void Filescan::addFiles(QDir path, QString homeID)
   fileList = path.entryInfoList();
   if(!fileList.isEmpty())
   {
-
     for(int i = 0; i<fileList.size(); i++)
     {
-      if(ismedia(fileList.at(i))==1)
+
+      QFileInfo newfile = fileList.at(i);
+      int mov =0;
+      mov = ismedia(newfile);
+      if(mov ==1 )
       {
         try
         {
-          tags = checktags(file.printMeta(fileList.at(i).absoluteFilePath()), fileList.at(i).fileName());
-          db.addFile(fileList.at(i).absoluteFilePath(), fileList.at(i).fileName(), QString::number(fileList.at(i).size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", fileList.at(i).suffix(), (QString)localTable, homeID);
+
+          tags = checktags(file.printMeta(newfile.absoluteFilePath()), newfile.fileName());
+          QString filepathnew = newfile.absoluteFilePath();
+          filepathnew.replace(";", "\\;");
+
+          db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", newfile.suffix(), (QString)localTable, homeID, mov);
         }
         catch (SBException e)
         {
-            qDebug() << e.getException();
-            qDebug() << fileList.at(i).fileName();
-            qDebug() << " is broken";
+          qDebug() << e.getException();
+          qDebug() << newfile.fileName();
+          qDebug() << " is broken";
+        }
+      }
+      else if(mov ==2)
+      {
+        try
+        {
+          QString filepathnew = newfile.absoluteFilePath();
+          filepathnew.replace(";", "\\;");
+          qDebug() << "HERE Now";
+          qDebug() << mov;
+          db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), "Unknown Director", "Unknown Producer", newfile.fileName(), "Unknown Genre", "0", "-1", "0", "0", (QString)"1411", newfile.suffix(), (QString)localTable, homeID, mov);
+        }
+        catch (SBException e)
+        {
+          qDebug() << e.getException();
+          qDebug() << newfile.fileName();
+          qDebug() << " is broken";
         }
       }
     }
@@ -167,12 +191,31 @@ void Filescan::addFile(QString filepath, QString homeID)
   QList<QString> tags;
   QFileInfo newfile(filepath);
   QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-  if(ismedia(newfile)==1)
+  int mov;
+  mov = ismedia(newfile);
+  if(mov ==1 )
   {
     try
     {
       tags = checktags(file.printMeta(newfile.absoluteFilePath()), newfile.fileName());
-      db.addFile(newfile.absoluteFilePath(), newfile.fileName(), QString::number(newfile.size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", newfile.suffix(), (QString)localTable, homeID);
+      QString filepathnew = newfile.absoluteFilePath();
+      filepathnew.replace(";", "\\;");
+      db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", newfile.suffix(), (QString)localTable, homeID, mov);
+    }
+    catch (SBException e)
+    {
+      qDebug() << e.getException();
+      qDebug() << newfile.fileName();
+      qDebug() << " is broken";
+    }
+  }
+  else if(mov ==2)
+  {
+    try
+    {
+      QString filepathnew = newfile.absoluteFilePath();
+      filepathnew.replace(";", "\\;");
+      db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), "Unknown Director", "Unknown Producer", newfile.fileName(), "Unknown Genre", "0", "-1", "0", "0", (QString)"1411", newfile.suffix(), (QString)localTable, homeID, mov);
     }
     catch (SBException e)
     {
@@ -218,10 +261,10 @@ QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
   QString updated10 = tags.at(1);
   QString updated20 = tags.at(2);
   QString updated30 = tags.at(3);
-  tags.replace(0, updated00.replace(";", ","));
-  tags.replace(1, updated10.replace(";", ","));
-  tags.replace(2, updated20.replace(";", ","));
-  tags.replace(3, updated30.replace(";", ","));
+  tags.replace(0, updated00.replace(";", "\\;"));
+  tags.replace(1, updated10.replace(";", "\\;"));
+  tags.replace(2, updated20.replace(";", "\\;,"));
+  tags.replace(3, updated30.replace(";", "\\;"));
   return tags;
 }
 
@@ -233,23 +276,28 @@ int Filescan::ismedia(QFileInfo file)
   if( QString::compare("wav",name)==0   || QString::compare("mp3",name)==0   ||
       QString::compare("wma",name)==0   || QString::compare("ogg",name)==0   ||
       QString::compare("aac",name)==0   || QString::compare("mid",name)==0   ||
-      QString::compare("m2v",name)==0   || QString::compare("m4v",name)==0   ||
-      QString::compare("flac",name)==0  || QString::compare("wmv",name)==0   ||
-      QString::compare("mpeg1",name)==0 || QString::compare("oma",name)==0   ||
-      QString::compare("mpeg2",name)==0 || QString::compare("ts",name)==0    ||
-      QString::compare("divx",name)==0  || QString::compare("vob",name)==0   ||
-      QString::compare("dv",name)==0    || QString::compare("avi",name)==0   ||
-      QString::compare("flv",name)==0   || QString::compare("mpeg",name)==0  ||
-      QString::compare("m1v",name)==0   || QString::compare("mpg",name)==0   ||
-      QString::compare("mov",name)==0   || QString::compare("m4a",name)==0   ||
-      QString::compare("mp1",name)==0   || QString::compare("mod",name)==0   ||
-      QString::compare("m4p",name)==0   || QString::compare("mpeg4",name)==0 ||
+      QString::compare("flac",name)==0  || QString::compare("oma",name)==0   ||
+      QString::compare("m4a",name)==0   || QString::compare("mp1",name)==0   ||
+      QString::compare("mod",name)==0   || QString::compare("m4p",name)==0   ||
       QString::compare("mid",name)==0   )
-
   {
     return 1;
   }
-  return 0;
+  else if(
+      QString::compare("m2v",name)==0   || QString::compare("m4v",name)==0   ||
+      QString::compare("wmv",name)==0   || QString::compare("mpeg4",name)==0 ||
+      QString::compare("mpeg1",name)==0 || QString::compare("mpeg2",name)==0 ||
+      QString::compare("ts",name)==0    || QString::compare("divx",name)==0  ||
+      QString::compare("vob",name)==0   || QString::compare("dv",name)==0    ||
+      QString::compare("avi",name)==0   || QString::compare("flv",name)==0   ||
+      QString::compare("mpeg",name)==0  || QString::compare("m1v",name)==0   ||
+      QString::compare("mpg",name)==0   || QString::compare("mov",name)==0
+     )
+  {
+    return 2;
+  }
+  else
+    return 0;
 }
 
 /*//This method takes a filepath and returns 1 if the exact file in question is already in the database

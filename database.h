@@ -29,6 +29,9 @@ public:
     void setFolders(QStringList folderlist);
     //get list of folders for file scanner to search through. returns QStringList containing folders.
 
+    QSqlQuery query(QString sql); //Shouldn't this be private?
+    QSqlQuery querysplit(QString sql);
+
     QStringList getFolders();
     //gets the last update of the library of a specified user
     QString lastUpdate(QString user_name);
@@ -45,7 +48,7 @@ public:
     //counts the number of rows in a table
     int rowCount(QString tablename);
     //adds file to database. if already in database it just updates.
-    void addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString trackno, QString bitrate, QString filetype, QString table, QString UniqueID);
+    void addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString trackno, QString bitrate, QString filetype, QString table, QString UniqueID, int mov);
     void updateLocalTimestamp(QString timestamp);
     //deletes file by ID. returns number of files deleted.
     int deleteFile(QString id, QString table);
@@ -53,8 +56,6 @@ public:
     //type: 0 - all, 1 - artist, 2 - title, 3 - genre, 4 - album
     //return order: Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Length , Bitrate , Filesize , Timestamp , Filetype
     QList<QSqlRecord>* searchDb(int type, QString searchtxt, QList<QString>& sortcols, QList<QString> order, int musicorvideo);
-
-    QSqlQuery query(QString sql); //Shouldn't this be private?
 
     //Returns the UniqueID of the local machine for the use of Filescan
     QString getUniqueID();
@@ -77,6 +78,7 @@ public:
     //Deletes a playlist from the playlist table and it's tracks from the playlistTracks table
     void removePlaylist(QString name);
     QList<QSqlRecord> getAllPlaylists();
+    void togglehidden(QString file, QString uniqueID);
 
 signals:
     void onlineStatusChange();
