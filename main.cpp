@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     //db.setFolders("C:\\Users\\2kah\\Music\\THE LOCAL CHEESE PLAYLIST THAT EVER WAS");
 //    db.setFolders("/streamberrytest/");
 
-    MainWindow w(util, db, player, fs);
+    MainWindow w(util, db, player, fs, &a);
 
     w.show();
 

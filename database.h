@@ -78,6 +78,7 @@ public:
     //Deletes a playlist from the playlist table and it's tracks from the playlistTracks table
     void removePlaylist(QString name);
     QList<QSqlRecord> getAllPlaylists();
+    void togglehidden(QString file, QString uniqueID);
 
 signals:
     void onlineStatusChange();

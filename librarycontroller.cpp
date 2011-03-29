@@ -506,10 +506,12 @@ LibraryController::~LibraryController()
 
 void LibraryController::ShowContextMenu(const QPoint& pos)
 {
-  int row = tablewidget->rowAt(  widget->mapToGlobal(pos).y()  );
+  //For multiple rows too!!
+  int row = tablewidget->selectionModel()->selectedIndexes().at(0).row();
   QSqlRecord record = currentdata->at(row);
-  QString file = record.field("ID").value().toString();
+  QString ID = record.field("ID").value().toString();
   QString uniqueID = record.field("UniqueID").value().toString();
+  trackmenu->trackRightClicked(ID, uniqueID, this, &db);
 
-  trackmenu->trackRightClicked(file, uniqueID, this);
 }
+
