@@ -30,6 +30,5 @@ void SettingsDialog::ok()
 {
     QString strlist = stab->getSelectedFilepaths();
     db.setFolders(strlist);
-    qDebug() << "entered ok";
     emit(accept());
 }

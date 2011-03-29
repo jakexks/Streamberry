@@ -14,6 +14,7 @@ private:
     QTreeView *tree;
     QFileSystemModel *model;
     QStringList selectedfiles;
+    void expandRows(QString filepath);
 };
 
 #endif // SHARINGTAB_H

@@ -16,11 +16,23 @@ SharingTab::SharingTab(QStringList sfiles, QWidget *parent) : selectedfiles(sfil
     for(int i = 0; i < sflength; i++)
     {
         tree->selectionModel()->select(model->index(selectedfiles.at(i)),QItemSelectionModel::SelectCurrent);
+        expandRows(model->filePath(model->index(selectedfiles.at(i)).parent()));
     }
     tree->setColumnWidth(0,300);
     tree->setFixedSize(500,550);
     layout->addWidget(tree);
     setLayout(layout);
+}
+
+void SharingTab::expandRows(QString filepath)
+{
+    if(model->index(filepath).parent() == QModelIndex())
+    {
+        tree->setExpanded(model->index(filepath),true);
+        return;
+    }
+    expandRows(model->filePath(model->index(filepath).parent()));
+    tree->setExpanded(model->index(filepath),true);
 }
 
 SharingTab::~SharingTab()
