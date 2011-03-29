@@ -36,8 +36,8 @@ QList<QString> FileMeta::printMeta(QString file)
     meta.append(currmeta.fromUtf8(libvlc_media_get_meta(_m, libvlc_meta_Date)));
     qDebug() << meta.at(2);
     //NO BITRATE
-    /*libvlc_media_player_get_length(); // length of video
-    libvlc_media_player_get_time(); // current position (milliseconds)*/
+    //libvlc_media_player_get_length(); // length of video
+    //libvlc_media_player_get_time(); // current position (milliseconds)*/
     /*libvlc_media_stats_t p_stats;
     //p_stats = new libvlc_media_stats_t;
     libvlc_media_get_stats(_m, &p_stats);
