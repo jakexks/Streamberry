@@ -8,6 +8,7 @@
 #include "utilities.h"
 #include "database.h"
 #include "filescan.h"
+#include "settingsdialog.h"
 
 #define TOPBARHEIGHT 26
 #define BOTTOMBARHEIGHT 90
@@ -94,17 +95,9 @@ void MainWindow::initialiseGrid()
     mainlayout->setColumnStretch(1, 1);
 }
 
-// Defines all the actions available in the menus
-//void MainWindow::createActions()
-//{
-//    openaction = new QAction(tr("&Open"), this);
-//    openaction->setShortcut(tr("Ctrl+O"));
-//    openaction->setStatusTip(tr("Open a media file stored on your PC"));
-//connect(openaction, SIGNAL(), this, SLOT(openFile()));
-//}
-
 QMenuBar* MainWindow::createMenuBar()
 {
+
     QMenuBar* menubar = new QMenuBar();
     menubar->setNativeMenuBar(true);
     QMenu* menus[6];
@@ -118,11 +111,12 @@ QMenuBar* MainWindow::createMenuBar()
 
     actions[0] = menus[0]->addAction("Exit Streamberry");
 
+
     actions[1] = menus[1]->addAction("Scan Folders for Media");
     actions[2] = menus[1]->addAction("Fresh Scan for Media");
     actions[3] = menus[1]->addAction("Add Individual File");
     menus[2]->addSeparator();
-    actions[5] = menus[1]->addAction("Options");
+  actions[5] = menus[1]->addAction("Settings");
 
     actions[6] = menus[2]->addAction("Play/Pause");
     menus[2]->addSeparator();
@@ -156,7 +150,7 @@ QMenuBar* MainWindow::createMenuBar()
 
     QObject::connect(actions[3], SIGNAL(triggered()), this, SLOT(menuAddFile()));
 
-    QObject::connect(actions[5], SIGNAL(triggered()), this, SLOT(menuOptions()));
+  QObject::connect(actions[5], SIGNAL(triggered()), this, SLOT(menuSettings()));
 
 
 
@@ -219,8 +213,12 @@ void MainWindow::menuAddFile()
 {
 }
 
-void MainWindow::menuOptions()
+void MainWindow::menuSettings()
 {
+    SettingsDialog settingsdialog(db, this);
+    settingsdialog.setModal(true);
+    settingsdialog.show();
+    settingsdialog.exec();
 }
 
 void MainWindow::menuMaximise()

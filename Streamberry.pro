@@ -48,7 +48,10 @@ SOURCES +=  main.cpp\
             songinfo.cpp\
             quitmanager.cpp \
     newnetworking.cpp \
-    volumeslider.cpp
+    volumeslider.cpp \
+	settingsdialog.cpp \
+	misctab.cpp \
+    sharingtab.cpp
 
 
 HEADERS +=  mainwindow.h\
@@ -84,4 +87,7 @@ HEADERS +=  mainwindow.h\
             songinfo.h\
             quitmanager.h \
     newnetworking.h \
-    volumeslider.h
+    volumeslider.h \
+	settingsdialog.h \
+	misctab.h \
+    sharingtab.h

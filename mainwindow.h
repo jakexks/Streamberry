@@ -25,7 +25,7 @@ public slots:
   void menuScan();
   void menuCleanScan();
   void menuAddFile();
-  void menuOptions();
+  void menuSettings();
   void menuMaximise();
   void menuMinimise();
   void menuMinimiseToTray();
