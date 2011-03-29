@@ -48,8 +48,7 @@ SOURCES +=  main.cpp\
             songinfo.cpp\
             quitmanager.cpp \
     newnetworking.cpp \
-    volumeslider.cpp \
-    trackcontext.cpp
+    volumeslider.cpp
 
 
 HEADERS +=  mainwindow.h\
@@ -85,5 +84,4 @@ HEADERS +=  mainwindow.h\
             songinfo.h\
             quitmanager.h \
     newnetworking.h \
-    volumeslider.h \
-    trackcontext.h
+    volumeslider.h
