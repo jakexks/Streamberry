@@ -3,7 +3,7 @@
 
 #include "utilities.h"
 #include "albumartdelegate.h"
-//#include "trackcontext.h"
+#include "trackcontext.h"
 #include "database.h"
 #include <sbsearchbar.h>
 #include <QtGui>
@@ -62,7 +62,7 @@ private:
     QString searchtext;
     QList<QString> *sortcols;
     QList<QString> *orders;
-    //TrackContext* trackmenu;
+    TrackContext* trackmenu;
 };
 
 #endif // LIBRARYCONTROLLER_H

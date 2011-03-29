@@ -51,7 +51,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     paneldelegate = new AlbumArtDelegate(util);
     makeWidget();
 
-    //trackmenu = new TrackContext();
+    trackmenu = new TrackContext();
 
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
     QObject::connect(&player, SIGNAL(getFirstSong()), this, SLOT(playNextFile()));
@@ -511,7 +511,7 @@ void LibraryController::ShowContextMenu(const QPoint& pos)
   QSqlRecord record = currentdata->at(row);
   QString ID = record.field("ID").value().toString();
   QString uniqueID = record.field("UniqueID").value().toString();
-  //trackmenu->trackRightClicked(ID, uniqueID, this, &db);
+  trackmenu->trackRightClicked(ID, uniqueID, this, &db);
 
 }
 
