@@ -66,10 +66,10 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         stream.send(remoteIP, 45459, toSend);
     }
 
-    currIP = "local"; //Change to local
+    currIP = "Local"; //Change to local
     qDebug() << ipaddress;
 
-    if(ipaddress != "local")
+    if(ipaddress != "Local")
     {
         QString toSend = "";
         toSend += "STREAMBERRY|PLAY|";

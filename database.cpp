@@ -155,7 +155,6 @@ void Database::setAllOffline()
 QSqlQuery Database::query(QString sql)
 {
     if(!connected) throw SBException(DB, "Cannot run query, not connected to database.");
-    int i=0;
     QSqlQuery query(db);
     query.prepare(sql);
     if(!query.exec())
@@ -199,6 +198,32 @@ void Database::updateLocalTimestamp(QString timestamp)
         query(sql);
     }
     catch(SBException e)
+    {
+        throw e;
+    }
+}
+
+
+void Database::initialiseScan()
+{
+    try
+    {
+        QString sql = "DROP TABLE IF EXISTS \"Lib";
+        sql += localUniqueId;
+        sql += "Scan\";";
+        query(sql);
+        sql = "CREATE TABLE \"Lib";
+        sql += localUniqueId;
+        sql += "Scan\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
+        query(sql);
+        sql = "INSERT INTO \"Lib";
+        sql += localUniqueId;
+        sql += "Scan\" SELECT * FROM \"Lib";
+        sql += localUniqueId;
+        sql += "\" WHERE Deleted='1';";
+        query(sql);
+    }
+    catch (SBException e)
     {
         throw e;
     }

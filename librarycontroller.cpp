@@ -413,7 +413,7 @@ void LibraryController::itemClicked(int row)
     QString filepath = record.field("FilePath").value().toString();
     emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
     qDebug() << "Currently playing: " << filepath;
-    if(record.field("UniqueID").value() != "local")
+    if(record.field("UniqueID").value() != "Local")
     {
         qDebug() << "NOT LOCAL";
         qDebug() << record.field("UniqueID").value().toString();
@@ -443,7 +443,7 @@ void LibraryController::playNextFile()
 
     emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
 
-    if(record.field("UniqueID").value() != "local")
+    if(record.field("UniqueID").value() != "Local")
     {
         qDebug() << "NOT LOCAL";
         QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
@@ -466,7 +466,7 @@ void LibraryController::playPrevFile()
     qDebug() << "Currently playing: " << filepath;
     emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
 
-    if(record.field("UniqueID").value() != "local")
+    if(record.field("UniqueID").value() != "Local")
     {
         qDebug() << "NOT LOCAL";
         QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());

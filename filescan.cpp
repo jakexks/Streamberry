@@ -31,10 +31,12 @@ int Filescan::build_new()
   QString homeid;
   try
   {
-    db.query("BEGIN;");
     TrackedFolders = db.getFolders(0);
     ExFolders = db.getFolders(1);
-    homeid = "local";
+    homeid = "Local";
+
+    db.initialiseScan();
+
     //For every folder to be tracked, run the scanFolder method
     for(int i=0; i<TrackedFolders.size(); i++)
     {
@@ -42,13 +44,13 @@ int Filescan::build_new()
       scanFolder(passpath, ExFolders, homeid);
     }
     db.updateLocalTimestamp(QString::number(Utilities::getCurrentTimestamp()));
-    db.query("COMMIT;");
     qDebug() << "File Scan Completed";
     emit finishedFileScan();
     return 1;
   }
   catch(SBException e)
   {
+    qDebug() << e.getException();
     throw e;
   }
   return 0;
@@ -75,7 +77,7 @@ int Filescan::build_new_clean()
     db.query(sql);
     TrackedFolders = db.getFolders(0);
     ExFolders = db.getFolders(1);
-    homeid = "local";
+    homeid = "Local";
     qDebug() << "Clean File Scan Begun";
     for(int i=0; i<TrackedFolders.size(); i++)
     {

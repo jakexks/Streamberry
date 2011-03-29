@@ -29,7 +29,7 @@ private:
 public:
     QTimer *poller;
     //void playFile(QString file);
-    void playFile(QString file, QString uniqueID="local", QString ipaddress="local");
+    void playFile(QString file, QString uniqueID="Local", QString ipaddress="Local");
     bool isPlaying();
     void setFileLength(int secs);
     Player();
