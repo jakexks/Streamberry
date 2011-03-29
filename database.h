@@ -50,6 +50,8 @@ public:
     //adds file to database. if already in database it just updates.
     void addFile(QString filepath, QString filename, QString filesize, QString artist, QString album, QString title, QString genre, QString rating, QString year, QString length, QString trackno, QString bitrate, QString filetype, QString table, QString UniqueID, int mov);
     void updateLocalTimestamp(QString timestamp);
+    //initialises a temporary table ready for the scan
+    void initialiseScan();
     //deletes file by ID. returns number of files deleted.
     int deleteFile(QString id, QString table);
     //perform search.
