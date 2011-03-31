@@ -49,8 +49,8 @@ SOURCES +=  main.cpp\
             quitmanager.cpp \
     newnetworking.cpp \
     volumeslider.cpp \
-	settingsdialog.cpp \
-	misctab.cpp \
+        settingsdialog.cpp \
+        misctab.cpp \
     sharingtab.cpp \
     trackcontext.cpp
 
@@ -74,8 +74,6 @@ HEADERS +=  mainwindow.h\
             playlist.h \
             streamfile.h \
             filemeta.h \
-            librarysender.h \
-            libraryreceiver.h \
             libraryrequester.h \
             beaconreceiver.h \
             beaconsender.h \

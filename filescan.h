@@ -21,11 +21,13 @@ class Filescan: public QObject
 public:
    Filescan(Database &datab);
    ~Filescan();
-   //Filescan(Database &datab): db(datab){}
-   int build_new(); //reads the list of folders to be scanned out of the database and adds media files in that
-                    // folder and it's subfolders to it's library. Returns 1 if successful
-   //Same as the above function except cleans out the current database first
-   int build_new_clean();
+//   int build_new(); //reads the list of folders to be scanned out of the database and adds media files in that
+//                    // folder and it's subfolders to it's library. Returns 1 if successful
+//   //Same as the above function except cleans out the current database first
+//   int build_new_clean();
+
+public slots:
+   void scan();
 
 signals:
    void finishedFileScan();
@@ -41,7 +43,10 @@ private:
    int isalreadyindat(QDir file);
    int isdup(QDir file);
    QString localTable;
+   QString localTableScan;
    FileMeta file;
+   QList<QStringList>* filestoadd;
+   bool scanning;
 };
 
 

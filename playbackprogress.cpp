@@ -22,11 +22,13 @@ void PlaybackProgress::mousePressEvent(QMouseEvent *e)
     grabMouse();
     recalculateAngle(e->posF());
     isdragging = true;
+    e->accept();
 }
 
 void PlaybackProgress::mouseMoveEvent(QMouseEvent *e)
 {
     recalculateAngle(e->posF());
+    e->accept();
 }
 
 void PlaybackProgress::mouseReleaseEvent(QMouseEvent *e)
@@ -35,18 +37,21 @@ void PlaybackProgress::mouseReleaseEvent(QMouseEvent *e)
     isdragging = false;
     emit newAngle(pieangle);
     update();
+    e->accept();
 }
 
 void PlaybackProgress::enterEvent(QEvent *e)
 {
     isentered = true;
     update();
+    e->accept();
 }
 
 void PlaybackProgress::leaveEvent(QEvent *e)
 {
     isentered = false;
     update();
+    e->accept();
 }
 
 void PlaybackProgress::recalculateAngle(QPointF ptc)
@@ -109,6 +114,7 @@ void PlaybackProgress::paintEvent(QPaintEvent *e)
     }
 
     painter.restore();
+    e->accept();
 }
 
 void PlaybackProgress::setAngle(int angle)

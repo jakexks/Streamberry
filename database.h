@@ -17,6 +17,9 @@ public:
     virtual ~Database();
     //initialises the database
     void initialise();
+    //bulk update commands
+    void startBulk();
+    void endBulk();
     //updates or adds setting to database. please do not make typos in parameters, it would mess up the db.
     void setAllOffline();
     void storeSetting(QString name, QString value);
@@ -29,7 +32,8 @@ public:
     void setFolders(QStringList folderlist);
     //get list of folders for file scanner to search through. returns QStringList containing folders.
 
-    QSqlQuery query(QString sql); //Shouldn't this be private?
+    //should not be used anywhere, but left public for old code's sake
+    QSqlQuery query(QString sql);
     QSqlQuery querysplit(QString sql);
 
     QStringList getFolders();
@@ -52,6 +56,8 @@ public:
     void updateLocalTimestamp(QString timestamp);
     //initialises a temporary table ready for the scan
     void initialiseScan();
+    //updates library from scan data
+    void completeScan(QString timestamp);
     //deletes file by ID. returns number of files deleted.
     int deleteFile(QString id, QString table);
     //perform search.

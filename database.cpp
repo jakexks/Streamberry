@@ -137,6 +137,30 @@ void Database::initialise()
     }
 }
 
+void Database::startBulk()
+{
+    try
+    {
+        query("BEGIN;");
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
+
+void Database::endBulk()
+{
+    try
+    {
+        query("COMMIT;");
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
+
 
 void Database::setAllOffline()
 {
@@ -163,6 +187,7 @@ QSqlQuery Database::query(QString sql)
         s += query.lastError().text();
         throw SBException(DB, s);
     }
+
     return query;
 }
 
@@ -216,12 +241,72 @@ void Database::initialiseScan()
         sql += localUniqueId;
         sql += "Scan\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
         query(sql);
-        sql = "INSERT INTO \"Lib";
-        sql += localUniqueId;
-        sql += "Scan\" SELECT * FROM \"Lib";
-        sql += localUniqueId;
-        sql += "\" WHERE Deleted='1';";
+//        sql = "INSERT INTO \"Lib";
+//        sql += localUniqueId;
+//        sql += "Scan\" SELECT * FROM \"Lib";
+//        sql += localUniqueId;
+//        sql += "\" WHERE Deleted='1';";
+//        query(sql);
+    }
+    catch (SBException e)
+    {
+        throw e;
+    }
+}
+
+void Database::completeScan(QString timestamp)
+{
+    try
+    {
+        //set all files not found in the scan as deleted
+        QString sql = "UPDATE Lib$local SET Deleted='1', Timestamp='$timestamp' WHERE NOT EXISTS (SELECT NULL FROM Lib$localScan WHERE Lib$local.filename=Lib$localScan.filename);";
+        sql.replace("$local", localUniqueId);
+        sql.replace("$timestamp", timestamp);
+        qDebug() << sql;
         query(sql);
+
+        //make temp tables
+        sql = "DROP TABLE IF EXISTS \"LibScanTemp\";";
+        qDebug() << sql;
+        query(sql);
+        sql = "CREATE TABLE \"LibScanTemp\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
+        qDebug() << sql;
+        query(sql);
+
+        //copy all records that need updating into a new table
+        sql = "INSERT INTO \"LibScanTemp\" SELECT Lib$local.UniqueID, Lib$local.ID, Lib$local.Filepath, Lib$localScan.Artist, Lib$localScan.Album, Lib$localScan.Title, Lib$localScan.Track, Lib$localScan.Genre, Lib$localScan.Rating, Lib$localScan.Filename, Lib$localScan.Year, Lib$localScan.Length, Lib$localScan.Bitrate, Lib$localScan.Filesize, $timestamp, Lib$localScan.Filetype, Lib$localScan.MusicOrVideo, 0 AS Deleted, Lib$local.Hidden FROM Lib$local, Lib$localScan WHERE Lib$local.Filepath=Lib$localScan.Filepath AND Lib$localScan.Filename=Lib$local.Filename AND (Lib$localScan.Artist<>Lib$local.Artist OR Lib$localScan.Album<>Lib$local.Album OR Lib$localScan.Title<>Lib$local.Title OR Lib$localScan.Track<>Lib$local.Track OR Lib$localScan.Genre<>Lib$local.Genre OR Lib$localScan.Rating<>Lib$local.Rating OR Lib$localScan.Year<>Lib$local.Year OR Lib$localScan.Length<>Lib$local.Length OR Lib$localScan.Bitrate<>Lib$local.Bitrate OR Lib$localScan.Filesize<>Lib$local.Filesize OR Lib$localScan.MusicOrVideo<>Lib$local.MusicOrVideo OR Lib$localScan.Deleted<>Lib$local.Deleted);";
+        sql.replace("$local", localUniqueId);
+        sql.replace("$timestamp", timestamp);
+        qDebug() << sql;
+        query(sql);
+
+        //delete the old records that have been updated
+        sql = "DELETE FROM Lib$local WHERE EXISTS (SELECT 1 FROM LibScanTemp WHERE Lib$local.Filepath=LibScanTemp.Filepath AND LibScanTemp.Filename=Lib$local.Filename AND (LibScanTemp.Artist<>Lib$local.Artist OR LibScanTemp.Album<>Lib$local.Album OR LibScanTemp.Title<>Lib$local.Title OR LibScanTemp.Track<>Lib$local.Track OR LibScanTemp.Genre<>Lib$local.Genre OR LibScanTemp.Rating<>Lib$local.Rating OR LibScanTemp.Year<>Lib$local.Year OR LibScanTemp.Length<>Lib$local.Length OR LibScanTemp.Bitrate<>Lib$local.Bitrate OR LibScanTemp.Filesize<>Lib$local.Filesize OR LibScanTemp.MusicOrVideo<>Lib$local.MusicOrVideo OR LibScanTemp.Deleted<>Lib$local.Deleted));";
+        sql.replace("$local", localUniqueId);
+        qDebug() << sql;
+        query(sql);
+
+        //copy back in the update records
+        sql = "INSERT INTO Lib$local SELECT * FROM LibScanTemp;";
+        sql.replace("$local", localUniqueId);
+        qDebug() << sql;
+        query(sql);
+
+        //copy new records into the database
+        sql = "INSERT INTO Lib$local SELECT UniqueID, NULL AS ID, Filepath, Artist, Album, Title, Track, Genre, Rating, Filename, Year, Length, Bitrate, Filesize, Timestamp, Filetype, MusicOrVideo, Deleted, Hidden FROM Lib$localScan WHERE NOT EXISTS (SELECT NULL FROM Lib$local WHERE Lib$local.filename=Lib$localScan.filename);";
+        sql.replace("$local", localUniqueId);
+        qDebug() << sql;
+        query(sql);
+
+        //delete temp tables
+        sql = "DROP TABLE IF EXISTS \"Lib";
+        sql += localUniqueId;
+        sql += "Scan\";";
+        qDebug() << sql;
+//        query(sql);
+        sql = "DROP TABLE IF EXISTS \"LibScanTemp\";";
+        qDebug() << sql;
+//        query(sql);
     }
     catch (SBException e)
     {
@@ -486,8 +571,6 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
     sql += ", \"";
     sql += musicorvideo;
     sql += "\");";
-    //qDebug() << sql;
-    qDebug() << "QUERY ABOVE";
     try
     {
         query(sql);
@@ -565,6 +648,8 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
         condition += "%\"))";
         break;
     }
+
+    condition += " AND (Deleted='0')";
 
     switch(musicorvideo)
     {

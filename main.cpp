@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
     Filescan fs(db);
     QThread fsthread;
     fs.moveToThread(&fsthread);
+    fsthread.start();
 
     BeaconSender *bs = new BeaconSender(db);
     QThread *bsthread = new QThread(&a);
@@ -54,25 +55,10 @@ int main(int argc, char *argv[])
 
     QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
-    //nn.send(QHostAddress::QHostAddress("127.0.0.1"),9001,db.changesSinceTime(0,"348c03ea1a6ddd0ec29e1b9631fec3663252d084"));
-
-
 //    db.setFolders("/Users/Robbie/Music/Albums/");
-    //db.setFolders("/home/vity/Music/");
-    //db.setFolders("C:\\Users\\Jim\\Music\\TEST");
-    //db.setFolders("C:\\Users\\Jim\\Videos");
-    //db.setFolders("/host/new/");
-    //db.setFolders("C:\\Users\\2kah\\Music\\THE LOCAL CHEESE PLAYLIST THAT EVER WAS");
-    db.setFolders("/streamberrytest/");
-    //db.setFolders("/Users/Robbie/Music/Albums/");
-    //db.setFolders("/home/vity/Music/top40 - 28.03");
-    //db.setFolders("C:\\Users\\Jim\\Music");
-    //db.setFolders("/host/new/");
-    //db.setFolders("C:\\Users\\2kah\\Music\\Led Zeppelin");
-    //db.setFolders("/streamberrytest/");
-    //db.setFolders("/home/jakexks/Music/Cruft/Scott Pilgrim vs. The World [2010] (V0)");
+    db.setFolders("/streamberrytest");
 
-    MainWindow w(util, db, player, fs, &a);
+    MainWindow w(util, db, player, fs, a);
 
     w.show();
 

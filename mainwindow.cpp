@@ -14,14 +14,13 @@
 #define TOPBARHEIGHT 26
 #define BOTTOMBARHEIGHT 90
 
-MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filescan &fsinit, QApplication *Aapp, QWidget *parent)
-  : QMainWindow(parent), util(utilities), db(datab), player(p), fs(fsinit), app(Aapp)
+MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filescan &fsinit, QApplication& aapp, QWidget *parent)
+  : QMainWindow(parent), util(utilities), db(datab), player(p), fs(fsinit), app(aapp)
 {
   //set window properties
   menubar = createMenuBar();
 
   this->setWindowTitle("Streamberry");
-  this->setMenuBar(menubar);
   setStyleSheet(util.getStylesheet());
 
   QString temp;
@@ -78,11 +77,13 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(topbarcontroller, SIGNAL(musicVideoCheckStateChanged(int)), librarycontroller, SLOT(musicVideoFilter(int)));
   QObject::connect(librarycontroller, SIGNAL(songInfoData(QString,QString,QString,QString)), playbackcontroller->getSongInfo(), SLOT(updateLabels(QString,QString,QString,QString)));
   QObject::connect(&fs, SIGNAL(finishedFileScan()), librarycontroller, SLOT(updateLibrary()));
+  QObject::connect(this, SIGNAL(filescanRequest()), &fs, SLOT(scan()));
 
   QString iconpath = util.getExecutePath();
   iconpath += "images/icon.ico";
   this->setWindowIcon((QIcon(iconpath)));
   makeTrayIcon();
+  this->setMenuBar(menubar);
   setCentralWidget(centralwidget);
 }
 
@@ -126,7 +127,7 @@ QMenuBar* MainWindow::createMenuBar()
 
 
     actions[1] = menus[1]->addAction("Scan Folders for Media");
-    actions[2] = menus[1]->addAction("Fresh Scan for Media");
+//    actions[2] = menus[1]->addAction("Fresh Scan for Media");
     actions[3] = menus[1]->addAction("Add Individual File");
     menus[2]->addSeparator();
   actions[5] = menus[1]->addAction("Settings");
@@ -154,11 +155,11 @@ QMenuBar* MainWindow::createMenuBar()
 
 
 
-  QObject::connect(actions[0], SIGNAL(triggered()), app, SLOT(quit()) );
+  QObject::connect(actions[0], SIGNAL(triggered()), &app, SLOT(quit()) );
 
   QObject::connect(actions[1], SIGNAL(triggered()), this, SLOT(menuScan()));
 
-  QObject::connect(actions[2], SIGNAL(triggered()), this, SLOT(menuCleanScan()));
+//  QObject::connect(actions[2], SIGNAL(triggered()), this, SLOT(menuCleanScan()));
 
   QObject::connect(actions[3], SIGNAL(triggered()), this, SLOT(menuAddFile()));
 
@@ -209,12 +210,7 @@ void MainWindow::moveEvent(QMoveEvent *move)
 
 void MainWindow::menuScan()
 {
-  fs.build_new();
-}
-
-void MainWindow::menuCleanScan()
-{
-  fs.build_new_clean();
+  emit filescanRequest();
 }
 
 void MainWindow::menuAddFile()
@@ -253,7 +249,7 @@ void MainWindow::menuMinimiseToTray()
   //this->setWindowFlags(Qt::SubWindow);
   //this->setWindowFlags((Qt::WindowCloseButtonHint));
   //this->setWindowFlags((Qt::WindowMinMaxButtonsHint));
-  //app->setQuitOnLastWindowClosed(true);
+  //app.setQuitOnLastWindowClosed(true);
   this->hide();
 }
 

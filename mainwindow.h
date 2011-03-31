@@ -18,12 +18,11 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  MainWindow(Utilities& util, Database &datab, Player &p, Filescan &fsinit, QApplication* Aapp, QWidget *parent = 0);
+  MainWindow(Utilities& util, Database &datab, Player &p, Filescan &fsinit, QApplication& aapp, QWidget *parent = 0);
   void setPath(char* path);
   QMenuBar* createMenuBar();
 public slots:
   void menuScan();
-  void menuCleanScan();
   void menuAddFile();
   void menuSettings();
   void menuMaximise();
@@ -35,6 +34,8 @@ public slots:
   void menuShowOfflineFiles();
   void trayIconClicked(QSystemTrayIcon::ActivationReason);
 
+signals:
+  void filescanRequest();
 
 private:
   //layout of the main window
@@ -53,11 +54,11 @@ private:
   LibraryController* librarycontroller;
   PlaybackController* playbackcontroller;
 
-  QApplication* app;
   Utilities& util;
   Database& db;
   Player& player;
   Filescan& fs;
+  QApplication& app;
   QSystemTrayIcon* trayicon;
 };
 

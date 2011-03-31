@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-SharingTab::SharingTab(QStringList sfiles, QWidget *parent) : selectedfiles(sfiles), QWidget(parent)
+SharingTab::SharingTab(QStringList sfiles, QWidget *parent) : QWidget(parent), selectedfiles(sfiles)
 {
     QVBoxLayout *layout = new QVBoxLayout;
 
