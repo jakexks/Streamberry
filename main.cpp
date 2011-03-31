@@ -55,9 +55,6 @@ int main(int argc, char *argv[])
 
     QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
-//    db.setFolders("/Users/Robbie/Music/Albums/");
-    db.setFolders("/streamberrytest");
-
     MainWindow w(util, db, player, fs, a);
 
     w.show();
