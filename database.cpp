@@ -303,10 +303,10 @@ void Database::completeScan(QString timestamp)
         sql += localUniqueId;
         sql += "Scan\";";
         qDebug() << sql;
-//        query(sql);
+        query(sql);
         sql = "DROP TABLE IF EXISTS \"LibScanTemp\";";
         qDebug() << sql;
-//        query(sql);
+        query(sql);
     }
     catch (SBException e)
     {
