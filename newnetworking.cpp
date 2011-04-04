@@ -46,4 +46,5 @@ void NewNetworking::read()
     qDebug() << " BUFFER" << buffer << "ENDBUFFER";
     emit messageReceived(buffer);
     inclient->close();
+    delete inclient;
 }
