@@ -507,18 +507,11 @@ LibraryController::~LibraryController()
 void LibraryController::ShowContextMenu(const QPoint& pos)
 {
   //For multiple rows too!!
-  QList<QString> idlist;
-  QList<QString> uniqueIdList;
-  int i=0;
-  QModelIndexList selected = tablewidget->selectionModel()->selectedIndexes();
-  for(i=0; i<selected.size(); i=i+6)
-  {
-    int row = selected.at(i).row();
-    QSqlRecord record = currentdata->at(row);
-    idlist.append(record.field("ID").value().toString());
-    uniqueIdList.append(record.field("UniqueID").value().toString());
-  }
-  trackmenu->trackRightClicked(idlist, uniqueIdList, this, &db);
+  int row = tablewidget->selectionModel()->selectedIndexes().at(0).row();
+  QSqlRecord record = currentdata->at(row);
+  QString ID = record.field("ID").value().toString();
+  QString uniqueID = record.field("UniqueID").value().toString();
+  trackmenu->trackRightClicked(ID, uniqueID, this, &db);
 
 }
 

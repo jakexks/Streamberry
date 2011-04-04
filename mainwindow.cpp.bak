@@ -272,17 +272,6 @@ void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
   this->show();
 }
 
-void MainWindow::menuNewPlaylist()
-{
-  PLSmartNew diag(&util, db);
-}
-
-
-void MainWindow::menuNewSmartPlaylist()
-{
-  PLNormalNew* diag = new PLNormalNew(&util, db);
-}
-
 
 /*void MainWindow::changeEvent ( QEvent *event )
 {

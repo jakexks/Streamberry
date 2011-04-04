@@ -19,11 +19,12 @@ TrackContext::TrackContext()
   QObject::connect(menuitems[3], SIGNAL(triggered()), this, SLOT(Hide()));
 }
 
-void TrackContext::trackRightClicked(QString id, QString uniqueID, LibraryController* passlib, Database* datab)
+void TrackContext::trackRightClicked(QList<QString> ids, QList<QString> uniqueIDs, LibraryController* passlib, Database* datab)
 {
-  CurrentID = id;
+  CurrentIDs = ids;
+  qDebug() << CurrentIDs;
   db = datab;
-  CurrentUniqueID = uniqueID;
+  CurrentUniqueIDs = uniqueIDs;
   if(setup == 0)
   {
     LibCont = passlib;
@@ -31,6 +32,7 @@ void TrackContext::trackRightClicked(QString id, QString uniqueID, LibraryContro
     setup = 1;
   }
   this->exec(QCursor::pos());
+
 }
 
 
@@ -46,6 +48,10 @@ void TrackContext::Delete()
 
 void TrackContext::Hide()
 {
-  db->togglehidden(CurrentID, CurrentUniqueID);
-}
+  int i =0;
+  for(i=0; i<CurrentIDs.size(); i++)
+  {
+    db->togglehidden(CurrentIDs.at(i), CurrentUniqueIDs.at(i));
+  }
 
+}
