@@ -5,7 +5,7 @@
 
 
 AlbumPanel::AlbumPanel(Utilities& utilities, QString path, QWidget *parent) :
-    util(utilities),QWidget(parent)
+    QWidget(parent), util(utilities)
 {
     expath = path;
     grid = new QGridLayout(this);

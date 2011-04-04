@@ -7,7 +7,7 @@
 #include <QDoubleValidator>
 #include <QDebug>
 
-AlbumArtDelegate::AlbumArtDelegate(Utilities &utilities, QObject *parent) : util(utilities), QStyledItemDelegate(parent)
+AlbumArtDelegate::AlbumArtDelegate(Utilities &utilities, QObject *parent) : QStyledItemDelegate(parent), util(utilities)
 {
 }
 
