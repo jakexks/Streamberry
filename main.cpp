@@ -14,7 +14,6 @@
 #include "beaconreceiver.h"
 #include "player.h"
 #include <QCleanlooksStyle>
-#include <newnetworking.h>
 
 int main(int argc, char *argv[])
 {
@@ -39,32 +38,41 @@ int main(int argc, char *argv[])
     Player player;
 
     Filescan fs(db);
-    QThread fsthread;
+    QThread fsthread(&a);
     fs.moveToThread(&fsthread);
     fsthread.start();
 
     BeaconSender *bs = new BeaconSender(db);
-    QThread *bsthread = new QThread(&a);
-    bs->moveToThread(bsthread);
-    bsthread->start();
+    QThread bsthread(&a);
+    bs->moveToThread(&bsthread);
+    bsthread.start();
 
     BeaconReceiver *br = new BeaconReceiver(db);
-    QThread *brthread = new QThread(&a);
-    br->moveToThread(brthread);
-    brthread->start();
+    QThread brthread(&a);
+    br->moveToThread(&brthread);
+    brthread.start();
 
-    QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
+    //redundant now that it does it after quit?
+    //QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
     MainWindow w(util, db, player, fs, a);
 
     w.show();
 
-    StreamFile stream(player);
-    //stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");
-    //qDebug() << stream.getStreamLength("test");
-
-    
-    return a.exec();
+//    StreamFile stream(player);
+//    //stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");
+//    //qDebug() << stream.getStreamLength("test");
 
 
+    int ret = a.exec();
+    //send offline beacon
+    bs->sendOfflineBeacon();
+    //safely close all threads
+    fsthread.quit();
+    fsthread.wait();
+    bsthread.quit();
+    bsthread.wait();
+    brthread.quit();
+    brthread.wait();
+    return ret;
 }
