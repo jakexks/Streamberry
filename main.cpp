@@ -42,14 +42,14 @@ int main(int argc, char *argv[])
     fs.moveToThread(&fsthread);
     fsthread.start();
 
-    BeaconSender *bs = new BeaconSender(db);
+    BeaconSender bs(db);
     QThread bsthread(&a);
-    bs->moveToThread(&bsthread);
+    bs.moveToThread(&bsthread);
     bsthread.start();
 
-    BeaconReceiver *br = new BeaconReceiver(db);
+    BeaconReceiver br(db);
     QThread brthread(&a);
-    br->moveToThread(&brthread);
+    br.moveToThread(&brthread);
     brthread.start();
 
     //redundant now that it does it after quit?
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 
     int ret = a.exec();
     //send offline beacon
-    bs->sendOfflineBeacon();
+    bs.sendOfflineBeacon();
     //safely close all threads
     fsthread.quit();
     fsthread.wait();
