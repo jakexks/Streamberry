@@ -23,7 +23,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   menubar = createMenuBar();
 
   this->setWindowTitle("Streamberry");
- 
+
   setStyleSheet(util.getStylesheet());
 
   QString temp;
@@ -132,9 +132,9 @@ QMenuBar* MainWindow::createMenuBar()
     actions[1] = menus[1]->addAction("Scan Folders for Media");
 //    actions[2] = menus[1]->addAction("Fresh Scan for Media");
     actions[3] = menus[1]->addAction("Add Individual File");
-    menus[2]->addSeparator();
-  actions[20] = menus[1]->addAction("New Playlist");
-  actions[21] = menus[1]->addAction("New Smart Playlist");
+    menus[1]->addSeparator();
+  actions[20] = menus[1]->addAction("New Smart Playlist");
+  actions[21] = menus[1]->addAction("New Playlist");
   menus[1]->addSeparator();
   actions[5] = menus[1]->addAction("Settings");
 
@@ -275,12 +275,26 @@ void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
 void MainWindow::menuNewPlaylist()
 {
   PLSmartNew diag(&util, db);
+
+  QString size = db.getSetting("windowSize");
+  QStringList list = size.split('|');
+  int size2;
+  if(list.size()==2)
+    size2 = list.at(1).toInt();
+  sidebarcontroller->updateplaylistbar( size2 );
 }
 
 
 void MainWindow::menuNewSmartPlaylist()
 {
   PLNormalNew* diag = new PLNormalNew(&util, db);
+
+  QString size = db.getSetting("windowSize");
+  QStringList list = size.split('|');
+  int size2;
+  if(list.size()==2)
+    size2 = list.at(1).toInt();
+  sidebarcontroller->updateplaylistbar( size2 );
 }
 
 
