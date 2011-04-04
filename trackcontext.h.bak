@@ -13,7 +13,7 @@ class TrackContext : QMenu
 
 public:
   TrackContext();
-  void trackRightClicked(QList<QString> ids, QList<QString> uniqueIDs, LibraryController* passlib, Database* datab);
+  void trackRightClicked(QString file, QString uniqueID, LibraryController* passlib, Database* datab);
 
 signals:
   void playthis(QList<QSqlRecord>*);
@@ -25,8 +25,8 @@ signals:
 
 private:
   int setup;
-  QList<QString> CurrentIDs;
-  QList<QString> CurrentUniqueIDs;
+  QString CurrentID;
+  QString CurrentUniqueID;
   LibraryController* LibCont;
   Database* db;
 

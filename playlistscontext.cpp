@@ -5,42 +5,60 @@
 #include "librarycontroller.h"
 #include "sidebarcontroller.h"
 #include <QtGui>
+#include <playlistdialogue.h>
+#include <plnormalnew.h>
+#include <plsmartedit.h>
+#include <plsmartnew.h>
 
 //PlaylistMenu::PlaylistMenu(bool smart, Database &datab)
-PlaylistMenu::PlaylistMenu(bool smart)
+PlaylistMenu::PlaylistMenu(bool smart, Utilities *util1, Database& datab) : db(datab)
 {
-  //db = datab;
   setup = 0;
+  util = util1;
   if(smart == false)
   {
 
-    QAction* menuitems[5];
+    QAction* menuitems[9];
     menuitems[0] = this->addAction("Play");
     menuitems[1] = this->addSeparator();
     menuitems[2] = this->addAction("View");
     menuitems[3] = this->addAction("Rename");
     menuitems[4] = this->addAction("Delete");
+    //menuitems[6] = this->addSeparator();
+    //menuitems[7] = this->addAction("New Playlist");
+    //menuitems[8] = this->addAction("New Smart Playlist");
 
     QObject::connect(menuitems[0], SIGNAL(triggered()), this, SLOT(NormalPlay()));
     QObject::connect(menuitems[2], SIGNAL(triggered()), this, SLOT(NormalView()));
     QObject::connect(menuitems[3], SIGNAL(triggered()), this, SLOT(NormalRename()));
     QObject::connect(menuitems[4], SIGNAL(triggered()), this, SLOT(NormalDelete()));
+
+    //QObject::connect(menuitems[7], SIGNAL(triggered()), this, SLOT(NewPlay()));
+    //QObject::connect(menuitems[8], SIGNAL(triggered()), this, SLOT(NewSmartPlay()));
+
   }
   else
   {
-    QAction* menuitems[6];
+    QAction* menuitems[9];
     menuitems[0] = this->addAction("Play");
     menuitems[1] = this->addSeparator();
     menuitems[2] = this->addAction("View");
     menuitems[3] = this->addAction("Rename");
     menuitems[4] = this->addAction("Edit");
     menuitems[5] = this->addAction("Delete");
+    //menuitems[6] = this->addSeparator();
+    //menuitems[7] = this->addAction("New Playlist");
+    //menuitems[8] = this->addAction("New Smart Playlist");
 
     QObject::connect(menuitems[0], SIGNAL(triggered()), this, SLOT(SmartPlay()));
     QObject::connect(menuitems[2], SIGNAL(triggered()), this, SLOT(SmartView()));
     QObject::connect(menuitems[3], SIGNAL(triggered()), this, SLOT(SmartRename()));
     QObject::connect(menuitems[4], SIGNAL(triggered()), this, SLOT(SmartEdit()));
     QObject::connect(menuitems[5], SIGNAL(triggered()), this, SLOT(SmartDelete()));
+
+    //QObject::connect(menuitems[7], SIGNAL(triggered()), this, SLOT(NewPlay()));
+    //QObject::connect(menuitems[8], SIGNAL(triggered()), this, SLOT(NewSmartPlay()));
+
   }
 
 
@@ -73,12 +91,12 @@ void PlaylistMenu::SmartView()
 
 void PlaylistMenu::SmartRename()
 {
-  qDebug() << "click";
+  PLRenameDialog* diag = new PLRenameDialog(PL, util);
 }
 
 void PlaylistMenu::SmartEdit()
 {
-  qDebug() << "click";
+  PLSmartEdit* diag = new PLSmartEdit(PL, util);
 }
 
 void PlaylistMenu::SmartDelete()
@@ -101,12 +119,22 @@ void PlaylistMenu::NormalView()
 
 void PlaylistMenu::NormalRename()
 {
-  qDebug() << "click";
+  PLRenameDialog* diag = new PLRenameDialog(PL, util);
 }
 
 void PlaylistMenu::NormalDelete()
 {
   PL->deletePlaylist();
+}
+
+void PlaylistMenu::NewPlay()
+{
+  PLNormalNew* diag = new PLNormalNew(util, db);
+}
+
+void PlaylistMenu::NewSmartPlay()
+{
+  PLSmartNew* diag = new PLSmartNew(util, db);
 }
 
 

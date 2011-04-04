@@ -52,7 +52,11 @@ SOURCES +=  main.cpp\
         settingsdialog.cpp \
         misctab.cpp \
     sharingtab.cpp \
-    trackcontext.cpp
+    trackcontext.cpp \
+        playlistdialogue.cpp \
+    plsmartedit.cpp \
+    plsmartnew.cpp \
+    plnormalnew.cpp
 
 
 HEADERS +=  mainwindow.h\
@@ -90,4 +94,8 @@ HEADERS +=  mainwindow.h\
 	settingsdialog.h \
 	misctab.h \
     sharingtab.h \
-    trackcontext.h
+    trackcontext.h \
+    playlistdialogue.h \
+    plsmartedit.h \
+    plsmartnew.h \
+    plnormalnew.h

@@ -33,8 +33,6 @@ public slots:
   void menuShowFileProviders();
   void menuShowOfflineFiles();
   void trayIconClicked(QSystemTrayIcon::ActivationReason);
-  void menuNewPlaylist();
-  void menuNewSmartPlaylist();
 
 signals:
   void filescanRequest();

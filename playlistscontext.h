@@ -6,6 +6,8 @@ class QMenu;
 class QSqlRecord;
 class Playlist;
 class LibraryController;
+class Utilities;
+class Database;
 
 
 class PlaylistMenu : QMenu
@@ -14,7 +16,7 @@ class PlaylistMenu : QMenu
 
 public:
   //PlaylistMenu(bool smart, Database& datab);
-  PlaylistMenu(bool smart);
+  PlaylistMenu(bool smart, Utilities* util, Database& datab);
   void playlistrightclicked(Playlist* pass, LibraryController* passlib);
 
 signals:
@@ -30,13 +32,18 @@ signals:
   void NormalView();
   void NormalRename();
   void NormalDelete();
+  void NewPlay();
+  void NewSmartPlay();
+
 
 private:
   //QString currentplaylist;
+  Database& db;
   bool currentsmart;
   int setup;
   Playlist* PL;
   LibraryController* LibCont;
+  Utilities* util;
 
 };
 
