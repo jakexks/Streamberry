@@ -51,7 +51,7 @@ void BeaconReceiver::processPendingDatagrams()
                 if (id != myid)
                 {
                     QString dbtimestamp = n.parsebeacon(datastring, networking::timestamp);
-                    checkID(id, dbtimestamp, QHostAddress::QHostAddress(n.parsebeacon(datastring, networking::ip)));
+                    checkID(id, dbtimestamp, QHostAddress(n.parsebeacon(datastring, networking::ip)));
                 }
             }
             // If offline beacon
