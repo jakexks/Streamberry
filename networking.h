@@ -18,10 +18,6 @@ public:
     void udpSend(QHostAddress, quint16, QByteArray);
     static QString parsebeacon(QString, int);
     enum beaconFields { beaconHeader, uid, timestamp, ip };
-private:
-    QTcpServer *tcpServer;
-    QTcpSocket *tcpClient;
-    QTcpSocket *tcpServerConnection;
 };
 
 #endif // NETWORKING_H
