@@ -274,7 +274,7 @@ void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
 
 void MainWindow::menuNewPlaylist()
 {
-  PLSmartNew diag(&util, db);
+  PLSmartNew(&util, db);
 
   QString size = db.getSetting("windowSize");
   QStringList list = size.split('|');
@@ -287,7 +287,7 @@ void MainWindow::menuNewPlaylist()
 
 void MainWindow::menuNewSmartPlaylist()
 {
-  PLNormalNew* diag = new PLNormalNew(&util, db);
+  PLNormalNew(&util, db);
 
   QString size = db.getSetting("windowSize");
   QStringList list = size.split('|');
