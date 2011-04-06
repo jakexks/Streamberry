@@ -50,7 +50,8 @@ private:
   QString name;
   int smart;
   QString filter;
-  QList<QString> Tracks;
+  QList<QString> Trackpaths;
+  QList<QString> TrackIDs;
 };
 
 #endif

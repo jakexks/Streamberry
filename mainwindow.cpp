@@ -81,6 +81,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(librarycontroller, SIGNAL(songInfoData(QString,QString,QString,QString)), playbackcontroller->getSongInfo(), SLOT(updateLabels(QString,QString,QString,QString)));
   QObject::connect(&fs, SIGNAL(finishedFileScan()), librarycontroller, SLOT(updateLibrary()));
   QObject::connect(this, SIGNAL(filescanRequest()), &fs, SLOT(scan()));
+  QObject::connect(sidebarcontroller, SIGNAL(playthis(QList<QSqlRecord>*)),  librarycontroller , SLOT(displaythis(QList<QSqlRecord>*)) );
 
   QString iconpath = util.getExecutePath();
   iconpath += "images/icon.ico";
@@ -131,7 +132,7 @@ QMenuBar* MainWindow::createMenuBar()
 
     actions[1] = menus[1]->addAction("Scan Folders for Media");
 //    actions[2] = menus[1]->addAction("Fresh Scan for Media");
-    actions[3] = menus[1]->addAction("Add Individual File");
+    //actions[3] = menus[1]->addAction("Add Individual File");
     menus[1]->addSeparator();
   actions[20] = menus[1]->addAction("New Smart Playlist");
   actions[21] = menus[1]->addAction("New Playlist");
@@ -149,8 +150,8 @@ QMenuBar* MainWindow::createMenuBar()
   actions[13] = menus[2]->addAction("Toggle Repeat");
   actions[14] = menus[2]->addAction("Toggle Shuffle");
 
-  actions[15] = menus[3]->addAction("Show File Providers");
-  actions[16] = menus[3]->addAction("Show Offline Files");
+ // actions[15] = menus[3]->addAction("Show File Providers");
+  //actions[16] = menus[3]->addAction("Show Offline Files");
 
   actions[17] = menus[4]->addAction("Maximise");
   actions[18] = menus[4]->addAction("Minimise");
@@ -167,7 +168,7 @@ QMenuBar* MainWindow::createMenuBar()
 
 //  QObject::connect(actions[2], SIGNAL(triggered()), this, SLOT(menuCleanScan()));
 
-  QObject::connect(actions[3], SIGNAL(triggered()), this, SLOT(menuAddFile()));
+  //QObject::connect(actions[3], SIGNAL(triggered()), this, SLOT(menuAddFile()));
 
   QObject::connect(actions[5], SIGNAL(triggered()), this, SLOT(menuSettings()));
 
@@ -181,8 +182,8 @@ QMenuBar* MainWindow::createMenuBar()
   QObject::connect(actions[11], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
   QObject::connect(actions[12], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
 */
-  QObject::connect(actions[15], SIGNAL(triggered()), this, SLOT(menuShowFileProviders()));
-  QObject::connect(actions[16], SIGNAL(triggered()), this, SLOT(menuShowOfflineFiles()));
+  //QObject::connect(actions[15], SIGNAL(triggered()), this, SLOT(menuShowFileProviders()));
+  //QObject::connect(actions[16], SIGNAL(triggered()), this, SLOT(menuShowOfflineFiles()));
 
   QObject::connect(actions[17], SIGNAL(triggered()), this, SLOT(menuMaximise()));
   QObject::connect(actions[18], SIGNAL(triggered()), this, SLOT(menuMinimise()));

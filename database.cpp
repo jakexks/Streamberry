@@ -181,6 +181,7 @@ QSqlQuery Database::query(QString sql)
     if(!connected) throw SBException(DB, "Cannot run query, not connected to database.");
     QSqlQuery query(db);
     query.prepare(sql);
+    //qDebug() << sql;
     if(!query.exec())
     {
         QString s = "SQL failed: ";
@@ -262,7 +263,6 @@ void Database::completeScan(QString timestamp)
         QString sql = "UPDATE Lib$local SET Deleted='1', Timestamp='$timestamp' WHERE NOT EXISTS (SELECT NULL FROM Lib$localScan WHERE Lib$local.filename=Lib$localScan.filename);";
         sql.replace("$local", localUniqueId);
         sql.replace("$timestamp", timestamp);
-        qDebug() << sql;
         query(sql);
 
         //make temp tables
@@ -966,24 +966,22 @@ void Database::PlaylistSave(QString name, int smart, QString filter)
 }
 
 
-void Database::PlaylistAddTracks(QList<QString> Tracks, QString Playlist)
+void Database::PlaylistAddTracks(QList<QString> Filepaths, QList<QString> UniqueIDs, QString Playlist)
 {
     int i=0;
     QString sql = "DELETE FROM PlaylistTracks WHERE Playlist = \"";
     sql += Playlist;
     sql += "\";";
     query(sql);
-    for(i = 0; i < Tracks.size() ; i++)
+    for(i = 0; i < Filepaths.size() ; i++)
     {
-        QString trackid = Tracks.at(i);
-        QStringList list1 = trackid.split("|");
-        QString id = list1.at(0);
-        QString uniqueid = list1.at(1);
+        QString path = Filepaths.at(i);
+        QString uniqueid = UniqueIDs.at(1);
         QString sql;
         sql += "INSERT INTO PlaylistTracks (UniqueID, ID, Playlist) VALUES (\"";
         sql += uniqueid;
         sql += "\", \"";
-        sql += id;
+        sql += path;
         sql += "\", \"";
         sql += Playlist;
         sql += "\");";
@@ -992,27 +990,27 @@ void Database::PlaylistAddTracks(QList<QString> Tracks, QString Playlist)
 }
 
 
-QList<QSqlRecord>* Database::getTracks( QList<QString> Tracks)
+QList<QSqlRecord>* Database::getTracks( QList<QString> Filepaths, QList<QString> UniqueIDs)
 {
     QString trackid;
     QList<QSqlRecord>* result = new QList<QSqlRecord>();
     int i =0;
-    for(i = 0; i < (Tracks.size()) ; i++)
+    for(i = 0; i < (Filepaths.size()) ; i++)
     {
-        trackid = Tracks.at(i);
-        qDebug() << Tracks.at(i);
-        QStringList list1 = trackid.split("|");
-        QString id = list1.at(1);
-        QString uniqueid = list1.at(0);
+        QString path = Filepaths.at(i);
+        QString id = UniqueIDs.at(i);
+
+        //qDebug() << "||||||" << path << "|||||" << id << "||||||||";
+
         QString sql = "SELECT * FROM ";
         sql += "Lib";
-        sql += uniqueid;
-        sql += " WHERE UniqueID = \"";
-        sql += uniqueid;
-        sql += "\" AND Filepath = \"";
         sql += id;
+        sql += " WHERE UniqueID = \"";
+        sql += id;
+        sql += "\" AND Filepath = \"";
+        sql += path;
         sql += "\";";
-        qDebug() << sql;
+        //qDebug() << sql;
         QSqlQuery queryresult = query(sql);
         queryresult.first();
         result->append(queryresult.record());

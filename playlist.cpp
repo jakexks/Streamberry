@@ -19,9 +19,9 @@ Playlist::Playlist(Database &datab, QString playlistName) : db(datab)
     if (result2.isValid())
     {
       QString temp = result2.value(0).toString();
-      temp += "|";
-      temp += result2.value(1).toString();
-      Tracks.append(temp);
+      QString temp2 = result2.value(1).toString();
+      Trackpaths.append(temp2);
+      TrackIDs.append(temp);
     }
   }
 }
@@ -31,38 +31,33 @@ void Playlist::SavePlaylist()
   if(name != "")
   {
     db.PlaylistSave(name,smart,filter);
-    db.PlaylistAddTracks(Tracks, name);
+    db.PlaylistAddTracks(Trackpaths, TrackIDs, name);
   }
 }
 
 void Playlist::addTrack(QString ID, QString UniqueID)
 {
-  QString newtrack;
-  newtrack = ID;
-  newtrack += "|";
-  newtrack += UniqueID;
-  Tracks.append(newtrack);
+  Trackpaths.append(ID);
+  TrackIDs.append(UniqueID);
 }
 
 void Playlist::removeTrack(QString id, QString UniqueID)
 {
-  QString track;
-  track = id;
-  track += ":";
-  track += UniqueID;
-  int index = Tracks.indexOf(track);
-  this->removeTrack(index);
+  int index = Trackpaths.indexOf(id);
+  removeTrack(index);
 }
 
 void Playlist::removeTrack(int index)
 {
-  Tracks.removeAt(index);
+  TrackIDs.removeAt(index);
+  Trackpaths.removeAt(index);
 }
 
 QList<QSqlRecord>* Playlist::getAllTracks()
 {
+  //qDebug() << Trackpaths << "||" << TrackIDs;
   if(smart == 0) {
-    return db.getTracks(Tracks);
+    return db.getTracks(Trackpaths, TrackIDs);
   }
   else
   {
@@ -98,7 +93,7 @@ int Playlist::getPlaylistType()
 
 int Playlist::getPlaylistLength()
 {
-  return Tracks.size();
+  return Trackpaths.size();
 }
 
 void Playlist::setPlaylistType(int type)

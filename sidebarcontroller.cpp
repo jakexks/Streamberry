@@ -105,7 +105,8 @@ QTableWidget* SidebarController::buildplaylistbar()
   QObject::connect(playlistTableWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowContextMenu(const QPoint&)));
   QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
 
-  //QObject::connect(this, SIGNAL(playthis(QList<QSqlRecord>*)), libpass, SLOT(displaythis(QList<QSqlRecord>*)) );
+  const LibraryController* LibCont = libpass;
+
 
 
 
@@ -313,8 +314,7 @@ QWidget* SidebarController::makePlaylistBtn()
 
 void SidebarController::ShowContextMenu(const QPoint& pos)
 {
-  int row = playlistTableWidget->rowAt(mapToGlobal(pos).y());
-  qDebug() << row;
+  int row = playlistTableWidget->rowAt(playlistTableWidget->mapToGlobal(pos).y());
   if(row >= 3)
   {
     bool type = typearray[row-3];
@@ -335,33 +335,30 @@ void SidebarController::ShowContextMenu(const QPoint& pos)
   }
 }
 
-void SidebarController::DoubleClicked(int row, int column)
-{
-  if(row == 1)
-  {
-    qDebug() << "All Media Play";
-  }
-  if(row >= 3)
-  {
-    qDebug() << "Playlist Play";
-  }
-}
-
-
 void SidebarController::Clicked(int row, int column)
 {
   if(row == 0)
   {
-      //only library controller should call this - Robbie
-    QList<QString> fields;
-    QList<QString> order;
-    fields.append("Album");
-    order.append("DESC");
-    QList<QSqlRecord>* alltracks = db.searchDb(0, "", fields, order,0);
+    qDebug() << "Veiw All Media";
+  }
+  else if(row == 1)
+  {
+    qDebug() << "View All Playlists";
+  }
+  else if(row >= 3)
+  {
+    bool type = typearray[row-3];
+    QString text = namearray[row-3];
+    Playlist pass(db, text);
+    QList<QSqlRecord>* alltracks = pass.getAllTracks();
     emit(playthis(alltracks));
   }
-  if(row == 1)
+}
+
+void SidebarController::DoubleClicked(int row, int column)
+{
+  if(row >= 3)
   {
-    qDebug() << "View all Playlist Clicked";
+    qDebug() << "Playlist Playing";
   }
 }

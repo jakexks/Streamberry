@@ -7,7 +7,7 @@
 
 class LibraryController;
 
-class SidebarController : public QWidget
+class SidebarController : public QObject
 {
     Q_OBJECT
 public:
@@ -26,6 +26,7 @@ signals:
 
 signals:
     void customContextMenuRequested ( const QPoint & pos  );
+
 
 private:
     QWidget* widget;

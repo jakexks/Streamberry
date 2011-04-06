@@ -78,11 +78,11 @@ public:
     //This takes a playlist name and returns an QSqlQuery containing the IDs and Unique IDs of all the tracks in the playlist
     QSqlQuery GetPlaylistTracks(QString playlistName);
     //Takes a QList of track unique IDs and IDs, and returns a QList of QSqlRecords containing all the Track data from across all tables.
-    QList<QSqlRecord>* getTracks( QList<QString> Tracks);
+    QList<QSqlRecord>* getTracks( QList<QString> Filepaths, QList<QString> UniqueIDs);
     //Takes a playlist name, smart bool and a filter and enters it into the playlist table.
     void PlaylistSave(QString name, int smart, QString filter);
     //Takes a list of tracks and a playlist name and enters them into the playlistTracks table
-    void PlaylistAddTracks(QList<QString> Tracks, QString Playlist);
+    void PlaylistAddTracks(QList<QString> Filepaths, QList<QString>UniqueIDs, QString Playlist);
     //Deletes a playlist from the playlist table and it's tracks from the playlistTracks table
     void removePlaylist(QString name);
     QList<QSqlRecord>* getAllPlaylists();
