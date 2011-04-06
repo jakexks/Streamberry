@@ -66,7 +66,7 @@ void Database::createDatabase(QString &path)
     sql[0] = "DROP TABLE IF EXISTS \"LibLocal\";";
     sql[1] = "CREATE TABLE \"Lib";
     sql[1] += localUniqueId;
-    sql[1] += "\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
+    sql[1] += "\" (\"UniqueID\" VARCHAR DEFAULT \"Local\",  \"Filepath\" VARCHAR NOT NULL PRIMARY KEY UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
     sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
     sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Local\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" INTEGER NOT NULL , \"TimeLastOnline\" INTEGER NOT NULL , \"UniqueID\" VARCHAR UNIQUE NOT NULL, \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL , \"IPAddress\" VARCHAR);";
     sql[4] = "INSERT INTO LibIndex (ID, Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES (\"1\", 1, \"";
@@ -78,7 +78,7 @@ void Database::createDatabase(QString &path)
     sql[8] = "CREATE TABLE \"TrackedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";
     sql[9] = "CREATE TABLE \"ExcludedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";
     sql[10] = "CREATE TABLE \"Playlist\" (\"Name\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE , \"Smart\" BOOL NOT NULL  DEFAULT 0, \"Filter\" VARCHAR, \"Played\" INTEGER NOT NULL)";
-    sql[11] = "CREATE TABLE \"PlaylistTracks\" (\"UniqueID\" VARCHAR NOT NULL, \"ID\" INTEGER NOT NULL,\"Playlist\" VARCHAR NOT NULL )";
+    sql[11] = "CREATE TABLE \"PlaylistTracks\" (\"UniqueID\" VARCHAR NOT NULL, \"ID\" VARCHAR NOT NULL,\"Playlist\" VARCHAR NOT NULL )";
     //sql[9] = "DROP TABLE IF EXISTS \"UserTable\";";
     //sql[10] = "CREATE TABLE \"UserTable\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL ,\"Artist\" VARCHAR,\"Album\" VARCHAR,\"Title\" VARCHAR,\"Rating\" INTEGER,\"Filename\" VARCHAR NOT NULL ,\"Year\" DATETIME,\"Length\" INTEGER,\"Bitrate\" INTEGER,\"Filesize\" INTEGER,\"Timestamp\" DATETIME NOT NULL ,\"Filetype\" VARCHAR,\"MusicOrVideo\" INTEGER NOT NULL, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL DEFAULT 0);";
 
@@ -239,7 +239,7 @@ void Database::initialiseScan()
         query(sql);
         sql = "CREATE TABLE \"Lib";
         sql += localUniqueId;
-        sql += "Scan\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
+        sql += "Scan\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"Filepath\" VARCHAR PRIMARY KEY NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
         query(sql);
 //        sql = "INSERT INTO \"Lib";
 //        sql += localUniqueId;
@@ -269,12 +269,12 @@ void Database::completeScan(QString timestamp)
         sql = "DROP TABLE IF EXISTS \"LibScanTemp\";";
         qDebug() << sql;
         query(sql);
-        sql = "CREATE TABLE \"LibScanTemp\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL UNIQUE, \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
+        sql = "CREATE TABLE \"LibScanTemp\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"Filepath\" VARCHAR PRIMARY KEY NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
         qDebug() << sql;
         query(sql);
 
         //copy all records that need updating into a new table
-        sql = "INSERT INTO \"LibScanTemp\" SELECT Lib$local.UniqueID, Lib$local.ID, Lib$local.Filepath, Lib$localScan.Artist, Lib$localScan.Album, Lib$localScan.Title, Lib$localScan.Track, Lib$localScan.Genre, Lib$localScan.Rating, Lib$localScan.Filename, Lib$localScan.Year, Lib$localScan.Length, Lib$localScan.Bitrate, Lib$localScan.Filesize, $timestamp, Lib$localScan.Filetype, Lib$localScan.MusicOrVideo, 0 AS Deleted, Lib$local.Hidden FROM Lib$local, Lib$localScan WHERE Lib$local.Filepath=Lib$localScan.Filepath AND Lib$localScan.Filename=Lib$local.Filename AND (Lib$localScan.Artist<>Lib$local.Artist OR Lib$localScan.Album<>Lib$local.Album OR Lib$localScan.Title<>Lib$local.Title OR Lib$localScan.Track<>Lib$local.Track OR Lib$localScan.Genre<>Lib$local.Genre OR Lib$localScan.Rating<>Lib$local.Rating OR Lib$localScan.Year<>Lib$local.Year OR Lib$localScan.Length<>Lib$local.Length OR Lib$localScan.Bitrate<>Lib$local.Bitrate OR Lib$localScan.Filesize<>Lib$local.Filesize OR Lib$localScan.MusicOrVideo<>Lib$local.MusicOrVideo OR Lib$localScan.Deleted<>Lib$local.Deleted);";
+        sql = "INSERT INTO \"LibScanTemp\" SELECT Lib$local.UniqueID, Lib$local.Filepath, Lib$localScan.Artist, Lib$localScan.Album, Lib$localScan.Title, Lib$localScan.Track, Lib$localScan.Genre, Lib$localScan.Rating, Lib$localScan.Filename, Lib$localScan.Year, Lib$localScan.Length, Lib$localScan.Bitrate, Lib$localScan.Filesize, $timestamp, Lib$localScan.Filetype, Lib$localScan.MusicOrVideo, 0 AS Deleted, Lib$local.Hidden FROM Lib$local, Lib$localScan WHERE Lib$local.Filepath=Lib$localScan.Filepath AND Lib$localScan.Filename=Lib$local.Filename AND (Lib$localScan.Artist<>Lib$local.Artist OR Lib$localScan.Album<>Lib$local.Album OR Lib$localScan.Title<>Lib$local.Title OR Lib$localScan.Track<>Lib$local.Track OR Lib$localScan.Genre<>Lib$local.Genre OR Lib$localScan.Rating<>Lib$local.Rating OR Lib$localScan.Year<>Lib$local.Year OR Lib$localScan.Length<>Lib$local.Length OR Lib$localScan.Bitrate<>Lib$local.Bitrate OR Lib$localScan.Filesize<>Lib$local.Filesize OR Lib$localScan.MusicOrVideo<>Lib$local.MusicOrVideo OR Lib$localScan.Deleted<>Lib$local.Deleted);";
         sql.replace("$local", localUniqueId);
         sql.replace("$timestamp", timestamp);
         qDebug() << sql;
@@ -293,7 +293,7 @@ void Database::completeScan(QString timestamp)
         query(sql);
 
         //copy new records into the database
-        sql = "INSERT INTO Lib$local SELECT UniqueID, NULL AS ID, Filepath, Artist, Album, Title, Track, Genre, Rating, Filename, Year, Length, Bitrate, Filesize, Timestamp, Filetype, MusicOrVideo, Deleted, Hidden FROM Lib$localScan WHERE NOT EXISTS (SELECT NULL FROM Lib$local WHERE Lib$local.filename=Lib$localScan.filename);";
+        sql = "INSERT INTO Lib$local SELECT UniqueID, Filepath, Artist, Album, Title, Track, Genre, Rating, Filename, Year, Length, Bitrate, Filesize, Timestamp, Filetype, MusicOrVideo, Deleted, Hidden FROM Lib$localScan WHERE NOT EXISTS (SELECT NULL FROM Lib$local WHERE Lib$local.filename=Lib$localScan.filename);";
         sql.replace("$local", localUniqueId);
         qDebug() << sql;
         query(sql);
@@ -587,7 +587,7 @@ int Database::deleteFile(QString id, QString table)
     QSqlQuery result;
     QString sql = "DELETE FROM ";
     sql += table;
-    sql += " WHERE id=\"";
+    sql += " WHERE Filepath=\"";
     sql += id;
     sql +="\"";
 
@@ -803,33 +803,6 @@ QString Database::getIPfromUID(QString uniqueID)
     }
 }
 
-
-/*void Database::setUniqueID()
-{
-    QString sql;
-    sql = "DELETE FROM LibIndex";
-    try
-    {
-      query(sql);
-    }
-    catch(SBException e)
-    {
-      throw e;
-    }
-    sql = "INSERT INTO LibIndex (UniqueID, TimeLastUpdated, Local, TimeLastOnline, Name, Online) VALUES (\"";
-    sql += localUniqueId;
-    sql += "\", 11, 1, 12, \"Jim\", 1);";
-    try
-    {
-      query(sql);
-    }
-    catch(SBException e)
-    {
-      throw e;
-    }
-}*/
-
-
 QString Database::changesSinceTime(int timestamp, QString uniqueID)
 {
     QString sql;
@@ -1003,15 +976,15 @@ void Database::PlaylistAddTracks(QList<QString> Tracks, QString Playlist)
     for(i = 0; i < Tracks.size() ; i++)
     {
         QString trackid = Tracks.at(i);
-        QStringList list1 = trackid.split(":");
+        QStringList list1 = trackid.split("|");
         QString id = list1.at(0);
         QString uniqueid = list1.at(1);
         QString sql;
         sql += "INSERT INTO PlaylistTracks (UniqueID, ID, Playlist) VALUES (\"";
         sql += uniqueid;
-        sql += "\", ";
+        sql += "\", \"";
         sql += id;
-        sql += ", \"";
+        sql += "\", \"";
         sql += Playlist;
         sql += "\");";
         query(sql);
@@ -1027,7 +1000,8 @@ QList<QSqlRecord>* Database::getTracks( QList<QString> Tracks)
     for(i = 0; i < (Tracks.size()) ; i++)
     {
         trackid = Tracks.at(i);
-        QStringList list1 = trackid.split(":");
+        qDebug() << Tracks.at(i);
+        QStringList list1 = trackid.split("|");
         QString id = list1.at(1);
         QString uniqueid = list1.at(0);
         QString sql = "SELECT * FROM ";
@@ -1035,9 +1009,10 @@ QList<QSqlRecord>* Database::getTracks( QList<QString> Tracks)
         sql += uniqueid;
         sql += " WHERE UniqueID = \"";
         sql += uniqueid;
-        sql += "\" AND ID = ";
+        sql += "\" AND Filepath = \"";
         sql += id;
-        sql += ";";
+        sql += "\";";
+        qDebug() << sql;
         QSqlQuery queryresult = query(sql);
         queryresult.first();
         result->append(queryresult.record());
@@ -1058,14 +1033,14 @@ void Database::removePlaylist(QString name)
 }
 
 
-QList<QSqlRecord> Database::getAllPlaylists()
+QList<QSqlRecord>* Database::getAllPlaylists()
 {
-    QList<QSqlRecord> result;
-    //QString sql = "SELECT * FROM Playlist ORDER BY Played DESC";
-    QString sql = "SELECT * FROM Playlist";
+    QList<QSqlRecord>* result = new QList<QSqlRecord>;
+    QString sql = "SELECT * FROM Playlist ORDER BY Played DESC";
+    //QString sql = "SELECT * FROM Playlist";
     QSqlQuery queryresult = query(sql);
     while(queryresult.next())
-        result.append(queryresult.record());
+        result->append(queryresult.record());
     return result;
 }
 
@@ -1074,7 +1049,7 @@ void Database::togglehidden(QString file, QString uniqueID)
     QString sql = "SELECT Hidden FROM Lib";
     QString h;
     sql += uniqueID;
-    sql += " WHERE ID = \"";
+    sql += " WHERE Filepath = \"";
     sql +=file;
     sql +="\";";
 
@@ -1089,7 +1064,7 @@ void Database::togglehidden(QString file, QString uniqueID)
     sql1 += uniqueID;
     sql1 += " SET Hidden=";
     sql1 += h;
-    sql1 += " WHERE ID = \"";
+    sql1 += " WHERE Filepath = \"";
     sql1 +=file;
     sql1 +="\";";
     qDebug() << sql1;

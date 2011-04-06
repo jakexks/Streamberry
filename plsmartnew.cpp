@@ -43,11 +43,13 @@ void PLSmartNew::btnClicked()
 {
   QString newname = textbox1->text();
   QString newfilter = textbox2->text();
-  qDebug() << newname;
-  Playlist newplaylist(db, newname);
-  newplaylist.setPlaylistType(1);
-  newplaylist.setPlaylistName(newname);
-  newplaylist.setFilter(newfilter);
-  newplaylist.SavePlaylist();
+  if(newname !="")
+  {
+    Playlist newplaylist(db, newname);
+    newplaylist.setPlaylistType(1);
+    newplaylist.setPlaylistName(newname);
+    newplaylist.setFilter(newfilter);
+    newplaylist.SavePlaylist();
+  }
   dialog->accept();
 }

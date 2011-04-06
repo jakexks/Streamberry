@@ -24,9 +24,9 @@ public:
   void deletePlaylist();
 
   //Adds a track to the playlist. Takes an id and uniqueID to identify the track.
-  void addTrack(int ID, QString UniqueID);
+  void addTrack(QString ID, QString UniqueID);
   //Removes a track from the playlist. Takes an id and uniqueID to identify the track.
-  void removeTrack(int ID, QString UniqueID);
+  void removeTrack(QString ID, QString UniqueID);
   //Removes a track from the playlist, takes the index of the track in the playlist to identify the track.
   void removeTrack(int index) ;
 

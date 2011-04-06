@@ -56,7 +56,8 @@ SOURCES +=  main.cpp\
         playlistdialogue.cpp \
     plsmartedit.cpp \
     plsmartnew.cpp \
-    plnormalnew.cpp
+    plnormalnew.cpp \
+    addto.cpp
 
 
 HEADERS +=  mainwindow.h\
@@ -91,11 +92,12 @@ HEADERS +=  mainwindow.h\
             quitmanager.h \
     newnetworking.h \
     volumeslider.h \
-	settingsdialog.h \
-	misctab.h \
+        settingsdialog.h \
+        misctab.h \
     sharingtab.h \
     trackcontext.h \
     playlistdialogue.h \
     plsmartedit.h \
     plsmartnew.h \
-    plnormalnew.h
+    plnormalnew.h \
+    addto.h

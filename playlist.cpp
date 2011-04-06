@@ -2,8 +2,8 @@
 
 Playlist::Playlist(Database &datab) : db(datab)
 {
-    smart = 0;
-    filter = "";
+  smart = 0;
+  filter = "";
 }
 
 Playlist::Playlist(Database &datab, QString playlistName) : db(datab)
@@ -19,7 +19,7 @@ Playlist::Playlist(Database &datab, QString playlistName) : db(datab)
     if (result2.isValid())
     {
       QString temp = result2.value(0).toString();
-      temp += ":";
+      temp += "|";
       temp += result2.value(1).toString();
       Tracks.append(temp);
     }
@@ -28,23 +28,26 @@ Playlist::Playlist(Database &datab, QString playlistName) : db(datab)
 
 void Playlist::SavePlaylist()
 {
-  db.PlaylistSave(name,smart,filter);
-  db.PlaylistAddTracks(Tracks, name);
+  if(name != "")
+  {
+    db.PlaylistSave(name,smart,filter);
+    db.PlaylistAddTracks(Tracks, name);
+  }
 }
 
-void Playlist::addTrack(int ID, QString UniqueID)
+void Playlist::addTrack(QString ID, QString UniqueID)
 {
   QString newtrack;
-  newtrack = QString::number(ID);
-  newtrack += ":";
+  newtrack = ID;
+  newtrack += "|";
   newtrack += UniqueID;
   Tracks.append(newtrack);
 }
 
-void Playlist::removeTrack(int ID, QString UniqueID)
+void Playlist::removeTrack(QString id, QString UniqueID)
 {
   QString track;
-  track = QString::number(ID);
+  track = id;
   track += ":";
   track += UniqueID;
   int index = Tracks.indexOf(track);
@@ -58,8 +61,9 @@ void Playlist::removeTrack(int index)
 
 QList<QSqlRecord>* Playlist::getAllTracks()
 {
-  if(smart == 0)
+  if(smart == 0) {
     return db.getTracks(Tracks);
+  }
   else
   {
     //Only library controller should ever call this - Robbie
@@ -84,12 +88,12 @@ QString Playlist::getPlaylistName()
 
 void Playlist::setPlaylistName(QString newname)
 {
-   name = newname;
+  name = newname;
 }
 
 int Playlist::getPlaylistType()
 {
-   return smart;
+  return smart;
 }
 
 int Playlist::getPlaylistLength()

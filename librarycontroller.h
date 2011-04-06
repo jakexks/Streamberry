@@ -42,9 +42,11 @@ public slots:
     void updateLibrary();
     void musicVideoFilter(int value);
     void ShowContextMenu(const QPoint& pos);
+    //void DragStart(QTableWidgetItem*);
 
 private:
     Utilities& util;
+    //void ActualDrag(QTableWidgetItem* item, const QPoint startPos);
     QWidget* widget;
     QWidget* curview;
     QGridLayout* container;

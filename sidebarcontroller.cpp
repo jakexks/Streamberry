@@ -146,16 +146,16 @@ QTableWidget* SidebarController::buildplaylistbar()
 void SidebarController::updateplaylistbar(int shownumber)
 {
   int trimsize = shownumber;
-  QList<QSqlRecord> playlists = db.getAllPlaylists();
-  if(playlists.size() > trimsize)
+  QList<QSqlRecord>* playlists = db.getAllPlaylists();
+  if(playlists->size() > trimsize)
   {
     int p ;
-    for(p = playlists.size(); p > trimsize; p-- )
-      playlists.removeLast();
+    for(p = playlists->size(); p > trimsize; p-- )
+      playlists->removeLast();
   }
   else
   {
-    trimsize = playlists.size();
+    trimsize = playlists->size();
   }
   trimsize = trimsize + 3;
 
@@ -179,7 +179,7 @@ void SidebarController::updateplaylistbar(int shownumber)
 
   for(i = 3; i<(trimsize); i++)
   {
-    QSqlRecord currecord = playlists.at(i-3);
+    QSqlRecord currecord = playlists->at(i-3);
     typearray[i-3] = currecord.field(1).value().toBool();
     QString name = currecord.field(0).value().toString();
     namearray[i-3] = name;

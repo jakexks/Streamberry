@@ -188,8 +188,8 @@ void Filescan::addFiles(QDir path, QString homeID)
                 {
                     QString filepathnew = newfile.absoluteFilePath();
                     filepathnew.replace(";", "\\;");
-                    qDebug() << "HERE Now";
-                    qDebug() << mov;
+                    //qDebug() << "HERE Now";
+                   // qDebug() << mov;
                     db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), "Unknown Director", "Unknown Producer", newfile.fileName(), "Unknown Genre", "0", "-1", "0", "0", (QString)"1411", newfile.suffix(), localTable, homeID, mov);
                 }
                 catch (SBException e)

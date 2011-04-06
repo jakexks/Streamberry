@@ -17,11 +17,11 @@ PLNormalNew::PLNormalNew(Utilities* util, Database& datab): db(datab)
 
   QLabel* text1 = new QLabel("Please Enter New Playlist Name:");
   textbox = new QLineEdit("");
-  QLabel* text2 = new QLabel("Add files to this playlist by dragging and dropping from the library to the playlist pane");
+  QLabel* text2 = new QLabel("Add files to this playlist right-clicking on them and using Add to");
   QPushButton* accept = new QPushButton("Ok");
 
   QObject::connect(accept, SIGNAL(clicked()), this, SLOT(btnClicked()));
-  QObject::connect(textbox, SIGNAL(editingFinished()), this, SLOT(btnClicked()));
+  QObject::connect(textbox, SIGNAL(returnPressed()), this, SLOT(btnClicked()));
 
   this->setFocusPolicy(Qt::StrongFocus);
   QString iconpath = util->getExecutePath();
@@ -40,8 +40,12 @@ PLNormalNew::PLNormalNew(Utilities* util, Database& datab): db(datab)
 void PLNormalNew::btnClicked()
 {
   QString newname = textbox->text();
-  Playlist newplaylist(db, newname);
-  newplaylist.setPlaylistName(newname);
-  newplaylist.SavePlaylist();
+  if(newname != "")
+  {
+    Playlist newplaylist(db, newname);
+    newplaylist.setPlaylistName(newname);
+    newplaylist.SavePlaylist();
+    dialog->accept();
+  }
   dialog->accept();
 }
