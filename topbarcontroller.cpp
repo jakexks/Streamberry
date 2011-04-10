@@ -169,3 +169,8 @@ void TopbarController::forwardClicked()
 {
     emit goForwardPlease();
 }
+
+void TopbarController::setSearchText(QString text)
+{
+    search->setText(text);
+}

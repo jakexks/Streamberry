@@ -10,6 +10,7 @@ class SBSearchBar : public QFrame
     Q_OBJECT
 public:
     explicit SBSearchBar(QString path, QFrame *parent = 0);
+    void setText(QString text);
 signals:
     void newSearchString(QString str);
 public slots:

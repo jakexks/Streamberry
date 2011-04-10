@@ -28,7 +28,6 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     item.playlist = "";
     item.smarttext = "";
     item.searchtext = "";
-    item.musicvideofilter = musicvideofilter;
     viewqueue.append(item);
     viewqueueindex = 0;
     playingdata = NULL;
@@ -406,7 +405,6 @@ void LibraryController::setSearchText(QString text)
         item.searchtext = text;
         item.sortcols = viewqueue[viewqueueindex].sortcols;
         item.orders = viewqueue[viewqueueindex].orders;
-        item.musicvideofilter = viewqueue[viewqueueindex].musicvideofilter;
 
         while(viewqueueindex<viewqueue.size()-1)
         {
@@ -424,7 +422,7 @@ void LibraryController::updateLibrary()
 {
     if(tablewidget!=NULL)
     {
-        QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, viewqueue[viewqueueindex].musicvideofilter);
+        QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
         fillData(result);
     }
 }
@@ -603,6 +601,7 @@ void LibraryController::goBack()
     if(viewqueueindex>0)
     {
         viewqueueindex--;
+        emit setSearchBoxText(viewqueue[viewqueueindex].searchtext);
         updateLibrary();
     }
 }
@@ -612,6 +611,7 @@ void LibraryController::goForward()
     if(viewqueueindex<viewqueue.size()-1)
     {
         viewqueueindex++;
+        emit setSearchBoxText(viewqueue[viewqueueindex].searchtext);
         updateLibrary();
     }
 }
@@ -624,7 +624,6 @@ void LibraryController::pushAllView()
         item.playlist = "";
         item.smarttext = "";
         item.searchtext = "";
-        item.musicvideofilter = musicvideofilter;
         viewqueue.append(item);
         viewqueueindex++;
         tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
@@ -639,7 +638,6 @@ void LibraryController::pushNormalPlaylist(QString name)
         item.playlist = name;
         item.smarttext = "";
         item.searchtext = "";
-        item.musicvideofilter = musicvideofilter;
         viewqueue.append(item);
         viewqueueindex++;
         tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
@@ -654,7 +652,6 @@ void LibraryController::pushSmartPlaylist(QString name, QString filtertext)
         item.playlist = name;
         item.smarttext = filtertext;
         item.searchtext = "";
-        item.musicvideofilter = musicvideofilter;
         viewqueue.append(item);
         viewqueueindex++;
         tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);

@@ -29,7 +29,7 @@ public:
     void pushAllView();
 signals:
     void songInfoData(QString album, QString artist, QString title, QString track);
-
+    void setSearchBoxText(QString text);
 public slots:
     void sortLibrary();
     int rowToHighlight();
@@ -78,7 +78,6 @@ private:
         QString smarttext;
         QList<QString> sortcols;
         QList<QString> orders;
-        int musicvideofilter;
     } ViewQueueItem;
     int viewqueueindex;
     QList<ViewQueueItem> viewqueue;

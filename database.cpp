@@ -655,9 +655,9 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
     {
     case 0:
     case 1:
-        condition += " AND MusicOrVideo=\"";
+        condition += " AND MusicOrVideo='";
         condition += QString::number(musicorvideo);
-        condition += "\"";
+        condition += "'";
     default:
         break;
     }
@@ -678,9 +678,9 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
             ordering += " ";
             ordering += order.at(i);
         }
-    }
 
-    ordering += ", Track ASC";
+        ordering += ", Track ASC";
+    }
 
     try
     {

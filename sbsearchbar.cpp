@@ -78,6 +78,11 @@ void SBSearchBar::checkText(QString text) {
     cross->setVisible(false);
 }
 
+void SBSearchBar::setText(QString text)
+{
+    textbox->setText(text);
+}
+
 void SBSearchBar::crossPressed()
 {
     QString temp = "background-image:url(";
