@@ -113,7 +113,6 @@ void PlaylistMenu::NormalPlay()
 
 void PlaylistMenu::NormalView()
 {
-
   QList<QSqlRecord>* alltracks = PL->getAllTracks();
   emit(playthis(alltracks));
 }

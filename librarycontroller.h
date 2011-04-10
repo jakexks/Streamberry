@@ -62,9 +62,19 @@ private:
     Database& db;
     Player& player;
     QString searchtext;
+    QString playlist;
     QList<QString> *sortcols;
     QList<QString> *orders;
     TrackContext* trackmenu;
+    typedef struct {
+        QString playlist;
+        QString searchtext;
+        QList<QString> *sortcols;
+        QList<QString> *orders;
+        int musicvideofilter;
+    } ViewQueueItem;
+    int viewqueueindex;
+    QList<ViewQueueItem> viewqueue;
 };
 
 #endif // LIBRARYCONTROLLER_H
