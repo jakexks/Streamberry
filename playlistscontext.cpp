@@ -91,12 +91,12 @@ void PlaylistMenu::SmartView()
 
 void PlaylistMenu::SmartRename()
 {
-  PLRenameDialog* diag = new PLRenameDialog(PL, util);
+  PLRenameDialog diag(PL, util);
 }
 
 void PlaylistMenu::SmartEdit()
 {
-  PLSmartEdit* diag = new PLSmartEdit(PL, util);
+  PLSmartEdit diag(PL, util);
 }
 
 void PlaylistMenu::SmartDelete()
@@ -115,13 +115,12 @@ void PlaylistMenu::NormalView()
 {
 
   QList<QSqlRecord>* alltracks = PL->getAllTracks();
-//qDebug() << *alltracks;
   emit(playthis(alltracks));
 }
 
 void PlaylistMenu::NormalRename()
 {
-  PLRenameDialog* diag = new PLRenameDialog(PL, util);
+  PLRenameDialog diag(PL, util);
 }
 
 void PlaylistMenu::NormalDelete()
@@ -131,12 +130,12 @@ void PlaylistMenu::NormalDelete()
 
 void PlaylistMenu::NewPlay()
 {
-  PLNormalNew* diag = new PLNormalNew(util, db);
+  PLNormalNew diag(util, db);
 }
 
 void PlaylistMenu::NewSmartPlay()
 {
-  PLSmartNew* diag = new PLSmartNew(util, db);
+  PLSmartNew diag(util, db);
 }
 
 

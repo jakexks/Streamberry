@@ -47,7 +47,6 @@ QWidget* SidebarController::makeWidget()
   smartmenu = new PlaylistMenu(true, utilpoint, db);
   normalmenu = new PlaylistMenu(false, utilpoint, db);
 
-
   sidebarlayout->setRowStretch(0, 0);
   sidebarlayout->setRowStretch(1, 0);
   sidebarlayout->setRowStretch(2, 1);
@@ -314,7 +313,9 @@ QWidget* SidebarController::makePlaylistBtn()
 
 void SidebarController::ShowContextMenu(const QPoint& pos)
 {
-  int row = playlistTableWidget->rowAt(playlistTableWidget->mapToGlobal(pos).y());
+  qDebug() << "HERERERE "; //THIS MAP TO GLOBAL DOESN'T WORK
+  int row = playlistTableWidget->rowAt(widget->mapToGlobal(pos).y());
+  qDebug() << "row" <<row;
   if(row >= 3)
   {
     bool type = typearray[row-3];
@@ -324,6 +325,7 @@ void SidebarController::ShowContextMenu(const QPoint& pos)
       smartmenu->playlistrightclicked(&pass, libpass);
     else
       normalmenu->playlistrightclicked(&pass, libpass);
+
     QString sizestring = db.getSetting("windowSize");
     if( sizestring=="" )
       updateplaylistbar( 7 );

@@ -235,6 +235,7 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
       tablewidget->setItem(i, j+2, item);
     }
   }
+  //delete values;
 
   if(length>0)
   {

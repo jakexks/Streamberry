@@ -13,6 +13,8 @@ class PLRenameDialog : public QDialog
    Q_OBJECT
 public:
     PLRenameDialog(Playlist* playlist, Utilities* util);
+    ~PLRenameDialog();
+
 private slots:
     void btnClicked();
 private:
