@@ -66,7 +66,7 @@ QList<QSqlRecord>* Playlist::getAllTracks()
     QList<QString> order;
     fields.append("Album");
     order.append("DESC");
-    QList<QSqlRecord>* result = db.searchDb(0, filter, fields, order, 0);
+    QList<QSqlRecord>* result = db.searchDb(0, "", filter, fields, order, 0);
     return result;
   }
 }

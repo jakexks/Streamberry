@@ -242,12 +242,12 @@ void Database::initialiseScan()
         sql += localUniqueId;
         sql += "Scan\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"Filepath\" VARCHAR PRIMARY KEY NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
         query(sql);
-//        sql = "INSERT INTO \"Lib";
-//        sql += localUniqueId;
-//        sql += "Scan\" SELECT * FROM \"Lib";
-//        sql += localUniqueId;
-//        sql += "\" WHERE Deleted='1';";
-//        query(sql);
+        //        sql = "INSERT INTO \"Lib";
+        //        sql += localUniqueId;
+        //        sql += "Scan\" SELECT * FROM \"Lib";
+        //        sql += localUniqueId;
+        //        sql += "\" WHERE Deleted='1';";
+        //        query(sql);
     }
     catch (SBException e)
     {
@@ -603,9 +603,10 @@ int Database::deleteFile(QString id, QString table)
 }
 
 
-QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString>& sortcols, QList<QString> order, int musicorvideo)
+QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString searchtxt, QList<QString>& sortcols, QList<QString> order, int musicorvideo)
 {
     QString condition;
+    QString ordering;
     QString sql;
     QSqlQuery result;
     QList<QSqlRecord> users;
@@ -666,21 +667,21 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
 
     if(sortcount>0)
     {
-        condition += " ORDER BY ";
-        condition += sortcols.at(0);
-        condition += " ";
-        condition += order.at(0);
+        ordering += " ORDER BY ";
+        ordering += sortcols.at(0);
+        ordering += " ";
+        ordering += order.at(0);
 
         for(int i = 1; i < sortcount; i++)
         {
-            condition += ", ";
-            condition += sortcols.at(i);
-            condition += " ";
-            condition += order.at(i);
+            ordering += ", ";
+            ordering += sortcols.at(i);
+            ordering += " ";
+            ordering += order.at(i);
         }
     }
 
-    condition += ", Track ASC";
+    ordering += ", Track ASC";
 
     try
     {
@@ -713,8 +714,26 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
         {
             //get library and add to files list
             sql = "SELECT * FROM Lib";
-            sql += users.takeFirst().value(0).toString();
+            QString id = users.takeFirst().value(0).toString();
+            sql += id;
+
+            if(playlist!="")
+            {
+                sql += ", PlaylistTracks";
+            }
+
             sql += condition;
+
+            if(playlist!="")
+            {
+                sql += " AND Playlist='";
+                sql += playlist;
+                sql += "' AND PlaylistTracks.UniqueID=Filepath AND PlaylistTracks.ID='";
+                sql += id;
+                sql += "'";
+            }
+
+            sql += ordering;
 
             result = query(sql);
 
@@ -725,7 +744,6 @@ QList<QSqlRecord>* Database::searchDb(int type, QString searchtxt, QList<QString
                 result.next();
             }
         }
-
     }
     catch(SBException e)
     {
