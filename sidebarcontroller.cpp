@@ -313,9 +313,7 @@ QWidget* SidebarController::makePlaylistBtn()
 
 void SidebarController::ShowContextMenu(const QPoint& pos)
 {
-  qDebug() << "HERERERE "; //THIS MAP TO GLOBAL DOESN'T WORK
-  int row = playlistTableWidget->rowAt(widget->mapToGlobal(pos).y());
-  qDebug() << "row" <<row;
+  int row = playlistTableWidget->rowAt(main->mapToParent(pos).y());
   if(row >= 3)
   {
     bool type = typearray[row-3];
