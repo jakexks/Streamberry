@@ -42,7 +42,7 @@ private:
   bool currentsmart;
   int setup;
   Playlist* PL;
-  LibraryController* LibCont;
+  LibraryController* libcont;
   Utilities* util;
 
 };

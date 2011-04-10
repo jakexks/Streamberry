@@ -727,7 +727,7 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
             {
                 sql += " AND Playlist='";
                 sql += playlist;
-                sql += "' AND PlaylistTracks.UniqueID=Filepath AND PlaylistTracks.ID='";
+                sql += "' AND PlaylistTracks.ID=Filepath AND PlaylistTracks.UniqueID='";
                 sql += id;
                 sql += "'";
             }

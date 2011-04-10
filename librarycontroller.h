@@ -22,10 +22,11 @@ public:
     ~LibraryController();
     QWidget* getWidget();
     void addHeaders();
-    void fillData(QList<QSqlRecord>* values);
     void makeWidget();
     void setHeaders(QStringList& headers, int sortcol);
-
+    void pushNormalPlaylist(QString name);
+    void pushSmartPlaylist(QString name, QString filtertext);
+    void pushAllView();
 signals:
     void songInfoData(QString album, QString artist, QString title, QString track);
 
@@ -43,9 +44,12 @@ public slots:
     void updateLibrary();
     void musicVideoFilter(int value);
     void ShowContextMenu(const QPoint& pos);
+    void goBack();
+    void goForward();
     //void DragStart(QTableWidgetItem*);
 
 private:
+    void fillData(QList<QSqlRecord>* values);
     Utilities& util;
     //void ActualDrag(QTableWidgetItem* item, const QPoint startPos);
     QWidget* widget;
@@ -64,15 +68,15 @@ private:
     Database& db;
     Player& player;
     QString searchtext;
+    QString smarttext;
     QString playlist;
-    QList<QString> *sortcols;
-    QList<QString> *orders;
     TrackContext* trackmenu;
     typedef struct {
         QString playlist;
         QString searchtext;
-        QList<QString> *sortcols;
-        QList<QString> *orders;
+        QString smarttext;
+        QList<QString> sortcols;
+        QList<QString> orders;
         int musicvideofilter;
     } ViewQueueItem;
     int viewqueueindex;

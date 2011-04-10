@@ -24,8 +24,14 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     currentlyplaying = -1;
     musicvideofilter = 2;
     viewqueueindex = -1;
-    sortcols = NULL;
-    orders = NULL;
+
+    ViewQueueItem item;
+    item.playlist = "";
+    item.smarttext = "";
+    item.searchtext = "";
+    item.musicvideofilter = musicvideofilter;
+    viewqueue.append(item);
+    viewqueueindex = 0;
 
     QStringList headers;
     QString headerstr;
@@ -172,10 +178,10 @@ void LibraryController::addHeaders()
 
 void LibraryController::fillData(QList<QSqlRecord> *values)
 {
-  if(currentdata!=NULL)
-  {
-    if(currentdata != playingdata)
-        delete currentdata;
+    if(currentdata!=NULL)
+    {
+        if(currentdata != playingdata)
+            delete currentdata;
     }
 
     currentdata = values;
@@ -291,18 +297,8 @@ void LibraryController::deselectFirst()
 
 void LibraryController::sortIndicatorChanged(int index, Qt::SortOrder order)
 {
-    //  if(sortcols!=NULL)
-    //  {
-    //    delete sortcols;
-    //  }
-
-    //  if(orders!=NULL)
-    //  {
-    //    delete orders;
-    //  }
-
-    sortcols = new QList<QString>();
-    orders = new QList<QString>();
+    QList<QString> sortcols;
+    QList<QString> orders;
     QString orderstr = (order==Qt::AscendingOrder) ? "ASC" : "DESC";
 
     if(index<2)
@@ -314,46 +310,49 @@ void LibraryController::sortIndicatorChanged(int index, Qt::SortOrder order)
     {
         if(*curheaders[index-2] == "Artist")
         {
-            sortcols->append("Artist");
-            sortcols->append("Album");
-            sortcols->append("Track");
-            orders->append(orderstr);
-            orders->append("ASC");
-            orders->append("ASC");
+            sortcols.append("Artist");
+            sortcols.append("Album");
+            sortcols.append("Track");
+            orders.append(orderstr);
+            orders.append("ASC");
+            orders.append("ASC");
         }
         else if(*curheaders[index-2] == "Album")
         {
-            sortcols->append("Album");
-            sortcols->append("Track");
-            orders->append(orderstr);
-            orders->append("ASC");
+            sortcols.append("Album");
+            sortcols.append("Track");
+            orders.append(orderstr);
+            orders.append("ASC");
         }
         else if(*curheaders[index-2] == "Genre")
         {
-            sortcols->append("Genre");
-            sortcols->append("Artist");
-            sortcols->append("Album");
-            sortcols->append("Track");
-            orders->append(orderstr);
-            orders->append("ASC");
-            orders->append("ASC");
-            orders->append("ASC");
+            sortcols.append("Genre");
+            sortcols.append("Artist");
+            sortcols.append("Album");
+            sortcols.append("Track");
+            orders.append(orderstr);
+            orders.append("ASC");
+            orders.append("ASC");
+            orders.append("ASC");
         }
         else if(*curheaders[index-2] == "Time")
         {
-            sortcols->append("Length");
-            sortcols->append("Track");
-            orders->append(orderstr);
-            orders->append("ASC");
+            sortcols.append("Length");
+            sortcols.append("Track");
+            orders.append(orderstr);
+            orders.append("ASC");
         }
         else
         {
-            sortcols->append(*curheaders[index-2]);
-            orders->append(orderstr);
+            sortcols.append(*curheaders[index-2]);
+            orders.append(orderstr);
         }
 
         sortcolumn = index - 2;
         sortorder = order;
+
+        viewqueue[viewqueueindex].sortcols = sortcols;
+        viewqueue[viewqueueindex].orders = orders;
 
         sortLibrary();
     }
@@ -391,28 +390,34 @@ void LibraryController::sortLibrary()
 void LibraryController::setSearchText(QString text)
 {
     searchtext = text;
+
+    if(searchtext!=viewqueue[viewqueueindex].searchtext)
+    {
+        ViewQueueItem item;
+        item.playlist = viewqueue[viewqueueindex].playlist;
+        item.smarttext = viewqueue[viewqueueindex].smarttext;
+        item.searchtext = text;
+        item.sortcols = viewqueue[viewqueueindex].sortcols;
+        item.orders = viewqueue[viewqueueindex].orders;
+        item.musicvideofilter = viewqueue[viewqueueindex].musicvideofilter;
+
+        while(viewqueueindex<viewqueue.size()-1)
+        {
+            viewqueue.removeLast();
+        }
+
+        viewqueue.append(item);
+        viewqueueindex++;
+    }
+
     updateLibrary();
 }
 
 void LibraryController::updateLibrary()
 {
-    if(sortcols!=NULL && orders!=NULL && tablewidget!=NULL)
+    if(tablewidget!=NULL)
     {
-        if(viewqueueindex==-1 || playlist!=viewqueue[viewqueueindex].playlist || searchtext!=viewqueue[viewqueueindex].searchtext)
-        {
-            ViewQueueItem item;
-            item.playlist = playlist;
-            item.searchtext = searchtext;
-            item.sortcols = sortcols;
-            item.orders = orders;
-            item.musicvideofilter;
-            viewqueue.append(item);
-            viewqueueindex++;
-        }
-
-        qDebug() << viewqueue.size();
-
-        QList<QSqlRecord> *result = db.searchDb(0, playlist, searchtext, *sortcols, *orders, musicvideofilter);
+        QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, viewqueue[viewqueueindex].musicvideofilter);
         fillData(result);
     }
 }
@@ -425,34 +430,34 @@ void LibraryController::musicVideoFilter(int value)
 
 void LibraryController::itemClicked(int row)
 {
-  //Title = x2, Artist = x3, Album = x4
-  //QTableWidgetItem *record;
+    //Title = x2, Artist = x3, Album = x4
+    //QTableWidgetItem *record;
 
-  if(playingdata != NULL)
-  {
-    qDebug() << "Here3";
-      delete playingdata;
-  }
-  qDebug() << "Here";
-  playingdata = currentdata;
- qDebug() << "Here1";
-  QSqlRecord record = playingdata->at(row);
-  QString filepath = record.field("FilePath").value().toString();
-  emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
-  qDebug() << "Currently playing: " << filepath;
-  if(record.field("UniqueID").value() != "Local")
-  {
-    qDebug() << "NOT LOCAL";
-    qDebug() << record.field("UniqueID").value().toString();
-    QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-    player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
-  } else {
-    player.playFile(filepath);
-  }
-  currentlyplaying = row;
+    if(playingdata != NULL)
+    {
+        qDebug() << "Here3";
+        delete playingdata;
+    }
+    qDebug() << "Here";
+    playingdata = currentdata;
+    qDebug() << "Here1";
+    QSqlRecord record = playingdata->at(row);
+    QString filepath = record.field("FilePath").value().toString();
+    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+    qDebug() << "Currently playing: " << filepath;
+    if(record.field("UniqueID").value() != "Local")
+    {
+        qDebug() << "NOT LOCAL";
+        qDebug() << record.field("UniqueID").value().toString();
+        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+        player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
+    } else {
+        player.playFile(filepath);
+    }
+    currentlyplaying = row;
 
 
-  //tablewidget->selectRow(row);
+    //tablewidget->selectRow(row);
 }
 
 /*
@@ -487,58 +492,58 @@ void LibraryController::playplaylist(QString playlistname)
 
 void LibraryController::playNextFile()
 {
-  currentlyplaying += 1;
-  if (currentlyplaying >= playingdata->length())
-  {
-    currentlyplaying = -1;
-    return;
-  }
-  QSqlRecord record = playingdata->at(currentlyplaying);
-  //TODO: Add checking at the end
-  QString filepath = record.field("FilePath").value().toString();
-  qDebug() << "Currently playing: " << filepath;
+    currentlyplaying += 1;
+    if (currentlyplaying >= playingdata->length())
+    {
+        currentlyplaying = -1;
+        return;
+    }
+    QSqlRecord record = playingdata->at(currentlyplaying);
+    //TODO: Add checking at the end
+    QString filepath = record.field("FilePath").value().toString();
+    qDebug() << "Currently playing: " << filepath;
 
-  emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
 
-  if(record.field("UniqueID").value() != "Local")
-  {
-    qDebug() << "NOT LOCAL";
-    QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-    player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
-  } else {
-    player.playFile(filepath);
-  }
+    if(record.field("UniqueID").value() != "Local")
+    {
+        qDebug() << "NOT LOCAL";
+        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+        player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
+    } else {
+        player.playFile(filepath);
+    }
 
-  if(currentdata == playingdata)
-  {
-    tablewidget->selectRow(currentlyplaying);
-  }
+    if(currentdata == playingdata)
+    {
+        tablewidget->selectRow(currentlyplaying);
+    }
 }
 
 void LibraryController::playPrevFile()
 {
-  currentlyplaying -= 1;//Decrement by 1
-  if (currentlyplaying < 0)
-  {
-    currentlyplaying = playingdata->length()-1;
-  }
-  QSqlRecord record = playingdata->at(currentlyplaying);
-  QString filepath = record.field("FilePath").value().toString();
-  qDebug() << "Currently playing: " << filepath;
-  emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+    currentlyplaying -= 1;//Decrement by 1
+    if (currentlyplaying < 0)
+    {
+        currentlyplaying = playingdata->length()-1;
+    }
+    QSqlRecord record = playingdata->at(currentlyplaying);
+    QString filepath = record.field("FilePath").value().toString();
+    qDebug() << "Currently playing: " << filepath;
+    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
 
-  if(record.field("UniqueID").value() != "Local")
-  {
-    qDebug() << "NOT LOCAL";
-    QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-    player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
-  } else {
-    player.playFile(filepath);
-  }
-  if(currentdata == playingdata)
-  {
-    tablewidget->selectRow(currentlyplaying);
-  }
+    if(record.field("UniqueID").value() != "Local")
+    {
+        qDebug() << "NOT LOCAL";
+        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+        player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
+    } else {
+        player.playFile(filepath);
+    }
+    if(currentdata == playingdata)
+    {
+        tablewidget->selectRow(currentlyplaying);
+    }
 }
 
 void LibraryController::displaythis(QList<QSqlRecord>* passedin)
@@ -566,7 +571,7 @@ LibraryController::~LibraryController()
     delete paneldelegate;
 }
 
-void LibraryController::ShowContextMenu(const QPoint& pos)
+void LibraryController::ShowContextMenu(const QPoint&)
 {
     QList<QString> idlist;
     QList<QString> uniqueIdList;
@@ -582,3 +587,56 @@ void LibraryController::ShowContextMenu(const QPoint& pos)
     trackmenu->trackRightClicked(idlist, uniqueIdList, this);
 }
 
+void LibraryController::goBack()
+{
+    if(viewqueueindex>0)
+    {
+        viewqueueindex--;
+        updateLibrary();
+    }
+}
+
+void LibraryController::goForward()
+{
+    if(viewqueueindex<viewqueue.size()-1)
+    {
+        viewqueueindex++;
+        updateLibrary();
+    }
+}
+
+void LibraryController::pushAllView()
+{
+    ViewQueueItem item;
+    item.playlist = "";
+    item.smarttext = "";
+    item.searchtext = "";
+    item.musicvideofilter = musicvideofilter;
+    viewqueue.append(item);
+    viewqueueindex++;
+    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+}
+
+void LibraryController::pushNormalPlaylist(QString name)
+{
+    ViewQueueItem item;
+    item.playlist = name;
+    item.smarttext = "";
+    item.searchtext = "";
+    item.musicvideofilter = musicvideofilter;
+    viewqueue.append(item);
+    viewqueueindex++;
+    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+}
+
+void LibraryController::pushSmartPlaylist(QString name, QString filtertext)
+{
+    ViewQueueItem item;
+    item.playlist = name;
+    item.smarttext = filtertext;
+    item.searchtext = "";
+    item.musicvideofilter = musicvideofilter;
+    viewqueue.append(item);
+    viewqueueindex++;
+    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+}

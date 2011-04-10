@@ -19,15 +19,21 @@ public:
     enum MusicVideoCheckState { MusicVideoNotChecked = 2, MusicChecked = 0, VideoChecked = 1 };
 signals:
     void musicVideoCheckStateChanged(int);
+    void goBackPlease();
+    void goForwardPlease();
 public slots:
     void musicButtonControl();
     void videosButtonControl();
+    void backClicked();
+    void forwardClicked();
 private:
     QString expath;
     Utilities& util;
     QWidget* widget;
     QPushButton *music;
     QPushButton *videos;
+    QPushButton *back;
+    QPushButton *forward;
     int musicState;
     int videosState;
     SBSearchBar *search;

@@ -82,6 +82,8 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(&fs, SIGNAL(finishedFileScan()), librarycontroller, SLOT(updateLibrary()));
   QObject::connect(this, SIGNAL(filescanRequest()), &fs, SLOT(scan()));
   QObject::connect(sidebarcontroller, SIGNAL(playthis(QList<QSqlRecord>*)),  librarycontroller , SLOT(displaythis(QList<QSqlRecord>*)) );
+  QObject::connect(topbarcontroller, SIGNAL(goBackPlease()), librarycontroller, SLOT(goBack()));
+  QObject::connect(topbarcontroller, SIGNAL(goForwardPlease()), librarycontroller, SLOT(goForward()));
 
   QString iconpath = util.getExecutePath();
   iconpath += "images/icon.ico";

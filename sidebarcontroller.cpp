@@ -64,7 +64,7 @@ QWidget* SidebarController::makeWidget()
 
 QTableWidget* SidebarController::buildplaylistbar()
 {
-  int trimsize = 0;
+//  int trimsize = 0;
   QFont font;
   font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
 #ifdef Q_WS_WIN
@@ -104,7 +104,7 @@ QTableWidget* SidebarController::buildplaylistbar()
   QObject::connect(playlistTableWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowContextMenu(const QPoint&)));
   QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
 
-  const LibraryController* LibCont = libpass;
+//  const LibraryController* LibCont = libpass;
 
 
 
@@ -335,7 +335,7 @@ void SidebarController::ShowContextMenu(const QPoint& pos)
   }
 }
 
-void SidebarController::Clicked(int row, int column)
+void SidebarController::Clicked(int row, int)
 {
   if(row == 0)
   {
@@ -347,7 +347,7 @@ void SidebarController::Clicked(int row, int column)
   }
   else if(row >= 3)
   {
-    bool type = typearray[row-3];
+//    bool type = typearray[row-3];
     QString text = namearray[row-3];
     Playlist pass(db, text);
     QList<QSqlRecord>* alltracks = pass.getAllTracks();
@@ -355,7 +355,7 @@ void SidebarController::Clicked(int row, int column)
   }
 }
 
-void SidebarController::DoubleClicked(int row, int column)
+void SidebarController::DoubleClicked(int row, int)
 {
   if(row >= 3)
   {
