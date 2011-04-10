@@ -87,6 +87,7 @@ public:
     void removePlaylist(QString name);
     QList<QSqlRecord>* getAllPlaylists();
     void togglehidden(QString file, QString uniqueID);
+    QSqlRecord* getTrackInfo(QString filepath, QString uniqueID);
 
 signals:
     void onlineStatusChange();

@@ -172,8 +172,9 @@ void LibraryController::addHeaders()
 
 void LibraryController::fillData(QList<QSqlRecord> *values)
 {
-    if(currentdata!=NULL)
-    {
+  if(currentdata!=NULL)
+  {
+    if(currentdata != playingdata)
         delete currentdata;
     }
 
@@ -424,76 +425,120 @@ void LibraryController::musicVideoFilter(int value)
 
 void LibraryController::itemClicked(int row)
 {
-    //Title = x2, Artist = x3, Album = x4
-    //QTableWidgetItem *record;
+  //Title = x2, Artist = x3, Album = x4
+  //QTableWidgetItem *record;
 
-    QSqlRecord record = currentdata->at(row);
-    QString filepath = record.field("FilePath").value().toString();
-    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
-    qDebug() << "Currently playing: " << filepath;
-    if(record.field("UniqueID").value() != "Local")
-    {
-        qDebug() << "NOT LOCAL";
-        qDebug() << record.field("UniqueID").value().toString();
-        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-        player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
-    } else {
-        player.playFile(filepath);
-    }
-    currentlyplaying = row;
+  if(playingdata != NULL)
+  {
+    qDebug() << "Here3";
+      delete playingdata;
+  }
+  qDebug() << "Here";
+  playingdata = currentdata;
+ qDebug() << "Here1";
+  QSqlRecord record = playingdata->at(row);
+  QString filepath = record.field("FilePath").value().toString();
+  emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+  qDebug() << "Currently playing: " << filepath;
+  if(record.field("UniqueID").value() != "Local")
+  {
+    qDebug() << "NOT LOCAL";
+    qDebug() << record.field("UniqueID").value().toString();
+    QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+    player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
+  } else {
+    player.playFile(filepath);
+  }
+  currentlyplaying = row;
 
-    //tablewidget->selectRow(row);
+
+  //tablewidget->selectRow(row);
 }
 
+/*
+void LibraryController::playplaylist(QString playlistname)
+{
+  //Title = x2, Artist = x3, Album = x4
+  //QTableWidgetItem *record;
+  QList<QString> fields;
+  QList<QString> order;
+  fields.append("Album");
+  order.append("DESC");
+  QList<QSqlRecord>* data = db.searchDb(0, playlistname,"", fields,order, 0);
+  if(playingdata!=NULL)
+  {
+      delete playingdata;
+  }
+
+  playingdata = data;
+
+  QSqlRecord record = data->at(0);
+  emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+  qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
+  if(record.field("UniqueID").value().toString() != "Local")
+  {
+    QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+    player.playFile(record.field("FilePath").value().toString(), record.field("UniqueID").value().toString(), ipaddress);
+  } else {
+    player.playFile(record.field("FilePath").value().toString());
+  }
+}
+*/
 
 void LibraryController::playNextFile()
 {
-    currentlyplaying += 1;
-    if (currentlyplaying >= currentdata->length())
-    {
-        currentlyplaying = -1;
-        return;
-    }
-    QSqlRecord record = currentdata->at(currentlyplaying);
-    //TODO: Add checking at the end
-    QString filepath = record.field("FilePath").value().toString();
-    qDebug() << "Currently playing: " << filepath;
+  currentlyplaying += 1;
+  if (currentlyplaying >= playingdata->length())
+  {
+    currentlyplaying = -1;
+    return;
+  }
+  QSqlRecord record = playingdata->at(currentlyplaying);
+  //TODO: Add checking at the end
+  QString filepath = record.field("FilePath").value().toString();
+  qDebug() << "Currently playing: " << filepath;
 
-    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+  emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
 
-    if(record.field("UniqueID").value() != "Local")
-    {
-        qDebug() << "NOT LOCAL";
-        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-        player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
-    } else {
-        player.playFile(filepath);
-    }
+  if(record.field("UniqueID").value() != "Local")
+  {
+    qDebug() << "NOT LOCAL";
+    QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+    player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
+  } else {
+    player.playFile(filepath);
+  }
+
+  if(currentdata == playingdata)
+  {
     tablewidget->selectRow(currentlyplaying);
+  }
 }
 
 void LibraryController::playPrevFile()
 {
-    currentlyplaying -= 1;//Decrement by 1
-    if (currentlyplaying < 0)
-    {
-        currentlyplaying = currentdata->length()-1;
-    }
-    QSqlRecord record = currentdata->at(currentlyplaying);
-    QString filepath = record.field("FilePath").value().toString();
-    qDebug() << "Currently playing: " << filepath;
-    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+  currentlyplaying -= 1;//Decrement by 1
+  if (currentlyplaying < 0)
+  {
+    currentlyplaying = playingdata->length()-1;
+  }
+  QSqlRecord record = playingdata->at(currentlyplaying);
+  QString filepath = record.field("FilePath").value().toString();
+  qDebug() << "Currently playing: " << filepath;
+  emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
 
-    if(record.field("UniqueID").value() != "Local")
-    {
-        qDebug() << "NOT LOCAL";
-        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-        player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
-    } else {
-        player.playFile(filepath);
-    }
+  if(record.field("UniqueID").value() != "Local")
+  {
+    qDebug() << "NOT LOCAL";
+    QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+    player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
+  } else {
+    player.playFile(filepath);
+  }
+  if(currentdata == playingdata)
+  {
     tablewidget->selectRow(currentlyplaying);
-
+  }
 }
 
 void LibraryController::displaythis(QList<QSqlRecord>* passedin)
