@@ -249,14 +249,14 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
             tablewidget->setSpan(albumstart, 0, (length-albumstart), 1);
     }
 
-  tablewidget->resizeColumnToContents(1);
+    tablewidget->resizeColumnToContents(1);
 
-  int rowtoselect = rowToHighlight();
-  if(rowtoselect != -1)
-  {
-    qDebug() << rowtoselect;
-    tablewidget->selectRow(rowtoselect);
-  }
+    int rowtoselect = rowToHighlight();
+    if(rowtoselect != -1)
+    {
+        qDebug() << rowtoselect;
+        tablewidget->selectRow(rowtoselect);
+    }
 
 }
 
@@ -429,12 +429,6 @@ void LibraryController::updateLibrary()
     }
 }
 
-void LibraryController::displayAllLibrary()
-{
-    QList<QSqlRecord> *result = db.searchDb(0, "", searchtext, *sortcols, *orders, musicvideofilter);
-    fillData(result);
-}
-
 void LibraryController::musicVideoFilter(int value)
 {
     musicvideofilter = value;
@@ -475,45 +469,45 @@ void LibraryController::itemClicked(int row)
 
 int LibraryController::rowToHighlight()
 {
-  if(currentlyplaying != -1)
-  {
-  const QSqlRecord playing = playingdata->at(currentlyplaying);
-  int row = currentdata->indexOf(playing);
-  return row;
-  }
-  return -1;
+    if(currentlyplaying != -1)
+    {
+        const QSqlRecord playing = playingdata->at(currentlyplaying);
+        int row = currentdata->indexOf(playing);
+        return row;
+    }
+    return -1;
 }
 
 
 void LibraryController::playplaylist(QString playlistname)
 {
-  //Title = x2, Artist = x3, Album = x4
-  //QTableWidgetItem *record;
-  QList<QString> fields;
-  QList<QString> order;
-  fields.append("Album");
-  order.append("DESC");
+    //Title = x2, Artist = x3, Album = x4
+    //QTableWidgetItem *record;
+    QList<QString> fields;
+    QList<QString> order;
+    fields.append("Album");
+    order.append("DESC");
 
-  //qDebug() << playlistname;
-  QList<QSqlRecord>* data = db.searchDb(0, playlistname, "", fields,order, 0);
-  if(playingdata!=NULL)
-  {
-      delete playingdata;
-  }
-   //qDebug() << *data;
-  playingdata = data;
- qDebug() << playingdata->size();
-  QSqlRecord record = playingdata->at(0);
-   //qDebug() << "HERE";
-  emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
-  qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
-  if(record.field("UniqueID").value().toString() != "Local")
-  {
-    QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-    player.playFile(record.field("FilePath").value().toString(), record.field("UniqueID").value().toString(), ipaddress);
-  } else {
-    player.playFile(record.field("FilePath").value().toString());
-  }
+    //qDebug() << playlistname;
+    QList<QSqlRecord>* data = db.searchDb(0, playlistname, "", fields,order, 0);
+    if(playingdata!=NULL)
+    {
+        delete playingdata;
+    }
+    //qDebug() << *data;
+    playingdata = data;
+    qDebug() << playingdata->size();
+    QSqlRecord record = playingdata->at(0);
+    //qDebug() << "HERE";
+    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+    qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
+    if(record.field("UniqueID").value().toString() != "Local")
+    {
+        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+        player.playFile(record.field("FilePath").value().toString(), record.field("UniqueID").value().toString(), ipaddress);
+    } else {
+        player.playFile(record.field("FilePath").value().toString());
+    }
 }
 
 
@@ -585,16 +579,6 @@ LibraryController::~LibraryController()
         delete currentdata;
     }
 
-    //  if(sortcols!=NULL)
-    //  {
-    //    delete sortcols;
-    //  }
-
-    //  if(orders!=NULL)
-    //  {
-    //    delete orders;
-    //  }
-
     delete paneldelegate;
 }
 
@@ -634,36 +618,45 @@ void LibraryController::goForward()
 
 void LibraryController::pushAllView()
 {
-    ViewQueueItem item;
-    item.playlist = "";
-    item.smarttext = "";
-    item.searchtext = "";
-    item.musicvideofilter = musicvideofilter;
-    viewqueue.append(item);
-    viewqueueindex++;
-    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+    if(viewqueue[viewqueueindex].playlist!="")
+    {
+        ViewQueueItem item;
+        item.playlist = "";
+        item.smarttext = "";
+        item.searchtext = "";
+        item.musicvideofilter = musicvideofilter;
+        viewqueue.append(item);
+        viewqueueindex++;
+        tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+    }
 }
 
 void LibraryController::pushNormalPlaylist(QString name)
 {
-    ViewQueueItem item;
-    item.playlist = name;
-    item.smarttext = "";
-    item.searchtext = "";
-    item.musicvideofilter = musicvideofilter;
-    viewqueue.append(item);
-    viewqueueindex++;
-    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+    if(viewqueue[viewqueueindex].playlist!=name)
+    {
+        ViewQueueItem item;
+        item.playlist = name;
+        item.smarttext = "";
+        item.searchtext = "";
+        item.musicvideofilter = musicvideofilter;
+        viewqueue.append(item);
+        viewqueueindex++;
+        tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+    }
 }
 
 void LibraryController::pushSmartPlaylist(QString name, QString filtertext)
 {
-    ViewQueueItem item;
-    item.playlist = name;
-    item.smarttext = filtertext;
-    item.searchtext = "";
-    item.musicvideofilter = musicvideofilter;
-    viewqueue.append(item);
-    viewqueueindex++;
-    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+    if(viewqueue[viewqueueindex].playlist!=name)
+    {
+        ViewQueueItem item;
+        item.playlist = name;
+        item.smarttext = filtertext;
+        item.searchtext = "";
+        item.musicvideofilter = musicvideofilter;
+        viewqueue.append(item);
+        viewqueueindex++;
+        tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+    }
 }

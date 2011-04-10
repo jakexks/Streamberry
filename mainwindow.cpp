@@ -74,8 +74,6 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   mainlayout->addWidget(librarycontroller->getWidget(), 1, 1);
   mainlayout->addWidget(playbackcontroller->getWidget(), 2, 0, 1, 2);
 
-
-  QObject::connect(sidebarcontroller, SIGNAL(displayAllMedia()), librarycontroller, SLOT(displayAllLibrary()));
   QObject::connect(playbackcontroller, SIGNAL(nextFile()), librarycontroller, SLOT(playNextFile()));
   QObject::connect(playbackcontroller, SIGNAL(prevFile()), librarycontroller, SLOT(playPrevFile()));
   QObject::connect(topbarcontroller, SIGNAL(musicVideoCheckStateChanged(int)), librarycontroller, SLOT(musicVideoFilter(int)));

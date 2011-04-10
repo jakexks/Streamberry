@@ -33,7 +33,6 @@ signals:
 public slots:
     void sortLibrary();
     int rowToHighlight();
-    void displayAllLibrary();
     void playplaylist(QString playlistname);
     void deselectFirst();
     void sortIndicatorChanged(int index,Qt::SortOrder order);
