@@ -19,20 +19,18 @@ public:
 signals:
   void playthis(QList<QSqlRecord>*);
   void displayAllMedia();
+  void customContextMenuRequested ( const QPoint & pos  );
 
   public slots:
     void Clicked(int row, int column);
     void DoubleClicked(int row, int column);
     void ShowContextMenu(const QPoint&);
 
-signals:
-    void customContextMenuRequested ( const QPoint & pos  );
-
-
 private:
     QWidget* widget;
     QWidget* makePlaylistRow(QString name);
     QWidget* main;
+    int dontview;
 
     QTableWidget* playlistbar;
     QWidget* previewbar;

@@ -73,6 +73,7 @@ void PlaylistMenu::playlistrightclicked(Playlist* passplaylist, LibraryControlle
     LibCont = passlib;
     QObject::connect(this, SIGNAL(playthis(QList<QSqlRecord>*)), LibCont, SLOT(displaythis(QList<QSqlRecord>*)));
     QObject::connect(this, SIGNAL(playplaylist(QString)), LibCont, SLOT(playplaylist(QString)));
+    QObject::connect(this, SIGNAL(playsmartplaylist(QString)), LibCont, SLOT(playsmartplaylist(QString)));
     setup = 1;
   }
   this->exec(QCursor::pos());
@@ -80,7 +81,7 @@ void PlaylistMenu::playlistrightclicked(Playlist* passplaylist, LibraryControlle
 
 void PlaylistMenu::SmartPlay()
 {
-  emit playplaylist(PL->getPlaylistName());
+  emit playsmartplaylist(PL->getFilter());
 }
 
 void PlaylistMenu::SmartView()

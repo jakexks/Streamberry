@@ -26,6 +26,7 @@ SidebarController::SidebarController(Utilities &utilities, Database& datab, Libr
 
 QWidget* SidebarController::makeWidget()
 {
+  dontview =0;
   main = new QWidget();
   main->setMaximumWidth(220);
   main->setObjectName("sideBarMainWidget");
@@ -313,9 +314,12 @@ QWidget* SidebarController::makePlaylistBtn()
 
 void SidebarController::ShowContextMenu(const QPoint& pos)
 {
+  dontview = 1;
+  //qDebug() << "ShowC";
   int row = playlistTableWidget->rowAt(main->mapToParent(pos).y());
   if(row >= 3)
   {
+    dontview = 1;
     bool type = typearray[row-3];
     QString text = namearray[row-3];
     Playlist pass(db, text);
@@ -332,11 +336,13 @@ void SidebarController::ShowContextMenu(const QPoint& pos)
       double size = sizestring.split("|").at(1).toDouble();
       updateplaylistbar( (int)(size/89.25) );
     }
+    dontview = 0;
   }
 }
 
 void SidebarController::Clicked(int row, int column)
 {
+  //qDebug() << "Clicked";
   if(row == 0)
   {
     emit displayAllMedia();
@@ -345,7 +351,7 @@ void SidebarController::Clicked(int row, int column)
   {
     qDebug() << "View All Playlists";
   }
-  else if(row >= 3)
+  else if(row >= 3 && dontview == 1)
   {
     bool type = typearray[row-3];
     QString text = namearray[row-3];

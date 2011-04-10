@@ -14,6 +14,7 @@ class PlaylistMenu : public QMenu
 {
   Q_OBJECT
 
+
 public:
   //PlaylistMenu(bool smart, Database& datab);
   PlaylistMenu(bool smart, Utilities* util, Database& datab);
@@ -22,8 +23,10 @@ public:
 signals:
   void playthis(QList<QSqlRecord>*);
   void playplaylist(QString);
+  void playsmartplaylist(QString);
 
- public slots:
+
+public slots:
   void SmartPlay();
   void SmartView();
   void SmartRename();
