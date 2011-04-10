@@ -97,6 +97,8 @@ void LibraryController::makeWidget()
 
 
   tablewidget->setContextMenuPolicy(Qt::CustomContextMenu);
+
+
   QObject::connect(tablewidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowContextMenu(const QPoint&)));
   QObject::connect(tablewidget, SIGNAL(itemSelectionChanged(void)), this, SLOT(deselectFirst(void)));
   QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
@@ -246,6 +248,14 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
   }
 
   tablewidget->resizeColumnToContents(1);
+
+  int rowtoselect = rowToHighlight();
+  if(rowtoselect != -1)
+  {
+    qDebug() << rowtoselect;
+    tablewidget->selectRow(rowtoselect);
+  }
+
 }
 
 void LibraryController::setHeaders(QStringList& headers, int sortcol)
@@ -399,9 +409,15 @@ void LibraryController::updateLibrary()
 {
   if(sortcols!=NULL && orders!=NULL && tablewidget!=NULL)
   {
-    QList<QSqlRecord> *result = db.searchDb(0, "Favourites", searchtext, *sortcols, *orders, musicvideofilter);
+    QList<QSqlRecord> *result = db.searchDb(0, "", searchtext, *sortcols, *orders, musicvideofilter);
     fillData(result);
   }
+}
+
+void LibraryController::displayAllLibrary()
+{
+    QList<QSqlRecord> *result = db.searchDb(0, "", searchtext, *sortcols, *orders, musicvideofilter);
+    fillData(result);
 }
 
 void LibraryController::musicVideoFilter(int value)
@@ -442,7 +458,18 @@ void LibraryController::itemClicked(int row)
   //tablewidget->selectRow(row);
 }
 
-/*
+int LibraryController::rowToHighlight()
+{
+  if(currentlyplaying != -1)
+  {
+  const QSqlRecord playing = playingdata->at(currentlyplaying);
+  int row = currentdata->indexOf(playing);
+  return row;
+  }
+  return -1;
+}
+
+
 void LibraryController::playplaylist(QString playlistname)
 {
   //Title = x2, Artist = x3, Album = x4
@@ -451,15 +478,18 @@ void LibraryController::playplaylist(QString playlistname)
   QList<QString> order;
   fields.append("Album");
   order.append("DESC");
-  QList<QSqlRecord>* data = db.searchDb(0, playlistname,"", fields,order, 0);
+
+  //qDebug() << playlistname;
+  QList<QSqlRecord>* data = db.searchDb(0, playlistname, "", fields,order, 0);
   if(playingdata!=NULL)
   {
       delete playingdata;
   }
-
+   //qDebug() << *data;
   playingdata = data;
-
-  QSqlRecord record = data->at(0);
+ qDebug() << playingdata->size();
+  QSqlRecord record = playingdata->at(0);
+   //qDebug() << "HERE";
   emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
   qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
   if(record.field("UniqueID").value().toString() != "Local")
@@ -470,7 +500,7 @@ void LibraryController::playplaylist(QString playlistname)
     player.playFile(record.field("FilePath").value().toString());
   }
 }
-*/
+
 
 void LibraryController::playNextFile()
 {

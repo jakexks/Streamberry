@@ -339,7 +339,7 @@ void SidebarController::Clicked(int row, int column)
 {
   if(row == 0)
   {
-    qDebug() << "Veiw All Media";
+    emit displayAllMedia();
   }
   else if(row == 1)
   {
