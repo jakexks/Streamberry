@@ -31,6 +31,7 @@ signals:
 
 public slots:
     void sortLibrary();
+   // void playplaylist(QString playlistname);
     void deselectFirst();
     void sortIndicatorChanged(int index,Qt::SortOrder order);
     void sectionResized(int logicalindex, int oldsize, int newsize);
@@ -58,6 +59,7 @@ private:
     QString** curheaders;
     QTableWidget* tablewidget;
     QList<QSqlRecord>* currentdata;
+    QList<QSqlRecord>* playingdata;
     AlbumArtDelegate* paneldelegate;
     Database& db;
     Player& player;

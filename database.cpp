@@ -188,7 +188,6 @@ QSqlQuery Database::query(QString sql)
         s += query.lastError().text();
         throw SBException(DB, s);
     }
-
     return query;
 }
 
@@ -1065,7 +1064,7 @@ void Database::togglehidden(QString file, QString uniqueID)
     sql1 += " WHERE Filepath = \"";
     sql1 +=file;
     sql1 +="\";";
-    qDebug() << sql1;
+    //qDebug() << sql1;
     query(sql1);
     return;
 }
