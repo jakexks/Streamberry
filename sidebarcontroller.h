@@ -18,6 +18,7 @@ public:
 
 signals:
   void playthis(QList<QSqlRecord>*);
+  void displayAllMedia();
 
   public slots:
     void Clicked(int row, int column);

@@ -1016,9 +1016,6 @@ QList<QSqlRecord>* Database::getTracks( QList<QString> Filepaths, QList<QString>
     {
         QString path = Filepaths.at(i);
         QString id = UniqueIDs.at(i);
-
-        //qDebug() << "||||||" << path << "|||||" << id << "||||||||";
-
         QString sql = "SELECT * FROM ";
         sql += "Lib";
         sql += id;
@@ -1027,7 +1024,7 @@ QList<QSqlRecord>* Database::getTracks( QList<QString> Filepaths, QList<QString>
         sql += "\" AND Filepath = \"";
         sql += path;
         sql += "\";";
-        //qDebug() << sql;
+
         QSqlQuery queryresult = query(sql);
         queryresult.first();
         result->append(queryresult.record());

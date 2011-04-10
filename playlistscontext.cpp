@@ -80,8 +80,7 @@ void PlaylistMenu::playlistrightclicked(Playlist* passplaylist, LibraryControlle
 
 void PlaylistMenu::SmartPlay()
 {
-  qDebug() << PL->getPlaylistName();
-  qDebug() << "Play Now!";
+  emit playplaylist(PL->getPlaylistName());
 }
 
 void PlaylistMenu::SmartView()
@@ -110,8 +109,7 @@ void PlaylistMenu::SmartDelete()
 
 void PlaylistMenu::NormalPlay()
 {
-  qDebug() << PL->getPlaylistName();
-  qDebug() << "Play Now!";
+  emit playplaylist(PL->getPlaylistName());
 }
 
 void PlaylistMenu::NormalView()
