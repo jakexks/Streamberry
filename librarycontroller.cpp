@@ -399,7 +399,7 @@ void LibraryController::updateLibrary()
 {
   if(sortcols!=NULL && orders!=NULL && tablewidget!=NULL)
   {
-    QList<QSqlRecord> *result = db.searchDb(0, searchtext, *sortcols, *orders, musicvideofilter);
+    QList<QSqlRecord> *result = db.searchDb(0, "Favourites", searchtext, *sortcols, *orders, musicvideofilter);
     fillData(result);
   }
 }
