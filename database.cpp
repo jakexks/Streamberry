@@ -725,15 +725,14 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
 
             if(playlist!="")
             {
-                sql += " AND Playlist=\"";
+                sql += " AND Playlist='";
                 sql += playlist;
-                sql += "\" AND PlaylistTracks.ID= Filepath AND PlaylistTracks.UniqueID='";
+                sql += "' AND PlaylistTracks.ID=Filepath AND PlaylistTracks.UniqueID='";
                 sql += id;
                 sql += "'";
             }
 
-            sql += ordering;
-            //qDebug() << sql;
+            sql += ordering;   
             result = query(sql);
 
             result.first();

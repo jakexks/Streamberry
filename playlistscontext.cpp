@@ -14,6 +14,7 @@
 PlaylistMenu::PlaylistMenu(bool smart, Utilities *util1, Database& datab) : db(datab)
 {
   setup = 0;
+  libcont = NULL;
   util = util1;
   if(smart == false)
   {
@@ -70,10 +71,7 @@ void PlaylistMenu::playlistrightclicked(Playlist* passplaylist, LibraryControlle
   PL = passplaylist;
   if(setup == 0)
   {
-    LibCont = passlib;
-    QObject::connect(this, SIGNAL(playthis(QList<QSqlRecord>*)), LibCont, SLOT(displaythis(QList<QSqlRecord>*)));
-    QObject::connect(this, SIGNAL(playplaylist(QString)), LibCont, SLOT(playplaylist(QString)));
-    QObject::connect(this, SIGNAL(playsmartplaylist(QString)), LibCont, SLOT(playsmartplaylist(QString)));
+    libcont = passlib;
     setup = 1;
   }
   this->exec(QCursor::pos());
@@ -81,13 +79,15 @@ void PlaylistMenu::playlistrightclicked(Playlist* passplaylist, LibraryControlle
 
 void PlaylistMenu::SmartPlay()
 {
-  emit playsmartplaylist(PL->getFilter());
+  emit playplaylist(PL->getPlaylistName());
 }
 
 void PlaylistMenu::SmartView()
 {
-  QList<QSqlRecord>* alltracks = PL->getAllTracks();
-  emit(playthis(alltracks));
+  //QList<QSqlRecord>* alltracks = PL->getAllTracks();
+  //emit(playthis(alltracks));
+    if(libcont!=NULL)
+        libcont->pushSmartPlaylist(PL->getPlaylistName(), PL->getFilter());
 }
 
 void PlaylistMenu::SmartRename()
@@ -113,8 +113,9 @@ void PlaylistMenu::NormalPlay()
 
 void PlaylistMenu::NormalView()
 {
-  QList<QSqlRecord>* alltracks = PL->getAllTracks();
-  emit(playthis(alltracks));
+//  QList<QSqlRecord>* alltracks = PL->getAllTracks();
+//  emit(playthis(alltracks));
+    libcont->pushNormalPlaylist(PL->getPlaylistName());
 }
 
 void PlaylistMenu::NormalRename()

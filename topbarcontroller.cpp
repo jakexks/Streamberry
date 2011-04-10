@@ -8,6 +8,8 @@ TopbarController::TopbarController(Utilities &utilities) : util(utilities)
 {
     expath = utilities.getExecutePath();
     widget = makeWidget();
+    QObject::connect(back, SIGNAL(clicked()), this, SLOT(backClicked()));
+    QObject::connect(forward, SIGNAL(clicked()), this, SLOT(forwardClicked()));
 }
 
 QWidget* TopbarController::getWidget()
@@ -44,10 +46,10 @@ QWidget* TopbarController::makeWidget()
     separator->setObjectName("topBarSeparatorRight");
     separator->setStyleSheet(util.getStylesheet());
     //Buttons for menu
-    QPushButton *back = new QPushButton();
+    back = new QPushButton();
     back->setObjectName("topBarBack");
     back->setStyleSheet(util.getStylesheet());
-    QPushButton *forward = new QPushButton();
+    forward = new QPushButton();
     forward->setObjectName("topBarForward");
     forward->setStyleSheet(util.getStylesheet());
     music= new QPushButton();
@@ -156,4 +158,14 @@ void TopbarController::videosButtonControl()
         videosState=0;
         emit musicVideoCheckStateChanged(MusicVideoNotChecked);
     }
+}
+
+void TopbarController::backClicked()
+{
+    emit goBackPlease();
+}
+
+void TopbarController::forwardClicked()
+{
+    emit goForwardPlease();
 }

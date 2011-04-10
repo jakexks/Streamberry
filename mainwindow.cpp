@@ -74,8 +74,6 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   mainlayout->addWidget(librarycontroller->getWidget(), 1, 1);
   mainlayout->addWidget(playbackcontroller->getWidget(), 2, 0, 1, 2);
 
-
-  QObject::connect(sidebarcontroller, SIGNAL(displayAllMedia()), librarycontroller, SLOT(displayAllLibrary()));
   QObject::connect(playbackcontroller, SIGNAL(nextFile()), librarycontroller, SLOT(playNextFile()));
   QObject::connect(playbackcontroller, SIGNAL(prevFile()), librarycontroller, SLOT(playPrevFile()));
   QObject::connect(topbarcontroller, SIGNAL(musicVideoCheckStateChanged(int)), librarycontroller, SLOT(musicVideoFilter(int)));
@@ -83,6 +81,8 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(&fs, SIGNAL(finishedFileScan()), librarycontroller, SLOT(updateLibrary()));
   QObject::connect(this, SIGNAL(filescanRequest()), &fs, SLOT(scan()));
   QObject::connect(sidebarcontroller, SIGNAL(playthis(QList<QSqlRecord>*)),  librarycontroller , SLOT(displaythis(QList<QSqlRecord>*)) );
+  QObject::connect(topbarcontroller, SIGNAL(goBackPlease()), librarycontroller, SLOT(goBack()));
+  QObject::connect(topbarcontroller, SIGNAL(goForwardPlease()), librarycontroller, SLOT(goForward()));
 
   QString iconpath = util.getExecutePath();
   iconpath += "images/icon.ico";
