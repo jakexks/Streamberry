@@ -610,7 +610,7 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
     QSqlQuery result;
     QList<QSqlRecord> users;
     QList<QSqlRecord> *files;
-
+    searchtxt = searchtxt.trimmed();
     //work out condition
     switch(type)
     {
@@ -731,8 +731,8 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
                 sql += id;
                 sql += "'";
             }
-
-            sql += ordering;   
+            qDebug() << sql;
+            sql += ordering;
             result = query(sql);
 
             result.first();

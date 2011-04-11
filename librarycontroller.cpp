@@ -438,10 +438,10 @@ void LibraryController::musicVideoFilter(int value)
 void LibraryController::itemClicked(int row)
 {
   if(playingdata != NULL && playingdata != currentdata)
-  {      
+  {
         delete playingdata;
   }
-    playingdata = currentdata; 
+    playingdata = currentdata;
     QSqlRecord record = playingdata->at(row);
     QString filepath = record.field("FilePath").value().toString();
     emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
@@ -459,7 +459,6 @@ void LibraryController::itemClicked(int row)
 
 
     //tablewidget->selectRow(row);
->>>>>>> origin/RC
 }
 
 int LibraryController::rowToHighlight()
@@ -503,7 +502,9 @@ void LibraryController::playsmartplaylist(QString filter)
   QList<QString> order;
   fields.append("Album");
   order.append("DESC");
+  qDebug() << "-----";
   QList<QSqlRecord>* data = db.searchDb(0, "", filter, fields,order, 0);
+  qDebug() << "-----";
   if(playingdata!=NULL && playingdata != currentdata)
       delete playingdata;
   playingdata = data;
