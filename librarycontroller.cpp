@@ -422,7 +422,7 @@ void LibraryController::updateLibrary()
 {
     if(tablewidget!=NULL)
     {
-        QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
+        QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+" "+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
         fillData(result);
     }
 }
@@ -616,7 +616,7 @@ void LibraryController::goBack()
     {
         viewqueueindex--;
         emit setSearchBoxText(viewqueue[viewqueueindex].searchtext);
-        emit setSelectedPlaylist(viewqueue[viewqueueindex].playlist);
+        emit setSelectedPlaylist(viewqueue[viewqueueindex].playlisttitle);
         updateLibrary();
     }
 }
@@ -627,7 +627,7 @@ void LibraryController::goForward()
     {
         viewqueueindex++;
         emit setSearchBoxText(viewqueue[viewqueueindex].searchtext);
-        emit setSelectedPlaylist(viewqueue[viewqueueindex].playlist);
+        emit setSelectedPlaylist(viewqueue[viewqueueindex].playlisttitle);
         updateLibrary();
     }
 }
@@ -653,6 +653,7 @@ void LibraryController::pushNormalPlaylist(QString name)
     {
         ViewQueueItem item;
         item.playlist = name;
+        item.playlisttitle = name;
         item.smarttext = "";
         item.searchtext = "";
         viewqueue.append(item);
@@ -668,6 +669,7 @@ void LibraryController::pushSmartPlaylist(QString name, QString filtertext)
     {
         ViewQueueItem item;
         item.playlist = "";
+        item.playlisttitle = name;
         item.smarttext = filtertext;
         item.searchtext = "";
         viewqueue.append(item);

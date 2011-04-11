@@ -604,48 +604,68 @@ int Database::deleteFile(QString id, QString table)
 
 QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString searchtxt, QList<QString>& sortcols, QList<QString> order, int musicorvideo)
 {
-    QString condition;
+    QString condition(" WHERE 1=1");
     QString ordering;
     QString sql;
     QSqlQuery result;
     QList<QSqlRecord> users;
     QList<QSqlRecord> *files;
     searchtxt = searchtxt.trimmed();
+    QStringList searches = searchtxt.split(" ", QString::SkipEmptyParts);
+
     //work out condition
     switch(type)
     {
     case 1:
-        condition = " WHERE (Artist LIKE \"%";
-        condition += searchtxt;
-        condition += "%\")";
+        foreach(QString str, searches)
+        {
+            condition += " AND (Artist LIKE \"%";
+            condition += str;
+            condition += "%\")";
+        }
         break;
     case 2:
-        condition = " WHERE (Title LIKE \"%";
-        condition += searchtxt;
-        condition += "%\")";
+        foreach(QString str, searches)
+        {
+            condition += " AND (Title LIKE \"%";
+            condition += str;
+            condition += "%\")";
+        }
         break;
     case 3:
-        condition = " WHERE (Genre LIKE \"%";
-        condition += searchtxt;
-        condition += "%\")";
+        foreach(QString str, searches)
+        {
+            condition += " AND (Genre LIKE \"%";
+            condition += str;
+            condition += "%\")";
+        }
     case 4:
-        condition = " WHERE (Album LIKE \"%";
-        condition += searchtxt;
-        condition += "%\")";
+        foreach(QString str, searches)
+        {
+            condition += " AND (Album LIKE \"%";
+            condition += str;
+            condition += "%\")";
+        }
     case 5:
-        condition = " WHERE (Length LIKE \"%";
-        condition += searchtxt;
-        condition += "%\")";
+        foreach(QString str, searches)
+        {
+            condition += " AND (Length LIKE \"%";
+            condition += str;
+            condition += "%\")";
+        }
     default:
-        condition = " WHERE ((Artist LIKE \"%";
-        condition += searchtxt;
-        condition += "%\") OR (Title LIKE \"%";
-        condition += searchtxt;
-        condition += "%\") OR (Album LIKE \"%";
-        condition += searchtxt;
-        condition += "%\") OR (Genre LIKE \"%";
-        condition += searchtxt;
-        condition += "%\"))";
+        foreach(QString str, searches)
+        {
+            condition += " AND ((Artist LIKE \"%";
+            condition += str;
+            condition += "%\") OR (Title LIKE \"%";
+            condition += str;
+            condition += "%\") OR (Album LIKE \"%";
+            condition += str;
+            condition += "%\") OR (Genre LIKE \"%";
+            condition += str;
+            condition += "%\"))";
+        }
         break;
     }
 

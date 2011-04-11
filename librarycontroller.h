@@ -76,6 +76,7 @@ private:
     TrackContext* trackmenu;
     typedef struct {
         QString playlist;
+        QString playlisttitle;
         QString searchtext;
         QString smarttext;
         QList<QString> sortcols;
