@@ -26,6 +26,7 @@ public slots:
     void videosButtonControl();
     void backClicked();
     void forwardClicked();
+    void setSearchText(QString text);
 private:
     QString expath;
     Utilities& util;
