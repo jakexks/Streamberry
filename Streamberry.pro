@@ -57,7 +57,8 @@ SOURCES +=  main.cpp\
     plsmartedit.cpp \
     plsmartnew.cpp \
     plnormalnew.cpp \
-    addto.cpp
+    addto.cpp \
+    firstrunwizard.cpp
 
 
 HEADERS +=  mainwindow.h\
@@ -100,4 +101,5 @@ HEADERS +=  mainwindow.h\
     plsmartedit.h \
     plsmartnew.h \
     plnormalnew.h \
-    addto.h
+    addto.h \
+    firstrunwizard.h

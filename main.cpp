@@ -14,6 +14,7 @@
 #include "beaconreceiver.h"
 #include "player.h"
 #include <QCleanlooksStyle>
+#include "firstrunwizard.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,6 +32,10 @@ int main(int argc, char *argv[])
     QString execpath(argv[0]);
     execpath.resize(execpath.lastIndexOf('/'));
 #endif
+
+    //tests first run wizard on every run
+    //FirstRunWizard wizard;
+    //wizard.show();
 
     Utilities util(execpath);
 
