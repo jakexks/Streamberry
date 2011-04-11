@@ -586,6 +586,11 @@ LibraryController::~LibraryController()
         delete currentdata;
     }
 
+    if(playingdata != NULL)
+    {
+          delete playingdata;
+    }
+
     delete paneldelegate;
 }
 
