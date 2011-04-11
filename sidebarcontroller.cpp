@@ -317,6 +317,7 @@ QWidget* SidebarController::makePlaylistBtn()
 void SidebarController::ShowContextMenu(const QPoint& pos)
 {
   int row = playlistTableWidget->rowAt((main->mapToParent(pos).y()));
+  if(row >= 3)
   {
     bool type = typearray[row-3];
     QString text = namearray[row-3];

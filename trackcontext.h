@@ -20,18 +20,19 @@ signals:
   void playthis(QList<QSqlRecord>*);
 
  public slots:
-  void Play();
+  void DeleteFromPlaylist();
   void Delete();
   void Hide();
 
 private:
   int setup;
+  QString currentplaylistname;
   QList<QString> CurrentIDs;
   QList<QString> CurrentUniqueIDs;
   LibraryController* LibCont;
   Database* db;
   AddTo* addto;
-  QAction* menuitems[5];
+  QAction* menuitems[4];
 
 };
 

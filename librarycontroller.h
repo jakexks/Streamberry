@@ -27,6 +27,8 @@ public:
     void pushNormalPlaylist(QString name);
     void pushSmartPlaylist(QString name, QString filtertext);
     void pushAllView();
+    int getCurrentViewType();
+    QString getCurrentPlaylistName();
 signals:
     void songInfoData(QString album, QString artist, QString title, QString track);
     void setSearchBoxText(QString text);
@@ -42,7 +44,6 @@ public slots:
     void itemClicked(int row);
     void playNextFile();
     void playPrevFile();
-    void displaythis(QList<QSqlRecord>*);
     void setSearchText(QString text);
     void updateLibrary();
     void musicVideoFilter(int value);
