@@ -35,6 +35,7 @@ public slots:
     void sortLibrary();
     int rowToHighlight();
     void playplaylist(QString playlistname);
+    void playsmartplaylist(QString playlistname);
     void deselectFirst();
     void sortIndicatorChanged(int index,Qt::SortOrder order);
     void sectionResized(int logicalindex, int oldsize, int newsize);
