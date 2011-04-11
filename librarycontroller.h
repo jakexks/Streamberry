@@ -30,6 +30,7 @@ public:
 signals:
     void songInfoData(QString album, QString artist, QString title, QString track);
     void setSearchBoxText(QString text);
+    void setSelectedPlaylist(QString name);
 public slots:
     void sortLibrary();
     int rowToHighlight();

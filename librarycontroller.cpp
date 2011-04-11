@@ -602,6 +602,7 @@ void LibraryController::goBack()
     {
         viewqueueindex--;
         emit setSearchBoxText(viewqueue[viewqueueindex].searchtext);
+        emit setSelectedPlaylist(viewqueue[viewqueueindex].playlist);
         updateLibrary();
     }
 }
@@ -612,6 +613,7 @@ void LibraryController::goForward()
     {
         viewqueueindex++;
         emit setSearchBoxText(viewqueue[viewqueueindex].searchtext);
+        emit setSelectedPlaylist(viewqueue[viewqueueindex].playlist);
         updateLibrary();
     }
 }
@@ -626,6 +628,7 @@ void LibraryController::pushAllView()
         item.searchtext = "";
         viewqueue.append(item);
         viewqueueindex++;
+        emit setSearchBoxText(viewqueue[viewqueueindex].searchtext);
         tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
     }
 }
@@ -640,6 +643,7 @@ void LibraryController::pushNormalPlaylist(QString name)
         item.searchtext = "";
         viewqueue.append(item);
         viewqueueindex++;
+        emit setSearchBoxText(viewqueue[viewqueueindex].searchtext);
         tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
     }
 }
@@ -654,6 +658,7 @@ void LibraryController::pushSmartPlaylist(QString name, QString filtertext)
         item.searchtext = "";
         viewqueue.append(item);
         viewqueueindex++;
+        emit setSearchBoxText(viewqueue[viewqueueindex].searchtext);
         tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
     }
 }

@@ -81,6 +81,7 @@ void SBSearchBar::checkText(QString text) {
 void SBSearchBar::setText(QString text)
 {
     textbox->setText(text);
+    textbox->clearFocus();
 }
 
 void SBSearchBar::crossPressed()

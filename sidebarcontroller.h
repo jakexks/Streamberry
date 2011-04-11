@@ -24,6 +24,7 @@ signals:
     void Clicked(int row, int column);
     void DoubleClicked(int row, int column);
     void ShowContextMenu(const QPoint&);
+    void setSelectedPlaylist(QString);
 
 signals:
     void customContextMenuRequested ( const QPoint & pos  );

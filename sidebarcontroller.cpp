@@ -23,6 +23,8 @@ SidebarController::SidebarController(Utilities &utilities, Database& datab, Libr
 {
     libpass = lib;
     widget = makeWidget();
+    playlistTableWidget->clearSelection();
+    playlistTableWidget->setRangeSelected(QTableWidgetSelectionRange(0, 0, 0, 0), true);
 }
 
 
@@ -372,5 +374,30 @@ void SidebarController::DoubleClicked(int row, int)
     if(row >= 3)
     {
         qDebug() << "Playlist Playing";
+    }
+}
+
+void SidebarController::setSelectedPlaylist(QString name)
+{
+    // if empty select first row
+    if(name=="")
+    {
+        playlistTableWidget->clearSelection();
+        playlistTableWidget->setRangeSelected(QTableWidgetSelectionRange(0, 0, 0, 0), true);
+    }
+    else
+    {
+        int i = 0;
+        while(i<playlistTableWidget->rowCount()-3 && i<=15)
+        {
+            if(namearray[i]==name)
+            {
+                playlistTableWidget->clearSelection();
+                playlistTableWidget->setRangeSelected(QTableWidgetSelectionRange(i+3, 0, i+3, 0), true);
+                break;
+            }
+
+            i++;
+        }
     }
 }
