@@ -38,6 +38,9 @@ Player::~Player()
 
     libvlc_release (_vlcinstance);
     //raise (&_vlcexcep);
+
+    poller->stop();
+    delete poller;
 }
 
 /*void Player::playFile(QString file)
