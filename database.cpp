@@ -731,7 +731,7 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
                 sql += id;
                 sql += "'";
             }
-            qDebug() << sql;
+            //qDebug() << sql;
             sql += ordering;
             result = query(sql);
 

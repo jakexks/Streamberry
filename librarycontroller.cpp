@@ -500,9 +500,7 @@ void LibraryController::playsmartplaylist(QString filter)
   QList<QString> order;
   fields.append("Album");
   order.append("DESC");
-  qDebug() << "-----";
   QList<QSqlRecord>* data = db.searchDb(0, "", filter, fields,order, 0);
-  qDebug() << "-----";
   if(playingdata!=NULL && playingdata != currentdata)
       delete playingdata;
   playingdata = data;
@@ -660,7 +658,7 @@ void LibraryController::pushSmartPlaylist(QString name, QString filtertext)
     if(viewqueue[viewqueueindex].playlist!=name)
     {
         ViewQueueItem item;
-        item.playlist = name;
+        item.playlist = "";
         item.smarttext = filtertext;
         item.searchtext = "";
         viewqueue.append(item);
