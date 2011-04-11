@@ -271,7 +271,7 @@ void MainWindow::menuAbout()
 {
 }
 
-void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason reason)
+void MainWindow::trayIconClicked(QSystemTrayIcon::ActivationReason)
 {
   this->show();
 }
