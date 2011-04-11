@@ -389,7 +389,7 @@ void SidebarController::setSelectedPlaylist(QString name)
         int i = 0;
         while(i<playlistTableWidget->rowCount()-3 && i<=15)
         {
-            qDebug() << name;
+            //qDebug() << name;
             if(namearray[i]==name)
             {
                 playlistTableWidget->clearSelection();
