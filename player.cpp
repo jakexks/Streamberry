@@ -3,7 +3,7 @@
 #include <QTimer>
 #include <QDebug>
 
-Player::Player()
+Player::Player(QWidget *parent) : QWidget(parent)
 {
     currIP = "";
     const char * const vlc_args[] = {
@@ -41,6 +41,19 @@ Player::~Player()
 
     poller->stop();
     delete poller;
+}
+
+void Player::initVid()
+{
+    #ifdef Q_WS_X11
+        _videoWidget = new QX11EmbedContainer(parentWidget());
+    #else
+        _videoWidget=new QFrame(this);
+    #endif
+    QVBoxLayout *layout = new QVBoxLayout();
+    layout->addWidget(_videoWidget);
+    setLayout(layout);
+    //_videoWidget->show();
 }
 
 /*void Player::playFile(QString file)
@@ -101,6 +114,15 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     _m = libvlc_media_new_location (_vlcinstance, file.toUtf8());
     libvlc_media_player_set_media (_mp, _m);
     //libvlc_media_parse (_m);
+
+    #if defined(Q_OS_WIN)
+        libvlc_media_player_set_drawable(_mp, reinterpret_cast<unsigned int>(_videoWidget->winId()));
+    #elif defined(Q_OS_MAC)
+        libvlc_media_player_set_drawable(_mp, _videoWidget->winId());
+    #else
+        int windid = _videoWidget->winId();
+        libvlc_media_player_set_xwindow (_mp, windid);
+    #endif
     libvlc_media_release (_m);
     libvlc_media_player_play (_mp);
     _isPlaying=true;
@@ -180,7 +202,7 @@ void Player::playControl()
     }
 }
 
-void Player::muteAudio(int i)
+void Player::muteAudio()
 {
     libvlc_audio_toggle_mute(_mp);
 }

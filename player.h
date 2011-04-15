@@ -4,14 +4,18 @@
 #include <vlc/vlc.h>
 #include <QTimer>
 #include <QObject>
+#include <QWidget>
+#include <QFrame>
+#include <QX11EmbedContainer>
 #include "streamrequest.h"
 #include "networking.h"
+#include <QVBoxLayout>
 
 #define POSITION_RESOLUTION 5760
 
-class Player : public QObject
+class Player : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 private:
     bool _isPlaying;
@@ -25,6 +29,11 @@ private:
     networking n;
     int fileLength;
     float currSecs;
+    #ifdef Q_WS_X11
+        QX11EmbedContainer *_videoWidget;
+    #else
+        QFrame *_videoWidget;
+    #endif
 
 public:
     QTimer *poller;
@@ -32,7 +41,8 @@ public:
     void playFile(QString file, QString uniqueID="Local", QString ipaddress="Local");
     bool isPlaying();
     void setFileLength(int secs);
-    Player();
+    void initVid();
+    Player(QWidget *parent = 0);
     ~Player();
 
 public slots:
@@ -40,7 +50,7 @@ public slots:
     void changePosition(int newPosition);
     void changeVolume(int newVolume);
     void playControl();
-    void muteAudio(int);
+    void muteAudio();
     void sliderUpdate();
     void test();
 

@@ -59,6 +59,7 @@ private:
     QWidget* widget;
     QWidget* curview;
     QGridLayout* container;
+    QStackedWidget *allwidgets;
     int headercount;
     int sortcolumn;
     int currentlyplaying;
