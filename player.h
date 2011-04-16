@@ -6,10 +6,14 @@
 #include <QObject>
 #include <QWidget>
 #include <QFrame>
-#include <QX11EmbedContainer>
+#include <QVBoxLayout>
+
+#ifdef Q_WS_X11
+    #include <QX11EmbedContainer>
+#endif
+
 #include "streamrequest.h"
 #include "networking.h"
-#include <QVBoxLayout>
 
 #define POSITION_RESOLUTION 5760
 
