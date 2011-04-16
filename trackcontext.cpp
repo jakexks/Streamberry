@@ -42,9 +42,9 @@ void TrackContext::trackRightClicked(QList<QString> ids, QList<QString> uniqueID
     //QObject::connect(this, SIGNAL(playthis(QList<QSqlRecord>*)), LibCont, SLOT(displaythis(QList<QSqlRecord>*)));
     setup = 1;
   }
-  this->exec(QCursor::pos());
-  this->removeAction(menuitems[3]);
 
+  this->exec(QCursor::pos());
+  this->removeAction(menuitems[2]);
 }
 
 
