@@ -33,13 +33,23 @@ int main(int argc, char *argv[])
     execpath.resize(execpath.lastIndexOf('/'));
 #endif
 
-    //tests first run wizard on every run
-    //FirstRunWizard wizard;
-    //wizard.show();
-
     Utilities util(execpath);
 
     Database db;
+
+    if(db.getSetting("FirstRun") == "")
+    {
+        qDebug() << "showing wizard";
+        FirstRunWizard wizard(db);
+        wizard.show();
+        int cancel = wizard.exec();
+        if(cancel == 0)
+        {
+            return 0;
+        }
+        db.storeSetting("FirstRun", "1");
+    }
+
     Player player;
 
     Filescan fs(db);
@@ -56,9 +66,6 @@ int main(int argc, char *argv[])
     QThread brthread(&a);
     br.moveToThread(&brthread);
     brthread.start();
-
-    //redundant now that it does it after quit?
-    //QObject::connect(&a, SIGNAL(aboutToQuit()), bs, SLOT(sendOfflineBeacon()));
 
     MainWindow w(util, db, player, fs, a);
 

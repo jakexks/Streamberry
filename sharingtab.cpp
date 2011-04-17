@@ -19,11 +19,14 @@ SharingTab::SharingTab(QStringList sfiles, QWidget *parent) : QWidget(parent), s
         expandRows(model->filePath(model->index(selectedfiles.at(i)).parent()));
     }
     tree->setColumnWidth(0,300);
-    tree->setFixedSize(500,550);
+    QLabel *label = new QLabel(tr("Please select which files and folders you would like to appear in your media library and share with others on your local network."));
+    label->setWordWrap(true);
+    layout->addWidget(label);
     layout->addWidget(tree);
     setLayout(layout);
 }
 
+// Expands all rows needed to show the current selection
 void SharingTab::expandRows(QString filepath)
 {
     if(model->index(filepath).parent() == QModelIndex())
@@ -40,6 +43,7 @@ SharingTab::~SharingTab()
     delete model;
 }
 
+// Returns a semicolon separated string of the filepaths the user selected
 QString SharingTab::getSelectedFilepaths()
 {
     QModelIndexList sindexes = tree->selectionModel()->selectedRows();

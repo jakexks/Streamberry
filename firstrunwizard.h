@@ -3,6 +3,7 @@
 
 #include <QWizard>
 #include <QtGui>
+#include "database.h"
 
 class SharingPage: public QWizardPage
 {
@@ -19,10 +20,11 @@ class FirstRunWizard : public QWizard
 {
     Q_OBJECT
 public:
-    FirstRunWizard(QWidget *parent = 0);
+    FirstRunWizard(Database &datab, QWidget *parent = 0);
     void accept();
 private:
     SharingPage *sharingpage;
+    Database &db;
 };
 
 

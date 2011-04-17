@@ -1,8 +1,9 @@
 #include "firstrunwizard.h"
 #include <QtGui>
 #include <QDebug>
+#include "database.h"
 
-FirstRunWizard::FirstRunWizard(QWidget *parent) : QWizard(parent)
+FirstRunWizard::FirstRunWizard(Database &datab, QWidget *parent) : db(datab), QWizard(parent)
 {
     addPage(new NickPage);
     sharingpage = new SharingPage;
@@ -17,9 +18,7 @@ void FirstRunWizard::accept()
     qDebug() << "nick is " << nick;
     //TODO: tell the database what nick was chosen
 
-    sharingpage->getSelectedFiles();
-    //TODO: tell the database which filepaths were selected
-    // ^ better to return strings rather than passing the db object in?
+    db.setFolders(sharingpage->getSelectedFiles());
 
     QDialog::accept();
 }
@@ -31,8 +30,9 @@ NickPage::NickPage(QWidget *parent) : QWizardPage(parent)
     intro->setWordWrap(true);
     QLineEdit *nickedit = new QLineEdit();
     QVBoxLayout *layout = new QVBoxLayout;
-    registerField("nickname",nickedit);
+    registerField("nickname*",nickedit);
     layout->addWidget(intro);
+    layout->addSpacing(10);
     layout->addWidget(nickedit);
     setLayout(layout);
 }
