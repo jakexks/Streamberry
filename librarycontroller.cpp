@@ -188,7 +188,7 @@ void LibraryController::addHeaders()
 }
 
 void LibraryController::fillData(QList<QSqlRecord> *values)
-{qDebug()<<"entered fill Data";
+{
     if(currentdata!=NULL)
     {
         if(currentdata != playingdata)
@@ -212,11 +212,9 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
     maxSize=length;
     songsPlayed=new int[maxSize];
     for(int i=0; i<maxSize; i++)
-    {   songsPlayed[i]=randInt(0,maxSize);
-        qDebug()<<songsPlayed[i];}
+      songsPlayed[i]=randInt(0,maxSize);
 
-qDebug()<<"\n length= "<<length;
-qDebug()<<"\n maxSize= "<<maxSize<<endl;
+
     for(int i = 0; i<length; i++)
     {
         QSqlRecord currecord = values->at(i);
@@ -441,7 +439,7 @@ void LibraryController::setSearchText(QString text)
 }
 
 void LibraryController::updateLibrary()
-{qDebug()<<"entered updateLib";
+{
     if(tablewidget!=NULL)
     {
         QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+" "+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
@@ -547,8 +545,6 @@ void LibraryController::shuffleSlot()
        shuffle=1;
     else
        shuffle=0;
-
- qDebug()<<"shuffle "<< shuffle;
 }
 
 void LibraryController::repeatSlot(bool one, bool all)
@@ -564,7 +560,7 @@ void LibraryController::repeatSlot(bool one, bool all)
     //repeat one
     if(one==true && all==false)
        repeat=1;
-    qDebug()<<"repeat "<< repeat;
+
 }
 
 void LibraryController::playNextFile()
