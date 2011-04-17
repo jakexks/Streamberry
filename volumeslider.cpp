@@ -56,7 +56,11 @@ void VolumeSlider::updateLastPos()
     }
     if(sliderPosition()<4)
     {
-        setStyleSheet("#bottomBarVolumeslider:sub-page:horizontal {background-color:#50c1e0; margin:1px 0px 2px 4px; height:10px;border-radius:4px; }");
+        setStyleSheet("#bottomBarVolumeslider:sub-page:horizontal {background-color:#50c1e0; margin:1px 0px 2px 4px; height:10px; border-radius:4px; }");
+    }
+    if(sliderPosition()<2)
+    {
+        setStyleSheet("#bottomBarVolumeslider:sub-page:horizontal {background-color:#50c1e0; margin:1px 0px 2px 4px; height:10px; border-radius:3px; }");
     }
 
 }
