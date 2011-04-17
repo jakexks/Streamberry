@@ -29,6 +29,7 @@ public:
     void pushAllView();
     int getCurrentViewType();
     QString getCurrentPlaylistName();
+    int randInt(int low, int high);
 signals:
     void songInfoData(QString album, QString artist, QString title, QString track);
     void setSearchBoxText(QString text);
@@ -50,6 +51,8 @@ public slots:
     void ShowContextMenu(const QPoint& pos);
     void goBack();
     void goForward();
+    void shuffleSlot();
+    void repeatSlot(bool one, bool all);
     //void DragStart(QTableWidgetItem*);
 
 private:
@@ -64,6 +67,11 @@ private:
     int sortcolumn;
     int currentlyplaying;
     int musicvideofilter;
+    int shuffle;
+    int numberIterator;
+    int repeat;
+    int *songsPlayed;
+    int maxSize;
     Qt::SortOrder sortorder;
     QString** curheaders;
     QTableWidget* tablewidget;

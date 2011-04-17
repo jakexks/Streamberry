@@ -46,19 +46,22 @@ QWidget* PlaybackController::makeWidget()
     temp->setColumnStretch(13, 0);
     temp->setColumnStretch(14, 1);
 
-    QPushButton *repeat = new QPushButton();
+    repeat = new QPushButton();
     repeat->setObjectName("bottomBarRepeat");
     repeat->setMaximumSize(40, 38);
     repeat->setMinimumSize(40, 38);
-    repeat->setStyleSheet(util.getStylesheet());
     repeat->setFlat(true);
+    repeat->setCheckable(true);
+    repeat->setStyleSheet(util.getStylesheet());
 
-    QPushButton *shuffle = new QPushButton();
+    shuffle = new QPushButton();
     shuffle->setObjectName("bottomBarShuffle");
     shuffle->setMaximumSize(40, 38);
     shuffle->setMinimumSize(40, 38);
-    shuffle->setStyleSheet(util.getStylesheet());
     shuffle->setFlat(true);
+    shuffle->setCheckable(true);
+    shuffle->setStyleSheet(util.getStylesheet());
+
     QPushButton *previous = new QPushButton();
     previous->setObjectName("bottomBarPrevious");
     previous->setMaximumSize(45, 37);
@@ -120,6 +123,8 @@ QWidget* PlaybackController::makeWidget()
     connect(next, SIGNAL(clicked()), this, SIGNAL(nextFile()));
     connect(previous, SIGNAL(clicked()), this, SIGNAL(prevFile()));
     connect(&player, SIGNAL(getNextFile()), next, SLOT(click()));
+    connect(shuffle, SIGNAL(clicked()), this, SLOT(shufflePress()));
+    connect(repeat, SIGNAL(clicked()), this, SLOT(repeatPress()));
 
     return tempw;
 }
@@ -140,6 +145,57 @@ void PlaybackController::muteSlider()
 
 }
 
+void PlaybackController::shufflePress()
+{
+    if(shufflePressed==true)
+    {
+        shufflePressed=false;
+        shuffle->setChecked(false);
+        shuffle->setStyleSheet(util.getStylesheet());
+        emit sPress();
+
+    }
+    else
+    {
+        shufflePressed=true;
+        shuffle->setChecked(true);
+        shuffle->setStyleSheet(util.getStylesheet());
+        emit sPress();
+    }
+
+}
+
+void PlaybackController::repeatPress()
+{
+    if(repeatOnePressed==true && repeatAllPressed==true)
+    {
+        repeatOnePressed=false;
+        repeatAllPressed=false;
+        repeat->setObjectName("bottomBarRepeat");
+        repeat->setChecked(false);
+        repeat->setStyleSheet(util.getStylesheet());
+        emit rPress(false, false);
+        return;
+    }
+    if(repeatOnePressed==true && repeatAllPressed==false)
+    {
+        repeatAllPressed=true;
+        repeatOnePressed=true;
+        repeat->setObjectName("bottomBarRepeat");
+        repeat->setChecked(true);
+        repeat->setStyleSheet(util.getStylesheet());
+        emit rPress(true, true);
+    }
+    if(repeatOnePressed==false && repeatAllPressed==false)
+    {
+        repeatOnePressed=true;
+        repeatAllPressed=false;
+        repeat->setObjectName("bottomBarRepeatOne");
+        repeat->setChecked(true);
+        repeat->setStyleSheet(util.getStylesheet());
+        emit rPress(true, false);
+    }
+}
 
 /*void PlaybackController::nextFile()
 {
