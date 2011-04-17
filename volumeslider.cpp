@@ -9,8 +9,8 @@ VolumeSlider::VolumeSlider(Utilities &utilities, QWidget *parent) :
     muted = false;
     lastposition = 75;
     setValue(lastposition);
-    QObject::connect(this, SIGNAL(sliderReleased()), this, SLOT(updateLastPos()));
 
+    QObject::connect(this, SIGNAL(valueChanged(int)), this, SLOT(updateLastPos()));
 
 }
 
@@ -40,11 +40,7 @@ void VolumeSlider::muteVolSlider()
 
 void VolumeSlider::updateLastPos()
 {
-    if(sliderPosition()<20)
-    {
-        setObjectName("bottomBarVolumesliderMuted");
-        setStyleSheet(util.getStylesheet());
-    }
+
     if(sliderPosition()!=0)
     {
         lastposition = sliderPosition();
@@ -58,4 +54,9 @@ void VolumeSlider::updateLastPos()
         setObjectName("bottomBarVolumesliderMuted");
         setStyleSheet(util.getStylesheet());
     }
+    if(sliderPosition()<4)
+    {
+        setStyleSheet("#bottomBarVolumeslider:sub-page:horizontal {background-color:#50c1e0; margin:1px 0px 2px 4px; height:10px;border-radius:4px; }");
+    }
+
 }

@@ -99,7 +99,7 @@ QString Utilities::makeStylesheet()
     style+="#bottomBarVolumeslider {height:16px; background:url(EXECPATHimages/volumeBorderTr.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarVolumeslider:groove:horizontal {background:url(EXECPATHimages/volumeBackgroundTr.png); height: 16px;width:110px; margin: 0px 1px 0px 2px;}";
     style+="#bottomBarVolumeslider:handle:horizontal { background:url(EXECPATHimages/volumeHandle02.png); border: none; width: 15px; height:14px; margin: 0px 2px 2px 0px;}";
-    style+="#bottomBarVolumeslider:sub-page:horizontal {background-color:#50c1e0; margin:1px 0px 2px 3px;height:10px;border-radius:6px; }";
+    style+="#bottomBarVolumeslider:sub-page:horizontal {background-color:#50c1e0; margin:1px 0px 2px 4px;height:10px;border-radius:5px; }";
     style+="#bottomBarVolumesliderMuted {height:16px; background:url(EXECPATHimages/volumeBorderTr.png) no-repeat; border: none; padding:0px;}";
     style+="#bottomBarVolumesliderMuted:groove:horizontal {background:url(EXECPATHimages/volumeBackgroundTr.png); height: 16px;width:110px; margin: 0px 1px 0px 2px;}";
     style+="#bottomBarVolumesliderMuted:handle:horizontal { background:url(EXECPATHimages/volumeHandle02.png); border: none; width: 15px; height:14px; margin: 0px 2px 2px 0px;}";
