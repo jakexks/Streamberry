@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QFontMetrics>
 #include "player.h"
+#include "playbackcontroller.h"
 #include <QGradient>
 #include <QContextMenuEvent>
 
@@ -54,6 +55,13 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     currentdata = NULL;
     paneldelegate = new AlbumArtDelegate(util);
     makeWidget();
+
+
+    QTime time = QTime::currentTime();
+    qsrand((uint)time.msec());
+    shuffle=0;
+    repeat=0;
+    numberIterator=-1;
 
     trackmenu = new TrackContext(&db);
 
@@ -180,14 +188,15 @@ void LibraryController::addHeaders()
 }
 
 void LibraryController::fillData(QList<QSqlRecord> *values)
-{
+{qDebug()<<"entered fill Data";
     if(currentdata!=NULL)
     {
         if(currentdata != playingdata)
             delete currentdata;
     }
-
     currentdata = values;
+
+
     tablewidget->setRowCount(0);
     tablewidget->setRowCount(values->length());
 
@@ -200,6 +209,14 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
     font.setStyleHint(QFont::System, QFont::PreferAntialias);
     font.setPointSize(11);
 
+    maxSize=length;
+    songsPlayed=new int[maxSize];
+    for(int i=0; i<maxSize; i++)
+    {   songsPlayed[i]=randInt(0,maxSize);
+        qDebug()<<songsPlayed[i];}
+
+qDebug()<<"\n length= "<<length;
+qDebug()<<"\n maxSize= "<<maxSize<<endl;
     for(int i = 0; i<length; i++)
     {
         QSqlRecord currecord = values->at(i);
@@ -424,7 +441,7 @@ void LibraryController::setSearchText(QString text)
 }
 
 void LibraryController::updateLibrary()
-{
+{qDebug()<<"entered updateLib";
     if(tablewidget!=NULL)
     {
         QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+" "+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
@@ -524,15 +541,61 @@ void LibraryController::playsmartplaylist(QString filter)
     }
 }
 
+void LibraryController::shuffleSlot()
+{
+    if(shuffle==0)
+       shuffle=1;
+    else
+       shuffle=0;
+
+ qDebug()<<"shuffle "<< shuffle;
+}
+
+void LibraryController::repeatSlot(bool one, bool all)
+{
+    //repeat none
+    if(one==false && all==false)
+       repeat=0;
+
+    //repeat all
+    if(one==true && all==true)
+       repeat=2;
+
+    //repeat one
+    if(one==true && all==false)
+       repeat=1;
+    qDebug()<<"repeat "<< repeat;
+}
 
 void LibraryController::playNextFile()
 {
-    currentlyplaying += 1;
-    if (currentlyplaying >= playingdata->length())
+    if(repeat!=1)
     {
-        currentlyplaying = -1;
-        return;
+        numberIterator+=1;
+        if(numberIterator >=  currentdata->length())
+            numberIterator=0;
+
+        if(shuffle==1)
+        {
+            if(songsPlayed[numberIterator]<currentdata->length())
+                currentlyplaying=songsPlayed[numberIterator];
+            else
+            {
+                songsPlayed[numberIterator]=randInt(0,maxSize);
+                currentlyplaying=songsPlayed[numberIterator];
+            }
+        }
+
+        if(shuffle==0)
+            currentlyplaying += 1;
+
+        if(currentlyplaying >=  playingdata->length()&&repeat==2)
+            currentlyplaying = 0;
+        if(currentlyplaying >= playingdata->length()&&repeat!=2)
+            currentlyplaying--;        //emit stop?
+
     }
+
     QSqlRecord record = playingdata->at(currentlyplaying);
     QString filepath = record.field("FilePath").value().toString();
     bool isvideo = record.field("MusicOrVideo").value().toInt();
@@ -558,11 +621,30 @@ void LibraryController::playNextFile()
 
 void LibraryController::playPrevFile()
 {
-    currentlyplaying -= 1;//Decrement by 1
-    if (currentlyplaying < 0)
+    if(repeat!=1)
     {
-        currentlyplaying = playingdata->length()-1;
+        numberIterator-=1;
+        if(numberIterator < 0)
+            numberIterator= playingdata->length()-1;
+
+        if(shuffle==1)
+            if(songsPlayed[numberIterator]<currentdata->length())
+                currentlyplaying=songsPlayed[numberIterator];
+            else
+            {
+                songsPlayed[numberIterator]=randInt(0,maxSize);
+                currentlyplaying=songsPlayed[numberIterator];
+            }
+
+        if(shuffle==0)
+            currentlyplaying -= 1;//Decrement by 1
+
+        if (currentlyplaying < 0&&repeat==2)
+            currentlyplaying = currentdata->length()-1;
+        if (currentlyplaying < 0&&repeat!=2)
+            currentlyplaying++;
     }
+
     QSqlRecord record = playingdata->at(currentlyplaying);
     QString filepath = record.field("FilePath").value().toString();
     bool isvideo = record.field("MusicOrVideo").value().toInt();
@@ -595,6 +677,7 @@ LibraryController::~LibraryController()
         delete playingdata;
     }
     delete paneldelegate;
+    delete songsPlayed;
 }
 
 void LibraryController::ShowContextMenu(const QPoint&)
@@ -711,3 +794,8 @@ QString LibraryController::getCurrentPlaylistName()
     return "";
 }
 
+int LibraryController::randInt(int low, int high)
+    {
+    // Random number between low and high
+    return qrand() % ((high + 1) - low) + low;
+    }

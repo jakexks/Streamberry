@@ -80,11 +80,14 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(librarycontroller, SIGNAL(songInfoData(QString,QString,QString,QString)), playbackcontroller->getSongInfo(), SLOT(updateLabels(QString,QString,QString,QString)));
   QObject::connect(&fs, SIGNAL(finishedFileScan()), librarycontroller, SLOT(updateLibrary()));
   QObject::connect(this, SIGNAL(filescanRequest()), &fs, SLOT(scan()));
-  //QObject::connect(sidebarcontroller, SIGNAL(playthis(QList<QSqlRecord>*)),  librarycontroller , SLOT(displaythis(QList<QSqlRecord>*)) );
+  //QObject::connect(sidebarcontroller, SIGNAL(playthis(QList<QSqlRecord>*)),  librarycontroller , SLOT(displaythiam ne s(QList<QSqlRecord>*)) );
   QObject::connect(topbarcontroller, SIGNAL(goBackPlease()), librarycontroller, SLOT(goBack()));
   QObject::connect(topbarcontroller, SIGNAL(goForwardPlease()), librarycontroller, SLOT(goForward()));
   QObject::connect(librarycontroller, SIGNAL(setSearchBoxText(QString)), topbarcontroller, SLOT(setSearchText(QString)));
   QObject::connect(librarycontroller, SIGNAL(setSelectedPlaylist(QString)), sidebarcontroller, SLOT(setSelectedPlaylist(QString)));
+  QObject::connect(playbackcontroller, SIGNAL(sPress()), librarycontroller, SLOT(shuffleSlot()));
+  QObject::connect(playbackcontroller, SIGNAL(rPress(bool, bool)), librarycontroller, SLOT(repeatSlot(bool, bool)));
+
 
   QString iconpath = util.getExecutePath();
   iconpath += "images/icon.ico";
