@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "database.h"
 
-FirstRunWizard::FirstRunWizard(Database &datab, QWidget *parent) : db(datab), QWizard(parent)
+FirstRunWizard::FirstRunWizard(Database &datab, QWidget *parent) : QWizard(parent), db(datab)
 {
     addPage(new NickPage);
     sharingpage = new SharingPage;
