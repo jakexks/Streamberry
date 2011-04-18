@@ -15,7 +15,7 @@ SettingsDialog::SettingsDialog(Database &datab, Filescan &fscan, QWidget *parent
     model->setRootPath("");
     tree = new QTreeView(this);
     tree->setModel(model);
-    tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    tree->setSelectionMode(QAbstractItemView::MultiSelection);
     tree->setColumnWidth(0,300);
     tree->setFixedHeight(350);
     expandRows(QDir::homePath() + "/Music");
