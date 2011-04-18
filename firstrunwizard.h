@@ -11,11 +11,11 @@ class SharingPage: public QWizardPage
     Q_OBJECT
 public:
     SharingPage(QWidget *parent = 0);
+    QString getSelectedFiles();
 private:
     QTreeView *tree;
     QFileSystemModel *model;
     void expandRows(QString);
-    QString getSelectedFiles();
 };
 
 class FirstRunWizard : public QWizard
