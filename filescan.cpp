@@ -95,7 +95,6 @@ void Filescan::scan()
 
             db.completeScan(QString::number(Utilities::getCurrentTimestamp()));
             db.updateLocalTimestamp(QString::number(Utilities::getCurrentTimestamp()));
-            emit finishedFileScan();
 
             qDebug() << "File Scan Complete.\nScan Time Elapsed: " << scantime.elapsed() << "ms";
         }
@@ -105,6 +104,8 @@ void Filescan::scan()
             qDebug() << e.getException();
             //throw e;
         }
+
+        emit finishedFileScan();
     }
 
     scanning = false;
