@@ -3,17 +3,19 @@
 #include "misctab.h"
 #include "sharingtab.h"
 #include "database.h"
+#include "filescan.h"
 
 #include <QDebug>
 
-SettingsDialog::SettingsDialog(Database &datab, QWidget *parent) : db(datab)
+SettingsDialog::SettingsDialog(Database &datab, Filescan &fscan, QWidget *parent) : db(datab), fs(fscan)
 {
     QVBoxLayout *layout = new QVBoxLayout;
 
     QTabWidget *tabwidget = new QTabWidget();
     stab = new SharingTab(db.getFolders(0));
+    mtab = new MiscTab(db.getNick(), fs);
     tabwidget->addTab(stab, "&Sharing");
-    tabwidget->addTab(new MiscTab(), "&Misc");
+    tabwidget->addTab(mtab, "&Misc");
     layout->addWidget(tabwidget);
 
     QDialogButtonBox *buttonbox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
@@ -28,7 +30,7 @@ SettingsDialog::SettingsDialog(Database &datab, QWidget *parent) : db(datab)
 
 void SettingsDialog::ok()
 {
-    QString strlist = stab->getSelectedFilepaths();
-    db.setFolders(strlist);
+    db.setNick(mtab->getNick());
+    db.setFolders(stab->getSelectedFilepaths());
     QDialog::accept();
 }

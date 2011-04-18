@@ -12,6 +12,7 @@ SharingTab::SharingTab(QStringList sfiles, QWidget *parent) : QWidget(parent), s
     tree->setModel(model);
     tree->setSelectionMode(QAbstractItemView::MultiSelection);
 
+    expandRows(QDir::homePath() + "/Music");
     int sflength = selectedfiles.length();
     for(int i = 0; i < sflength; i++)
     {

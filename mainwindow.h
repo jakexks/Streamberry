@@ -22,7 +22,7 @@ public:
   void setPath(char* path);
   QMenuBar* createMenuBar();
 public slots:
-  void menuScan();
+  //void menuScan();
   void menuAddFile();
   void menuSettings();
   void menuMaximise();

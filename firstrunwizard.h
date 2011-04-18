@@ -14,6 +14,7 @@ public:
 private:
     QTreeView *tree;
     QFileSystemModel *model;
+    void expandRows(QString);
 };
 
 class FirstRunWizard : public QWizard

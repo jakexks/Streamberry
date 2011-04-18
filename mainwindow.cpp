@@ -136,7 +136,7 @@ QMenuBar* MainWindow::createMenuBar()
     actions[0] = menus[0]->addAction("Exit Streamberry");
 
 
-    actions[1] = menus[1]->addAction("Scan Folders for Media");
+    //actions[1] = menus[1]->addAction("Scan Folders for Media");
 //    actions[2] = menus[1]->addAction("Fresh Scan for Media");
     //actions[3] = menus[1]->addAction("Add Individual File");
     menus[1]->addSeparator();
@@ -170,7 +170,7 @@ QMenuBar* MainWindow::createMenuBar()
 
   QObject::connect(actions[0], SIGNAL(triggered()), &app, SLOT(quit()) );
 
-  QObject::connect(actions[1], SIGNAL(triggered()), this, SLOT(menuScan()));
+  //QObject::connect(actions[1], SIGNAL(triggered()), this, SLOT(menuScan()));
 
 //  QObject::connect(actions[2], SIGNAL(triggered()), this, SLOT(menuCleanScan()));
 
@@ -221,10 +221,10 @@ void MainWindow::moveEvent(QMoveEvent *move)
   db.storeSetting("windowPos", winpos);
 }
 
-void MainWindow::menuScan()
-{
-  emit filescanRequest();
-}
+//void MainWindow::menuScan()
+//{
+//  emit filescanRequest();
+//}
 
 void MainWindow::menuAddFile()
 {
@@ -232,7 +232,7 @@ void MainWindow::menuAddFile()
 
 void MainWindow::menuSettings()
 {
-    SettingsDialog settingsdialog(db, this);
+    SettingsDialog settingsdialog(db, fs, this);
     settingsdialog.setModal(true);
     settingsdialog.show();
     settingsdialog.exec();

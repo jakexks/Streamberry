@@ -39,7 +39,6 @@ int main(int argc, char *argv[])
 
     if(db.getSetting("FirstRun") == "")
     {
-        qDebug() << "showing wizard";
         FirstRunWizard wizard(db);
         wizard.show();
         int cancel = wizard.exec();
