@@ -4,6 +4,9 @@
 #
 #-------------------------------------------------
 
+QMAKE_CFLAGS += -O1
+QMAKE_CXXFLAGS += -O1
+
 QT += core gui network sql
 
 LIBS += -lvlc
@@ -47,16 +50,16 @@ SOURCES +=  main.cpp\
             playbackbutton.cpp \
             songinfo.cpp\
             quitmanager.cpp \
-    newnetworking.cpp \
-    volumeslider.cpp \
-        settingsdialog.cpp \
-    trackcontext.cpp \
-        playlistdialogue.cpp \
-    plsmartedit.cpp \
-    plsmartnew.cpp \
-    plnormalnew.cpp \
-    addto.cpp \
-    firstrunwizard.cpp
+            newnetworking.cpp \
+            volumeslider.cpp \
+            settingsdialog.cpp \
+            trackcontext.cpp \
+            playlistdialogue.cpp \
+            plsmartedit.cpp \
+            plsmartnew.cpp \
+            plnormalnew.cpp \
+            addto.cpp \
+            firstrunwizard.cpp
 
 
 HEADERS +=  mainwindow.h\
@@ -89,13 +92,13 @@ HEADERS +=  mainwindow.h\
             playbackbutton.h \
             songinfo.h\
             quitmanager.h \
-    newnetworking.h \
-    volumeslider.h \
-        settingsdialog.h \
-    trackcontext.h \
-    playlistdialogue.h \
-    plsmartedit.h \
-    plsmartnew.h \
-    plnormalnew.h \
-    addto.h \
-    firstrunwizard.h
+            newnetworking.h \
+            volumeslider.h \
+            settingsdialog.h \
+            trackcontext.h \
+            playlistdialogue.h \
+            plsmartedit.h \
+            plsmartnew.h \
+            plnormalnew.h \
+            addto.h \
+            firstrunwizard.h
