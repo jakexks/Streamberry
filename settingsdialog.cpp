@@ -15,7 +15,7 @@ SettingsDialog::SettingsDialog(Database &datab, Filescan &fscan, QWidget *parent
     model->setRootPath("");
     tree = new QTreeView(this);
     tree->setModel(model);
-    tree->setSelectionMode(QAbstractItemView::MultiSelection);
+    tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
     tree->setColumnWidth(0,300);
     tree->setFixedHeight(350);
     expandRows(QDir::homePath() + "/Music");
@@ -23,7 +23,7 @@ SettingsDialog::SettingsDialog(Database &datab, Filescan &fscan, QWidget *parent
     int sflength = selectedfiles.length();
     for(int i = 0; i < sflength; i++)
     {
-        tree->selectionModel()->select(model->index(selectedfiles.at(i)),QItemSelectionModel::SelectCurrent);
+        tree->selectionModel()->select(model->index(selectedfiles.at(i)),QItemSelectionModel::Select|QItemSelectionModel::Rows);
         expandRows(model->filePath(model->index(selectedfiles.at(i)).parent()));
     }
     QLabel *label = new QLabel(tr("Please select which files and folders you would like to appear in your media library and share with others on your local network."));
