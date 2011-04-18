@@ -25,6 +25,7 @@ void FirstRunWizard::accept()
 NickPage::NickPage(QWidget *parent) : QWizardPage(parent)
 {
     QLabel *intro = new QLabel(tr("Welcome to the first run wizard for Streamberry. Please select a nickname so that other people on your network can identify you."));
+    QLabel *note = new QLabel(tr("Please note that all settings can be changed using the dialogue located in the Edit menu"));
     intro->setWordWrap(true);
     QLineEdit *nickedit = new QLineEdit();
     nickedit->setMaxLength(20);
@@ -33,13 +34,15 @@ NickPage::NickPage(QWidget *parent) : QWizardPage(parent)
     layout->addWidget(intro);
     layout->addSpacing(10);
     layout->addWidget(nickedit);
+    layout->addSpacing(20);
+    layout->addWidget(note);
     setLayout(layout);
 }
 
 
 SharingPage::SharingPage(QWidget *parent) : QWizardPage(parent)
 {
-    QLabel *label = new QLabel(tr("Please select which files and folders you would like to appear in your media library and share with others on your local network."));
+    QLabel *label = new QLabel(tr("Please select which files and folders you would like to appear in your media library and share with others on your local network. A filescan will be run when you finish this wizard so it may take a moment for your media to appear"));
     label->setWordWrap(true);
 
     tree = new QTreeView(this);
