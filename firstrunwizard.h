@@ -4,28 +4,30 @@
 #include <QWizard>
 #include <QtGui>
 #include "database.h"
+#include "filescan.h"
 
 class SharingPage: public QWizardPage
 {
     Q_OBJECT
 public:
     SharingPage(QWidget *parent = 0);
-    QString getSelectedFiles();
 private:
     QTreeView *tree;
     QFileSystemModel *model;
     void expandRows(QString);
+    QString getSelectedFiles();
 };
 
 class FirstRunWizard : public QWizard
 {
     Q_OBJECT
 public:
-    FirstRunWizard(Database &datab, QWidget *parent = 0);
+    FirstRunWizard(Database &datab, Filescan &fscan, QWidget *parent = 0);
     void accept();
 private:
     SharingPage *sharingpage;
     Database &db;
+    Filescan &fs;
 };
 
 

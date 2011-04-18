@@ -143,8 +143,17 @@ QMenuBar* MainWindow::createMenuBar()
   actions[20] = menus[1]->addAction("New Smart Playlist");
   actions[21] = menus[1]->addAction("New Playlist");
   menus[1]->addSeparator();
-  actions[5] = menus[1]->addAction("Settings");
+  #ifdef Q_WS_WIN
+    actions[5] = menus[1]->addAction("Settings");
+  #endif
 
+  #ifdef Q_WS_MAC
+    actions[5] = menus[1]->addAction("Preferences");
+  #endif
+
+  #ifdef Q_WS_X11
+    actions[5] = menus[1]->addAction("Preferences");
+  #endif
   actions[6] = menus[2]->addAction("Play/Pause");
   menus[2]->addSeparator();
   actions[8] = menus[2]->addAction("Next Track");

@@ -2,21 +2,22 @@
 #include <QtGui>
 #include <QDebug>
 #include "database.h"
+#include "filescan.h"
 
-FirstRunWizard::FirstRunWizard(Database &datab, QWidget *parent) : QWizard(parent), db(datab)
+FirstRunWizard::FirstRunWizard(Database &datab, Filescan &fscan, QWidget *parent) : QWizard(parent), db(datab), fs(fscan)
 {
     addPage(new NickPage);
     sharingpage = new SharingPage;
     addPage(sharingpage);
-
+    QObject::connect(this, SIGNAL(accepted()), &fs, SLOT(scan()));
     setWindowTitle(tr("Streamberry first run wizard"));
 }
 
+//Sets the nickname and selected folders in the database and runs a filescan
 void FirstRunWizard::accept()
 {
     db.setNick(field("nickname").toString());
     db.setFolders(sharingpage->getSelectedFiles());
-
     QDialog::accept();
 }
 

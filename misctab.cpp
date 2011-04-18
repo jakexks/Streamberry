@@ -9,7 +9,7 @@ MiscTab::MiscTab(QString currentnick, Filescan &fscan, QWidget *parent) : QWidge
     nickedit->setMaxLength(20);
     nickedit->setText(cnick);
 
-    QPushButton *scanbutton = new QPushButton("S&can");
+    QPushButton *scanbutton = new QPushButton("&Scan");
     QObject::connect(scanbutton, SIGNAL(clicked()), &fs, SLOT(scan()));
     QObject::connect(scanbutton, SIGNAL(clicked()), this, SLOT(scanStarted()));
     QObject::connect(&fs, SIGNAL(finishedFileScan()), this, SLOT(scanFinished()));

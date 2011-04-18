@@ -21,6 +21,7 @@ class Filescan: public QObject
 public:
    Filescan(Database &datab);
    ~Filescan();
+   bool currentlyScanning();
 //   int build_new(); //reads the list of folders to be scanned out of the database and adds media files in that
 //                    // folder and it's subfolders to it's library. Returns 1 if successful
 //   //Same as the above function except cleans out the current database first

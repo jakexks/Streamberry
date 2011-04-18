@@ -37,24 +37,26 @@ int main(int argc, char *argv[])
 
     Database db;
 
+    Filescan fs(db);
+    QThread fsthread(&a);
+    fs.moveToThread(&fsthread);
+    fsthread.start();
+
     if(db.getSetting("FirstRun") == "")
     {
-        FirstRunWizard wizard(db);
+        FirstRunWizard wizard(db, fs);
         wizard.show();
         int cancel = wizard.exec();
         if(cancel == 0)
         {
+            fsthread.quit();
+            fsthread.wait();
             return 0;
         }
         db.storeSetting("FirstRun", "1");
     }
 
     Player player;
-
-    Filescan fs(db);
-    QThread fsthread(&a);
-    fs.moveToThread(&fsthread);
-    fsthread.start();
 
     BeaconSender bs(db);
     QThread bsthread(&a);

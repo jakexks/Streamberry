@@ -343,6 +343,11 @@ int Filescan::ismedia(QFileInfo file)
         return 0;
 }
 
+bool Filescan::currentlyScanning()
+{
+    return scanning;
+}
+
 /*//This method takes a filepath and returns 1 if the exact file in question is already in the database
 int filescan::isalreadyindat(QDir file)
 {

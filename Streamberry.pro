@@ -50,8 +50,6 @@ SOURCES +=  main.cpp\
     newnetworking.cpp \
     volumeslider.cpp \
         settingsdialog.cpp \
-        misctab.cpp \
-    sharingtab.cpp \
     trackcontext.cpp \
         playlistdialogue.cpp \
     plsmartedit.cpp \
@@ -94,8 +92,6 @@ HEADERS +=  mainwindow.h\
     newnetworking.h \
     volumeslider.h \
         settingsdialog.h \
-        misctab.h \
-    sharingtab.h \
     trackcontext.h \
     playlistdialogue.h \
     plsmartedit.h \
