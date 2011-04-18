@@ -321,7 +321,6 @@ void Database::storeSetting(QString name, QString value)
     sql += "\", \"";
     sql += value;
     sql += "\");";
-
     try
     {
         query(sql);
@@ -338,7 +337,6 @@ QString Database::getSetting(QString name)
     QString sql = "SELECT value FROM Settings WHERE name=\"";
     sql += name;
     sql += "\" LIMIT 1";
-
     try
     {
         QSqlQuery result = query(sql);
@@ -359,6 +357,36 @@ QString Database::getSetting(QString name)
 
 }
 
+void Database::setNick(QString nick)
+{
+    QString sql = "UPDATE LibIndex SET Name='";
+    sql += nick;
+    sql += "' WHERE UniqueID='Local'";
+    try
+    {
+        query(sql);
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
+
+QString Database::getNick()
+{
+    QString sql = "SELECT Name FROM LibIndex WHERE UniqueID='Local'";
+    try
+    {
+        QSqlQuery result1 = query(sql);
+        result1.first();
+        QString result = result1.value(0).toString();
+        return result;
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
 
 void Database::setFolders(QString folders) {
     try

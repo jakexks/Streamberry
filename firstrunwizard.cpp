@@ -14,10 +14,7 @@ FirstRunWizard::FirstRunWizard(Database &datab, QWidget *parent) : QWizard(paren
 
 void FirstRunWizard::accept()
 {
-    QString nick = field("nickname").toString();
-    qDebug() << "nick is " << nick;
-    //TODO: tell the database what nick was chosen
-
+    db.setNick(field("nickname").toString());
     db.setFolders(sharingpage->getSelectedFiles());
 
     QDialog::accept();
@@ -29,6 +26,7 @@ NickPage::NickPage(QWidget *parent) : QWizardPage(parent)
     QLabel *intro = new QLabel(tr("Welcome to the first run wizard for Streamberry. Please select a nickname so that other people on your network can identify you."));
     intro->setWordWrap(true);
     QLineEdit *nickedit = new QLineEdit();
+    nickedit->setMaxLength(20);
     QVBoxLayout *layout = new QVBoxLayout;
     registerField("nickname*",nickedit);
     layout->addWidget(intro);
@@ -51,11 +49,25 @@ SharingPage::SharingPage(QWidget *parent) : QWizardPage(parent)
     registerField("tree",tree);
 
     QVBoxLayout *layout = new QVBoxLayout;
+
+    expandRows(QDir::homePath() + "/Music");
+
     tree->setColumnWidth(0,300);
-    //tree->setFixedSize(500,550);
     layout->addWidget(label);
     layout->addWidget(tree);
     setLayout(layout);
+}
+
+// Expands all rows needed to show the current selection
+void SharingPage::expandRows(QString filepath)
+{
+    if(model->index(filepath).parent() == QModelIndex())
+    {
+        tree->setExpanded(model->index(filepath),true);
+        return;
+    }
+    expandRows(model->filePath(model->index(filepath).parent()));
+    tree->setExpanded(model->index(filepath),true);
 }
 
 QString SharingPage::getSelectedFiles()

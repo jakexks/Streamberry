@@ -25,6 +25,10 @@ public:
     void storeSetting(QString name, QString value);
     //returns value of setting given to name parameter. returns NULL if not found.
     QString getSetting(QString name);
+    //sets the current users nickname
+    void setNick(QString nick);
+    //returns the current users nickname
+    QString getNick();
     //set list of folders for file scanner to search through. takes semi-colon separated string.
     //note: clears table first, so any folders not in this list will be removed!
     void setFolders(QString folders);
