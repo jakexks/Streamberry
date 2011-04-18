@@ -11,7 +11,7 @@ AlbumArtDelegate::AlbumArtDelegate(Utilities &utilities, QObject *parent) : QSty
 {
 }
 
-QWidget* AlbumArtDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget* AlbumArtDelegate::createEditor(QWidget*, const QStyleOptionViewItem&, const QModelIndex&) const
 {
     return NULL;
 }

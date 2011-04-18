@@ -285,7 +285,7 @@ void MainWindow::menuNewPlaylist()
 
   QString size = db.getSetting("windowSize");
   QStringList list = size.split('|');
-  int size2;
+  int size2 = 0;
   if(list.size()==2)
     size2 = list.at(1).toInt();
   sidebarcontroller->updateplaylistbar( size2 );
@@ -298,7 +298,7 @@ void MainWindow::menuNewSmartPlaylist()
 
   QString size = db.getSetting("windowSize");
   QStringList list = size.split('|');
-  int size2;
+  int size2 = 0;
   if(list.size()==2)
     size2 = list.at(1).toInt();
   sidebarcontroller->updateplaylistbar( size2 );
