@@ -12,12 +12,14 @@ SettingsDialog::SettingsDialog(Database &datab, Filescan &fscan, QWidget *parent
     nickedit->setText(db.getNick());
 
     model = new QFileSystemModel;
-    model->setRootPath("");
+    QModelIndex index = model->setRootPath("");
+
     tree = new QTreeView(this);
     tree->setModel(model);
     tree->setSelectionMode(QAbstractItemView::MultiSelection);
     tree->setColumnWidth(0,300);
     tree->setFixedHeight(350);
+    tree->setRootIndex(index);
     expandRows(QDir::homePath() + "/Music");
     QStringList selectedfiles = db.getFolders(0);
     int sflength = selectedfiles.length();

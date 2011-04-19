@@ -47,9 +47,10 @@ SharingPage::SharingPage(QWidget *parent) : QWizardPage(parent)
 
     tree = new QTreeView(this);
     model = new QFileSystemModel;
-    model->setRootPath("");
+    QModelIndex index = model->setRootPath("");
     tree->setModel(model);
     tree->setSelectionMode(QAbstractItemView::MultiSelection);
+    tree->setRootIndex(index);
     registerField("tree",tree);
 
     QVBoxLayout *layout = new QVBoxLayout;
