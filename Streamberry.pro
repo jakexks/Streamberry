@@ -62,7 +62,7 @@ SOURCES +=  main.cpp\
 
 mac:OBJECTIVE_SOURCES += player.mm
 win32:SOURCES += player.cpp
-unix:SOURCES += player.cpp
+unix:!mac { SOURCES += player.cpp }
 
 HEADERS +=  mainwindow.h\
             database.h\
