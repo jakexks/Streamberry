@@ -17,7 +17,7 @@
 
 #define POSITION_RESOLUTION 5760
 
-class Player : public QWidget
+class Player : public QObject
 {
     Q_OBJECT
 
@@ -33,11 +33,12 @@ private:
     networking n;
     int fileLength;
     float currSecs;
-    #ifdef Q_WS_X11
-        QX11EmbedContainer *_videoWidget;
-    #else
-        QFrame *_videoWidget;
-    #endif
+    QFrame* frame;
+//    #ifdef Q_WS_X11
+//        QX11EmbedContainer *_videoWidget;
+//    #else
+//        QFrame *_videoWidget;
+//    #endif
 
 public:
     QTimer *poller;
@@ -45,8 +46,8 @@ public:
     void playFile(QString file, QString uniqueID="Local", QString ipaddress="Local");
     bool isPlaying();
     void setFileLength(int secs);
-    void initVid();
-    Player(QWidget *parent = 0);
+    QWidget* initVid();
+    Player();
     ~Player();
 
 public slots:

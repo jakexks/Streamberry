@@ -2,8 +2,9 @@
 
 #include <QTimer>
 #include <QDebug>
+#include <QPushButton>
 
-Player::Player(QWidget *parent) : QWidget(parent)
+Player::Player()
 {
     currIP = "";
     const char * const vlc_args[] = {
@@ -43,17 +44,16 @@ Player::~Player()
     delete poller;
 }
 
-void Player::initVid()
+QWidget* Player::initVid()
 {
-    #ifdef Q_WS_X11
-        _videoWidget = new QX11EmbedContainer(parentWidget());
-    #else
-        _videoWidget=new QFrame(this);
-    #endif
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(_videoWidget);
-    setLayout(layout);
-    //_videoWidget->show();
+    frame = new QFrame();
+
+//    #ifdef Q_WS_X11
+//        _videoWidget = new QX11EmbedContainer(frame);
+//    #else
+//        _videoWidget=new QFrame(frame);
+//    #endif
+    return frame;
 }
 
 /*void Player::playFile(QString file)
@@ -116,12 +116,12 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     //libvlc_media_parse (_m);
 
     #if defined(Q_OS_WIN)
-        libvlc_media_player_set_drawable(_mp, reinterpret_cast<unsigned int>(_videoWidget->winId()));
+        libvlc_media_player_set_drawable(_mp, reinterpret_cast<unsigned int>(frame->winId()));
     #elif defined(Q_OS_MAC)
         //libvlc_media_player_set_drawable(_mp, _videoWidget->winId());
-        libvlc_media_player_set_agl(_mp, _videoWidget->winId());
+        libvlc_media_player_set_agl(_mp, frame->winId());
     #else
-        int windid = _videoWidget->winId();
+        int windid = frame->winId();
         libvlc_media_player_set_xwindow (_mp, windid);
     #endif
     libvlc_media_release (_m);
