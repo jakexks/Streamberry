@@ -6,12 +6,12 @@
 
 QMAKE_CFLAGS += -O1
 QMAKE_CXXFLAGS += -O1
+mac:QMAKE_LFLAGS += -framework Cocoa
 
 QT += core gui network sql
 
 LIBS += -lvlc
 mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
-
 mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
 
 win32:LIBS += -L"C:\Program files\VideoLAN\VLC"
@@ -43,7 +43,6 @@ SOURCES +=  main.cpp\
             beaconreceiver.cpp \
             beaconsender.cpp \
             networking.cpp \
-            player.cpp \
             playlistscontext.cpp\
             streamrequest.cpp \
             playbackprogress.cpp \
@@ -61,6 +60,9 @@ SOURCES +=  main.cpp\
             addto.cpp \
             firstrunwizard.cpp
 
+mac:OBJECTIVE_SOURCES += player.mm
+win32:SOURCES += player.mm
+linux:SOURCES += player.mm
 
 HEADERS +=  mainwindow.h\
             database.h\

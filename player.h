@@ -7,6 +7,7 @@
 #include <QWidget>
 #include <QFrame>
 #include <QVBoxLayout>
+#include <QMacCocoaViewContainer>
 
 #ifdef Q_WS_X11
     #include <QX11EmbedContainer>
@@ -16,6 +17,9 @@
 #include "networking.h"
 
 #define POSITION_RESOLUTION 5760
+
+class NSView;
+class NSAutoreleasePool;
 
 class Player : public QObject
 {
@@ -33,7 +37,11 @@ private:
     networking n;
     int fileLength;
     float currSecs;
-    QFrame* frame;
+    QWidget* frame;
+    //needed for video on Mac
+    NSView* videoView;
+    NSAutoreleasePool* pool;
+    QMacCocoaViewContainer *_videoWidget;
 //    #ifdef Q_WS_X11
 //        QX11EmbedContainer *_videoWidget;
 //    #else
