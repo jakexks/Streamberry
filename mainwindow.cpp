@@ -26,33 +26,39 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
 
     setStyleSheet(util.getStylesheet());
 
-    QString temp;
-    if((temp = db.getSetting("windowSize")) != NULL)
-    {
+    QSettings settings;
+    QPoint pos = settings.value("pos").toPoint();
+    QSize size = settings.value("normalgeo", QRect(pos, QSize(900,625))).toRect().size();
+    resize(size);
+    move(pos);
 
-        QStringList list = temp.split('|');
-        if(list.size()==2)
-        {
-            resize(list.at(0).toInt(), list.at(1).toInt());
-        }
-        else
-        {
-            resize(900, 625);
-        }
-    }
-    else
-    {
-        resize(900, 625);
-    }
+//    QString temp;
+//    if((temp = db.getSetting("windowSize")) != NULL)
+//    {
 
-    if((temp = db.getSetting("windowPos")) != NULL)
-    {
-        QStringList list = temp.split('|');
-        if(list.size()==2)
-        {
-            move(list.at(0).toInt(), list.at(1).toInt());
-        }
-    }
+//        QStringList list = temp.split('|');
+//        if(list.size()==2)
+//        {
+//            resize(list.at(0).toInt(), list.at(1).toInt());
+//        }
+//        else
+//        {
+//            resize(900, 625);
+//        }
+//    }
+//    else
+//    {
+//        resize(900, 625);
+//    }
+
+//    if((temp = db.getSetting("windowPos")) != NULL)
+//    {
+//        QStringList list = temp.split('|');
+//        if(list.size()==2)
+//        {
+//            move(list.at(0).toInt(), list.at(1).toInt());
+//        }
+//    }
 
     //initialise window layout
     centralwidget = new QWidget();
@@ -95,6 +101,11 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
     makeTrayIcon();
     this->setMenuBar(menubar);
     setCentralWidget(centralwidget);
+
+    if(settings.value("ismax", false).toBool() == true)
+    {
+        showMaximized();
+    }
 }
 
 void MainWindow::makeTrayIcon()
@@ -172,6 +183,7 @@ QMenuBar* MainWindow::createMenuBar()
 
     // actions[16] = menus[3]->addAction("Show File Providers");
     //actions[17] = menus[3]->addAction("Show Offline Files");
+    actions[17] = menus[3]->addAction("Maximise");
 
 #if defined(Q_OS_MAC)
     actions[19] = menus[4]->addAction("Minimize");
