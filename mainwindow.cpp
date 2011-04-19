@@ -26,39 +26,47 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
 
     setStyleSheet(util.getStylesheet());
 
-    QSettings settings;
-    QPoint pos = settings.value("pos").toPoint();
-    QSize size = settings.value("normalgeo", QRect(pos, QSize(900,625))).toRect().size();
-    resize(size);
-    move(pos);
+    //    QSettings settings;
+    //    QPoint pos = settings.value("pos").toPoint();
+    //    QSize size = settings.value("normalgeo", QRect(pos, QSize(900,625))).toRect().size();
+    //    resize(size);
+    //    move(pos);
 
-//    QString temp;
-//    if((temp = db.getSetting("windowSize")) != NULL)
-//    {
+    QString temp;
+    if((temp = db.getSetting("windowSize")) != NULL)
+    {
 
-//        QStringList list = temp.split('|');
-//        if(list.size()==2)
-//        {
-//            resize(list.at(0).toInt(), list.at(1).toInt());
-//        }
-//        else
-//        {
-//            resize(900, 625);
-//        }
-//    }
-//    else
-//    {
-//        resize(900, 625);
-//    }
+        QStringList list = temp.split('|');
+        if(list.size()==2)
+        {
+            resize(list.at(0).toInt(), list.at(1).toInt());
+        }
+        else
+        {
+            resize(900, 625);
+        }
+    }
+    else
+    {
+        resize(900, 625);
+    }
 
-//    if((temp = db.getSetting("windowPos")) != NULL)
-//    {
-//        QStringList list = temp.split('|');
-//        if(list.size()==2)
-//        {
-//            move(list.at(0).toInt(), list.at(1).toInt());
-//        }
-//    }
+    if((temp = db.getSetting("windowPos")) != NULL)
+    {
+        QStringList list = temp.split('|');
+        if(list.size()==2)
+        {
+            move(list.at(0).toInt(), list.at(1).toInt());
+        }
+    }
+
+    if((temp = db.getSetting("isMaximised")) != NULL)
+    {
+        if(temp=="1")
+            setWindowState(Qt::WindowMaximized);
+        else
+            setWindowState(Qt::WindowNoState);
+    }
 
     //initialise window layout
     centralwidget = new QWidget();
@@ -102,10 +110,10 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
     this->setMenuBar(menubar);
     setCentralWidget(centralwidget);
 
-    if(settings.value("ismax", false).toBool() == true)
-    {
-        showMaximized();
-    }
+    //    if(settings.value("ismax", false).toBool() == true)
+    //    {
+    //        showMaximized();
+    //    }
 }
 
 void MainWindow::makeTrayIcon()
@@ -240,10 +248,16 @@ QMenuBar* MainWindow::createMenuBar()
 void MainWindow::resizeEvent(QResizeEvent *resize)
 {
     QSize size = resize->size();
-    QString winsize = QString::number(size.width());
-    winsize += "|";
-    winsize += QString::number(size.height());
-    db.storeSetting("windowSize", winsize);
+    if(isMaximized())
+        db.storeSetting("isMaximised", "1");
+    else
+    {
+        QString winsize = QString::number(size.width());
+        winsize += "|";
+        winsize += QString::number(size.height());
+        db.storeSetting("windowSize", winsize);
+        db.storeSetting("isMaximised", "0");
+    }
 
     sidebarcontroller->updateplaylistbar( (int)(size.height()/89.25) );
 }
@@ -255,6 +269,7 @@ void MainWindow::moveEvent(QMoveEvent *move)
     winpos += "|";
     winpos += QString::number(pos.y());
     db.storeSetting("windowPos", winpos);
+    db.storeSetting("isMaximised", "0");
 }
 
 //void MainWindow::menuScan()

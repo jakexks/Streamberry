@@ -35,13 +35,14 @@ public slots:
   void trayIconClicked(QSystemTrayIcon::ActivationReason);
   void menuNewPlaylist();
   void menuNewSmartPlaylist();
-  void closeEvent(QCloseEvent *event)
-  {
-      QSettings settings;
-      settings.setValue("pos", pos());
-      settings.setValue("normalgeo", normalGeometry());
-      settings.setValue("ismax", isMaximized());
-  }
+//  Code in the header is bad.
+//  void closeEvent(QCloseEvent *event)
+//  {
+//      QSettings settings;
+//      settings.setValue("pos", pos());
+//      settings.setValue("normalgeo", normalGeometry());
+//      settings.setValue("ismax", isMaximized());
+//  }
 
 signals:
   void filescanRequest();
