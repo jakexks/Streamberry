@@ -95,7 +95,6 @@ void Filescan::scan()
 
             db.completeScan(QString::number(Utilities::getCurrentTimestamp()));
             db.updateLocalTimestamp(QString::number(Utilities::getCurrentTimestamp()));
-            emit finishedFileScan();
 
             qDebug() << "File Scan Complete.\nScan Time Elapsed: " << scantime.elapsed() << "ms";
         }
@@ -105,6 +104,8 @@ void Filescan::scan()
             qDebug() << e.getException();
             //throw e;
         }
+
+        emit finishedFileScan();
     }
 
     scanning = false;
@@ -161,8 +162,8 @@ void Filescan::addFiles(QDir path, QString homeID)
             QFileInfo newfile = fileList.at(i);
             int mov =0;
             mov = ismedia(newfile);
-            if(mov==1)
-            {
+            //if(mov==1)
+            //{
                 try
                 {
 
@@ -181,24 +182,28 @@ void Filescan::addFiles(QDir path, QString homeID)
                     qDebug() << newfile.fileName();
                     qDebug() << " is broken";
                 }
-            }
-            else if(mov==2)
-            {
-                try
-                {
-                    QString filepathnew = newfile.absoluteFilePath();
-                    filepathnew.replace(";", "\\;");
-                    //qDebug() << "HERE Now";
-                   // qDebug() << mov;
-                    db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), "Unknown Director", "Unknown Producer", newfile.fileName(), "Unknown Genre", "0", "-1", "0", "0", (QString)"1411", newfile.suffix(), localTable, homeID, mov);
-                }
-                catch (SBException e)
-                {
-                    qDebug() << e.getException();
-                    qDebug() << newfile.fileName();
-                    qDebug() << " is broken";
-                }
-            }
+            //}
+//            else if(mov==2)
+//            {
+//                try
+//                {
+//                    tags = checktags(file.printMeta(newfile.absoluteFilePath()), newfile.fileName());
+//                    QString filepathnew = newfile.absoluteFilePath();
+//                    filepathnew.replace(";", "\\;");
+//                    //qDebug() << "HERE Now";
+//                   // qDebug() << mov;
+//                    QStringList file;
+//                    file << filepathnew << newfile.fileName() << QString::number(newfile.size()) << tags.at(0) << tags.at(1) << tags.at(2) << tags.at(3) << tags.at(4) << tags.at(5) << tags.at(6) << tags.at(7) << (QString)"1411" << newfile.suffix() << localTableScan << homeID << QString::number(mov);
+//                    filestoadd->append(file);
+//                    //db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), "Unknown Director", "Unknown Producer", newfile.fileName(), "Unknown Genre", "0", "-1", "0", "0", (QString)"1411", newfile.suffix(), localTable, homeID, mov);
+//                }
+//                catch (SBException e)
+//                {
+//                    qDebug() << e.getException();
+//                    qDebug() << newfile.fileName();
+//                    qDebug() << " is broken";
+//                }
+//            }
         }
     }
 
@@ -312,7 +317,7 @@ QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
 }
 
 //TO DO: Many more compatible filetypes need adding
-//This method takes a filepath and returns 1 if the file in question is a media file
+//This method takes a filepath and returns 1 if the file in question is an audio file, 2 if it is a video file and 0 otherwise
 int Filescan::ismedia(QFileInfo file)
 {
     QString name = file.suffix();
