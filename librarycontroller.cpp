@@ -24,14 +24,15 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     curheaders = NULL;
     currentlyplaying = -1;
     musicvideofilter = 2;
-    viewqueueindex = -1;
+    playingdata = NULL;
+
     ViewQueueItem item;
     item.playlist = "";
     item.smarttext = "";
     item.searchtext = "";
     viewqueue.append(item);
     viewqueueindex = 0;
-    playingdata = NULL;
+
     QStringList headers;
     QString headerstr;
 
@@ -55,7 +56,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     currentdata = NULL;
     paneldelegate = new AlbumArtDelegate(util);
     makeWidget();
-
+    resetQueue();
 
     QTime time = QTime::currentTime();
     qsrand((uint)time.msec());
@@ -795,3 +796,16 @@ int LibraryController::randInt(int low, int high)
     // Random number between low and high
     return qrand() % ((high + 1) - low) + low;
     }
+
+void LibraryController::resetQueue()
+{
+    viewqueue.empty();
+    ViewQueueItem item;
+    item.playlist = "";
+    item.smarttext = "";
+    item.searchtext = "";
+    viewqueue.append(item);
+    viewqueueindex = 0;
+    emit setSearchBoxText("");
+    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+}

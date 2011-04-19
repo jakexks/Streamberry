@@ -29,7 +29,6 @@ public:
     void pushAllView();
     int getCurrentViewType();
     QString getCurrentPlaylistName();
-    int randInt(int low, int high);
 signals:
     void songInfoData(QString album, QString artist, QString title, QString track);
     void setSearchBoxText(QString text);
@@ -53,10 +52,12 @@ public slots:
     void goForward();
     void shuffleSlot();
     void repeatSlot(bool one, bool all);
+    void resetQueue();
     //void DragStart(QTableWidgetItem*);
 
 private:
     void fillData(QList<QSqlRecord>* values);
+    int randInt(int low, int high);
     Utilities& util;
     //void ActualDrag(QTableWidgetItem* item, const QPoint startPos);
     QWidget* widget;
