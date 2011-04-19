@@ -118,7 +118,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     //libvlc_media_parse (_m);
 
     #if defined(Q_OS_WIN)
-        libvlc_media_player_set_drawable(_mp, reinterpret_cast<unsigned int>(frame->winId()));
+        libvlc_media_player_set_hwnd(_mp, frame->winId());
     #elif defined(Q_OS_MAC)
         //libvlc_media_player_set_agl(_mp, frame->winId());
 //        int view = frame->winId();
