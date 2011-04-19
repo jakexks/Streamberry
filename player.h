@@ -55,7 +55,7 @@ public slots:
     void changePosition(int newPosition);
     void changeVolume(int newVolume);
     void playControl();
-    void muteAudio();
+//    void muteAudio();
     void sliderUpdate();
     void test();
 

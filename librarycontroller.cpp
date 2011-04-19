@@ -25,6 +25,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     currentlyplaying = -1;
     musicvideofilter = 2;
     playingdata = NULL;
+    allwidgets = NULL;
 
     ViewQueueItem item;
     item.playlist = "";
@@ -56,6 +57,13 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     currentdata = NULL;
     paneldelegate = new AlbumArtDelegate(util);
     makeWidget();
+
+    QWidget* playerwind = player.initVid();
+    allwidgets = new QStackedWidget();
+    allwidgets->addWidget(curview);
+    allwidgets->addWidget(playerwind);
+    container->addWidget(allwidgets, 0, 0);
+
     resetQueue();
 
     QTime time = QTime::currentTime();
@@ -118,12 +126,6 @@ void LibraryController::makeWidget()
 
     tablewidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
-
-    playerwind = player.initVid();
-    allwidgets.addWidget(curview);
-    allwidgets.addWidget(playerwind);
-    container->addWidget(&allwidgets, 0, 0);
-
 }
 
 void LibraryController::addHeaders()
@@ -445,7 +447,7 @@ void LibraryController::updateLibrary()
         QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+" "+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
         fillData(result);
 
-        if(allwidgets.count()!=0) allwidgets.setCurrentIndex(0);
+        if(allwidgets!=NULL && allwidgets->count()!=0) allwidgets->setCurrentIndex(0);
     }
 
 }
@@ -475,7 +477,7 @@ void LibraryController::itemClicked(int row)
         QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
         player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
     } else {
-        if(isvideo) allwidgets.setCurrentIndex(1);
+        if(isvideo) allwidgets->setCurrentIndex(1);
         player.playFile(filepath);
     }
     currentlyplaying = row;
@@ -605,7 +607,7 @@ void LibraryController::playNextFile()
         QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
         player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
     } else {
-        if(isvideo) allwidgets.setCurrentIndex(1);
+        if(isvideo) allwidgets->setCurrentIndex(1);
         player.playFile(filepath);
     }
 
@@ -653,7 +655,7 @@ void LibraryController::playPrevFile()
         QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
         player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
     } else {
-        if(isvideo) allwidgets.setCurrentIndex(1);
+        if(isvideo) allwidgets->setCurrentIndex(1);
         player.playFile(filepath);
     }
     if(currentdata == playingdata)

@@ -3,18 +3,20 @@
 #include <QTimer>
 #include <QDebug>
 #include <QPushButton>
+#include <QMacNativeWidget>
 
 Player::Player()
 {
     currIP = "";
     const char * const vlc_args[] = {
                   //"-I", "dummy", /* Don't use any interface */
-                  //"--ignore-config", /* Don't use VLC's config */
+                  "--ignore-config", /* Don't use VLC's config */
                   /*"--extraintf=logger", //log anything*/
-                  "--verbose=0",
+                  //"--verbose=0",
                   //"--aout=pulse",
                   //"--noaudio"
                   //"--plugin-path=C:\\vlc-0.9.9-win32\\plugins\\"
+                  //"--vout=agl"
               };
     _isPlaying=false;
 
@@ -118,8 +120,18 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     #if defined(Q_OS_WIN)
         libvlc_media_player_set_drawable(_mp, reinterpret_cast<unsigned int>(frame->winId()));
     #elif defined(Q_OS_MAC)
-        //libvlc_media_player_set_drawable(_mp, _videoWidget->winId());
-        libvlc_media_player_set_agl(_mp, frame->winId());
+        //libvlc_media_player_set_agl(_mp, frame->winId());
+//        int view = frame->winId();
+//        libvlc_media_player_set_nsobject(_mp, (void*)view);
+        frame->setStyleSheet("background: magenta;");
+
+//        NSView* videoView = [[NSView alloc] init];
+
+//        QMacCocoaViewContainer *_videoWidget = new QMacCocoaViewContainer(videoView, frame);
+
+//        //[videoView setAutoresizingMask: NSViewHeightSizable|NSViewWidthSizable];
+//        libvlc_media_player_set_nsobject(_mp, frame);
+
     #else
         int windid = frame->winId();
         libvlc_media_player_set_xwindow (_mp, windid);
@@ -203,10 +215,10 @@ void Player::playControl()
     }
 }
 
-void Player::muteAudio()
-{
-    libvlc_audio_toggle_mute(_mp);
-}
+//void Player::muteAudio()
+//{
+//    libvlc_audio_toggle_mute(_mp);
+//}
 
 void Player::test(){
     qDebug() << "\ntest\n";
