@@ -3,21 +3,27 @@
 #include <QTimer>
 #include <QDebug>
 #include <QPushButton>
-#include <QMacNativeWidget>
+#include <QMacCocoaViewContainer>
+
+#ifdef Q_OS_MAC
+#include <Cocoa/Cocoa.h>
+#endif
 
 Player::Player()
 {
     currIP = "";
     const char * const vlc_args[] = {
-                  //"-I", "dummy", /* Don't use any interface */
-                  "--ignore-config", /* Don't use VLC's config */
-                  /*"--extraintf=logger", //log anything*/
-                  //"--verbose=0",
-                  //"--aout=pulse",
-                  //"--noaudio"
-                  //"--plugin-path=C:\\vlc-0.9.9-win32\\plugins\\"
-                  //"--vout=agl"
-              };
+        //"-I", "dummy", /* Don't use any interface */
+        //"--ignore-config", /* Don't use VLC's config */
+        /*"--extraintf=logger", //log anything*/
+        //"--verbose=2",
+        //"--aout=pulse",
+        //"--noaudio"
+        //"--plugin-path=C:\\vlc-0.9.9-win32\\plugins\\"
+#ifdef Q_OS_MAC
+        "--vout=macosx"
+#endif
+    };
     _isPlaying=false;
 
     poller=new QTimer(this);
@@ -28,6 +34,13 @@ Player::Player()
     //connect(_positionSlider, SIGNAL(sliderMoved(int)), this, SLOT(changePosition(int)));
     //connect(_volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(changeVolume(int)));
     poller->start(100);
+
+    _videoWidget = NULL;
+#ifdef Q_OS_MAC
+    pool = [[NSAutoreleasePool alloc] init];
+    videoView = [[NSView alloc] init];
+    [videoView setAutoresizingMask: NSViewHeightSizable|NSViewWidthSizable];
+#endif
 }
 
 Player::~Player()
@@ -44,17 +57,34 @@ Player::~Player()
 
     poller->stop();
     delete poller;
+
+#ifdef Q_OS_MAC
+    [videoView release];
+    [pool release];
+#endif
+
+    if(_videoWidget!=NULL)
+        delete _videoWidget;
 }
 
 QWidget* Player::initVid()
 {
-    frame = new QFrame();
+    if(_videoWidget!=NULL)
+        delete _videoWidget;
 
-//    #ifdef Q_WS_X11
-//        _videoWidget = new QX11EmbedContainer(frame);
-//    #else
-//        _videoWidget=new QFrame(frame);
-//    #endif
+    frame = new QWidget();
+
+#ifdef Q_OS_MAC
+    _videoWidget = new QMacCocoaViewContainer(videoView, frame);
+    _videoWidget->show();
+#endif
+    frame->show();
+
+    //    #ifdef Q_WS_X11
+    //        _videoWidget = new QX11EmbedContainer(frame);
+    //    #else
+    //        _videoWidget=new QFrame(frame);
+    //    #endif
     return frame;
 }
 
@@ -99,11 +129,11 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         //Send IP, uniqueID, file path
         stream.send(ipaddress, 45459, toSend);
         file = "rtp://@";
-        #ifdef Q_WS_WIN
-            file = "rtp://";
-            file += n.getmyip();
-            file += ":5004";
-        #endif
+#ifdef Q_WS_WIN
+        file = "rtp://";
+        file += n.getmyip();
+        file += ":5004";
+#endif
         qDebug() << file;
         currIP = "127.0.0.1";
         remoteIP = ipaddress;
@@ -117,25 +147,20 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     libvlc_media_player_set_media (_mp, _m);
     //libvlc_media_parse (_m);
 
-    #if defined(Q_OS_WIN)
-        libvlc_media_player_set_hwnd(_mp, frame->winId());
-    #elif defined(Q_OS_MAC)
-        //libvlc_media_player_set_agl(_mp, frame->winId());
-//        int view = frame->winId();
-//        libvlc_media_player_set_nsobject(_mp, (void*)view);
-        frame->setStyleSheet("background: magenta;");
+#if defined(Q_OS_WIN)
+    libvlc_media_player_set_drawable(_mp, reinterpret_cast<unsigned int>(frame->winId()));
+#elif defined(Q_OS_MAC)
+    //        libvlc_media_player_set_agl(_mp, frame->winId());
+    //        int view = frame->winId();
+    //        libvlc_media_player_set_nsobject(_mp, (void*)view);
+    //        frame->setStyleSheet("background: magenta;");
 
-//        NSView* videoView = [[NSView alloc] init];
+    libvlc_media_player_set_nsobject(_mp, videoView);
 
-//        QMacCocoaViewContainer *_videoWidget = new QMacCocoaViewContainer(videoView, frame);
-
-//        //[videoView setAutoresizingMask: NSViewHeightSizable|NSViewWidthSizable];
-//        libvlc_media_player_set_nsobject(_mp, frame);
-
-    #else
-        int windid = frame->winId();
-        libvlc_media_player_set_xwindow (_mp, windid);
-    #endif
+#else
+    int windid = frame->winId();
+    libvlc_media_player_set_xwindow (_mp, windid);
+#endif
     libvlc_media_release (_m);
     libvlc_media_player_play (_mp);
     _isPlaying=true;
@@ -227,7 +252,7 @@ void Player::test(){
 void Player::sliderUpdate()
 {
     if(!_isPlaying)
-            return;
+        return;
 
     libvlc_media_t *curMedia = libvlc_media_player_get_media (_mp);
     if (curMedia == NULL)

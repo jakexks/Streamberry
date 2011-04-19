@@ -18,8 +18,10 @@
 
 #define POSITION_RESOLUTION 5760
 
-class NSView;
-class NSAutoreleasePool;
+#ifdef Q_OS_MAC
+    class NSView;
+    class NSAutoreleasePool;
+#endif
 
 class Player : public QObject
 {
@@ -39,8 +41,10 @@ private:
     float currSecs;
     QWidget* frame;
     //needed for video on Mac
-    NSView* videoView;
-    NSAutoreleasePool* pool;
+    #ifdef Q_OS_MAC
+        NSView* videoView;
+        NSAutoreleasePool* pool;
+    #endif
     QMacCocoaViewContainer *_videoWidget;
 //    #ifdef Q_WS_X11
 //        QX11EmbedContainer *_videoWidget;

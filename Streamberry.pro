@@ -61,8 +61,8 @@ SOURCES +=  main.cpp\
             firstrunwizard.cpp
 
 mac:OBJECTIVE_SOURCES += player.mm
-win32:SOURCES += player.mm
-linux:SOURCES += player.mm
+win32:SOURCES += player.cpp
+unix:SOURCES += player.cpp
 
 HEADERS +=  mainwindow.h\
             database.h\
