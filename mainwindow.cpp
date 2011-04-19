@@ -191,7 +191,6 @@ QMenuBar* MainWindow::createMenuBar()
 
     // actions[16] = menus[3]->addAction("Show File Providers");
     //actions[17] = menus[3]->addAction("Show Offline Files");
-    actions[17] = menus[3]->addAction("Maximise");
 
 #if defined(Q_OS_MAC)
     actions[19] = menus[4]->addAction("Minimize");

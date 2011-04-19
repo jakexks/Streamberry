@@ -162,11 +162,10 @@ void Filescan::addFiles(QDir path, QString homeID)
             QFileInfo newfile = fileList.at(i);
             int mov =0;
             mov = ismedia(newfile);
-            //if(mov==1)
-            //{
+            if(mov!=0)
+            {
                 try
                 {
-
                     tags = checktags(file.printMeta(newfile.absoluteFilePath()), newfile.fileName());
                     QString filepathnew = newfile.absoluteFilePath();
                     filepathnew.replace(";", "\\;");
@@ -182,7 +181,7 @@ void Filescan::addFiles(QDir path, QString homeID)
                     qDebug() << newfile.fileName();
                     qDebug() << " is broken";
                 }
-            //}
+            }
 //            else if(mov==2)
 //            {
 //                try
