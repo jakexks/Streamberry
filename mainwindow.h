@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  MainWindow(Utilities& util, Database &datab, Player &p, Filescan &fsinit, QApplication& aapp, QWidget *parent = 0);
+  MainWindow(Utilities& util, Database &datab, Player &p, Filescan &fsinit, QMenuBar* menu, QApplication& aapp, QWidget *parent = 0);
   void setPath(char* path);
   QMenuBar* createMenuBar();
 public slots:
