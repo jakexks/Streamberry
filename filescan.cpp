@@ -101,6 +101,8 @@ void Filescan::scan()
         catch(SBException e)
         {
             scanning = false;
+            //just incase it crashed on db
+            db.endBulk();
             qDebug() << e.getException();
             //throw e;
         }

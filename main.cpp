@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
 #endif
 
     Utilities util(execpath);
-
     Database db;
 
     Filescan fs(db);
