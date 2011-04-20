@@ -200,6 +200,8 @@ QSqlQuery Database::query(QString sql)
     {
         QString s = "SQL failed: ";
         s += query.lastError().text();
+        s += " | SQL: ";
+        s += sql;
         throw SBException(DB, s);
     }
     return query;
