@@ -67,7 +67,10 @@ int main(int argc, char *argv[])
     br.moveToThread(&brthread);
     brthread.start();
 
-    MainWindow w(util, db, player, fs, a);
+    //this is made in main to fix bug on Mac
+    QMenuBar* menu = new QMenuBar(0);
+
+    MainWindow w(util, db, player, fs, menu, a);
 
     w.show();
 
@@ -86,5 +89,6 @@ int main(int argc, char *argv[])
     bsthread.wait();
     brthread.quit();
     brthread.wait();
+    delete menu;
     return ret;
 }

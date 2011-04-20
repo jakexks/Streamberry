@@ -16,11 +16,13 @@
 #define TOPBARHEIGHT 26
 #define BOTTOMBARHEIGHT 90
 
-MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filescan &fsinit, QApplication& aapp, QWidget *parent)
+MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filescan &fsinit, QMenuBar* menu, QApplication& aapp, QWidget *parent)
     : QMainWindow(parent), util(utilities), db(datab), player(p), fs(fsinit), app(aapp)
 {
     //set window properties
-    menubar = createMenuBar();
+    //menubar created in main to fix bug on Mac
+    menubar = menu;
+    createMenuBar();
 
     this->setWindowTitle("Streamberry");
 
@@ -140,8 +142,6 @@ void MainWindow::initialiseGrid()
 
 QMenuBar* MainWindow::createMenuBar()
 {
-
-    QMenuBar* menubar = new QMenuBar();
     menubar->setNativeMenuBar(true);
     QMenu* menus[6];
     QAction* actions[23];
