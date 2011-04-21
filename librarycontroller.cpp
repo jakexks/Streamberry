@@ -69,6 +69,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     QObject::connect(&player, SIGNAL(getFirstSong()), this, SLOT(playNextFile()));
     QObject::connect(searchbar, SIGNAL(newSearchString(QString)), this, SLOT(setSearchText(QString)));
     QObject::connect(&db, SIGNAL(onlineStatusChange()), this, SLOT(updateLibrary()));
+
 }
 
 QWidget* LibraryController::getWidget()
@@ -565,6 +566,7 @@ void LibraryController::repeatSlot(bool one, bool all)
 
 void LibraryController::playNextFile()
 {
+    if(currentlyplaying==-1) return;
     if(repeat!=1)
     {
         numberIterator+=1;
@@ -588,7 +590,10 @@ void LibraryController::playNextFile()
         if(currentlyplaying >=  playingdata->length()&&repeat==2)
             currentlyplaying = 0;
         if(currentlyplaying >= playingdata->length()&&repeat!=2)
-            currentlyplaying--;        //emit stop?
+        {currentlyplaying=-1;        //emit stop?
+        emit  pausePlayer();
+        return;
+        }
 
     }
 
@@ -624,13 +629,14 @@ void LibraryController::playPrevFile()
             numberIterator= playingdata->length()-1;
 
         if(shuffle==1)
-            if(songsPlayed[numberIterator]<currentdata->length())
+        {   if(songsPlayed[numberIterator]<currentdata->length())
                 currentlyplaying=songsPlayed[numberIterator];
             else
             {
                 songsPlayed[numberIterator]=randInt(0,maxSize);
                 currentlyplaying=songsPlayed[numberIterator];
             }
+        }
 
         if(shuffle==0)
             currentlyplaying -= 1;//Decrement by 1
@@ -661,6 +667,8 @@ void LibraryController::playPrevFile()
         tablewidget->selectRow(currentlyplaying);
     }
 }
+
+
 
 LibraryController::~LibraryController()
 {
