@@ -18,11 +18,11 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 
 public:
-  MainWindow(Utilities& util, Database &datab, Player &p, Filescan &fsinit, QApplication& aapp, QWidget *parent = 0);
+  MainWindow(Utilities& util, Database &datab, Player &p, Filescan &fsinit, QMenuBar* menu, QApplication& aapp, QWidget *parent = 0);
   void setPath(char* path);
   QMenuBar* createMenuBar();
 public slots:
-  void menuScan();
+  //void menuScan();
   void menuAddFile();
   void menuSettings();
   void menuMaximise();
@@ -35,6 +35,14 @@ public slots:
   void trayIconClicked(QSystemTrayIcon::ActivationReason);
   void menuNewPlaylist();
   void menuNewSmartPlaylist();
+//  Code in the header is bad.
+//  void closeEvent(QCloseEvent *event)
+//  {
+//      QSettings settings;
+//      settings.setValue("pos", pos());
+//      settings.setValue("normalgeo", normalGeometry());
+//      settings.setValue("ismax", isMaximized());
+//  }
 
 signals:
   void filescanRequest();

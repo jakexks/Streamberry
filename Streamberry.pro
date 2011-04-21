@@ -4,11 +4,14 @@
 #
 #-------------------------------------------------
 
+QMAKE_CFLAGS += -O1
+QMAKE_CXXFLAGS += -O1
+mac:QMAKE_LFLAGS += -framework Cocoa
+
 QT += core gui network sql
 
 LIBS += -lvlc
 mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
-
 mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
 
 win32:LIBS += -L"C:\Program files\VideoLAN\VLC"
@@ -40,26 +43,26 @@ SOURCES +=  main.cpp\
             beaconreceiver.cpp \
             beaconsender.cpp \
             networking.cpp \
-            player.cpp \
             playlistscontext.cpp\
             streamrequest.cpp \
             playbackprogress.cpp \
             playbackbutton.cpp \
             songinfo.cpp\
             quitmanager.cpp \
-    newnetworking.cpp \
-    volumeslider.cpp \
-        settingsdialog.cpp \
-        misctab.cpp \
-    sharingtab.cpp \
-    trackcontext.cpp \
-        playlistdialogue.cpp \
-    plsmartedit.cpp \
-    plsmartnew.cpp \
-    plnormalnew.cpp \
-    addto.cpp \
-    firstrunwizard.cpp
+            newnetworking.cpp \
+            volumeslider.cpp \
+            settingsdialog.cpp \
+            trackcontext.cpp \
+            playlistdialogue.cpp \
+            plsmartedit.cpp \
+            plsmartnew.cpp \
+            plnormalnew.cpp \
+            addto.cpp \
+            firstrunwizard.cpp
 
+mac:OBJECTIVE_SOURCES += player.mm
+win32:SOURCES += player.cpp
+unix:!mac { SOURCES += player.cpp }
 
 HEADERS +=  mainwindow.h\
             database.h\
@@ -91,15 +94,13 @@ HEADERS +=  mainwindow.h\
             playbackbutton.h \
             songinfo.h\
             quitmanager.h \
-    newnetworking.h \
-    volumeslider.h \
-        settingsdialog.h \
-        misctab.h \
-    sharingtab.h \
-    trackcontext.h \
-    playlistdialogue.h \
-    plsmartedit.h \
-    plsmartnew.h \
-    plnormalnew.h \
-    addto.h \
-    firstrunwizard.h
+            newnetworking.h \
+            volumeslider.h \
+            settingsdialog.h \
+            trackcontext.h \
+            playlistdialogue.h \
+            plsmartedit.h \
+            plsmartnew.h \
+            plnormalnew.h \
+            addto.h \
+            firstrunwizard.h

@@ -34,28 +34,28 @@ int main(int argc, char *argv[])
 #endif
 
     Utilities util(execpath);
-
     Database db;
+
+    Filescan fs(db);
+    QThread fsthread(&a);
+    fs.moveToThread(&fsthread);
+    fsthread.start();
 
     if(db.getSetting("FirstRun") == "")
     {
-        qDebug() << "showing wizard";
-        FirstRunWizard wizard(db);
+        FirstRunWizard wizard(db, fs);
         wizard.show();
         int cancel = wizard.exec();
         if(cancel == 0)
         {
+            fsthread.quit();
+            fsthread.wait();
             return 0;
         }
         db.storeSetting("FirstRun", "1");
     }
 
     Player player;
-
-    Filescan fs(db);
-    QThread fsthread(&a);
-    fs.moveToThread(&fsthread);
-    fsthread.start();
 
     BeaconSender bs(db);
     QThread bsthread(&a);
@@ -67,11 +67,14 @@ int main(int argc, char *argv[])
     br.moveToThread(&brthread);
     brthread.start();
 
-    MainWindow w(util, db, player, fs, a);
+    //this is made in main to fix bug on Mac
+    QMenuBar* menu = new QMenuBar(0);
+
+    MainWindow w(util, db, player, fs, menu, a);
 
     w.show();
 
-//    StreamFile stream(player);
+    StreamFile stream(player); //Enables streaming. Do not comment
 //    //stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");
 //    //qDebug() << stream.getStreamLength("test");
 
@@ -86,5 +89,6 @@ int main(int argc, char *argv[])
     bsthread.wait();
     brthread.quit();
     brthread.wait();
+    delete menu;
     return ret;
 }

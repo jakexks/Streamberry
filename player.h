@@ -7,6 +7,7 @@
 #include <QWidget>
 #include <QFrame>
 #include <QVBoxLayout>
+#include <QMacCocoaViewContainer>
 
 #ifdef Q_WS_X11
     #include <QX11EmbedContainer>
@@ -17,7 +18,12 @@
 
 #define POSITION_RESOLUTION 5760
 
-class Player : public QWidget
+#ifdef Q_OS_MAC
+    class NSView;
+    class NSAutoreleasePool;
+#endif
+
+class Player : public QObject
 {
     Q_OBJECT
 
@@ -33,11 +39,18 @@ private:
     networking n;
     int fileLength;
     float currSecs;
-    #ifdef Q_WS_X11
-        QX11EmbedContainer *_videoWidget;
-    #else
-        QFrame *_videoWidget;
+    QWidget* frame;
+    //needed for video on Mac
+    #ifdef Q_OS_MAC
+        NSView* videoView;
+        NSAutoreleasePool* pool;
     #endif
+    QMacCocoaViewContainer *_videoWidget;
+//    #ifdef Q_WS_X11
+//        QX11EmbedContainer *_videoWidget;
+//    #else
+//        QFrame *_videoWidget;
+//    #endif
 
 public:
     QTimer *poller;
@@ -45,8 +58,8 @@ public:
     void playFile(QString file, QString uniqueID="Local", QString ipaddress="Local");
     bool isPlaying();
     void setFileLength(int secs);
-    void initVid();
-    Player(QWidget *parent = 0);
+    QWidget* initVid();
+    Player();
     ~Player();
 
 public slots:
@@ -54,7 +67,7 @@ public slots:
     void changePosition(int newPosition);
     void changeVolume(int newVolume);
     void playControl();
-    void muteAudio();
+//    void muteAudio();
     void sliderUpdate();
     void test();
 

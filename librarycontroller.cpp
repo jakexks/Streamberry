@@ -24,14 +24,16 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     curheaders = NULL;
     currentlyplaying = -1;
     musicvideofilter = 2;
-    viewqueueindex = -1;
+    playingdata = NULL;
+    allwidgets = NULL;
+
     ViewQueueItem item;
     item.playlist = "";
     item.smarttext = "";
     item.searchtext = "";
     viewqueue.append(item);
     viewqueueindex = 0;
-    playingdata = NULL;
+
     QStringList headers;
     QString headerstr;
 
@@ -56,6 +58,13 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     paneldelegate = new AlbumArtDelegate(util);
     makeWidget();
 
+    QWidget* playerwind = player.initVid();
+    allwidgets = new QStackedWidget();
+    allwidgets->addWidget(curview);
+    allwidgets->addWidget(playerwind);
+    container->addWidget(allwidgets, 0, 0);
+
+    resetQueue();
 
     QTime time = QTime::currentTime();
     qsrand((uint)time.msec());
@@ -116,15 +125,8 @@ void LibraryController::makeWidget()
 
     //QObject::connect(tablewidget, SIGNAL(itemPressed(QTableWidgetItem*)), this, SLOT(DragStart(QTableWidgetItem*)));
 
-    allwidgets = new QStackedWidget;
-
     tablewidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
-
-    allwidgets->addWidget(curview);
-    allwidgets->addWidget(&player);
-    container->addWidget(allwidgets, 0, 0);
-    player.initVid();
 }
 
 void LibraryController::addHeaders()
@@ -446,7 +448,7 @@ void LibraryController::updateLibrary()
         QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+" "+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
         fillData(result);
 
-        if(allwidgets->count()!=0) allwidgets->setCurrentIndex(0);
+        if(allwidgets!=NULL && allwidgets->count()!=0) allwidgets->setCurrentIndex(0);
     }
 
 }
@@ -803,3 +805,16 @@ int LibraryController::randInt(int low, int high)
     // Random number between low and high
     return qrand() % ((high + 1) - low) + low;
     }
+
+void LibraryController::resetQueue()
+{
+    viewqueue.empty();
+    ViewQueueItem item;
+    item.playlist = "";
+    item.smarttext = "";
+    item.searchtext = "";
+    viewqueue.append(item);
+    viewqueueindex = 0;
+    emit setSearchBoxText("");
+    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+}

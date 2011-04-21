@@ -141,6 +141,13 @@ void Database::startBulk()
 {
     try
     {
+        //do this because calling begin twice will cause an exception
+        try
+        {
+            query("COMMIT;");
+        }
+        catch(SBException) {}
+
         query("BEGIN;");
     }
     catch(SBException e)
@@ -153,6 +160,13 @@ void Database::endBulk()
 {
     try
     {
+        //do this because calling COMMIT twice will cause an exception
+        try
+        {
+            query("BEGIN;");
+        }
+        catch(SBException) {}
+
         query("COMMIT;");
     }
     catch(SBException e)
@@ -186,6 +200,8 @@ QSqlQuery Database::query(QString sql)
     {
         QString s = "SQL failed: ";
         s += query.lastError().text();
+        s += " | SQL: ";
+        s += sql;
         throw SBException(DB, s);
     }
     return query;
@@ -321,7 +337,6 @@ void Database::storeSetting(QString name, QString value)
     sql += "\", \"";
     sql += value;
     sql += "\");";
-
     try
     {
         query(sql);
@@ -338,7 +353,6 @@ QString Database::getSetting(QString name)
     QString sql = "SELECT value FROM Settings WHERE name=\"";
     sql += name;
     sql += "\" LIMIT 1";
-
     try
     {
         QSqlQuery result = query(sql);
@@ -359,6 +373,36 @@ QString Database::getSetting(QString name)
 
 }
 
+void Database::setNick(QString nick)
+{
+    QString sql = "UPDATE LibIndex SET Name='";
+    sql += nick;
+    sql += "' WHERE UniqueID='Local'";
+    try
+    {
+        query(sql);
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
+
+QString Database::getNick()
+{
+    QString sql = "SELECT Name FROM LibIndex WHERE UniqueID='Local'";
+    try
+    {
+        QSqlQuery result1 = query(sql);
+        result1.first();
+        QString result = result1.value(0).toString();
+        return result;
+    }
+    catch(SBException e)
+    {
+        throw e;
+    }
+}
 
 void Database::setFolders(QString folders) {
     try
@@ -860,48 +904,48 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
         final += uniqueID;
         final += "\" (\"UniqueID\" VARCHAR DEFAULT \"";
         final += uniqueID;
-        final += "\", \"ID\" INTEGER AUTOINCREMENT  NOT NULL  UNIQUE , \"Filepath\" VARCHAR NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Track\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, PRIMARY KEY(UniqueID, Filepath)); \x1D";
+        final += "\", \"Filepath\" VARCHAR PRIMARY KEY NOT NULL, \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Track\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0); \x1D";
 
         while(result.isValid())
         {
-            if(result.record().value("Deleted").toInt()==0)
+            if(result.record().value("Deleted").toInt()==1)
             {
                 final += "DELETE FROM Lib";
                 final += uniqueID;
-                final += " WHERE Filename='";
-                final += result.record().value("Filename").toString();
-                final += "';";
+                final += " WHERE Filepath='";
+                final += result.record().value("Filepath").toString().replace("'", "''");
+                final += "'; \x1D";
             } else {
                 final += "INSERT OR REPLACE INTO Lib";
                 final += uniqueID;
                 final += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Track, Length , Bitrate , Filesize , Timestamp , Filetype, MusicOrVideo) VALUES (\"";
-                final += result.record().value("Filepath").toString();
+                final += result.record().value("Filepath").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Artist").toString();
+                final += result.record().value("Artist").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Album").toString();
+                final += result.record().value("Album").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Title").toString();
+                final += result.record().value("Title").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Genre").toString();
+                final += result.record().value("Genre").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Rating").toString();
+                final += result.record().value("Rating").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Filename").toString();
+                final += result.record().value("Filename").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Year").toString();
+                final += result.record().value("Year").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Track").toString();
+                final += result.record().value("Track").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Length").toString();
+                final += result.record().value("Length").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Bitrate").toString();
+                final += result.record().value("Bitrate").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Filesize").toString();
+                final += result.record().value("Filesize").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Timestamp").toString();
+                final += result.record().value("Timestamp").toString().replace("'", "''");
                 final += "\", \"";
-                final += result.record().value("Filetype").toString();
+                final += result.record().value("Filetype").toString().replace("'", "''");
                 //group separator
                 final += "\", \"0\"); \x1D";
             }
