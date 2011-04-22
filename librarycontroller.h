@@ -71,9 +71,11 @@ private:
     int musicvideofilter;
     int shuffle;
     int numberIterator;
+    int vectorIterator;
     int repeat;
-    int *songsPlayed;
+    int *shuffleList;
     int maxSize;
+    QVector<int> songsPlayed;
     Qt::SortOrder sortorder;
     QString** curheaders;
     QTableWidget* tablewidget;
@@ -96,6 +98,7 @@ private:
     } ViewQueueItem;
     int viewqueueindex;
     QList<ViewQueueItem> viewqueue;
+    void makeShuffleList();
 };
 
 #endif // LIBRARYCONTROLLER_H

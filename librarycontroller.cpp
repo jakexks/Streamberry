@@ -71,6 +71,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     shuffle=0;
     repeat=0;
     numberIterator=-1;
+    vectorIterator=-1;
 
     trackmenu = new TrackContext(&db);
 
@@ -212,12 +213,9 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
     font.setStyleHint(QFont::System, QFont::PreferAntialias);
     font.setPointSize(11);
 
-    maxSize=length;
-    songsPlayed=new int[maxSize];
-    for(int i=0; i<maxSize; i++)
-      songsPlayed[i]=randInt(0,maxSize);
-
-
+    makeShuffleList();
+    songsPlayed.clear();
+    vectorIterator=-1;
     for(int i = 0; i<length; i++)
     {
         QSqlRecord currecord = values->at(i);
@@ -466,6 +464,8 @@ void LibraryController::itemClicked(int row)
         delete playingdata;
     }
     playingdata = currentdata;
+
+
     QSqlRecord record = playingdata->at(row);
     QString filepath = record.field("FilePath").value().toString();
     bool isvideo = record.field("MusicOrVideo").value().toInt();
@@ -482,6 +482,8 @@ void LibraryController::itemClicked(int row)
         player.playFile(filepath);
     }
     currentlyplaying = row;
+    songsPlayed.append(currentlyplaying);
+    vectorIterator++;
 }
 
 int LibraryController::rowToHighlight()
@@ -545,29 +547,41 @@ void LibraryController::playsmartplaylist(QString filter)
 void LibraryController::shuffleSlot()
 {
     if(shuffle==0)
-       shuffle=1;
+    {shuffle=1;
+        makeShuffleList();}
     else
-       shuffle=0;
+        shuffle=0;
+}
+
+void LibraryController::makeShuffleList()
+
+{
+    maxSize=currentdata->length();
+    shuffleList=new int[maxSize];
+    for(int i=0; i<maxSize; i++)
+        shuffleList[i]=randInt(0,maxSize);
+    numberIterator=-1;
 }
 
 void LibraryController::repeatSlot(bool one, bool all)
 {
     //repeat none
     if(one==false && all==false)
-       repeat=0;
+        repeat=0;
 
     //repeat all
     if(one==true && all==true)
-       repeat=2;
+        repeat=2;
 
     //repeat one
     if(one==true && all==false)
-       repeat=1;
+        repeat=1;
 
 }
 
 void LibraryController::playNextFile()
 {
+
     if(currentlyplaying==-1) return;
     if(repeat!=1)
     {
@@ -577,12 +591,17 @@ void LibraryController::playNextFile()
 
         if(shuffle==1)
         {
-            if(songsPlayed[numberIterator]<currentdata->length())
-                currentlyplaying=songsPlayed[numberIterator];
+            if(shuffleList[numberIterator]<currentdata->length())
+            {
+                currentlyplaying=shuffleList[numberIterator];
+                songsPlayed.append(currentlyplaying);
+                vectorIterator++;
+            }
             else
             {
-                songsPlayed[numberIterator]=randInt(0,maxSize);
-                currentlyplaying=songsPlayed[numberIterator];
+                shuffleList[numberIterator]=randInt(0,maxSize);
+                currentlyplaying=shuffleList[numberIterator];
+                songsPlayed.append(currentlyplaying);
             }
         }
 
@@ -592,9 +611,10 @@ void LibraryController::playNextFile()
         if(currentlyplaying >=  playingdata->length()&&repeat==2)
             currentlyplaying = 0;
         if(currentlyplaying >= playingdata->length()&&repeat!=2)
-        {currentlyplaying=-1;        //emit stop?
-        emit  pausePlayer();
-        return;
+        {
+            currentlyplaying=-1;        //emit stop?
+            emit  pausePlayer();
+            return;
         }
 
     }
@@ -626,17 +646,16 @@ void LibraryController::playPrevFile()
 {
     if(repeat!=1)
     {
-        numberIterator-=1;
-        if(numberIterator < 0)
-            numberIterator= playingdata->length()-1;
-
         if(shuffle==1)
-        {   if(songsPlayed[numberIterator]<currentdata->length())
-                currentlyplaying=songsPlayed[numberIterator];
-            else
+        {
+            if(vectorIterator>0 && songsPlayed.at(vectorIterator-1)< playingdata->length())
             {
-                songsPlayed[numberIterator]=randInt(0,maxSize);
-                currentlyplaying=songsPlayed[numberIterator];
+                songsPlayed.remove(vectorIterator);
+                vectorIterator--;
+                currentlyplaying=songsPlayed.at(vectorIterator);
+                numberIterator-=1;
+                if(numberIterator < 0)
+                 numberIterator=-1;
             }
         }
 
@@ -683,7 +702,8 @@ LibraryController::~LibraryController()
         delete playingdata;
     }
     delete paneldelegate;
-    delete songsPlayed;
+    delete shuffleList;
+    songsPlayed.clear();
 }
 
 void LibraryController::ShowContextMenu(const QPoint&)
@@ -801,10 +821,10 @@ QString LibraryController::getCurrentPlaylistName()
 }
 
 int LibraryController::randInt(int low, int high)
-    {
+{
     // Random number between low and high
     return qrand() % ((high + 1) - low) + low;
-    }
+}
 
 void LibraryController::resetQueue()
 {
