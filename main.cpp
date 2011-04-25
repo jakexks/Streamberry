@@ -71,9 +71,9 @@ int main(int argc, char *argv[])
     //this is made in main to fix bug on Mac
     QMenuBar* menu = new QMenuBar(0);
 
-    MainWindow w(util, db, player, fs, menu, a);
+  / MainWindow w(util, db, player, fs, menu, a);
 
-    //w.show();
+    w.show();
 
     StreamFile stream(player); //Enables streaming. Do not comment
 //    //stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");
