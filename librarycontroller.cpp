@@ -516,8 +516,8 @@ void LibraryController::playplaylist(QString playlistname)
   if(playingdata!=NULL && playingdata != currentdata)
     delete playingdata;
   playingdata = data;
-  qDebug() << playingdata->size();
   QSqlRecord record = playingdata->at(0);
+  tablewidget->selectRow(0);
   emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
   qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
   if(record.field("UniqueID").value().toString() != "Local")
@@ -539,8 +539,8 @@ void LibraryController::playsmartplaylist(QString filter)
   if(playingdata!=NULL && playingdata != currentdata)
     delete playingdata;
   playingdata = data;
-  qDebug() << playingdata->size();
   QSqlRecord record = playingdata->at(0);
+  tablewidget->selectRow(0);
   emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
   qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
   if(record.field("UniqueID").value().toString() != "Local")

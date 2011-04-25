@@ -6,12 +6,14 @@
 #include "playlistscontext.h"
 
 class LibraryController;
+class PreviewPane;
 
 class SidebarController : public QObject
 {
     Q_OBJECT
 public:
     SidebarController(Utilities& utilities, Database& datab, LibraryController* lib);
+    ~SidebarController();
     QWidget* getWidget();
     QWidget* makeWidget();
     void updateplaylistbar(int i);
@@ -20,6 +22,8 @@ signals:
   void playthis(QList<QSqlRecord>*);
   void displayAllMedia();
   void customContextMenuRequested ( const QPoint & pos  );
+  void playsmartplaylist(QString);
+  void playplaylist(QString);
 
   public slots:
     void Clicked(int row, int column);
@@ -29,7 +33,7 @@ signals:
 
 private:
     QWidget* widget;
-    QWidget* makePlaylistRow(QString name);
+    QWidget* makePlaylistRow(QString name, QWidget* parent);
     QWidget* main;
     int dontview;
 
@@ -45,6 +49,7 @@ private:
     QWidget* makePreviewBtn();
     QWidget* makePreviewBar();
     QTableWidget* buildButtons();
+    PreviewPane* preview;
 
 
     QTableWidget* buildplaylistbar();

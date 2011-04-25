@@ -80,6 +80,8 @@ void PlaylistMenu::playlistrightclicked(Playlist* passplaylist, LibraryControlle
   this->exec(QCursor::pos());
 }
 
+
+
 void PlaylistMenu::SmartPlay()
 {
   emit playsmartplaylist(PL->getPlaylistName());

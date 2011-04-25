@@ -58,7 +58,8 @@ SOURCES +=  main.cpp\
             plsmartnew.cpp \
             plnormalnew.cpp \
             addto.cpp \
-            firstrunwizard.cpp
+            firstrunwizard.cpp \
+    previewpane.cpp
 
 mac:OBJECTIVE_SOURCES += player.mm
 win32:SOURCES += player.cpp
@@ -104,3 +105,6 @@ HEADERS +=  mainwindow.h\
             plnormalnew.h \
             addto.h \
             firstrunwizard.h
+
+HEADERS += \
+    previewpane.h

@@ -5,6 +5,8 @@
 #include "playlist.h"
 #include "librarycontroller.h"
 #include <QContextMenuEvent>
+#include <previewpane.h>
+#include <QFrame>
 
 #define TOPBARHEIGHT 26
 
@@ -25,8 +27,18 @@ SidebarController::SidebarController(Utilities &utilities, Database& datab, Libr
     widget = makeWidget();
     playlistTableWidget->clearSelection();
     playlistTableWidget->setRangeSelected(QTableWidgetSelectionRange(0, 0, 0, 0), true);
+    QObject::connect(this, SIGNAL(playplaylist(QString)), libpass, SLOT(playplaylist(QString)));
+    QObject::connect(this, SIGNAL(playsmartplaylist(QString)), libpass, SLOT(playsmartplaylist(QString)));
 }
 
+SidebarController::~SidebarController()
+{
+  delete preview;
+  delete main;
+  delete smartmenu;
+  delete normalmenu;
+  delete playlistTableWidget;
+}
 
 QWidget* SidebarController::makeWidget()
 {
@@ -99,18 +111,14 @@ QTableWidget* SidebarController::buildplaylistbar()
   playlistTableWidget->setColumnWidth(0, 220);
   playlistTableWidget->setRowHeight(0, 25);
   playlistTableWidget->setRowHeight(1, 25);
+  playlistTableWidget->setRowHeight(2, 25);
   playlistTableWidget->setRowHeight(3, 25);
-  //playlistTableWidget->setRowHeight(2, 5);
   playlistTableWidget->setRowHeight(4, 25);
 
   playlistTableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
   QObject::connect(playlistTableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(Clicked(int,int)));
   QObject::connect(playlistTableWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowContextMenu(const QPoint&)));
   QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
-
-  //  const LibraryController* LibCont = libpass;
-
-
 
 
   QTableWidgetItem* btns[4];
@@ -142,7 +150,7 @@ QTableWidget* SidebarController::buildplaylistbar()
   playlistTableWidget->setItem(0, 0, btns[0]);
   playlistTableWidget->setItem(1, 0,btns[1]);
   playlistTableWidget->setItem(3, 0,btns[4]);
-   playlistTableWidget->setItem(2, 0,btns[3]);
+  playlistTableWidget->setItem(2, 0,btns[3]);
 
   return playlistTableWidget;
 }
@@ -173,14 +181,14 @@ void SidebarController::updateplaylistbar(int shownumber)
     typearray[i-4] = currecord.field(1).value().toBool();
     QString name = currecord.field(0).value().toString();
     namearray[i-4] = name;
-    QWidget* item1 = makePlaylistRow(name);
+    QWidget* item1 = makePlaylistRow(name, main);
     playlistTableWidget->setRowHeight(i, 25);
     playlistTableWidget->setCellWidget(i, 0, item1);
   }
 }
 
 
-QWidget* SidebarController::makePlaylistRow(QString name)
+QWidget* SidebarController::makePlaylistRow(QString name, QWidget* parent)
 {
   QFont font;
   font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
@@ -190,24 +198,24 @@ QWidget* SidebarController::makePlaylistRow(QString name)
   font.setPointSize(11);
 #endif
 
-  QWidget *temp = new QWidget();
-
+  QWidget* temp = new QWidget(parent);
   temp->setMaximumHeight(25);
   QGridLayout* playlistTitleLayout = new QGridLayout(temp);
   playlistTitleLayout->setMargin(0);
   playlistTitleLayout->setSpacing(0);
   playlistTitleLayout->setColumnMinimumWidth(0, 30);
 
-  QLabel* text = new QLabel(name);
+  QLabel* text = new QLabel(name,temp);
   text->setFont(font);
 
-  QFrame* sideborder = new QFrame();
+  QFrame* sideborder = new QFrame(temp);
   sideborder->setMaximumWidth(30);
   sideborder->setObjectName("sideBarPlaylistCell");
   temp->setStyleSheet(util.getStylesheet());
 
   playlistTitleLayout->addWidget(sideborder, 0, 0);
   playlistTitleLayout->addWidget(text, 0, 1, Qt::AlignLeft);
+
   return temp;
 }
 
@@ -237,18 +245,9 @@ QWidget* SidebarController::makePreviewBtn()
 
 QWidget* SidebarController::makePreviewBar()
 {
-  QWidget *temp = new QWidget();
-  temp->setObjectName("sideBarPreviewPane");
-  temp->setStyleSheet(util.getStylesheet());
-  QGridLayout* previewPaneLayout = new QGridLayout(temp);
-  previewPaneLayout->setMargin(0);
-  previewPaneLayout->setSpacing(0);
-  QFrame* text = new QFrame(temp);
-  text->setObjectName("sideBarPreviewPic");
-  text->setStyleSheet(util.getStylesheet());
-  text->setMinimumSize(139, 139);
-  text->setMaximumSize(139, 139);
-  previewPaneLayout->addWidget(text, 0,0, 2, 1,  Qt::AlignHCenter);
+  preview = new PreviewPane(util,db,libpass);
+  QWidget* temp = preview->getwidget();
+  return temp;
 
   /* QFrame* veil = new QFrame(temp);
   veil->setObjectName("sideBarVeilPic");
@@ -271,7 +270,7 @@ QWidget* SidebarController::makePreviewBar()
 #endif
   timetext->setFont(font);
   timebarLayout->addWidget(timetext, 0,0, Qt::AlignHCenter);*/
-  return temp;
+
 }
 
 QWidget* SidebarController::makePlaylistBtn()
@@ -291,12 +290,12 @@ QWidget* SidebarController::makePlaylistBtn()
   text->setMaximumSize(64, 26);
   playlistTitleLayout->addWidget(text, 0, 0, Qt::AlignHCenter);
 
-  QFrame* tinything = new QFrame(temp);
-  tinything->setObjectName("sideBarDivided");
-  tinything->setStyleSheet(util.getStylesheet());
-  tinything->setMinimumSize(2, 26);
-  tinything->setMaximumSize(2, 26);
-  playlistTitleLayout->addWidget(tinything, 0, 0, Qt::AlignRight);
+  QFrame tinything(temp);
+  tinything.setObjectName("sideBarDivided");
+  tinything.setStyleSheet(util.getStylesheet());
+  tinything.setMinimumSize(2, 26);
+  tinything.setMaximumSize(2, 26);
+  playlistTitleLayout->addWidget(&tinything, 0, 0, Qt::AlignRight);
   return temp;
 }
 
@@ -363,7 +362,13 @@ void SidebarController::DoubleClicked(int row, int)
 {
   if(row >= 4)
   {
-    qDebug() << "Playlist Playing";
+    QString name = namearray[row-4];
+    bool type = typearray[row-4];
+    qDebug() << name << " Playing" << type;
+    if(type == true)
+      emit playsmartplaylist(name);
+    else
+      emit playplaylist(name);
   }
 }
 
