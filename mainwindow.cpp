@@ -240,7 +240,7 @@ QMenuBar* MainWindow::createMenuBar()
     actions[19]->setShortcut(QKeySequence("Ctrl+M"));
 #else
     actions[18] = menus[4]->addAction("Maximise");
-    QObject::connect(actions[17], SIGNAL(triggered()), this, SLOT(menuMaximise()));
+    QObject::connect(actions[18], SIGNAL(triggered()), this, SLOT(menuMaximise()));
 #endif
 
 #if defined(Q_OS_MAC)
@@ -250,40 +250,16 @@ QMenuBar* MainWindow::createMenuBar()
     actions[20] = menus[4]->addAction("Minimise to Tray");
 #endif
 
-    //actions[20] = menus[5]->addAction("Documentation");
-    //actions[21] = menus[5]->addAction("About Streamberry");
-
     QObject::connect(actions[0], SIGNAL(triggered()), &app, SLOT(quit()) );
-
-    //QObject::connect(actions[1], SIGNAL(triggered()), this, SLOT(menuScan()));
-
-    //  QObject::connect(actions[2], SIGNAL(triggered()), this, SLOT(menuCleanScan()));
-
-    //QObject::connect(actions[3], SIGNAL(triggered()), this, SLOT(menuAddFile()));
-
     QObject::connect(actions[5], SIGNAL(triggered()), this, SLOT(menuSettings()));
-
-    //QObject::connect(actions[6], SIGNAL(triggered()), player, SLOT(playControl()));
-    /* QObject::connect(actions[7], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
-  QObject::connect(actions[8], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
-  QObject::connect(actions[9], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
-  QObject::connect(actions[10], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
-  QObject::connect(actions[11], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
-  QObject::connect(actions[12], SIGNAL(triggered()), player, SLOT(menuExitStreamberry()));
-*/
-    //QObject::connect(actions[16], SIGNAL(triggered()), this, SLOT(menuShowFileProviders()));
-    //QObject::connect(actions[17], SIGNAL(triggered()), this, SLOT(menuShowOfflineFiles()));
-
     QObject::connect(actions[18], SIGNAL(triggered()), this, SLOT(menuMaximise()));
     QObject::connect(actions[19], SIGNAL(triggered()), this, SLOT(menuMinimise()));
-
 #ifndef Q_OS_MAC
     QObject::connect(actions[20], SIGNAL(triggered()), this, SLOT(menuMinimiseToTray()));
 #endif
 
     QObject::connect(actions[21], SIGNAL(triggered()), this, SLOT(menuNewPlaylist()));
     QObject::connect(actions[22], SIGNAL(triggered()), this, SLOT(menuNewSmartPlaylist()));
-
     return menubar;
 }
 
