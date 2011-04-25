@@ -15,6 +15,9 @@ public:
     QWidget* getWidget();
     QWidget* makeWidget();
     SongInfo* getSongInfo();
+    int getvolpos();
+    void setvolumepos(int j);
+
 private:
     Utilities& util;
     Player& player;

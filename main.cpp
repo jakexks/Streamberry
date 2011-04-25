@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     //this is made in main to fix bug on Mac
     QMenuBar* menu = new QMenuBar(0);
 
-  / MainWindow w(util, db, player, fs, menu, a);
+   MainWindow w(util, db, player, fs, menu, a);
 
     w.show();
 

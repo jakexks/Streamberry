@@ -11,6 +11,7 @@ public:
     explicit VolumeSlider(Utilities& utilities, QWidget *parent = 0);
     QSlider*volumeslider;
     int getlastpos();
+    void setslidepos(int j);
 
 private:
     int lastposition;

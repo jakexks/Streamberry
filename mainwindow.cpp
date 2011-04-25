@@ -24,8 +24,6 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   menubar = menu;
 
 
-  this->setWindowTitle("Streamberry");
-
   setStyleSheet(util.getStylesheet());
 
   //    QSettings settings;
@@ -71,6 +69,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   }
 
 
+
   //initialise window layout
   centralwidget = new QWidget();
   centralwidget->setObjectName("centralWidget");
@@ -80,16 +79,15 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   mainlayout->setSpacing(0);
   initialiseGrid();
   //initialise controllers and add widgets to window
+
   topbarcontroller = new TopbarController(util);
   librarycontroller = new LibraryController(util, db, player, topbarcontroller->getSearchbar());
   sidebarcontroller = new SidebarController(util, db, librarycontroller);
   playbackcontroller = new PlaybackController(util, player);
-
   mainlayout->addWidget(topbarcontroller->getWidget(), 0, 1, 1, 1);
   mainlayout->addWidget(sidebarcontroller->getWidget(), 0, 0, 2, 1);
   mainlayout->addWidget(librarycontroller->getWidget(), 1, 1);
   mainlayout->addWidget(playbackcontroller->getWidget(), 2, 0, 1, 2);
-
   QObject::connect(playbackcontroller, SIGNAL(nextFile()), librarycontroller, SLOT(playNextFile()));
   QObject::connect(playbackcontroller, SIGNAL(prevFile()), librarycontroller, SLOT(playPrevFile()));
   QObject::connect(topbarcontroller, SIGNAL(musicVideoCheckStateChanged(int)), librarycontroller, SLOT(musicVideoFilter(int)));
@@ -105,6 +103,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(playbackcontroller, SIGNAL(rPress(bool, bool)), librarycontroller, SLOT(repeatSlot(bool, bool)));
 
 
+  this->setWindowTitle("Streamberry");
   QString iconpath = util.getExecutePath();
   iconpath += "images/icon.ico";
   this->setWindowIcon((QIcon(iconpath)));
@@ -190,24 +189,28 @@ QMenuBar* MainWindow::createMenuBar()
   menus[2]->addSeparator();
 
   actions[11] = menus[2]->addAction("Volume Up");
+  actions[11]->setShortcut(QKeySequence(">"));
   QObject::connect(actions[11], SIGNAL(triggered()), this, SLOT(menuVolUp()));
 
   actions[12] = menus[2]->addAction("Volume Down");
+  actions[12]->setShortcut(QKeySequence("<"));
   QObject::connect(actions[12], SIGNAL(triggered()), this, SLOT(menuVolDown()));
 
   actions[13] = menus[2]->addAction("Mute");
   actions[13]->setCheckable(true);
   QObject::connect(actions[13], SIGNAL(triggered()), this, SLOT(menuMute()));
   actions[13]->setShortcut(QKeySequence("Ctrl+M"));
+  mutemenu = actions[13];
   menus[2]->addSeparator();
 
-  actions[14] = menus[2]->addAction("Toggle Repeat");
+  actions[14] = menus[2]->addAction("Repeat All");
   actions[14]->setCheckable(true);
   QObject::connect(actions[14], SIGNAL(triggered()), this, SLOT(menuShuffle()));
+  QObject::connect(this, SIGNAL(repeatsig(bool, bool)), librarycontroller, SLOT(repeatSlot(bool, bool)));
 
-  actions[15] = menus[2]->addAction("Toggle Shuffle");
+  actions[15] = menus[2]->addAction("Shuffle");
   actions[15]->setCheckable(true);
-  QObject::connect(actions[15], SIGNAL(triggered()), this, SLOT(menuRepeat()));
+  QObject::connect(actions[15], SIGNAL(triggered()), playbackcontroller, SLOT(shufflePress()));
 
   //WINDOW MENU//////////////////////////////////////////////////////////////////
 #if defined(Q_OS_MAC)
@@ -314,24 +317,43 @@ void MainWindow::menuNewSmartPlaylist()
 
 void MainWindow::menuVolUp()
 {
+  int i = playbackcontroller->getvolpos();
+  i = i + 20;
+  if(i>100)
+    i=100;
+  playbackcontroller->setvolumepos(i);
+  player.changeVolume(i);
 }
 
 void MainWindow::menuVolDown()
 {
+  int i = playbackcontroller->getvolpos();
+  i = i - 20;
+  if(i<0)
+    i=0;
+  playbackcontroller->setvolumepos(i);
+  player.changeVolume(i);
 }
+
 void MainWindow::menuMute()
 {
+  if(!mutemenu->isChecked())
+  {
+    playbackcontroller->setvolumepos(volmem);
+    player.changeVolume(volmem);
+  }
+  else
+  {
+    volmem = playbackcontroller->getvolpos();
+    playbackcontroller->setvolumepos(0);
+    player.changeVolume(0);
+  }
 }
 
 void MainWindow::menuShuffle()
 {
+  emit repeatsig(false, true);
 }
-
-void MainWindow::menuRepeat()
-{
-}
-
-
 
 /*void MainWindow::changeEvent ( QEvent *event )
 {

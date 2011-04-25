@@ -20,6 +20,16 @@ QWidget* PlaybackController::getWidget()
     return widget;
 }
 
+int PlaybackController::getvolpos()
+{
+  return volumeslider->getlastpos();
+}
+
+void PlaybackController::setvolumepos(int j)
+{
+  volumeslider->setslidepos(j);
+}
+
 QWidget* PlaybackController::makeWidget()
 {
     QWidget *tempw = new QWidget();

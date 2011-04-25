@@ -40,13 +40,13 @@ public slots:
 
 signals:
   void filescanRequest();
+  void repeatsig(bool, bool);
 
 private slots:
   void menuVolUp();
   void menuVolDown();
   void menuMute();
   void menuShuffle();
-  void menuRepeat();
 
 private:
   //layout of the main window
@@ -54,6 +54,7 @@ private:
   QWidget* centralwidget;
   QMenuBar* menubar;
   QGridLayout* mainlayout;
+  QAction* mutemenu;
   void initialiseGrid();
   void resizeEvent(QResizeEvent *);
   void moveEvent(QMoveEvent *);
@@ -69,6 +70,7 @@ private:
   Database& db;
   Player& player;
   Filescan& fs;
+  int volmem;
   QApplication& app;
   QSystemTrayIcon* trayicon;
 };

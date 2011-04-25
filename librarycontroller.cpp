@@ -21,6 +21,8 @@
 LibraryController::LibraryController(Utilities& utilities, Database& datab, Player& p, SBSearchBar* searchbar)
   : util(utilities), db(datab), player(p)
 {
+
+
   curheaders = NULL;
   currentlyplaying = -1;
   musicvideofilter = 2;
@@ -59,6 +61,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
   makeWidget();
 
   QWidget* playerwind = player.initVid();
+
   allwidgets = new QStackedWidget();
   allwidgets->addWidget(curview);
   allwidgets->addWidget(playerwind);

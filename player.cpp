@@ -69,6 +69,7 @@ Player::~Player()
 
 QWidget* Player::initVid()
 {
+
     if(_videoWidget!=NULL)
         delete _videoWidget;
 
@@ -78,8 +79,8 @@ QWidget* Player::initVid()
     _videoWidget = new QMacCocoaViewContainer(videoView, frame);
     _videoWidget->show();
 #endif
-    frame->show();
-
+    //frame->show();
+//////////////////////////////DOUBLE FRAME ERROR HERE//////////////////
     //    #ifdef Q_WS_X11
     //        _videoWidget = new QX11EmbedContainer(frame);
     //    #else
