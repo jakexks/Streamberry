@@ -55,8 +55,9 @@ int main(int argc, char *argv[])
         db.storeSetting("FirstRun", "1");
     }
 
-    Player player;
 
+
+    Player player;
     BeaconSender bs(db);
     QThread bsthread(&a);
     bs.moveToThread(&bsthread);
@@ -72,7 +73,7 @@ int main(int argc, char *argv[])
 
     MainWindow w(util, db, player, fs, menu, a);
 
-    w.show();
+    //w.show();
 
     StreamFile stream(player); //Enables streaming. Do not comment
 //    //stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");

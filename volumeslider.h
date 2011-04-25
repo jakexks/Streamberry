@@ -10,6 +10,7 @@ class VolumeSlider : public QSlider
 public:
     explicit VolumeSlider(Utilities& utilities, QWidget *parent = 0);
     QSlider*volumeslider;
+    int getlastpos();
 
 private:
     int lastposition;

@@ -141,18 +141,10 @@ QTableWidget* SidebarController::buildplaylistbar()
 
   playlistTableWidget->setItem(0, 0, btns[0]);
   playlistTableWidget->setItem(1, 0,btns[1]);
-  //playlistTableWidget->setItem(2, 0,btns[2]);
   playlistTableWidget->setItem(3, 0,btns[4]);
    playlistTableWidget->setItem(2, 0,btns[3]);
 
   return playlistTableWidget;
-
-  //QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
-  //displayTableWidget->setMaximumHeight(77);
-  //QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
-  //playlistbarlayout = new QGridLayout(playlistbar);
-  //playlistbarlayout->setColumnMinimumWidth(0, 220);
-  //playlistbarlayout->setSpacing(0);
 }
 
 void SidebarController::updateplaylistbar(int shownumber)

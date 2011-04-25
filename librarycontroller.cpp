@@ -279,7 +279,6 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
   int rowtoselect = rowToHighlight();
   if(rowtoselect != -1)
   {
-    qDebug() << rowtoselect;
     tablewidget->selectRow(rowtoselect);
   }
 
@@ -486,6 +485,7 @@ void LibraryController::itemClicked(int row)
     if(isvideo) allwidgets->setCurrentIndex(1);
     player.playFile(filepath);
   }
+  qDebug() << "currentlyplaying " << currentlyplaying;
   currentlyplaying = row;
   songsPlayed.append(currentlyplaying);
   vectorIterator++;
@@ -622,6 +622,7 @@ void LibraryController::playNextFile()
       return;
     }
 
+
   }
 
   QSqlRecord record = playingdata->at(currentlyplaying);
@@ -649,6 +650,7 @@ void LibraryController::playNextFile()
 
 void LibraryController::playPrevFile()
 {
+  if(currentlyplaying==-1) return;
   if(repeat!=1)
   {
     if(shuffle==1)
@@ -665,15 +667,18 @@ void LibraryController::playPrevFile()
     }
 
     if(shuffle==0)
+    {
       currentlyplaying -= 1;//Decrement by 1
-
+    }
     if (currentlyplaying < 0&&repeat==2)
+    {
       currentlyplaying = currentdata->length()-1;
+    }
     if (currentlyplaying < 0&&repeat!=2)
       currentlyplaying++;
   }
-
   QSqlRecord record = playingdata->at(currentlyplaying);
+
   QString filepath = record.field("FilePath").value().toString();
   bool isvideo = record.field("MusicOrVideo").value().toInt();
   qDebug() << "Currently playing: " << filepath;
