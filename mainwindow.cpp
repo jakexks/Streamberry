@@ -165,7 +165,6 @@ QMenuBar* MainWindow::createMenuBar()
   menus[1]->addSeparator();
 #ifdef Q_WS_WIN
   actions[5] = menus[1]->addAction("Settings");
-  QObject::connect(actions[5], SIGNAL(triggered()), this, SLOT(menuSettings()));
 #endif
 
 #ifdef Q_WS_MAC
@@ -175,6 +174,8 @@ QMenuBar* MainWindow::createMenuBar()
 #ifdef Q_WS_X11
   actions[5] = menus[1]->addAction("Preferences");
 #endif
+
+  QObject::connect(actions[5], SIGNAL(triggered()), this, SLOT(menuSettings()));
 
   //CONTROLS MENU///////////////////////////////////////////////////////////////
   actions[6] = menus[2]->addAction("Play/Pause");
