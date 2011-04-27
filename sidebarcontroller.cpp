@@ -283,12 +283,12 @@ QWidget* SidebarController::makePlaylistBtn()
   text->setMaximumSize(64, 26);
   playlistTitleLayout->addWidget(text, 0, 0, Qt::AlignHCenter);
 
-  QFrame tinything(temp);
-  tinything.setObjectName("sideBarDivided");
-  tinything.setStyleSheet(util.getStylesheet());
-  tinything.setMinimumSize(2, 26);
-  tinything.setMaximumSize(2, 26);
-  playlistTitleLayout->addWidget(&tinything, 0, 0, Qt::AlignRight);
+  QFrame* tinything = new QFrame(temp);
+  tinything->setObjectName("sideBarDivided");
+  tinything->setStyleSheet(util.getStylesheet());
+  tinything->setMinimumSize(2, 26);
+  tinything->setMaximumSize(2, 26);
+  playlistTitleLayout->addWidget(tinything, 0, 0, Qt::AlignRight);
   return temp;
 }
 
