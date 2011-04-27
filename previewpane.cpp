@@ -9,7 +9,7 @@ PreviewPane::PreviewPane(Utilities &utilities, Database& datab, LibraryControlle
   util = &utilities;
   db = &datab;
   libcont = lib;
-  showing = 10;
+  showing = 11;
   mainwidget = new QWidget();
   mainwidget->setObjectName("sideBarPreviewPane");
   mainwidget->setStyleSheet(util->getStylesheet());

@@ -114,7 +114,6 @@ QTableWidget* SidebarController::buildplaylistbar()
   playlistTableWidget->setRowHeight(1, 25);
   playlistTableWidget->setRowHeight(2, 25);
   playlistTableWidget->setRowHeight(3, 25);
-  playlistTableWidget->setRowHeight(4, 25);
 
   playlistTableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
   QObject::connect(playlistTableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(Clicked(int,int)));
@@ -125,35 +124,33 @@ QTableWidget* SidebarController::buildplaylistbar()
 
 
   QTableWidgetItem* btns[4];
+
   btns[0] = new QTableWidgetItem("Display All Media");
   btns[0]->setFont(font);
   btns[0]->setFlags(btns[0]->flags() & (~Qt::ItemIsEditable));
   btns[0]->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
   btns[1] = new QTableWidgetItem("Display All Playlists");
   btns[1]->setFont(font);
   btns[1]->setFlags(btns[1]->flags() & (~Qt::ItemIsEditable));
   btns[1]->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-  btns[2] = new QTableWidgetItem("");
+
+  btns[2] = new QTableWidgetItem("Display Video");
+  btns[2]->setFont(font);
   btns[2]->setFlags(btns[2]->flags() & (~Qt::ItemIsEditable));
-  btns[2]->setFlags(btns[2]->flags() & (~Qt::ItemIsSelectable));
-
-  btns[3] = new QTableWidgetItem("Display Video");
-  btns[3]->setFont(font);
-  btns[3]->setFlags(btns[3]->flags() & (~Qt::ItemIsEditable));
-  btns[3]->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
+  btns[2]->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
   font.setBold(true);
-  btns[4] = new QTableWidgetItem("Recent Playlists");
-  btns[4]->setFont(font);
-  btns[4]->setFlags(btns[4]->flags() & (~Qt::ItemIsEditable));
-  btns[4]->setFlags(btns[4]->flags() & (~Qt::ItemIsSelectable));
-  btns[4]->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+  btns[3] = new QTableWidgetItem("Recent Playlists");
+  btns[3]->setFont(font);
+  btns[3]->setFlags(btns[3]->flags() & (~Qt::ItemIsEditable));
+  btns[3]->setFlags(btns[3]->flags() & (~Qt::ItemIsSelectable));
+  btns[3]->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
   playlistTableWidget->setItem(0, 0, btns[0]);
   playlistTableWidget->setItem(1, 0,btns[1]);
-  playlistTableWidget->setItem(3, 0,btns[4]);
-  playlistTableWidget->setItem(2, 0,btns[3]);
+  playlistTableWidget->setItem(2, 0,btns[2]);
+  playlistTableWidget->setItem(3, 0,btns[3]);
 
   return playlistTableWidget;
 }
@@ -283,12 +280,12 @@ QWidget* SidebarController::makePlaylistBtn()
   text->setMaximumSize(64, 26);
   playlistTitleLayout->addWidget(text, 0, 0, Qt::AlignHCenter);
 
-  QFrame tinything(temp);
-  tinything.setObjectName("sideBarDivided");
-  tinything.setStyleSheet(util.getStylesheet());
-  tinything.setMinimumSize(2, 26);
-  tinything.setMaximumSize(2, 26);
-  playlistTitleLayout->addWidget(&tinything, 0, 0, Qt::AlignRight);
+  QFrame* tinything = new QFrame(temp);
+  tinything->setObjectName("sideBarDivided");
+  tinything->setStyleSheet(util.getStylesheet());
+  tinything->setMinimumSize(2, 26);
+  tinything->setMaximumSize(2, 26);
+  playlistTitleLayout->addWidget(tinything, 0, 0, Qt::AlignRight);
   return temp;
 }
 
