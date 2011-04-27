@@ -250,6 +250,7 @@ void Filescan::addFile(QString filepath, QString homeID)
       tags = checktags(file.printMeta(newfile.absoluteFilePath()), newfile.fileName());
       QString filepathnew = newfile.absoluteFilePath();
       filepathnew.replace(";", "\\;");
+      //         filepath      filename                       filesize              artist     album         title    genre      rating          year         length    trackno    bitrate         filetype          table       UniqueID   mov
       db.addFile(filepathnew, newfile.fileName(), QString::number(newfile.size()), tags.at(0), tags.at(1), tags.at(2), tags.at(3), tags.at(4), tags.at(5), tags.at(6), tags.at(7), (QString)"1411", newfile.suffix(), localTableScan, homeID, mov);
     }
     catch (SBException e)

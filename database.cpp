@@ -66,7 +66,7 @@ void Database::createDatabase(QString &path)
   sql[0] = "DROP TABLE IF EXISTS \"LibLocal\";";
   sql[1] = "CREATE TABLE \"Lib";
   sql[1] += localUniqueId;
-  sql[1] += "\" (\"UniqueID\" VARCHAR DEFAULT \"Local\",  \"Filepath\" VARCHAR NOT NULL PRIMARY KEY UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
+  sql[1] += "\" (\"UniqueID\" VARCHAR DEFAULT \"Local\",  \"Filepath\" VARCHAR NOT NULL PRIMARY KEY UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" VARCHAR NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
   sql[2] = "DROP TABLE IF EXISTS \"LibIndex\";";
   sql[3] = "CREATE TABLE \"LibIndex\" (\"ID\" INTEGER PRIMARY KEY  NOT NULL  UNIQUE  check(typeof(\"ID\") = 'integer') , \"Local\" BOOL NOT NULL  DEFAULT 0, \"TimeLastUpdated\" INTEGER NOT NULL , \"TimeLastOnline\" INTEGER NOT NULL , \"UniqueID\" VARCHAR UNIQUE NOT NULL, \"Name\" VARCHAR NOT NULL , \"Online\" BOOL NOT NULL , \"IPAddress\" VARCHAR);";
   sql[4] = "INSERT INTO LibIndex (ID, Local, TimeLastUpdated, TimeLastOnline, UniqueID, Name, Online) VALUES (\"1\", 1, \"";
@@ -255,7 +255,7 @@ void Database::initialiseScan()
     query(sql);
     sql = "CREATE TABLE \"Lib";
     sql += localUniqueId;
-    sql += "Scan\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"Filepath\" VARCHAR PRIMARY KEY NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" INTEGER NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
+    sql += "Scan\" (\"UniqueID\" VARCHAR DEFAULT \"Local\", \"Filepath\" VARCHAR PRIMARY KEY NOT NULL  UNIQUE , \"Artist\" VARCHAR, \"Album\" VARCHAR, \"Title\" VARCHAR, \"Track\" INTEGER, \"Genre\" VARCHAR, \"Rating\" INTEGER, \"Filename\" VARCHAR NOT NULL , \"Year\" INTEGER, \"Length\" VARCHAR NOT NULL, \"Bitrate\" INTEGER, \"Filesize\" INTEGER, \"Timestamp\" INTEGER NOT NULL , \"Filetype\" VARCHAR, \"MusicOrVideo\" INTEGER NOT NULL, \"Deleted\" BOOL NOT NULL DEFAULT 0, \"Hidden\" BOOL NOT NULL DEFAULT 0);";
     query(sql);
     //        sql = "INSERT INTO \"Lib";
     //        sql += localUniqueId;

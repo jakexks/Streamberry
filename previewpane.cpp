@@ -69,11 +69,8 @@ QFrame* PreviewPane::maketimebar()
 void PreviewPane::settracklength(int seconds)
 {
   finalseconds = seconds;
-  int minutes = seconds/60000;
-  int resec = (seconds - minutes * 60000)/1000;
-  QString temp1;
-  QString temp2;
-  QString endtime = " / " + temp1.setNum(minutes) + ":" + temp2.setNum(resec);
+  QString time = Utilities::intToTime(seconds);
+  QString endtime = " / " + time;
   timetext->setText("00:00" + endtime);
   timelength = 5;
   hold = 1;
@@ -82,28 +79,18 @@ void PreviewPane::settracklength(int seconds)
 
 void PreviewPane::settrackprogress(float pos)
 {
-  int seconds = pos*finalseconds;
-  int minutes = seconds/60000;
-  int resec = (seconds - minutes * 60000)/1000;
-  QString temp1;
-  temp1.setNum(minutes);
-  QString temp2;
-  temp2.setNum(resec);
-  if(temp1.size() == 1)
-    temp1.insert(0, "0");
-  if(temp2.size() == 1)
-    temp2.insert(0, "0");
-  QString curtime = temp1 + ":" + temp2;
-  QString temptimetext = timetext->text();
-  temptimetext.remove(0, timelength);
-  temptimetext.insert(0,curtime);
-  timelength = curtime.size();
-  timetext->setText(temptimetext);
-  if(seconds == finalseconds)
+  if(pos == 1 || pos == -1)
   {
     hold = 0;
     timebar->hide();
   }
+  int seconds = pos*finalseconds;
+  QString time = Utilities::intToTime(seconds);
+  QString temptimetext = timetext->text();
+  temptimetext.remove(0, timelength);
+  temptimetext.insert(0,time);
+  timelength = time.size();
+  timetext->setText(temptimetext);
 }
 
 ///DEFAULT FUNCTIONS///
