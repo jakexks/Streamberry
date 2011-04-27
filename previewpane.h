@@ -7,6 +7,9 @@ class Utilities;
 class Database;
 class LibraryController;
 class QStackedWidget;
+class QTableWidget;
+class QLabel;
+
 class PreviewPane : public QObject
 {
     Q_OBJECT
@@ -17,7 +20,8 @@ public:
 
   public slots:
     void rolloverPlaylist(QString);
-    void displayAlbumArt(QImage);
+    void displayAlbumArt();
+    void displayAlbumArt(QPixmap);
     void rolloverDefault();
 
 private:
@@ -25,13 +29,17 @@ private:
     QWidget* makeDefault();
     QWidget* makePlaylist();
     QWidget* makeArt();
-    void updateArt(QImage pic);
+    void updateArt(QPixmap pic);
     void updatePreview(QString name);
     Database* db;
     LibraryController* libcont;
     QWidget* mainwidget;
     int state;
     QStackedWidget* window;
-};
+    QLabel* pictureframe;
+    QTableWidget* tableframe;
+    QLabel* timetext;
+    int showing;
+  };
 
 #endif // PREVIEWPANE_H

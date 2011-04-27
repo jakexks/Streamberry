@@ -34,6 +34,9 @@ signals:
     void setSearchBoxText(QString text);
     void setSelectedPlaylist(QString name);
     void pausePlayer();
+    void rolldefault();
+    void rollAlbum();
+
 public slots:
     void sortLibrary();
     int rowToHighlight();
@@ -54,6 +57,7 @@ public slots:
     void shuffleSlot();
     void repeatSlot(bool one, bool all);
     void resetQueue();
+    void cellrolled(int, int);
     //void DragStart(QTableWidgetItem*);
 
 private:

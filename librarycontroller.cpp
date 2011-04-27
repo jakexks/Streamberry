@@ -62,6 +62,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
 
   QWidget* playerwind = player.initVid();
 
+
   allwidgets = new QStackedWidget();
   allwidgets->addWidget(curview);
   allwidgets->addWidget(playerwind);
@@ -111,6 +112,7 @@ void LibraryController::makeWidget()
   tablewidget->setSelectionBehavior(QAbstractItemView::SelectRows);
   tablewidget->horizontalHeader()->setSortIndicatorShown(true);
   tablewidget->setWordWrap(false);
+  tablewidget->setMouseTracking(true);
   temp->addWidget(tablewidget);
   QTableWidgetItem *item = new QTableWidgetItem();
   item->setFlags(item->flags() & (~Qt::ItemIsEditable));
@@ -126,6 +128,8 @@ void LibraryController::makeWidget()
   QObject::connect(tablewidget, SIGNAL(itemSelectionChanged(void)), this, SLOT(deselectFirst(void)));
   QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), this, SLOT(sortIndicatorChanged(int,Qt::SortOrder)));
   QObject::connect(tablewidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(itemClicked(int)));
+  QObject::connect(tablewidget, SIGNAL(cellEntered(int,int)), this, SLOT(cellrolled(int, int)));
+
 
   //QObject::connect(tablewidget, SIGNAL(itemPressed(QTableWidgetItem*)), this, SLOT(DragStart(QTableWidgetItem*)));
 
@@ -850,4 +854,13 @@ void LibraryController::resetQueue()
   viewqueueindex = 0;
   emit setSearchBoxText("");
   tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+}
+
+void LibraryController::cellrolled(int i, int j)
+{
+  if(j == 0)
+    emit rollAlbum();
+  else
+    emit rolldefault();
+
 }

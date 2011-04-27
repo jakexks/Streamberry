@@ -88,6 +88,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   mainlayout->addWidget(sidebarcontroller->getWidget(), 0, 0, 2, 1);
   mainlayout->addWidget(librarycontroller->getWidget(), 1, 1);
   mainlayout->addWidget(playbackcontroller->getWidget(), 2, 0, 1, 2);
+
   QObject::connect(playbackcontroller, SIGNAL(nextFile()), librarycontroller, SLOT(playNextFile()));
   QObject::connect(playbackcontroller, SIGNAL(prevFile()), librarycontroller, SLOT(playPrevFile()));
   QObject::connect(topbarcontroller, SIGNAL(musicVideoCheckStateChanged(int)), librarycontroller, SLOT(musicVideoFilter(int)));
@@ -154,9 +155,9 @@ QMenuBar* MainWindow::createMenuBar()
 
   //EDIT MENU//
   actions[21] = menus[1]->addAction("New Smart Playlist");
-  QObject::connect(actions[21], SIGNAL(triggered()), this, SLOT(menuNewSmartPlaylist()));
+  QObject::connect(actions[21], SIGNAL(triggered()), this, SLOT(menuNewPlaylist()));
   actions[22] = menus[1]->addAction("New Playlist");
-  QObject::connect(actions[22], SIGNAL(triggered()), this, SLOT(menuNewPlaylist()));
+  QObject::connect(actions[22], SIGNAL(triggered()), this, SLOT(menuNewSmartPlaylist())); //THIS LOOKS WRONG BUT IT'S RIGHT
   menus[1]->addSeparator();
 #ifdef Q_WS_WIN
   actions[5] = menus[1]->addAction("Settings");

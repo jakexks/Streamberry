@@ -24,12 +24,16 @@ signals:
   void customContextMenuRequested ( const QPoint & pos  );
   void playsmartplaylist(QString);
   void playplaylist(QString);
+  void rolledover(QString);
+  void rolldefault();
 
   public slots:
     void Clicked(int row, int column);
     void DoubleClicked(int row, int column);
     void ShowContextMenu(const QPoint&);
     void setSelectedPlaylist(QString);
+    void RolloverCell(int,int);
+
 
 private:
     QWidget* widget;
@@ -41,7 +45,7 @@ private:
     QWidget* previewbar;
     QWidget* playlistbtn;
     QWidget* previewbtn;
-    QLabel* timetext;
+
     QGridLayout* sidebarlayout;
     QTableWidget* playlistTableWidget;
 

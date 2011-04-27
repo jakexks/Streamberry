@@ -23,12 +23,12 @@
 
 SidebarController::SidebarController(Utilities &utilities, Database& datab, LibraryController* lib) : util(utilities), db(datab), libpass(lib)
 {
-    libpass = lib;
-    widget = makeWidget();
-    playlistTableWidget->clearSelection();
-    playlistTableWidget->setRangeSelected(QTableWidgetSelectionRange(0, 0, 0, 0), true);
-    QObject::connect(this, SIGNAL(playplaylist(QString)), libpass, SLOT(playplaylist(QString)));
-    QObject::connect(this, SIGNAL(playsmartplaylist(QString)), libpass, SLOT(playsmartplaylist(QString)));
+  libpass = lib;
+  widget = makeWidget();
+  playlistTableWidget->clearSelection();
+  playlistTableWidget->setRangeSelected(QTableWidgetSelectionRange(0, 0, 0, 0), true);
+  QObject::connect(this, SIGNAL(playplaylist(QString)), libpass, SLOT(playplaylist(QString)));
+  QObject::connect(this, SIGNAL(playsmartplaylist(QString)), libpass, SLOT(playsmartplaylist(QString)));
 }
 
 SidebarController::~SidebarController()
@@ -104,6 +104,7 @@ QTableWidget* SidebarController::buildplaylistbar()
   playlistTableWidget->setLineWidth(0);
   playlistTableWidget->setMidLineWidth(0);
   playlistTableWidget->setFocusPolicy(Qt::NoFocus);
+  playlistTableWidget->setMouseTracking(true);
 
   playlistTableWidget->setObjectName("sideBarTopButtons");
   playlistTableWidget->setStyleSheet(util.getStylesheet());
@@ -119,6 +120,8 @@ QTableWidget* SidebarController::buildplaylistbar()
   QObject::connect(playlistTableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(Clicked(int,int)));
   QObject::connect(playlistTableWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowContextMenu(const QPoint&)));
   QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
+
+  QObject::connect(playlistTableWidget, SIGNAL(cellEntered(int,int)), this, SLOT(RolloverCell(int,int)));
 
 
   QTableWidgetItem* btns[4];
@@ -181,11 +184,13 @@ void SidebarController::updateplaylistbar(int shownumber)
     typearray[i-4] = currecord.field(1).value().toBool();
     QString name = currecord.field(0).value().toString();
     namearray[i-4] = name;
-    QWidget* item1 = makePlaylistRow(name, main);
+    QWidget* item1 = makePlaylistRow(name, playlistTableWidget);
     playlistTableWidget->setRowHeight(i, 25);
     playlistTableWidget->setCellWidget(i, 0, item1);
   }
 }
+
+
 
 
 QWidget* SidebarController::makePlaylistRow(QString name, QWidget* parent)
@@ -199,21 +204,24 @@ QWidget* SidebarController::makePlaylistRow(QString name, QWidget* parent)
 #endif
 
   QWidget* temp = new QWidget(parent);
+  temp->setMouseTracking(true);
   temp->setMaximumHeight(25);
   QGridLayout* playlistTitleLayout = new QGridLayout(temp);
   playlistTitleLayout->setMargin(0);
   playlistTitleLayout->setSpacing(0);
   playlistTitleLayout->setColumnMinimumWidth(0, 30);
+  playlistTitleLayout->setColumnStretch(0,0);
+
 
   QLabel* text = new QLabel(name,temp);
   text->setFont(font);
-
-  QFrame* sideborder = new QFrame(temp);
-  sideborder->setMaximumWidth(30);
-  sideborder->setObjectName("sideBarPlaylistCell");
+  text->setMouseTracking(true);
+  //QFrame* sideborder = new QFrame(temp);
+  //sideborder->setMaximumWidth(30);
+  //sideborder->setObjectName("sideBarPlaylistCell");
   temp->setStyleSheet(util.getStylesheet());
 
-  playlistTitleLayout->addWidget(sideborder, 0, 0);
+  //playlistTitleLayout->addWidget(sideborder, 0, 0);
   playlistTitleLayout->addWidget(text, 0, 1, Qt::AlignLeft);
 
   return temp;
@@ -247,29 +255,14 @@ QWidget* SidebarController::makePreviewBar()
 {
   preview = new PreviewPane(util,db,libpass);
   QWidget* temp = preview->getwidget();
+  QObject::connect(this, SIGNAL(rolledover(QString)), preview, SLOT(rolloverPlaylist(QString)));
+  QObject::connect(this, SIGNAL(rolldefault()), preview, SLOT(rolloverDefault()));
+  QObject::connect(libpass, SIGNAL(rolldefault()), preview, SLOT(rolloverDefault()));
+  QObject::connect(libpass, SIGNAL(rollAlbum()), preview, SLOT(displayAlbumArt()));
   return temp;
 
-  /* QFrame* veil = new QFrame(temp);
-  veil->setObjectName("sideBarVeilPic");
-  veil->setStyleSheet(util.getStylesheet());
-  veil->setMinimumSize(220, 25);
-  veil->setMaximumSize(220, 25);
-  previewPaneLayout->addWidget(veil, 1, 0, Qt::AlignBottom);
 
-  QGridLayout* timebarLayout = new QGridLayout(veil);
-  timebarLayout->setMargin(0);
-  timebarLayout->setSpacing(0);
-  timetext = new QLabel("01:06 / 04:28");
-  QFont font;
-  font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
-  font.setBold(true);
-#ifdef Q_WS_WIN
-  font.setPointSize(10);
-#else
-  font.setPointSize(11);
-#endif
-  timetext->setFont(font);
-  timebarLayout->addWidget(timetext, 0,0, Qt::AlignHCenter);*/
+
 
 }
 
@@ -372,27 +365,39 @@ void SidebarController::DoubleClicked(int row, int)
   }
 }
 
+
+void SidebarController::RolloverCell(int row,int)
+{
+  if(row >= 4)
+  {
+    QString name = namearray[row-4];
+    emit rolledover(name);
+  }
+  else
+    emit rolldefault();
+}
+
 void SidebarController::setSelectedPlaylist(QString name)
 {
-    // if empty select first row
-    if(name=="")
+  // if empty select first row
+  if(name=="")
+  {
+    playlistTableWidget->clearSelection();
+    playlistTableWidget->setRangeSelected(QTableWidgetSelectionRange(0, 0, 0, 0), true);
+  }
+  else
+  {
+    int i = 0;
+    while(i<playlistTableWidget->rowCount()-4 && i<=15)
     {
+      if(namearray[i]==name)
+      {
         playlistTableWidget->clearSelection();
-        playlistTableWidget->setRangeSelected(QTableWidgetSelectionRange(0, 0, 0, 0), true);
-    }
-    else
-    {
-        int i = 0;
-        while(i<playlistTableWidget->rowCount()-4 && i<=15)
-        {
-            if(namearray[i]==name)
-            {
-                playlistTableWidget->clearSelection();
-                playlistTableWidget->setRangeSelected(QTableWidgetSelectionRange(i+4, 0, i+4, 0), true);
-                break;
-            }
+        playlistTableWidget->setRangeSelected(QTableWidgetSelectionRange(i+4, 0, i+4, 0), true);
+        break;
+      }
 
-            i++;
-        }
+      i++;
     }
+  }
 }
