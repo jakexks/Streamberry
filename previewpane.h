@@ -24,8 +24,12 @@ public:
     void displayAlbumArt(QPixmap);
     void rolloverDefault();
 
+    void settracklength(int seconds);
+    void settrackprogress(int seconds);
+
 private:
     Utilities* util;
+    QFrame* maketimebar();
     QWidget* makeDefault();
     QWidget* makePlaylist();
     QWidget* makeArt();
@@ -40,6 +44,7 @@ private:
     QTableWidget* tableframe;
     QLabel* timetext;
     int showing;
+    int timelength;
   };
 
 #endif // PREVIEWPANE_H

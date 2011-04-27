@@ -68,9 +68,8 @@ QWidget* SidebarController::makeWidget()
   sidebarlayout->setRowStretch(2, 1);
   sidebarlayout->setRowStretch(3, 0);
   sidebarlayout->setRowStretch(4, 0);
-  //updateplaylistbar(7);
-  sidebarlayout->addWidget(playlistbtn, 0, 0);
 
+  sidebarlayout->addWidget(playlistbtn, 0, 0);
   sidebarlayout->addWidget(playlistbar, 1, 0);
   sidebarlayout->addWidget(previewbtn, 3, 0);
   sidebarlayout->addWidget(previewbar, 4, 0);
@@ -80,7 +79,6 @@ QWidget* SidebarController::makeWidget()
 
 QTableWidget* SidebarController::buildplaylistbar()
 {
-  //  int trimsize = 0;
   QFont font;
   font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
 #ifdef Q_WS_WIN
@@ -208,7 +206,6 @@ QWidget* SidebarController::makePlaylistRow(QString name, QWidget* parent)
   playlistTitleLayout->setSpacing(0);
   playlistTitleLayout->setColumnMinimumWidth(0, 30);
   playlistTitleLayout->setColumnStretch(0,0);
-
 
   QLabel* text = new QLabel(name,temp);
   text->setFont(font);
