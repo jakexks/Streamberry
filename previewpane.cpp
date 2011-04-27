@@ -10,6 +10,7 @@ PreviewPane::PreviewPane(Utilities &utilities, Database& datab, LibraryControlle
   db = &datab;
   libcont = lib;
   showing = 11;
+  hold = 0;
   mainwidget = new QWidget();
   mainwidget->setObjectName("sideBarPreviewPane");
   mainwidget->setStyleSheet(util->getStylesheet());
@@ -19,8 +20,8 @@ PreviewPane::PreviewPane(Utilities &utilities, Database& datab, LibraryControlle
   window = new QStackedWidget(mainwidget);
   window->setMinimumSize(219, 220);
   window->setMaximumSize(219, 220);
- // window->setObjectName("sideBarPreviewPic");
- // window->setStyleSheet(util->getStylesheet());
+  // window->setObjectName("sideBarPreviewPic");
+  // window->setStyleSheet(util->getStylesheet());
 
   previewPaneLayout->addWidget(window, 0,0, 2, 1,  Qt::AlignHCenter);
 
@@ -33,8 +34,10 @@ PreviewPane::PreviewPane(Utilities &utilities, Database& datab, LibraryControlle
   window->addWidget(art);
 
   state =0;
-  QFrame* veil = maketimebar();
-  previewPaneLayout->addWidget(veil, 1, 0, Qt::AlignBottom);
+  timebar = maketimebar();
+  previewPaneLayout->addWidget(timebar, 1, 0, Qt::AlignBottom);
+  hold = 0;
+  timebar->hide();
 }
 
 QFrame* PreviewPane::maketimebar()
@@ -58,32 +61,49 @@ QFrame* PreviewPane::maketimebar()
 #endif
   timetext->setFont(font);
   timebarLayout->addWidget(timetext, 0,0, Qt::AlignHCenter);
- return veil;
+  return veil;
 }
 
 ///CLOCK FUNCTIONS///
 
 void PreviewPane::settracklength(int seconds)
 {
-  int minutes = seconds % 60;
-  int resec = seconds - minutes * 60;
-  QString temp;
-  QString endtime = " / " + temp.setNum(minutes) + ":" + temp.setNum(resec);
-  timetext->setText("0:00" + endtime);
-  timelength = 4;
+  finalseconds = seconds;
+  int minutes = seconds/60000;
+  int resec = (seconds - minutes * 60000)/1000;
+  QString temp1;
+  QString temp2;
+  QString endtime = " / " + temp1.setNum(minutes) + ":" + temp2.setNum(resec);
+  timetext->setText("00:00" + endtime);
+  timelength = 5;
+  hold = 1;
+  timebar->show();
 }
 
-void PreviewPane::settrackprogress(int seconds)
+void PreviewPane::settrackprogress(float pos)
 {
-  int minutes = seconds % 60;
-  int resec = seconds - minutes * 60;
-  QString temp;
-  QString curtime = temp.setNum(minutes) + ":" + temp.setNum(resec);
+  int seconds = pos*finalseconds;
+  int minutes = seconds/60000;
+  int resec = (seconds - minutes * 60000)/1000;
+  QString temp1;
+  temp1.setNum(minutes);
+  QString temp2;
+  temp2.setNum(resec);
+  if(temp1.size() == 1)
+    temp1.insert(0, "0");
+  if(temp2.size() == 1)
+    temp2.insert(0, "0");
+  QString curtime = temp1 + ":" + temp2;
   QString temptimetext = timetext->text();
   temptimetext.remove(0, timelength);
   temptimetext.insert(0,curtime);
   timelength = curtime.size();
   timetext->setText(temptimetext);
+  if(seconds == finalseconds)
+  {
+    hold = 0;
+    timebar->hide();
+  }
 }
 
 ///DEFAULT FUNCTIONS///
@@ -103,8 +123,16 @@ QWidget* PreviewPane::makeDefault()
 
 void PreviewPane::rolloverDefault()
 {
-  state =0;
-  window->setCurrentIndex(0);
+  if(hold != 1)
+  {
+    state =0;
+    window->setCurrentIndex(0);
+  }
+  else
+  {
+    state =2;
+    window->setCurrentIndex(2);
+  }
 }
 
 
@@ -221,9 +249,10 @@ QWidget* PreviewPane::makeArt()
   QGridLayout* ArtPaneLayout = new QGridLayout(pane);
   pictureframe = new QLabel(pane);
   ArtPaneLayout->addWidget(pictureframe);
+  ArtPaneLayout->setMargin(0);
+  ArtPaneLayout->setSpacing(0);
   return pane;
 }
-
 
 void PreviewPane::displayAlbumArt()
 {

@@ -492,7 +492,6 @@ void LibraryController::itemClicked(int row)
     if(isvideo) allwidgets->setCurrentIndex(1);
     player.playFile(filepath);
   }
-  qDebug() << "currentlyplaying " << currentlyplaying;
   currentlyplaying = row;
   songsPlayed.append(currentlyplaying);
   vectorIterator++;
@@ -858,9 +857,9 @@ void LibraryController::resetQueue()
 
 void LibraryController::cellrolled(int i, int j)
 {
-  if(j == 0)
-    emit rollAlbum();
-  else
+  //if(j == 0)
+    //emit rollAlbum();
+  //else
     emit rolldefault();
 
 }

@@ -40,12 +40,14 @@ private:
     int fileLength;
     float currSecs;
     QWidget* frame;
+    int oldtrack;
     //needed for video on Mac
     #ifdef Q_OS_MAC
         NSView* videoView;
         NSAutoreleasePool* pool;
     #endif
     QMacCocoaViewContainer *_videoWidget;
+
 //    #ifdef Q_WS_X11
 //        QX11EmbedContainer *_videoWidget;
 //    #else
@@ -77,6 +79,9 @@ signals:
     void getFirstSong();
     void paused();
     void play();
+    void playingalbumart();
+    void settracklength(int);
+    void settrackprogress(float);
 
 };
 

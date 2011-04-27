@@ -12,6 +12,7 @@
 #include "settingsdialog.h"
 #include <plsmartnew.h>
 #include <plnormalnew.h>
+#include <previewpane.h>106
 
 #define TOPBARHEIGHT 26
 #define BOTTOMBARHEIGHT 90
@@ -95,7 +96,6 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(librarycontroller, SIGNAL(songInfoData(QString,QString,QString,QString)), playbackcontroller->getSongInfo(), SLOT(updateLabels(QString,QString,QString,QString)));
   QObject::connect(&fs, SIGNAL(finishedFileScan()), librarycontroller, SLOT(resetQueue()));
   QObject::connect(this, SIGNAL(filescanRequest()), &fs, SLOT(scan()));
-  //QObject::connect(sidebarcontroller, SIGNAL(playthis(QList<QSqlRecord>*)),  librarycontroller , SLOT(displaythiam ne s(QList<QSqlRecord>*)) );
   QObject::connect(topbarcontroller, SIGNAL(goBackPlease()), librarycontroller, SLOT(goBack()));
   QObject::connect(topbarcontroller, SIGNAL(goForwardPlease()), librarycontroller, SLOT(goForward()));
   QObject::connect(librarycontroller, SIGNAL(setSearchBoxText(QString)), topbarcontroller, SLOT(setSearchText(QString)));
@@ -103,6 +103,10 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(playbackcontroller, SIGNAL(sPress()), librarycontroller, SLOT(shuffleSlot()));
   QObject::connect(playbackcontroller, SIGNAL(rPress(bool, bool)), librarycontroller, SLOT(repeatSlot(bool, bool)));
 
+  PreviewPane* preview = sidebarcontroller->getPreviewPane();
+  QObject::connect(&player, SIGNAL(playingalbumart()), preview, SLOT(displayAlbumArt()));  ///CHANGE THIS ONCE ALBUMART WORKS
+  QObject::connect(&player, SIGNAL(settracklength(int)), preview, SLOT(settracklength(int)));
+  QObject::connect(&player, SIGNAL(settrackprogress(float)), preview, SLOT(settrackprogress(float)));
 
   this->setWindowTitle("Streamberry");
   QString iconpath = util.getExecutePath();

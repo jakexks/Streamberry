@@ -40,6 +40,11 @@ SidebarController::~SidebarController()
   delete playlistTableWidget;
 }
 
+PreviewPane* SidebarController::getPreviewPane()
+{
+  return preview;
+}
+
 QWidget* SidebarController::makeWidget()
 {
   main = new QWidget();
@@ -252,7 +257,7 @@ QWidget* SidebarController::makePreviewBar()
   QObject::connect(this, SIGNAL(rolledover(QString)), preview, SLOT(rolloverPlaylist(QString)));
   QObject::connect(this, SIGNAL(rolldefault()), preview, SLOT(rolloverDefault()));
   QObject::connect(libpass, SIGNAL(rolldefault()), preview, SLOT(rolloverDefault()));
-  QObject::connect(libpass, SIGNAL(rollAlbum()), preview, SLOT(displayAlbumArt()));
+  //QObject::connect(libpass, SIGNAL(rollAlbum()), preview, SLOT(displayAlbumArt()));  ////CHANGE THIS TO HAVE ROLLOVER ALBUM ART AND LINE 860 LIBCONT
   return temp;
 
 

@@ -25,7 +25,7 @@ public:
     void rolloverDefault();
 
     void settracklength(int seconds);
-    void settrackprogress(int seconds);
+    void settrackprogress(float pos);
 
 private:
     Utilities* util;
@@ -43,8 +43,11 @@ private:
     QLabel* pictureframe;
     QTableWidget* tableframe;
     QLabel* timetext;
+    QFrame* timebar;
     int showing;
     int timelength;
+    int hold;
+    int finalseconds;
   };
 
 #endif // PREVIEWPANE_H

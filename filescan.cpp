@@ -8,6 +8,7 @@
 #include "crossplatform.h"
 #include <QTextCodec>
 #include "utilities.h"
+#define readwma 1
 
 using namespace std;
 
@@ -322,6 +323,8 @@ QList<QString> Filescan::checktags(QList<QString> tags, QString filename)
 int Filescan::ismedia(QFileInfo file)
 {
   QString name = file.suffix();
+  if( (QString::compare("wma",name)==0) && readwma == 0  )
+    return 0;
 #ifdef Q_WS_MAC
   if( QString::compare("wma",name)==0  )
     return 0;

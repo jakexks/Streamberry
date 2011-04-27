@@ -37,6 +37,7 @@ void PlaybackProgress::mouseReleaseEvent(QMouseEvent *e)
     isdragging = false;
     emit newAngle(pieangle);
     update();
+    qDebug() << "Here";
     e->accept();
 }
 

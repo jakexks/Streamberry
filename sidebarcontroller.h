@@ -17,6 +17,7 @@ public:
     QWidget* getWidget();
     QWidget* makeWidget();
     void updateplaylistbar(int i);
+    PreviewPane* getPreviewPane();
 
 signals:
   void playthis(QList<QSqlRecord>*);
