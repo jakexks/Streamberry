@@ -172,7 +172,6 @@ void Filescan::addFiles(QDir path, QString homeID)
           tags = checktags(file.printMeta(newfile.absoluteFilePath()), newfile.fileName());
           QString filepathnew = newfile.absoluteFilePath();
           filepathnew.replace(";", "\\;");
-
           QStringList file;
           file << filepathnew << newfile.fileName() << QString::number(newfile.size()) << tags.at(0) << tags.at(1) << tags.at(2) << tags.at(3) << tags.at(4) << tags.at(5) << tags.at(6) << tags.at(7) << (QString)"1411" << newfile.suffix() << localTableScan << homeID << QString::number(mov);
           filestoadd->append(file);
@@ -217,8 +216,11 @@ void Filescan::addFiles(QDir path, QString homeID)
 
     for(int i = 0; i<size; i++)
     {
+      if(i%100 == 0)
+        qDebug() << "Still filescanning...";
       try
       {
+        qDebug() << filestoadd->at(i).at(9);
         db.addFile(filestoadd->at(i).at(0), filestoadd->at(i).at(1), filestoadd->at(i).at(2), filestoadd->at(i).at(3), filestoadd->at(i).at(4), filestoadd->at(i).at(5), filestoadd->at(i).at(6), filestoadd->at(i).at(7), filestoadd->at(i).at(8), filestoadd->at(i).at(9), filestoadd->at(i).at(10), filestoadd->at(i).at(11), filestoadd->at(i).at(12), filestoadd->at(i).at(13), filestoadd->at(i).at(14), filestoadd->at(i).at(15).toInt());
       }
       catch(SBException e)
@@ -235,8 +237,13 @@ void Filescan::addFiles(QDir path, QString homeID)
   }
 }
 
+
+
 void Filescan::addFile(QString filepath, QString homeID)
 {
+
+
+  /*
   //QDir* path = new QDir(filepath);
   QList<QString> tags;
   QFileInfo newfile(filepath);
@@ -275,6 +282,7 @@ void Filescan::addFile(QString filepath, QString homeID)
       qDebug() << " is broken";
     }
   }
+  */
 }
 
 

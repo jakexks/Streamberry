@@ -61,22 +61,15 @@ QList<QString> FileMeta::printMeta(QString file)
     int length = libvlc_media_player_get_length(mediaPlayerInstance);
     while(length==0 )
     {
-       if(q>300000)
+       if(q>500000)
          break;
        q++;
        length = libvlc_media_player_get_length(mediaPlayerInstance);
     }
+    QString temp;
+    temp.setNum(length);
+    meta.append(temp);
 
-    if(length == 0)
-    {
-      QString time = "";
-      meta.append(time);
-    }
-    else
-    {
-      QString time(Utilities::intToTime(length));
-      meta.append(time);
-    }
     //qDebug() << time;
     //qDebug() << GetMetaInfo("Length");
     //meta.append(currmeta.number(libvlc_media_player_get_length(mediaPlayerInstance)/1000));

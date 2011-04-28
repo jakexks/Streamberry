@@ -37,6 +37,7 @@ QString Utilities::intToTime(int seconds)
   return time;
 }
 
+
 QString Utilities::makeStylesheet()
 {
     //top bar

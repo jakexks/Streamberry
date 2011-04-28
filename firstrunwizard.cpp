@@ -30,7 +30,7 @@ NickPage::NickPage(QWidget *parent) : QWizardPage(parent)
     QLineEdit *nickedit = new QLineEdit();
     nickedit->setMaxLength(20);
     QVBoxLayout *layout = new QVBoxLayout;
-    registerField("nickname*",nickedit);
+    registerField("nickname",nickedit);
     layout->addWidget(intro);
     layout->addSpacing(10);
     layout->addWidget(nickedit);

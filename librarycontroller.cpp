@@ -42,11 +42,11 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
   if((headerstr = db.getSetting("TableHeaders"))==NULL)
   {
     headers.append("Title");
-    headers.append("Time");
+    headers.append("Length");
     headers.append("Artist");
     headers.append("Album");
     headers.append("Genre");
-    db.storeSetting("TableHeaders", "Title|Time|Artist|Album|Genre");
+    db.storeSetting("TableHeaders", "Title|Length|Artist|Album|Genre");
   } else {
     headers = headerstr.split("|", QString::SkipEmptyParts);
   }
@@ -206,7 +206,6 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
       delete currentdata;
   }
   currentdata = values;
-
 
   tablewidget->setRowCount(0);
   tablewidget->setRowCount(values->length());
@@ -373,7 +372,7 @@ void LibraryController::sortIndicatorChanged(int index, Qt::SortOrder order)
       orders.append("ASC");
       orders.append("ASC");
     }
-    else if(*curheaders[index-2] == "Time")
+    else if(*curheaders[index-2] == "Length")
     {
       sortcols.append("Length");
       sortcols.append("Track");
