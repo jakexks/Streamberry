@@ -261,7 +261,10 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
         //put track in the view
         for(int j = 0; j < headercount; j++)
         {
-            item = new QTableWidgetItem(currecord.field(*curheaders[j]).value().toString());
+            //temp string to deal with track length (no leading 0)
+            QString curitemtxt = currecord.field(*curheaders[j]).value().toString();
+            if(curitemtxt.indexOf("0")==0) curitemtxt.remove(0,1);
+            item = new QTableWidgetItem(curitemtxt);
             item->setFlags(item->flags() & (~Qt::ItemIsEditable));
             item->setFont(font);
 
