@@ -222,27 +222,31 @@ void Player::changePosition(int newPosition)
 
 void Player::playControl()
 {
-  if(libvlc_media_player_get_media(_mp) == NULL)
-  {
-    emit getFirstSong();
-  }
-
-  if(currIP == "127.0.0.1")
-  {
-    QString tosend = "";
-    tosend += "STREAMBERRY|PAUSE|";
-    tosend += n.getuniqid();
-    stream.send(remoteIP, 45459, tosend);
-  } else {
-    if(libvlc_media_player_is_playing(_mp))
+    if(libvlc_media_player_get_media(_mp) == NULL)
     {
-      libvlc_media_player_set_pause(_mp, 1);
-      emit paused();
-    } else {
-      libvlc_media_player_play(_mp);
-      emit play();
+        emit getFirstSong(0);
     }
-  }
+
+    if(currIP == "127.0.0.1")
+    {
+        QString tosend = "";
+        tosend += "STREAMBERRY|PAUSE|";
+        tosend += n.getuniqid();
+        stream.send(remoteIP, 45459, tosend);
+    }
+    else
+    {
+        if(libvlc_media_player_is_playing(_mp))
+        {
+            libvlc_media_player_set_pause(_mp, 1);
+            emit paused();
+        }
+        else
+        {
+            libvlc_media_player_play(_mp);
+            emit play();
+        }
+    }
 }
 
 //void Player::muteAudio()

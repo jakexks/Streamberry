@@ -76,7 +76,7 @@ public slots:
 signals:
     void sliderChanged(int newValue);
     void getNextFile();
-    void getFirstSong();
+    void getFirstSong(const int i);
     void paused();
     void play();
     void playingalbumart();

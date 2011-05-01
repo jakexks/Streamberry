@@ -102,8 +102,8 @@ QString Utilities::makeStylesheet()
     //playbutton
     style+="#songInfoBorder {border-left: solid 1px #949494;} ";
     style+="#songInfoLine {background:#8c8c8c; margin:0px;}";
-    style+="#songInfoLabel {font-weight:normal; border:none; padding:0px; color: #333333}";
-    style+="#songInfoLabelBold {font-weight:bold; border:none; padding:0px; color: #333333}";
+    style+="#songInfoLabel {font-size: 12px; font-weight:normal; border:none; padding:0px; color: #333333}";
+    style+="#songInfoLabelBold {font-size: 12px; font-weight:bold; border:none; padding:0px; color: #333333}";
     style+="#songInfo{ padding:10px;}";
     //style+="#separatorSongInfo {background:#222222; border:none; padding:0px;}"; separator-color:red;
     style+="#songInfoArea {background: url(EXECPATHimages/botBarBackground.png);  border-left:1px solid #848484; padding:10px}";
