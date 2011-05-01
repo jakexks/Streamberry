@@ -220,7 +220,7 @@ void Player::playControl()
 {
     if(libvlc_media_player_get_media(_mp) == NULL)
     {
-        emit getFirstSong();
+        emit getFirstSong(0);
     }
 
     if(currIP == "127.0.0.1")
