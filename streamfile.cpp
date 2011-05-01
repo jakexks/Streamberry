@@ -20,7 +20,16 @@ StreamFile::StreamFile(Player& _player) : player(_player)
 
 void StreamFile::addStream(QString fileName, QString compID, QString ipAddress)
 {
-    QString sout = "#transcode{vcodec=none,acodec=mpga,ab=128,channels=2,samplerate=44100}:rtp{mux=ts,dst=";
+    QString sout = "";
+    QFileInfo file(fileName);
+    if ( !file.exists() ) return;//If file doesn't exist, return.
+    if (file.suffix()=="wma")
+    {
+        sout = "#transcode{vcodec=none,acodec=mpga,ab=128,channels=2,samplerate=44100}:rtp{mux=ts,dst=";
+    }
+    else {
+        sout = "#rtp{mux=ts,dst=";
+    }
     sout += ipAddress.toUtf8();
     sout += "}}";
     libvlc_vlm_add_broadcast(_vlcinstance, compID.toAscii(), fileName.toUtf8(),

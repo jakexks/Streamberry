@@ -62,6 +62,7 @@ public slots:
 
 private:
     void fillData(QList<QSqlRecord>* values);
+    void pushVideoView();
     int randInt(int low, int high);
     Utilities& util;
     //void ActualDrag(QTableWidgetItem* item, const QPoint startPos);
@@ -95,6 +96,7 @@ private:
         QString playlisttitle;
         QString searchtext;
         QString smarttext;
+        int videoview;
         QList<QString> sortcols;
         QList<QString> orders;
     } ViewQueueItem;

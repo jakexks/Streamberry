@@ -5,6 +5,7 @@
 #include <QString>
 #include <QObject>
 #include <QHash>
+#include <QFileInfo>
 
 #include "streamrequest.h"
 #include "player.h"
