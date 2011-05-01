@@ -60,6 +60,18 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     paneldelegate = new AlbumArtDelegate(util);
     makeWidget();
 
+  if((headerstr = db.getSetting("TableHeaders"))==NULL)
+  {
+    headers.append("Title");
+    headers.append("Length");
+    headers.append("Artist");
+    headers.append("Album");
+    headers.append("Genre");
+    db.storeSetting("TableHeaders", "Title|Length|Artist|Album|Genre");
+  } else {
+    headers = headerstr.split("|", QString::SkipEmptyParts);
+  }
+
     QWidget* playerwind = player.initVid();
 
 
@@ -208,7 +220,6 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
     }
     currentdata = values;
 
-
     tablewidget->setRowCount(0);
     tablewidget->setRowCount(values->length());
 
@@ -339,6 +350,7 @@ void LibraryController::sortIndicatorChanged(int index, Qt::SortOrder order)
     QList<QString> orders;
     QString orderstr = (order==Qt::AscendingOrder) ? "ASC" : "DESC";
 
+
     if(index<2)
     {
         //if they click on one of the untitled headers, change it back
@@ -373,13 +385,21 @@ void LibraryController::sortIndicatorChanged(int index, Qt::SortOrder order)
             orders.append("ASC");
             orders.append("ASC");
         }
-        else if(*curheaders[index-2] == "Time")
+        else if(*curheaders[index-2] == "Length")
         {
             sortcols.append("Length");
             sortcols.append("Track");
             orders.append(orderstr);
             orders.append("ASC");
         }
+
+        //        else if(*curheaders[index-2] == "Time")
+        //        {
+        //            sortcols.append("Length");
+        //            sortcols.append("Track");
+        //            orders.append(orderstr);
+        //            orders.append("ASC");
+        //        }
         else
         {
             sortcols.append(*curheaders[index-2]);
@@ -603,10 +623,10 @@ void LibraryController::makeShuffleList(int firstsong)
         if(shufflelist[i]>maxsize)
             shufflelist[i]=randInt(0,maxsize);
     }
-    for(int i=0; i<maxsize; i++)
-    {
-        qDebug()<<shufflelist[i];
-    }
+//    for(int i=0; i<maxsize; i++)
+//    {
+//        qDebug()<<shufflelist[i];
+//    }
     numberiterator=0;
 }
 

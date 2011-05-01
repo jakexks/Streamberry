@@ -10,6 +10,7 @@ PreviewPane::PreviewPane(Utilities &utilities, Database& datab, LibraryControlle
   db = &datab;
   libcont = lib;
   showing = 11;
+  hold = 0;
   mainwidget = new QWidget();
   mainwidget->setObjectName("sideBarPreviewPane");
   mainwidget->setStyleSheet(util->getStylesheet());
@@ -19,9 +20,8 @@ PreviewPane::PreviewPane(Utilities &utilities, Database& datab, LibraryControlle
   window = new QStackedWidget(mainwidget);
   window->setMinimumSize(219, 220);
   window->setMaximumSize(219, 220);
-
- // window->setObjectName("sideBarPreviewPic");
- // window->setStyleSheet(util->getStylesheet());
+  // window->setObjectName("sideBarPreviewPic");
+  // window->setStyleSheet(util->getStylesheet());
 
   previewPaneLayout->addWidget(window, 0,0, 2, 1,  Qt::AlignHCenter);
 
@@ -34,30 +34,63 @@ PreviewPane::PreviewPane(Utilities &utilities, Database& datab, LibraryControlle
   window->addWidget(art);
 
   state =0;
+  timebar = maketimebar();
+  previewPaneLayout->addWidget(timebar, 1, 0, Qt::AlignBottom);
+  hold = 0;
+  timebar->hide();
+}
 
+QFrame* PreviewPane::maketimebar()
+{
   QFrame* veil = new QFrame(mainwidget);
   veil->setObjectName("sideBarVeilPic");
   veil->setStyleSheet(util->getStylesheet());
   veil->setMinimumSize(219, 25);
   veil->setMaximumSize(219, 25);
-  previewPaneLayout->addWidget(veil, 1, 0, Qt::AlignBottom);
-
   QGridLayout* timebarLayout = new QGridLayout(veil);
   timebarLayout->setMargin(0);
   timebarLayout->setSpacing(0);
-  timetext = new QLabel("01:06 / 04:28");
+  timetext = new QLabel("");
   QFont font;
   font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
   font.setBold(true);
 #ifdef Q_WS_WIN
   font.setPointSize(10);
 #else
-  font.setPointSize(11);
+  font.setPointSize(12);
 #endif
   timetext->setFont(font);
   timebarLayout->addWidget(timetext, 0,0, Qt::AlignHCenter);
+  return veil;
+}
 
+///CLOCK FUNCTIONS///
 
+void PreviewPane::settracklength(int seconds)
+{
+  finalseconds = seconds;
+  QString time = Utilities::intToTime(seconds);
+  QString endtime = " / " + time;
+  timetext->setText("00:00" + endtime);
+  timelength = 5;
+  hold = 1;
+  timebar->show();
+}
+
+void PreviewPane::settrackprogress(float pos)
+{
+  if(pos == 1 || pos == -1)
+  {
+    hold = 0;
+    timebar->hide();
+  }
+  int seconds = pos*finalseconds;
+  QString time = Utilities::intToTime(seconds);
+  QString temptimetext = timetext->text();
+  temptimetext.remove(0, timelength);
+  temptimetext.insert(0,time);
+  timelength = time.size();
+  timetext->setText(temptimetext);
 }
 
 ///DEFAULT FUNCTIONS///
@@ -77,8 +110,16 @@ QWidget* PreviewPane::makeDefault()
 
 void PreviewPane::rolloverDefault()
 {
-  state =0;
-  window->setCurrentIndex(0);
+  if(hold != 1)
+  {
+    state =0;
+    window->setCurrentIndex(0);
+  }
+  else
+  {
+    state =2;
+    window->setCurrentIndex(2);
+  }
 }
 
 
@@ -188,19 +229,23 @@ void PreviewPane::updatePreview(QString name)
 }
 
 ///ALBUM ART PREVIEW FUNCTIONS///
+
 QWidget* PreviewPane::makeArt()
 {
   QWidget* pane = new QWidget(window);
   QGridLayout* ArtPaneLayout = new QGridLayout(pane);
   pictureframe = new QLabel(pane);
   ArtPaneLayout->addWidget(pictureframe);
+  ArtPaneLayout->setMargin(0);
+  ArtPaneLayout->setSpacing(0);
   return pane;
 }
 
-
 void PreviewPane::displayAlbumArt()
 {
-  QPixmap pic("defaultAlbumArt02_111.png",  "png");
+  QString path = util->getExecutePath() + "images/defaultAlbumArt02_111.png";
+  QPixmap pic(path, "png");
+  pic = pic.scaled(QSize(220, 220), Qt::KeepAspectRatio);
   updateArt(pic);
   state = 2;
   window->setCurrentIndex(2);

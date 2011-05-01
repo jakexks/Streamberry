@@ -9,7 +9,7 @@
 class FileMeta
 {
     libvlc_instance_t *_vlcinstance;
-    libvlc_media_t *_m;
+    libvlc_media_t *mediaInstance;
 public:
     FileMeta();
     ~FileMeta();

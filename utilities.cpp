@@ -21,6 +21,23 @@ QString Utilities::getExecutePath()
     return execpath;
 }
 
+QString Utilities::intToTime(int seconds)
+{
+  int minutes = seconds/60000;
+  int resec = (seconds - minutes * 60000)/1000;
+  QString temp1;
+  temp1.setNum(minutes);
+  QString temp2;
+  temp2.setNum(resec);
+  if(temp1.size() == 1)
+    temp1.insert(0, "0");
+  if(temp2.size() == 1)
+    temp2.insert(0, "0");
+  QString time= temp1 + ":" + temp2;
+  return time;
+}
+
+
 QString Utilities::makeStylesheet()
 {
     //top bar

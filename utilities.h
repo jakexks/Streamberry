@@ -11,6 +11,7 @@ public:
     QString getExecutePath();
     QString getStylesheet();
     QString getColor(int inputVar);
+    static QString intToTime(int seconds);
 
 private:
     QString makeStylesheet();
