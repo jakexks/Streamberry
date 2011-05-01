@@ -33,6 +33,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     item.playlist = "";
     item.smarttext = "";
     item.searchtext = "";
+    item.videoview = 0;
     viewqueue.append(item);
     viewqueueindex = 0;
 
@@ -441,6 +442,7 @@ void LibraryController::setSearchText(QString text)
         item.searchtext = text;
         item.sortcols = viewqueue[viewqueueindex].sortcols;
         item.orders = viewqueue[viewqueueindex].orders;
+        item.videoview = 0;
 
         while(viewqueueindex<viewqueue.size()-1)
         {
@@ -461,7 +463,10 @@ void LibraryController::updateLibrary()
         QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+" "+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
         fillData(result);
 
-        if(allwidgets!=NULL && allwidgets->count()!=0) allwidgets->setCurrentIndex(0);
+        if(allwidgets!=NULL && allwidgets->count()!=0)
+        {
+            allwidgets->setCurrentIndex(viewqueue[viewqueueindex].videoview);
+        }
     }
 
 }
@@ -484,6 +489,10 @@ void LibraryController::itemClicked(int row)
     QSqlRecord record = playingdata->at(row);
     QString filepath = record.field("FilePath").value().toString();
     bool isvideo = record.field("MusicOrVideo").value().toInt();
+    if(isvideo)
+    {
+        pushVideoView();
+    }
     emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
     qDebug() << "Currently playing: " << filepath;
     if(record.field("UniqueID").value() != "Local")
@@ -493,7 +502,6 @@ void LibraryController::itemClicked(int row)
         QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
         player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
     } else {
-        if(isvideo) allwidgets->setCurrentIndex(1);
         player.playFile(filepath);
     }
     qDebug() << "currentlyplaying " << currentlyplaying;
@@ -663,6 +671,10 @@ void LibraryController::playNextFile()
     QSqlRecord record = playingdata->at(currentlyplaying);
     QString filepath = record.field("FilePath").value().toString();
     bool isvideo = record.field("MusicOrVideo").value().toInt();
+    if(isvideo)
+    {
+        pushVideoView();
+    }
     qDebug() << "Currently playing: " << filepath;
 
     emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
@@ -673,7 +685,6 @@ void LibraryController::playNextFile()
         QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
         player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
     } else {
-        if(isvideo) allwidgets->setCurrentIndex(1);
         player.playFile(filepath);
     }
 
@@ -712,6 +723,10 @@ void LibraryController::playPrevFile()
 
     QString filepath = record.field("FilePath").value().toString();
     bool isvideo = record.field("MusicOrVideo").value().toInt();
+    if(isvideo)
+    {
+        pushVideoView();
+    }
     qDebug() << "Currently playing: " << filepath;
     emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
 
@@ -721,7 +736,6 @@ void LibraryController::playPrevFile()
         QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
         player.playFile(filepath, record.field("UniqueID").value().toString(), ipaddress);
     } else {
-        if(isvideo) allwidgets->setCurrentIndex(1);
         player.playFile(filepath);
     }
     if(currentdata == playingdata)
@@ -796,6 +810,7 @@ void LibraryController::pushAllView()
         item.playlist = "";
         item.smarttext = "";
         item.searchtext = "";
+        item.videoview = 0;
         viewqueue.append(item);
         viewqueueindex++;
         emit setSearchBoxText("");
@@ -816,11 +831,29 @@ void LibraryController::pushNormalPlaylist(QString name)
         item.playlisttitle = name;
         item.smarttext = "";
         item.searchtext = "";
+        item.videoview = 0;
         viewqueue.append(item);
         viewqueueindex++;
         emit setSearchBoxText("");
         tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
     }
+}
+
+void LibraryController::pushVideoView()
+{
+    while(viewqueueindex<viewqueue.size()-1)
+        viewqueue.removeLast();
+
+    ViewQueueItem item;
+    item.playlist = "";
+    item.smarttext = "";
+    item.searchtext = "";
+    item.videoview = 1;
+    viewqueue.append(item);
+    viewqueueindex++;
+    emit setSearchBoxText("");
+    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+    updateLibrary();
 }
 
 void LibraryController::pushSmartPlaylist(QString name, QString filtertext)
@@ -835,6 +868,7 @@ void LibraryController::pushSmartPlaylist(QString name, QString filtertext)
         item.playlisttitle = name;
         item.smarttext = filtertext;
         item.searchtext = "";
+        item.videoview = 0;
         viewqueue.append(item);
         viewqueueindex++;
         emit setSearchBoxText("");
@@ -873,6 +907,7 @@ void LibraryController::resetQueue()
     item.playlist = "";
     item.smarttext = "";
     item.searchtext = "";
+    item.videoview = 0;
     viewqueue.append(item);
     viewqueueindex = 0;
     emit setSearchBoxText("");
