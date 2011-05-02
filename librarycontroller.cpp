@@ -643,14 +643,13 @@ void LibraryController::repeatSlot(bool one, bool all)
 
 void LibraryController::playNextFile()
 {
-
     if(currentlyplaying==-1) return;
     if(repeat!=1)
     {
         if(shuffle==1)
         {
             numberiterator+=1;
-            if(numberiterator >=  currentdata->length())
+            if(numberiterator >=  maxsize)
                 numberiterator=0;
 
             currentlyplaying=shufflelist[numberiterator];
@@ -668,8 +667,6 @@ void LibraryController::playNextFile()
             emit songInfoData("","","","");
             return;
         }
-
-
     }
 
     QSqlRecord record = playingdata->at(currentlyplaying);
