@@ -42,16 +42,16 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
 
     if((headerstr = db.getSetting("TableHeaders"))==NULL)
     {
-      headers.append("Title");
-      headers.append("Length");
-      headers.append("Artist");
-      headers.append("Album");
-      headers.append("Genre");
-      db.storeSetting("TableHeaders", "Title|Length|Artist|Album|Genre");
+        headers.append("Title");
+        headers.append("Length");
+        headers.append("Artist");
+        headers.append("Album");
+        headers.append("Genre");
+        db.storeSetting("TableHeaders", "Title|Length|Artist|Album|Genre");
     }
     else
     {
-      headers = headerstr.split("|", QString::SkipEmptyParts);
+        headers = headerstr.split("|", QString::SkipEmptyParts);
     }
     setHeaders(headers, 3);
     widget = new QWidget();
@@ -226,8 +226,6 @@ void LibraryController::fillData(QList<QSqlRecord> *values)
 #else
     font.setPointSize(11);
 #endif
-
-    makeShuffleList(-1);
 
     for(int i = 0; i<length; i++)
     {
@@ -541,6 +539,7 @@ void LibraryController::playplaylist(QString playlistname)
     } else {
         player.playFile(record.field("FilePath").value().toString());
     }
+    makeShuffleList(-1);
 }
 
 void LibraryController::playsmartplaylist(QString filter)
@@ -564,6 +563,7 @@ void LibraryController::playsmartplaylist(QString filter)
     } else {
         player.playFile(record.field("FilePath").value().toString());
     }
+    makeShuffleList(-1);
 }
 
 void LibraryController::shuffleSlot()
@@ -589,12 +589,15 @@ void LibraryController::makeShuffleList(int firstsong)
         initial=0;
 
     //initialise the elements of the array
-    for(int i=0; i<maxsize; i++)
+    for(int i=initial; i<maxsize; i++)
+        if(i==firstsong)
+            shufflelist[i]=0;
+    else
         shufflelist[i]=i;
 
     //shuffle the array
     int j=0;
-    for(int i=maxsize; i>=1; i--)
+    for(int i=maxsize-1; i>=0; i--)
     {
         j=randInt(0,i);
         int tmp=shufflelist[i];
@@ -603,21 +606,22 @@ void LibraryController::makeShuffleList(int firstsong)
     }
 
     //make the selected song be the first one in the list
-    for(int i=0; i<maxsize; i++)
+    if(firstsong!=-1)
     {
-        if(shufflelist[i]==firstsong)
+        for(int i=0; i<maxsize; i++)
         {
-            int tmp=shufflelist[i];
-            shufflelist[i]=shufflelist[0];
-            shufflelist[0]=tmp;
+            if(shufflelist[i]==firstsong)
+            {
+                int tmp=shufflelist[i];
+                shufflelist[i]=shufflelist[0];
+                shufflelist[0]=tmp;
+            }
         }
-        if(shufflelist[i]>maxsize)
-            shufflelist[i]=randInt(0,maxsize);
     }
-//    for(int i=0; i<maxsize; i++)
-//    {
-//        qDebug()<<shufflelist[i];
-//    }
+    //    for(int i=0; i<maxsize; i++)
+    //    {
+    //        qDebug()<<shufflelist[i];
+    //    }
     numberiterator=0;
 }
 
@@ -639,14 +643,13 @@ void LibraryController::repeatSlot(bool one, bool all)
 
 void LibraryController::playNextFile()
 {
-
     if(currentlyplaying==-1) return;
     if(repeat!=1)
     {
         if(shuffle==1)
         {
             numberiterator+=1;
-            if(numberiterator >=  currentdata->length())
+            if(numberiterator >=  maxsize)
                 numberiterator=0;
 
             currentlyplaying=shufflelist[numberiterator];
@@ -659,15 +662,11 @@ void LibraryController::playNextFile()
             currentlyplaying = 0;
         if(currentlyplaying >= playingdata->length()&&repeat!=2)
         {
-            currentlyplaying=-1;        //emit stop?
-//            emit  pausePlayer();
+            currentlyplaying=-1;
             player.stopPlayer();
-            //libvlc_media_player_stop (_mp);
-             emit songInfoData("","","","");
+            emit songInfoData("","","","");
             return;
         }
-
-
     }
 
     QSqlRecord record = playingdata->at(currentlyplaying);
@@ -698,6 +697,7 @@ void LibraryController::playNextFile()
 
 void LibraryController::playPrevFile()
 {
+
     if(currentlyplaying==-1) return;
     if(repeat!=1)
     {
@@ -705,7 +705,7 @@ void LibraryController::playPrevFile()
         {
             numberiterator--;
             if(numberiterator < 0)
-                numberiterator=maxsize;
+                numberiterator=maxsize-1;
 
             currentlyplaying=shufflelist[numberiterator];
         }
