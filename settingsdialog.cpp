@@ -7,20 +7,25 @@
 
 SettingsDialog::SettingsDialog(Database &datab, Filescan &fscan, QWidget *parent) : db(datab), fs(fscan)
 {
+    //Creates a textbox for nicknames, max nick length is 20 and sets the text to the current nick stored in the db
     nickedit = new QLineEdit();
     nickedit->setMaxLength(20);
     nickedit->setText(db.getNick());
 
+    //Creates a file system model and sets the root path to the root of the drive
     model = new QFileSystemModel;
-    QModelIndex index = model->setRootPath("");
+    /*QModelIndex index =*/ model->setRootPath("");
 
+    //Creates a tree view to contain the file system model
     tree = new QTreeView(this);
     tree->setModel(model);
     tree->setSelectionMode(QAbstractItemView::MultiSelection);
     tree->setColumnWidth(0,300);
     tree->setFixedHeight(350);
-    tree->setRootIndex(index);
+    //tree->setRootIndex(index);
+    //Expands all rows needed to see the default music file
     expandRows(QDir::homePath() + "/Music");
+    //Expands and selects all filepaths already selected in the db
     QStringList selectedfiles = db.getFolders(0);
     int sflength = selectedfiles.length();
     for(int i = 0; i < sflength; i++)

@@ -84,6 +84,7 @@ signals:
     void settracklength(int);
     void settrackprogress(float);
     void setAlbumArtDefault();
+    void isvideo();
 
 };
 
