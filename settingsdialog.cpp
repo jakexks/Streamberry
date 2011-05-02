@@ -14,7 +14,7 @@ SettingsDialog::SettingsDialog(Database &datab, Filescan &fscan, QWidget *parent
 
     //Creates a file system model and sets the root path to the root of the drive
     model = new QFileSystemModel;
-    QModelIndex index = model->setRootPath("/");
+    /*QModelIndex index =*/ model->setRootPath("");
 
     //Creates a tree view to contain the file system model
     tree = new QTreeView(this);
@@ -22,7 +22,7 @@ SettingsDialog::SettingsDialog(Database &datab, Filescan &fscan, QWidget *parent
     tree->setSelectionMode(QAbstractItemView::MultiSelection);
     tree->setColumnWidth(0,300);
     tree->setFixedHeight(350);
-    tree->setRootIndex(index);
+    //tree->setRootIndex(index);
     //Expands all rows needed to see the default music file
     expandRows(QDir::homePath() + "/Music");
     //Expands and selects all filepaths already selected in the db
