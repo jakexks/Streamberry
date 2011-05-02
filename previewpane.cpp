@@ -277,3 +277,14 @@ QWidget* PreviewPane::getwidget()
 {
   return mainwidget;
 }
+
+void PreviewPane::setDefault()
+{
+    QString path = util->getExecutePath() + "images/sideBarStrawberry.png";
+    QPixmap pic(path, "png");
+    updateArt(pic);
+    state =0;
+    // not sure what the state should be
+//      window->setCurrentIndex(2);
+      timebar->hide();
+}

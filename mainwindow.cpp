@@ -107,6 +107,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(&player, SIGNAL(playingalbumart()), preview, SLOT(displayAlbumArt()));  ///CHANGE THIS ONCE ALBUMART WORKS
   QObject::connect(&player, SIGNAL(settracklength(int)), preview, SLOT(settracklength(int)));
   QObject::connect(&player, SIGNAL(settrackprogress(float)), preview, SLOT(settrackprogress(float)));
+  QObject::connect(&player, SIGNAL(setAlbumArtDefault()), preview, SLOT(setDefault()));
 
   this->setWindowTitle("Streamberry");
   QString iconpath = util.getExecutePath();
