@@ -23,7 +23,7 @@ public:
     void displayAlbumArt();
     void displayAlbumArt(QPixmap);
     void rolloverDefault();
-
+    void setDefault();
     void settracklength(int seconds);
     void settrackprogress(float pos);
 

@@ -60,6 +60,7 @@ public:
     void playFile(QString file, QString uniqueID="Local", QString ipaddress="Local");
     bool isPlaying();
     void setFileLength(int secs);
+    void stopPlayer();
     QWidget* initVid();
     Player();
     ~Player();
@@ -82,6 +83,7 @@ signals:
     void playingalbumart();
     void settracklength(int);
     void settrackprogress(float);
+    void setAlbumArtDefault();
     void isvideo();
 
 };

@@ -484,7 +484,6 @@ void LibraryController::itemClicked(int row)
         delete playingdata;
     }
     playingdata = currentdata;
-    qDebug()<<"row "<<row;
 
     QSqlRecord record = playingdata->at(row);
     QString filepath = record.field("FilePath").value().toString();
@@ -661,7 +660,10 @@ void LibraryController::playNextFile()
         if(currentlyplaying >= playingdata->length()&&repeat!=2)
         {
             currentlyplaying=-1;        //emit stop?
-            emit  pausePlayer();
+//            emit  pausePlayer();
+            player.stopPlayer();
+            //libvlc_media_player_stop (_mp);
+             emit songInfoData("","","","");
             return;
         }
 
