@@ -629,9 +629,9 @@ void Database::addFile(QString filepath, QString filename, QString filesize, QSt
 int Database::deleteFile(QString id, QString table)
 {
   QSqlQuery result;
-  QString sql = "DELETE FROM ";
+  QString sql = "UPDATE Lib";
   sql += table;
-  sql += " WHERE Filepath=\"";
+  sql += " SET Deleted = 1 WHERE Filepath=\"";
   sql += id;
   sql +="\"";
 
@@ -1098,7 +1098,7 @@ void Database::PlaylistAddTracks(QList<QString> Filepaths, QList<QString> Unique
   for(i = 0; i < Filepaths.size() ; i++)
   {
     QString path = Filepaths.at(i);
-    QString uniqueid = UniqueIDs.at(1);
+    QString uniqueid = UniqueIDs.at(i);
     QString sql;
     sql += "INSERT INTO PlaylistTracks (UniqueID, ID, Playlist) VALUES (\"";
     sql += uniqueid;
@@ -1107,6 +1107,7 @@ void Database::PlaylistAddTracks(QList<QString> Filepaths, QList<QString> Unique
     sql += "\", \"";
     sql += Playlist;
     sql += "\");";
+
     query(sql);
   }
 }

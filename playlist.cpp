@@ -31,6 +31,7 @@ void Playlist::SavePlaylist()
   if(name != "")
   {
     db.PlaylistSave(name,smart,filter);
+
     db.PlaylistAddTracks(Trackpaths, TrackIDs, name);
   }
 }
