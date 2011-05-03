@@ -32,7 +32,8 @@ private:
   LibraryController* LibCont;
   Database* db;
   AddTo* addto;
-  QAction* menuitems[4];
+  int setup2;
+  QAction* menuitems[3];
 
 };
 

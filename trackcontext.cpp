@@ -10,41 +10,42 @@
 TrackContext::TrackContext(Database* datab): db(datab)
 {
   setup = 0;
-
+  setup2=0;
   addto = new AddTo(db);
   addto->setTitle("Add To...");
   menuitems[0] = this->addAction("Delete from my Library");
-  menuitems[1] = this->addAction("Toggle Hidden from Other Users");
-  menuitems[2] = this->addMenu(addto);
-
+  menuitems[1] = this->addMenu(addto);
 
   QObject::connect(menuitems[0], SIGNAL(triggered()), this, SLOT(Delete()));
-  QObject::connect(menuitems[1], SIGNAL(triggered()), this, SLOT(Hide()));
 }
 
 void TrackContext::trackRightClicked(QList<QString> ids, QList<QString> uniqueIDs, LibraryController* passlib)
 {
- // qDebug() << ids;
   CurrentIDs = ids;
   CurrentUniqueIDs = uniqueIDs;
   addto->update(ids, uniqueIDs);
-
-  if(passlib->getCurrentViewType() == 1)
-  {
-    menuitems[3] = this->addAction("Delete from This Playlist");
-    QObject::connect(menuitems[3], SIGNAL(triggered()), this, SLOT(DeleteFromPlaylist()));
-    currentplaylistname = passlib->getCurrentPlaylistName();
-  }
-
   if(setup == 0)
   {
     LibCont = passlib;
-    //QObject::connect(this, SIGNAL(playthis(QList<QSqlRecord>*)), LibCont, SLOT(displaythis(QList<QSqlRecord>*)));
     setup = 1;
   }
 
+  if(passlib->getCurrentViewType() == 1)
+  {
+    if(setup2==0)
+    {
+      menuitems[2] = this->addAction("Delete from This Playlist");
+      QObject::connect(menuitems[2], SIGNAL(triggered()), this, SLOT(DeleteFromPlaylist()));
+      setup2 = 1;
+    }
+    currentplaylistname = passlib->getCurrentPlaylistName();
+  }
+  else if(setup2 == 1)
+  {
+      setup2 = 0;
+      this->removeAction(menuitems[2]);
+  }
   this->exec(QCursor::pos());
-  this->removeAction(menuitems[2]);
 }
 
 
