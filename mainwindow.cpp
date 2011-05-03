@@ -12,7 +12,7 @@
 #include "settingsdialog.h"
 #include <plsmartnew.h>
 #include <plnormalnew.h>
-#include <previewpane.h>106
+#include <previewpane.h>
 
 #define TOPBARHEIGHT 26
 #define BOTTOMBARHEIGHT 90
