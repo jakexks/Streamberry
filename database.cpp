@@ -986,6 +986,8 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
         final += result.record().value("Timestamp").toString().replace("'", "''");
         final += "\", \"";
         final += result.record().value("Filetype").toString().replace("'", "''");
+        final += "\", \"";
+        final += result.record().value("MusicOrVideo").toString().replace("'", "''");
         //group separator
         final += "\", \"0\"); \x1D";
       }
