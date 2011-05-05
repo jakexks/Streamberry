@@ -33,6 +33,10 @@ signals:
     void songInfoData(QString album, QString artist, QString title, QString track);
     void setSearchBoxText(QString text);
     void setSelectedPlaylist(QString name);
+    void pausePlayer();
+    void rolldefault();
+    void rollAlbum();
+
 public slots:
     void sortLibrary();
     int rowToHighlight();
@@ -53,10 +57,12 @@ public slots:
     void shuffleSlot();
     void repeatSlot(bool one, bool all);
     void resetQueue();
+    void cellrolled(int, int);
     //void DragStart(QTableWidgetItem*);
 
 private:
     void fillData(QList<QSqlRecord>* values);
+    void pushVideoView();
     int randInt(int low, int high);
     Utilities& util;
     //void ActualDrag(QTableWidgetItem* item, const QPoint startPos);
@@ -69,10 +75,10 @@ private:
     int currentlyplaying;
     int musicvideofilter;
     int shuffle;
-    int numberIterator;
+    int numberiterator;
     int repeat;
-    int *songsPlayed;
-    int maxSize;
+    int *shufflelist;
+    int maxsize;
     Qt::SortOrder sortorder;
     QString** curheaders;
     QTableWidget* tablewidget;
@@ -90,11 +96,13 @@ private:
         QString playlisttitle;
         QString searchtext;
         QString smarttext;
+        int videoview;
         QList<QString> sortcols;
         QList<QString> orders;
     } ViewQueueItem;
     int viewqueueindex;
     QList<ViewQueueItem> viewqueue;
+    void makeShuffleList(int firstsong);
 };
 
 #endif // LIBRARYCONTROLLER_H

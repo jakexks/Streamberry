@@ -22,16 +22,10 @@ public:
   void setPath(char* path);
   QMenuBar* createMenuBar();
 public slots:
-  //void menuScan();
-  void menuAddFile();
   void menuSettings();
   void menuMaximise();
   void menuMinimise();
   void menuMinimiseToTray();
-  void menuDocumentation();
-  void menuAbout();
-  void menuShowFileProviders();
-  void menuShowOfflineFiles();
   void trayIconClicked(QSystemTrayIcon::ActivationReason);
   void menuNewPlaylist();
   void menuNewSmartPlaylist();
@@ -46,6 +40,13 @@ public slots:
 
 signals:
   void filescanRequest();
+  void repeatsig(bool, bool);
+
+private slots:
+  void menuVolUp();
+  void menuVolDown();
+  void menuMute();
+  void menuShuffle();
 
 private:
   //layout of the main window
@@ -53,6 +54,7 @@ private:
   QWidget* centralwidget;
   QMenuBar* menubar;
   QGridLayout* mainlayout;
+  QAction* mutemenu;
   void initialiseGrid();
   void resizeEvent(QResizeEvent *);
   void moveEvent(QMoveEvent *);
@@ -68,6 +70,7 @@ private:
   Database& db;
   Player& player;
   Filescan& fs;
+  int volmem;
   QApplication& app;
   QSystemTrayIcon* trayicon;
 };

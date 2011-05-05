@@ -15,10 +15,10 @@ LIBS += -lvlc
 mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
 mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
 
-win32:LIBS += -L"C:\Program files\VideoLAN\VLC"
-win32:LIBS += -L"C:\Program files (x86)\VideoLAN\VLC"
-win32:INCLUDEPATH += "C:\vlc-1.1.7\include"
-win32:INCLUDEPATH += "C:\Program Files (x86)\SmartGit 1.5\bin\Streamberry"
+win32:LIBS += -L"C:\\Program files\\VideoLAN\\VLC"
+win32:LIBS += -L"C:\\Program files (x86)\\VideoLAN\\VLC"
+win32:INCLUDEPATH += "C:\\vlc-1.1.7\\include"
+win32:INCLUDEPATH += "C:\\Program Files (x86)\\SmartGit 1.5\\bin\\Streamberry"
 TARGET = Streamberry
 TEMPLATE = app
 
@@ -59,7 +59,9 @@ SOURCES +=  main.cpp\
             plsmartnew.cpp \
             plnormalnew.cpp \
             addto.cpp \
-            firstrunwizard.cpp
+            firstrunwizard.cpp \
+    previewpane.cpp \
+    albumartgetter.cpp
 
 mac:OBJECTIVE_SOURCES += player.mm
 win32:SOURCES += player.cpp
@@ -105,3 +107,9 @@ HEADERS +=  mainwindow.h\
             plnormalnew.h \
             addto.h \
             firstrunwizard.h
+
+HEADERS += \
+    previewpane.h
+
+HEADERS += \
+    albumartgetter.h

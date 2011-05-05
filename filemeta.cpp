@@ -1,6 +1,7 @@
 #include "filemeta.h"
 #include <QDebug>
 #include <QFile>
+#include <utilities.h>
 FileMeta::FileMeta()
 {
     const char* vlc_args[] = {
@@ -22,18 +23,18 @@ QList<QString> FileMeta::printMeta(QString file)
     QList<QString> meta;
     QString currmeta;
 
-    _m = libvlc_media_new_location (_vlcinstance, file.toUtf8());
-    libvlc_media_parse (_m);
+    mediaInstance = libvlc_media_new_location (_vlcinstance, file.toUtf8());
+    libvlc_media_parse (mediaInstance);
     //currmeta = libvlc_media_get_meta(_m, libvlc_meta_Artist);
     //qDebug() << currmeta;
     //meta.add(libvlc_media_get_meta(_m, libvlc_meta_Title).toQString());
     //libvlc_media_get_meta(_m, libvlc_meta_)
-    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(_m, libvlc_meta_Artist)));
-    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(_m, libvlc_meta_Album)));
-    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(_m, libvlc_meta_Title)));
-    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(_m, libvlc_meta_Genre)));
-    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(_m, libvlc_meta_Rating)));
-    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(_m, libvlc_meta_Date)));
+    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(mediaInstance, libvlc_meta_Artist)));
+    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(mediaInstance, libvlc_meta_Album)));
+    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(mediaInstance, libvlc_meta_Title)));
+    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(mediaInstance, libvlc_meta_Genre)));
+    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(mediaInstance, libvlc_meta_Rating)));
+    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(mediaInstance, libvlc_meta_Date)));
 //    qDebug() << meta.at(2);
     //NO BITRATE
     //libvlc_media_player_get_length(); // length of video
@@ -46,29 +47,41 @@ QList<QString> FileMeta::printMeta(QString file)
     qDebug() << p_stats.i_decoded_audio;
     qDebug() << p_stats.i_read_bytes;
     //meta.append(currmeta.number(p_stats->i_read_bytes, 10));*/
-    libvlc_media_player_t *_mp;
-    _mp = libvlc_media_player_new_from_media(_m);
-    libvlc_media_player_play (_mp);
-    if(libvlc_media_player_get_length(_mp)==-1)
+
+    //////////////////////////////////////////MEDIA LENGTH ATTEMPT
+    libvlc_media_player_t *mediaPlayerInstance;
+    mediaPlayerInstance = libvlc_media_player_new_from_media(mediaInstance);
+    libvlc_media_player_play (mediaPlayerInstance);
+    if(libvlc_media_player_get_length(mediaPlayerInstance)==-1)
     {
         throw new SBException(GENERIC, "Invalid file");
     }
     int q=0;
-    while(libvlc_media_player_get_length(_mp)==0 )
+    libvlc_audio_toggle_mute(mediaPlayerInstance);
+    int length = libvlc_media_player_get_length(mediaPlayerInstance);
+    while(length==0 )
     {
-       if(q>50)
+       if(q>500000)
          break;
        q++;
-        //sleep(1);
+       length = libvlc_media_player_get_length(mediaPlayerInstance);
     }
-    //sleep(1);
-    //currmeta.f
-    //currmeta.number(libvlc_media_player_get_length(_mp)/1000);
-    meta.append(currmeta.number(libvlc_media_player_get_length(_mp)/1000));
-    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(_m, libvlc_meta_TrackNumber)));
-    libvlc_media_player_stop (_mp);
-    libvlc_media_player_release(_mp);
-    libvlc_media_release(_m);
+    QString temp;
+    temp.setNum(length);
+    meta.append(temp);
+
+    //qDebug() << time;
+    //qDebug() << GetMetaInfo("Length");
+    //meta.append(currmeta.number(libvlc_media_player_get_length(mediaPlayerInstance)/1000));
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    meta.append(currmeta.fromUtf8(libvlc_media_get_meta(mediaInstance, libvlc_meta_TrackNumber)));
+    libvlc_media_player_stop (mediaPlayerInstance);
+    libvlc_media_player_release(mediaPlayerInstance);
+    libvlc_media_release(mediaInstance);
     //QFile fileLoc(file);
     //qDebug() << fileLoc.size();
     //qDebug() << libvlc_media_get_duration(_m);

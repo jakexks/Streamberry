@@ -32,6 +32,12 @@ int main(int argc, char *argv[])
     QString execpath(argv[0]);
     execpath.resize(execpath.lastIndexOf('/'));
 #endif
+    QString albumartdir = CrossPlatform::getAppDataPath();
+    albumartdir += "albumart/";
+    if(!QDir(albumartdir).exists())
+    {
+        QDir().mkdir(albumartdir);
+    }
 
     Utilities util(execpath);
     Database db;
@@ -55,8 +61,9 @@ int main(int argc, char *argv[])
         db.storeSetting("FirstRun", "1");
     }
 
-    Player player;
 
+
+    Player player;
     BeaconSender bs(db);
     QThread bsthread(&a);
     bs.moveToThread(&bsthread);
@@ -70,15 +77,15 @@ int main(int argc, char *argv[])
     //this is made in main to fix bug on Mac
     QMenuBar* menu = new QMenuBar(0);
 
-    MainWindow w(util, db, player, fs, menu, a);
+   MainWindow w(util, db, player, fs, menu, a);
 
-    w.show();
+
 
     StreamFile stream(player); //Enables streaming. Do not comment
 //    //stream.addStream("/Users/Robbie/Music/Albums/Biffy Clyro - Only Revolutions/Biffy Clyro - Many Of Horror.mp3", "test", "127.0.0.1");
 //    //qDebug() << stream.getStreamLength("test");
 
-
+    w.show();
     int ret = a.exec();
     //send offline beacon
     bs.sendOfflineBeacon();

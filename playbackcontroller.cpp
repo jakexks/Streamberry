@@ -20,9 +20,20 @@ QWidget* PlaybackController::getWidget()
     return widget;
 }
 
+int PlaybackController::getvolpos()
+{
+  return volumeslider->getlastpos();
+}
+
+void PlaybackController::setvolumepos(int j)
+{
+  volumeslider->setslidepos(j);
+}
+
 QWidget* PlaybackController::makeWidget()
 {
     QWidget *tempw = new QWidget();
+    shufflePressed = false;
     tempw->setObjectName("bottomBarWidget");
     tempw->setMinimumHeight(96);
     tempw->setMaximumHeight(96);
@@ -149,20 +160,15 @@ void PlaybackController::shufflePress()
 {
     if(shufflePressed==true)
     {
-        shufflePressed=false;
         shuffle->setChecked(false);
-        shuffle->setStyleSheet(util.getStylesheet());
-        emit sPress();
-
+        shufflePressed=false;
     }
     else
     {
-        shufflePressed=true;
         shuffle->setChecked(true);
-        shuffle->setStyleSheet(util.getStylesheet());
-        emit sPress();
+        shufflePressed=true;
     }
-
+    emit sPress();
 }
 
 void PlaybackController::repeatPress()

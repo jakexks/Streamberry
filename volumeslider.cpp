@@ -38,6 +38,17 @@ void VolumeSlider::muteVolSlider()
     }
 }
 
+int VolumeSlider::getlastpos()
+{
+  return lastposition;
+}
+
+void VolumeSlider::setslidepos(int j)
+{
+  setSliderPosition(j);
+}
+
+
 void VolumeSlider::updateLastPos()
 {
 

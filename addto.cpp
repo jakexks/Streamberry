@@ -41,6 +41,8 @@ void AddTo::Clicked()
   {
     pl.addTrack(CurrentIDs.at(i), CurrentUniqueIDs.at(i));
   }
+
   pl.SavePlaylist();
+
 }
 

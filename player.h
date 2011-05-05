@@ -40,12 +40,14 @@ private:
     int fileLength;
     float currSecs;
     QWidget* frame;
+    int oldtrack;
     //needed for video on Mac
     #ifdef Q_OS_MAC
         NSView* videoView;
         NSAutoreleasePool* pool;
     #endif
     QMacCocoaViewContainer *_videoWidget;
+
 //    #ifdef Q_WS_X11
 //        QX11EmbedContainer *_videoWidget;
 //    #else
@@ -58,6 +60,7 @@ public:
     void playFile(QString file, QString uniqueID="Local", QString ipaddress="Local");
     bool isPlaying();
     void setFileLength(int secs);
+    void stopPlayer();
     QWidget* initVid();
     Player();
     ~Player();
@@ -74,9 +77,14 @@ public slots:
 signals:
     void sliderChanged(int newValue);
     void getNextFile();
-    void getFirstSong();
+    void getFirstSong(const int i);
     void paused();
     void play();
+    void playingalbumart();
+    void settracklength(int);
+    void settrackprogress(float);
+    void setAlbumArtDefault();
+    void isvideo();
 
 };
 

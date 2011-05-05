@@ -23,7 +23,7 @@ Player::Player()
 #ifdef Q_OS_MAC
         "--vout=macosx"
 #endif
-    };
+            };
     _isPlaying=false;
 
     poller=new QTimer(this);
@@ -69,6 +69,7 @@ Player::~Player()
 
 QWidget* Player::initVid()
 {
+
     if(_videoWidget!=NULL)
         delete _videoWidget;
 
@@ -78,8 +79,8 @@ QWidget* Player::initVid()
     _videoWidget = new QMacCocoaViewContainer(videoView, frame);
     _videoWidget->show();
 #endif
-    frame->show();
-
+    //frame->show();
+    //////////////////////////////DOUBLE FRAME ERROR HERE//////////////////
     //    #ifdef Q_WS_X11
     //        _videoWidget = new QX11EmbedContainer(frame);
     //    #else
@@ -113,7 +114,6 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         toSend += n.getuniqid();
         stream.send(remoteIP, 45459, toSend);
     }
-
     currIP = "Local"; //Change to local
     qDebug() << ipaddress;
 
@@ -166,6 +166,11 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     _isPlaying=true;
     emit play();
 
+    //////////////////////////////////////////Links to preview
+    oldtrack =0;
+    emit playingalbumart();
+
+    //////////////////////////////////////////////////////////
     /*if(remote)
     {
         if(libvlc_media_player_is_playing)
@@ -219,7 +224,7 @@ void Player::playControl()
 {
     if(libvlc_media_player_get_media(_mp) == NULL)
     {
-        emit getFirstSong();
+        emit getFirstSong(0);
     }
 
     if(currIP == "127.0.0.1")
@@ -228,12 +233,16 @@ void Player::playControl()
         tosend += "STREAMBERRY|PAUSE|";
         tosend += n.getuniqid();
         stream.send(remoteIP, 45459, tosend);
-    } else {
+    }
+    else
+    {
         if(libvlc_media_player_is_playing(_mp))
         {
             libvlc_media_player_set_pause(_mp, 1);
             emit paused();
-        } else {
+        }
+        else
+        {
             libvlc_media_player_play(_mp);
             emit play();
         }
@@ -262,15 +271,22 @@ void Player::sliderUpdate()
     }
 
     int sliderPos;
+    float pos;
     if(currIP == "127.0.0.1")
     {
         currSecs += (float)poller->interval()/1000;
-        float pos = currSecs/fileLength;
-        sliderPos = (int)(pos * (float)(POSITION_RESOLUTION));
-    } else {
-        float pos=libvlc_media_player_get_position (_mp);
-        sliderPos=(int)(pos * (float)(POSITION_RESOLUTION));
+        pos = currSecs/fileLength;
     }
+    else
+    {
+
+        pos=libvlc_media_player_get_position (_mp);
+        setFileLength( libvlc_media_player_get_length(_mp) );
+    }
+    sliderPos=(int)(pos * (float)(POSITION_RESOLUTION));
+    if(pos != 0)
+        emit settrackprogress(pos);
+
 
     if(libvlc_media_player_get_state(_mp) == 6)//Stop if ended
     {
@@ -288,5 +304,22 @@ bool Player::isPlaying()
 
 void Player::setFileLength(int secs)
 {
-    fileLength = secs;
+    if(secs != 0 && oldtrack == 0)
+    {
+        fileLength = secs;
+        oldtrack = 1;
+        emit settracklength(fileLength);
+    }
+}
+
+void Player::stopPlayer()
+{
+//    qDebug()<<"player stopped";
+// Almost working stopping at the end of playlist. The progress is not going to 0.
+    libvlc_media_player_stop (_mp);
+    _isPlaying=false;
+    emit setAlbumArtDefault();
+    emit paused();
+    changePosition(0);
+    sliderUpdate();
 }
