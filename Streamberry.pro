@@ -10,6 +10,7 @@ mac:QMAKE_LFLAGS += -framework Cocoa
 
 QT += core gui network sql
 
+#LIBS += -Wl,-Bdynamic -lvlc
 LIBS += -lvlc
 mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
 mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
