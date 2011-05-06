@@ -528,18 +528,21 @@ void LibraryController::playplaylist(QString playlistname)
   if(playingdata!=NULL && playingdata != currentdata)
     delete playingdata;
   playingdata = data;
-  QSqlRecord record = playingdata->at(0);
-  tablewidget->selectRow(0);
-  emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
-  qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
-  if(record.field("UniqueID").value().toString() != "Local")
+  if( !playingdata->isEmpty() )
   {
-    QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-    player.playFile(record.field("FilePath").value().toString(), record.field("UniqueID").value().toString(), ipaddress);
-  } else {
-    player.playFile(record.field("FilePath").value().toString());
+    QSqlRecord record = playingdata->at(0);
+    tablewidget->selectRow(0);
+    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+    qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
+    if(record.field("UniqueID").value().toString() != "Local")
+    {
+      QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+      player.playFile(record.field("FilePath").value().toString(), record.field("UniqueID").value().toString(), ipaddress);
+    } else {
+      player.playFile(record.field("FilePath").value().toString());
+    }
+    makeShuffleList(-1);
   }
-  makeShuffleList(-1);
 }
 
 void LibraryController::playsmartplaylist(QString filter)
@@ -806,8 +809,9 @@ void LibraryController::goForward()
 
 void LibraryController::pushAllView()
 {
-  if(viewqueue[viewqueueindex].playlist!="" || viewqueue[viewqueueindex].smarttext != "")
+  if(viewqueue[viewqueueindex].playlist!="" || viewqueue[viewqueueindex].smarttext != "" || viewqueue[viewqueueindex].videoview != 0)
   {
+
     while(viewqueueindex<viewqueue.size()-1)
       viewqueue.removeLast();
 
@@ -820,6 +824,7 @@ void LibraryController::pushAllView()
     viewqueueindex++;
     emit setSearchBoxText("");
     tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+    updateLibrary();
   }
 
 }
