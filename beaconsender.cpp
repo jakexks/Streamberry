@@ -35,7 +35,7 @@ void BeaconSender::send(bool online)
     if(online) sendme.append(db.lastUpdate("Local"));
     sendme.append("|");
     sendme.append(myip);
-    qDebug() << "sending " + sendme;
+    //qDebug() << "sending " + sendme;
     QByteArray datagram = sendme.toUtf8();
     //send the beacon
     udpsocket->writeDatagram(datagram.data(), datagram.size(), QHostAddress::Broadcast, 45454);
