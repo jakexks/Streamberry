@@ -153,6 +153,9 @@ QMenuBar* MainWindow::createMenuBar()
   menus[2] = menubar->addMenu("Controls");
   menus[4] = menubar->addMenu("Window");
 
+#ifdef Q_WS_MAC
+  menubar->addMenu("Help");
+#endif
 
   //FILE MENU/////////////////////////////////////////////////////////////////
   actions[0] = menus[0]->addAction("Exit");
@@ -245,6 +248,7 @@ QMenuBar* MainWindow::createMenuBar()
 void MainWindow::resizeEvent(QResizeEvent *resize)
 {
   QSize size = resize->size();
+
   if(isMaximized())
     db.storeSetting("isMaximised", "1");
   else
@@ -255,6 +259,8 @@ void MainWindow::resizeEvent(QResizeEvent *resize)
     db.storeSetting("windowSize", winsize);
     db.storeSetting("isMaximised", "0");
   }
+
+  player.resizeVideo();
   sidebarcontroller->updateplaylistbar( (int)(size.height()/89.25) );
 }
 

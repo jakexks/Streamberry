@@ -62,6 +62,7 @@ public:
     void setFileLength(int secs);
     void stopPlayer();
     QWidget* initVid();
+    void resizeVideo();
     Player();
     ~Player();
 

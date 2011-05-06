@@ -79,6 +79,7 @@ QWidget* Player::initVid()
 
 #ifdef Q_OS_MAC
     _videoWidget = new QMacCocoaViewContainer(videoView, frame);
+    _videoWidget->setFixedSize(frame->size());
     _videoWidget->show();
 #endif
 
@@ -91,6 +92,7 @@ QWidget* Player::initVid()
     //    #else
     //        _videoWidget=new QFrame(frame);
     //    #endif
+
     return frame;
 }
 
@@ -319,8 +321,8 @@ void Player::setFileLength(int secs)
 
 void Player::stopPlayer()
 {
-//    qDebug()<<"player stopped";
-// Almost working stopping at the end of playlist. The progress is not going to 0.
+    //    qDebug()<<"player stopped";
+    // Almost working stopping at the end of playlist. The progress is not going to 0.
     libvlc_media_player_stop (_mp);
     _isPlaying=false;
     emit setAlbumArtDefault();
@@ -342,4 +344,11 @@ bool Player::eventFilter(QObject *obj, QEvent *event)
     else {
         return Player::eventFilter(obj, event);
     }
+    
+void Player::resizeVideo()
+{
+    //only necessary on Mac as other OSs resize
+#if defined(Q_OS_MAC)
+    _videoWidget->setFixedSize(frame->size());
+#endif
 }
