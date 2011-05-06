@@ -33,7 +33,7 @@ void StreamFile::addStream(QString fileName, QString compID, QString ipAddress)
     sout += ipAddress.toUtf8();
     sout += "}}";
     libvlc_vlm_add_broadcast(_vlcinstance, compID.toAscii(), fileName.toUtf8(),
-                                sout.toUtf8(), 0, NULL, TRUE, TRUE);
+                                sout.toUtf8(), 0, NULL, TRUE, FALSE);
     libvlc_vlm_play_media(_vlcinstance, compID.toUtf8());
 
 }

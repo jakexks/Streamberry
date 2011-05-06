@@ -16,7 +16,7 @@ Player::Player()
         //"-I", "dummy", /* Don't use any interface */
         //"--ignore-config", /* Don't use VLC's config */
         /*"--extraintf=logger", //log anything*/
-        //"--verbose=2",
+        //"--verbose=1",
         //"--aout=pulse",
         //"--noaudio"
         //"--plugin-path=C:\\vlc-0.9.9-win32\\plugins\\"
@@ -233,6 +233,15 @@ void Player::playControl()
         tosend += "STREAMBERRY|PAUSE|";
         tosend += n.getuniqid();
         stream.send(remoteIP, 45459, tosend);
+        if(_isPlaying==true)
+        {
+            _isPlaying=false;
+            emit paused();
+        }
+        else {
+            _isPlaying=true;
+            emit play();
+        }
     }
     else
     {
@@ -274,12 +283,15 @@ void Player::sliderUpdate()
     float pos;
     if(currIP == "127.0.0.1")
     {
-        currSecs += (float)poller->interval()/1000;
+        if(_isPlaying==true)
+        {
+            //currSecs += (float)poller->interval()/1000;
+            currSecs += (float)poller->interval();
+        }
         pos = currSecs/fileLength;
     }
     else
     {
-
         pos=libvlc_media_player_get_position (_mp);
         setFileLength( libvlc_media_player_get_length(_mp) );
     }
@@ -287,11 +299,16 @@ void Player::sliderUpdate()
     if(pos != 0)
         emit settrackprogress(pos);
 
-
     if(libvlc_media_player_get_state(_mp) == 6)//Stop if ended
     {
         libvlc_media_player_stop(_mp);
         //TODO: Check if on loop
+        emit getNextFile();
+    }
+
+    libvlc_media_release(curMedia);
+    if(sliderPos>5760)
+    {
         emit getNextFile();
     }
     sliderChanged(sliderPos);
@@ -306,7 +323,11 @@ void Player::setFileLength(int secs)
 {
     if(secs != 0 && oldtrack == 0)
     {
-        fileLength = secs;
+        if(currIP == "127.0.0.1")
+        {
+            secs = secs*1000;
+        }
+        fileLength = secs + 2;
         oldtrack = 1;
         emit settracklength(fileLength);
     }
