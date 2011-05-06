@@ -298,8 +298,11 @@ void Player::sliderUpdate()
     if(libvlc_media_player_get_state(_mp) == 6)//Stop if ended
     {
         libvlc_media_player_stop(_mp);
+
         //TODO: Check if on loop
         emit getNextFile();
+        sliderChanged(0);
+        return;
     }
     sliderChanged(sliderPos);
 }
@@ -327,8 +330,6 @@ void Player::stopPlayer()
     _isPlaying=false;
     emit setAlbumArtDefault();
     emit paused();
-    changePosition(0);
-    sliderUpdate();
 }
 
 bool Player::eventFilter(QObject *obj, QEvent *event)
@@ -344,6 +345,7 @@ bool Player::eventFilter(QObject *obj, QEvent *event)
     else {
         return Player::eventFilter(obj, event);
     }
+}
     
 void Player::resizeVideo()
 {

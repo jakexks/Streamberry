@@ -27,6 +27,7 @@ public:
     void pushNormalPlaylist(QString name);
     void pushSmartPlaylist(QString name, QString filtertext);
     void pushAllView();
+    void pushVideoView();
     int getCurrentViewType();
     QString getCurrentPlaylistName();
 signals:
@@ -36,6 +37,7 @@ signals:
     void pausePlayer();
     void rolldefault();
     void rollAlbum();
+    void selectVideo();
 
 public slots:
     void sortLibrary();
@@ -62,7 +64,6 @@ public slots:
 
 private:
     void fillData(QList<QSqlRecord>* values);
-    void pushVideoView();
     int randInt(int low, int high);
     Utilities& util;
     //void ActualDrag(QTableWidgetItem* item, const QPoint startPos);
