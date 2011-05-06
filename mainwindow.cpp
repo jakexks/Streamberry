@@ -163,7 +163,7 @@ QMenuBar* MainWindow::createMenuBar()
   QObject::connect(actions[0], SIGNAL(triggered()), &app, SLOT(quit()) );
 
   //EDIT MENU//
-  actions[21] = menus[1]->addAction("New Smart Playlist");
+  actions[21] = menus[1]->addAction("New Filter Playlist");
   QObject::connect(actions[21], SIGNAL(triggered()), this, SLOT(menuNewPlaylist()));
   actions[22] = menus[1]->addAction("New Playlist");
   QObject::connect(actions[22], SIGNAL(triggered()), this, SLOT(menuNewSmartPlaylist())); //THIS LOOKS WRONG BUT IT'S RIGHT

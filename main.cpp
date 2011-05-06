@@ -74,6 +74,8 @@ int main(int argc, char *argv[])
     br.moveToThread(&brthread);
     brthread.start();
 
+
+
     //this is made in main to fix bug on Mac
     QMenuBar* menu = new QMenuBar(0);
 

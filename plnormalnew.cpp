@@ -4,6 +4,7 @@
 #include "playlist.h"
 #include <utilities.h>
 #include <database.h>
+#include "maxplaylists.h"
 
 
 PLNormalNew::PLNormalNew(Utilities* util, Database& datab): db(datab)
@@ -34,7 +35,12 @@ PLNormalNew::PLNormalNew(Utilities* util, Database& datab): db(datab)
   layout.addWidget(accept, 3, 0, Qt::AlignHCenter);
   layout.setColumnMinimumWidth(0, 180);
 
-  dialog->exec();
+  if(Utilities::getCount() > 10)
+  {
+    MaxPlaylists temp(util, db);
+  }
+  else
+    dialog->exec();
 }
 
 void PLNormalNew::btnClicked()
@@ -47,5 +53,6 @@ void PLNormalNew::btnClicked()
     newplaylist.SavePlaylist();
     dialog->accept();
   }
+  Utilities::incCount();
   dialog->accept();
 }

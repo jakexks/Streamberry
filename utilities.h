@@ -13,10 +13,17 @@ public:
     QString getColor(int inputVar);
     static QString intToTime(int seconds);
 
+    static int getCount();
+    static void incCount();
+    static void setCount(int newc);
+
+
+
 private:
     QString makeStylesheet();
     QString execpath;
     QString stylesheet;
+    static int PLcount;
 };
 
 #endif // UTILITIES_H

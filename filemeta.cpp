@@ -79,6 +79,7 @@ QList<QString> FileMeta::printMeta(QString file)
 
 
     meta.append(currmeta.fromUtf8(libvlc_media_get_meta(mediaInstance, libvlc_meta_TrackNumber)));
+    libvlc_audio_toggle_mute(mediaPlayerInstance);
     libvlc_media_player_stop (mediaPlayerInstance);
     libvlc_media_player_release(mediaPlayerInstance);
     libvlc_media_release(mediaInstance);
