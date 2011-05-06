@@ -74,6 +74,9 @@ public slots:
     void sliderUpdate();
     void test();
 
+protected:
+     bool eventFilter(QObject *obj, QEvent *ev);
+
 signals:
     void sliderChanged(int newValue);
     void getNextFile();

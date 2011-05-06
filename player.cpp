@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QPushButton>
 #include <QMacCocoaViewContainer>
+#include <QEvent>
 
 #ifdef Q_OS_MAC
 #include <Cocoa/Cocoa.h>
@@ -13,6 +14,7 @@ Player::Player()
 {
     currIP = "";
     const char * const vlc_args[] = {
+        //"--vout-event=0",
         //"-I", "dummy", /* Don't use any interface */
         //"--ignore-config", /* Don't use VLC's config */
         /*"--extraintf=logger", //log anything*/
@@ -79,6 +81,9 @@ QWidget* Player::initVid()
     _videoWidget = new QMacCocoaViewContainer(videoView, frame);
     _videoWidget->show();
 #endif
+
+    frame->installEventFilter(this);
+
     //frame->show();
     //////////////////////////////DOUBLE FRAME ERROR HERE//////////////////
     //    #ifdef Q_WS_X11
@@ -105,7 +110,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     //Check if playing already, if remote, send stop
     //set up address if remote, send command to the other
     //if localplayback, give filename, if remote, set filename to 127.0.0.1
-    //give filename normally
+    //give filename normall
 
     if(currIP == "127.0.0.1")
     {
@@ -164,8 +169,8 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     libvlc_media_release (_m);
     libvlc_media_player_play (_mp);
     _isPlaying=true;
-    emit play();
 
+    emit play();
     //////////////////////////////////////////Links to preview
     oldtrack =0;
     emit playingalbumart();
@@ -322,4 +327,19 @@ void Player::stopPlayer()
     emit paused();
     changePosition(0);
     sliderUpdate();
+}
+
+bool Player::eventFilter(QObject *obj, QEvent *event)
+{
+    if(obj == frame) {
+        if(event->type() == QEvent::MouseButtonDblClick) {
+            qDebug() << "double clicked";
+            //Goes here
+
+        }
+        return false;
+    }
+    else {
+        return Player::eventFilter(obj, event);
+    }
 }
