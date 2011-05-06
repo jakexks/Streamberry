@@ -344,6 +344,7 @@ bool Player::eventFilter(QObject *obj, QEvent *event)
     else {
         return Player::eventFilter(obj, event);
     }
+}
     
 void Player::resizeVideo()
 {
