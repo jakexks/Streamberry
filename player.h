@@ -62,6 +62,7 @@ public:
     void setFileLength(int secs);
     void stopPlayer();
     QWidget* initVid();
+    void resizeVideo();
     Player();
     ~Player();
 
@@ -73,6 +74,9 @@ public slots:
 //    void muteAudio();
     void sliderUpdate();
     void test();
+
+protected:
+     bool eventFilter(QObject *obj, QEvent *ev);
 
 signals:
     void sliderChanged(int newValue);

@@ -10,6 +10,7 @@ mac:QMAKE_LFLAGS += -framework Cocoa
 
 QT += core gui network sql
 
+#LIBS += -Wl,-Bdynamic -lvlc
 LIBS += -lvlc
 mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
 mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
@@ -59,7 +60,8 @@ SOURCES +=  main.cpp\
             plnormalnew.cpp \
             addto.cpp \
             firstrunwizard.cpp \
-    previewpane.cpp
+    previewpane.cpp \
+    albumartgetter.cpp
 
 mac:OBJECTIVE_SOURCES += player.mm
 win32:SOURCES += player.cpp
@@ -108,3 +110,6 @@ HEADERS +=  mainwindow.h\
 
 HEADERS += \
     previewpane.h
+
+HEADERS += \
+    albumartgetter.h

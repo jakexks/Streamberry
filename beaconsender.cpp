@@ -10,7 +10,9 @@ BeaconSender::BeaconSender(Database &datab): db(datab)
     networking n;
     myip = n.getmyip();
     timer = new QTimer(this);
+    //connect the timer signal to the send slot
     connect(timer, SIGNAL(timeout()), this, SLOT(send()));
+    //tell the timer to fire every 5 seconds
     timer->start(5000);
 }
 
@@ -18,6 +20,7 @@ BeaconSender::BeaconSender(Database &datab): db(datab)
 void BeaconSender::send(bool online)
 {
     QUdpSocket *udpsocket = new QUdpSocket();
+    //bind the UDP socket to the port used for beacons
     udpsocket->bind(QHostAddress::Broadcast, 45454, QUdpSocket::ShareAddress);
     networking n;
     QString sendme = "";
@@ -28,12 +31,13 @@ void BeaconSender::send(bool online)
         sendme.append("STREAMOFFLINE|");
     sendme.append(n.getuniqid());
     sendme.append("|");
-    // Gets the timestamp from the database, could be changed to get the timestamp from constructor and a slot for updates
+    //get the timestamp from the database and add it to the beacon if not going offline
     if(online) sendme.append(db.lastUpdate("Local"));
     sendme.append("|");
     sendme.append(myip);
-    qDebug() << "sending " + sendme;
+    //qDebug() << "sending " + sendme;
     QByteArray datagram = sendme.toUtf8();
+    //send the beacon
     udpsocket->writeDatagram(datagram.data(), datagram.size(), QHostAddress::Broadcast, 45454);
     delete udpsocket;
 }
@@ -43,5 +47,6 @@ void BeaconSender::sendOfflineBeacon()
 {
     timer->stop();
     send(false);
+    //kill the thread
     exit(0);
 }

@@ -12,18 +12,22 @@ class BeaconReceiver : public QObject
 {
     Q_OBJECT
 public:
+    //Constructs a beacon receiver object, takes a reference to the database
     BeaconReceiver(Database &datab);
 signals:
+    //Indicates that a library is out of sync and contains the information needed to update
     void getLibrary(QHostAddress theirip, QString theirid, QString dblastupdate);
 private slots:
+    //Processes any incoming streambeacons
     void processPendingDatagrams();
+    //Removes all machines that have timed out
     void removeOfflineMachines();
-protected:
 private:
-    // Sets up the hash table for storing connected machines, the unique ID of the machine is used as the hash key and a timestamp of when the last beacon was received is the data
+    //Creates a hash table that maps a string to an int
     QHash<QString, int> onlinemachines;
     Database &db;
     QString myid;
+    //Checks that the BeaconReceiver knows the machine is online and that we have the most recent version of their library
     void checkID(QString id, QString dbtimestamp, QHostAddress theirip);
     QUdpSocket *udpsocket;
     QTimer *timer;

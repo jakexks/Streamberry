@@ -32,6 +32,12 @@ int main(int argc, char *argv[])
     QString execpath(argv[0]);
     execpath.resize(execpath.lastIndexOf('/'));
 #endif
+    QString albumartdir = CrossPlatform::getAppDataPath();
+    albumartdir += "albumart/";
+    if(!QDir(albumartdir).exists())
+    {
+        QDir().mkdir(albumartdir);
+    }
 
     Utilities util(execpath);
     Database db;

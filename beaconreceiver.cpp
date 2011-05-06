@@ -21,16 +21,18 @@ BeaconReceiver::BeaconReceiver(Database &datab) : db(datab)
 
     connect(this, SIGNAL(getLibrary(QHostAddress,QString,QString)), lr, SLOT(getLibrary(QHostAddress,QString,QString)));
 
-    // Creates a timer that tells the object when to check for timeouts
+    //Creates a timer that tells the object when to check for timeouts
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(removeOfflineMachines()));
     timer->start(10000);
+
+    //Creates a UDP socket and sets it to listen for streambeacons
     udpsocket = new QUdpSocket(this);
     udpsocket->bind(45454, QUdpSocket::ShareAddress);
     connect(udpsocket, SIGNAL(readyRead()), this, SLOT(processPendingDatagrams()));
 }
 
-// Gets a datagram from the UDPsocket, decodes it and checks that it belongs to streamberry, takes appropriate action if so
+//Gets a datagram from the UDPsocket, decodes it and checks that it belongs to streamberry, takes appropriate action if so
 void BeaconReceiver::processPendingDatagrams()
 {
     while (udpsocket->hasPendingDatagrams())
@@ -41,28 +43,28 @@ void BeaconReceiver::processPendingDatagrams()
             datagram.resize(udpsocket->pendingDatagramSize());
             udpsocket->readDatagram(datagram.data(), datagram.size());
             QString datastring = (QString) datagram.data();
-            qDebug() << "received " + datastring;
+            //qDebug() << "received " + datastring;
             networking n;
             QString id = n.parsebeacon(datastring, networking::uid);
-            // If normal beacon then check sender is in the hashtable and check their library
+            //If normal beacon then check sender is in the hashtable and check their library
             if (n.parsebeacon(datastring, networking::beaconHeader) == "STREAMBEACON")
             {
-                // Checks that beacon is not our own
+                //Checks that beacon is not our own
                 if (id != myid)
                 {
                     QString dbtimestamp = n.parsebeacon(datastring, networking::timestamp);
                     checkID(id, dbtimestamp, QHostAddress(n.parsebeacon(datastring, networking::ip)));
                 }
             }
-            // If offline beacon
+            //If offline beacon
             else if (n.parsebeacon(datastring, networking::beaconHeader) == "STREAMOFFLINE")
             {
                 if (id != myid)
                 {
-                    // Sets the machine offline in the database and removes it from the hashtable
+                    //Sets the machine offline in the database and removes it from the hashtable
                     db.setOnline(id, "0");
                     onlinemachines.remove(id);
-                    qDebug() << id + " is offline";
+                    //qDebug() << id + " is offline";
                 }
             }
         }
@@ -73,7 +75,7 @@ void BeaconReceiver::processPendingDatagrams()
     }
 }
 
-// Checks that the BeaconReceiver knows the machine is online and that we have the most recent version of their library
+//Checks that the BeaconReceiver knows the machine is online and that we have the most recent version of their library
 void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress theirip)
 {
     try
@@ -92,38 +94,36 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress their
         {
             getLibrary(theirip, id, lasttimestamp);
         }
-        // If the machine has been seen before, but just come online then tell the database that it is online
+        //If the machine has been seen before, but just come online then tell the database that it is online
         else if(onlinemachines.value(id) == 0)
         {
-            qDebug() << "setting machine online, lasttimestamp =" << lasttimestamp;
+            //qDebug() << "setting machine online, lasttimestamp =" << lasttimestamp;
             db.setOnline(id, "1");
         }
         db.setIPaddress(id, theirip.toString());
     }
     catch (SBException e)
     {
-        // Adds machine to database as it has not been seen before
-        //TODO: enter real user name rather than Gary OR get the library requester to enter username as this would be more efficient
-//        QString username = "Gary Oak";
-//        db.makeUser(dbtimestamp, QString::number(Utilities::getCurrentTimestamp()), id, username);
-//        getLibrary(theirip, id, dbtimestamp);
+        qDebug() << e.getException();
     }
+    //Add/update the online machines table
     onlinemachines.insert(id, Utilities::getCurrentTimestamp());
 }
 
-// Iterates over the hashtable of online machines and checks for timeouts
+//Iterates over the hashtable of online machines and checks for timeouts
 void BeaconReceiver::removeOfflineMachines()
 {
     QHashIterator<QString, int> i(onlinemachines);
     while (i.hasNext())
     {
         i.next();
+        //If we haven't received a beacon from a machine in over 12 seconds, assume timeout
         if (Utilities::getCurrentTimestamp() - i.value() > 12)
         {
-            // Set machine offline in the database
+            //Set machine offline in the database
             db.setOnline(i.key(), "0");
-            qDebug() << i.key() + " has timed out";
-            // Remove the machine's ID from the hashtable of online machines
+            //qDebug() << i.key() + " has timed out";
+            //Remove the machine's ID from the hashtable of online machines
             onlinemachines.remove(i.key());
         }
     }
