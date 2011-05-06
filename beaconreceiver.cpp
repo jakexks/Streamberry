@@ -43,7 +43,7 @@ void BeaconReceiver::processPendingDatagrams()
             datagram.resize(udpsocket->pendingDatagramSize());
             udpsocket->readDatagram(datagram.data(), datagram.size());
             QString datastring = (QString) datagram.data();
-            //qDebug() << "received " + datastring;
+            qDebug() << "received " + datastring;
             networking n;
             QString id = n.parsebeacon(datastring, networking::uid);
             //If normal beacon then check sender is in the hashtable and check their library
@@ -97,7 +97,7 @@ void BeaconReceiver::checkID(QString id, QString dbtimestamp, QHostAddress their
         //If the machine has been seen before, but just come online then tell the database that it is online
         else if(onlinemachines.value(id) == 0)
         {
-            //qDebug() << "setting machine online, lasttimestamp =" << lasttimestamp;
+            qDebug() << "setting machine online, lasttimestamp =" << lasttimestamp;
             db.setOnline(id, "1");
         }
         db.setIPaddress(id, theirip.toString());

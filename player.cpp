@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QPushButton>
 #include <QMacCocoaViewContainer>
+#include <QEvent>
 
 #ifdef Q_OS_MAC
 #include <Cocoa/Cocoa.h>
@@ -13,10 +14,11 @@ Player::Player()
 {
     currIP = "";
     const char * const vlc_args[] = {
+        //"--vout-event=0",
         //"-I", "dummy", /* Don't use any interface */
         //"--ignore-config", /* Don't use VLC's config */
         /*"--extraintf=logger", //log anything*/
-        //"--verbose=2",
+        //"--verbose=1",
         //"--aout=pulse",
         //"--noaudio"
         //"--plugin-path=C:\\vlc-0.9.9-win32\\plugins\\"
@@ -77,8 +79,12 @@ QWidget* Player::initVid()
 
 #ifdef Q_OS_MAC
     _videoWidget = new QMacCocoaViewContainer(videoView, frame);
+    _videoWidget->setFixedSize(frame->size());
     _videoWidget->show();
 #endif
+
+    frame->installEventFilter(this);
+
     //frame->show();
     //////////////////////////////DOUBLE FRAME ERROR HERE//////////////////
     //    #ifdef Q_WS_X11
@@ -86,6 +92,7 @@ QWidget* Player::initVid()
     //    #else
     //        _videoWidget=new QFrame(frame);
     //    #endif
+
     return frame;
 }
 
@@ -105,7 +112,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     //Check if playing already, if remote, send stop
     //set up address if remote, send command to the other
     //if localplayback, give filename, if remote, set filename to 127.0.0.1
-    //give filename normally
+    //give filename normall
 
     if(currIP == "127.0.0.1")
     {
@@ -164,8 +171,8 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     libvlc_media_release (_m);
     libvlc_media_player_play (_mp);
     _isPlaying=true;
-    emit play();
 
+    emit play();
     //////////////////////////////////////////Links to preview
     oldtrack =0;
     emit playingalbumart();
@@ -233,6 +240,15 @@ void Player::playControl()
         tosend += "STREAMBERRY|PAUSE|";
         tosend += n.getuniqid();
         stream.send(remoteIP, 45459, tosend);
+        if(_isPlaying==true)
+        {
+            _isPlaying=false;
+            emit paused();
+        }
+        else {
+            _isPlaying=true;
+            emit play();
+        }
     }
     else
     {
@@ -274,12 +290,15 @@ void Player::sliderUpdate()
     float pos;
     if(currIP == "127.0.0.1")
     {
-        currSecs += (float)poller->interval()/1000;
+        if(_isPlaying==true)
+        {
+            //currSecs += (float)poller->interval()/1000;
+            currSecs += (float)poller->interval();
+        }
         pos = currSecs/fileLength;
     }
     else
     {
-
         pos=libvlc_media_player_get_position (_mp);
         setFileLength( libvlc_media_player_get_length(_mp) );
     }
@@ -287,11 +306,19 @@ void Player::sliderUpdate()
     if(pos != 0)
         emit settrackprogress(pos);
 
-
     if(libvlc_media_player_get_state(_mp) == 6)//Stop if ended
     {
         libvlc_media_player_stop(_mp);
+
         //TODO: Check if on loop
+        emit getNextFile();
+        sliderChanged(0);
+        return;
+    }
+
+    libvlc_media_release(curMedia);
+    if(sliderPos>5760)
+    {
         emit getNextFile();
     }
     sliderChanged(sliderPos);
@@ -306,7 +333,11 @@ void Player::setFileLength(int secs)
 {
     if(secs != 0 && oldtrack == 0)
     {
-        fileLength = secs;
+        if(currIP == "127.0.0.1")
+        {
+            secs = secs*1000;
+        }
+        fileLength = secs + 2;
         oldtrack = 1;
         emit settracklength(fileLength);
     }
@@ -314,12 +345,33 @@ void Player::setFileLength(int secs)
 
 void Player::stopPlayer()
 {
-//    qDebug()<<"player stopped";
-// Almost working stopping at the end of playlist. The progress is not going to 0.
+    //    qDebug()<<"player stopped";
+    // Almost working stopping at the end of playlist. The progress is not going to 0.
     libvlc_media_player_stop (_mp);
     _isPlaying=false;
     emit setAlbumArtDefault();
     emit paused();
-    changePosition(0);
-    sliderUpdate();
+}
+
+bool Player::eventFilter(QObject *obj, QEvent *event)
+{
+    if(obj == frame) {
+        if(event->type() == QEvent::MouseButtonDblClick) {
+            qDebug() << "double clicked";
+            //Goes here
+
+        }
+        return false;
+    }
+    else {
+        return Player::eventFilter(obj, event);
+    }
+}
+    
+void Player::resizeVideo()
+{
+    //only necessary on Mac as other OSs resize
+#if defined(Q_OS_MAC)
+    _videoWidget->setFixedSize(frame->size());
+#endif
 }
