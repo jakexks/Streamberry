@@ -60,14 +60,14 @@ void LibraryRequester::receiveRequest(QString message)
         QList<QString> queries = query.split("\x1D");
         try
         {
-//            db.query("BEGIN;");
+            db.startBulk();
             for(int i = 0; i < queries.length(); i++)
             {
                 QString tempq = queries.at(i);
                 tempq.resize(tempq.lastIndexOf(';')+1);
                 db.query(tempq);
             }
-//            db.query("COMMIT;");
+            db.endBulk();
             db.setOnline(message.split("|").at(1),"1");
         }
         catch(SBException e)

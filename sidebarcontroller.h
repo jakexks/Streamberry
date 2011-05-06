@@ -19,22 +19,23 @@ public:
     void updateplaylistbar(int i);
     PreviewPane* getPreviewPane();
 
-signals:
-  void playthis(QList<QSqlRecord>*);
-  void displayAllMedia();
-  void customContextMenuRequested ( const QPoint & pos  );
-  void playsmartplaylist(QString);
-  void playplaylist(QString);
-  void rolledover(QString);
-  void rolldefault();
 
-  public slots:
+signals:
+    void playthis(QList<QSqlRecord>*);
+    void displayAllMedia();
+    void customContextMenuRequested ( const QPoint & pos  );
+    void playsmartplaylist(QString);
+    void playplaylist(QString);
+    void rolledover(QString);
+    void rolldefault();
+
+public slots:
     void Clicked(int row, int column);
     void DoubleClicked(int row, int column);
     void ShowContextMenu(const QPoint&);
     void setSelectedPlaylist(QString);
     void RolloverCell(int,int);
-
+    void setVideoSelected();
 
 private:
     QWidget* widget;

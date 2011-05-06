@@ -102,6 +102,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(librarycontroller, SIGNAL(setSelectedPlaylist(QString)), sidebarcontroller, SLOT(setSelectedPlaylist(QString)));
   QObject::connect(playbackcontroller, SIGNAL(sPress()), librarycontroller, SLOT(shuffleSlot()));
   QObject::connect(playbackcontroller, SIGNAL(rPress(bool, bool)), librarycontroller, SLOT(repeatSlot(bool, bool)));
+  QObject::connect(librarycontroller, SIGNAL(selectVideo()), sidebarcontroller, SLOT(setVideoSelected()));
 
   PreviewPane* preview = sidebarcontroller->getPreviewPane();
   QObject::connect(&player, SIGNAL(playingalbumart()), preview, SLOT(displayAlbumArt()));  ///CHANGE THIS ONCE ALBUMART WORKS
