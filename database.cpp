@@ -73,7 +73,7 @@ void Database::createDatabase(QString &path)
   sql[4] += QString::number(Utilities::getCurrentTimestamp());
   sql[4] += "\", \"0\", \"Local\", \"Local\", 1);";
   sql[5] = "DROP TABLE IF EXISTS \"Settings\";";
-  sql[6] = "CREATE TABLE \"Settings\" (\"Name\" VARCHAR(10) UNIQUE,\"Value\" INTEGER);";
+  sql[6] = "CREATE TABLE \"Settings\" (\"Name\" VARCHAR(10) UNIQUE,\"Value\" VARCHAR(20));";
   sql[7] = "DROP TABLE IF EXISTS \"TrackedFolders\";";
   sql[8] = "CREATE TABLE \"TrackedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";
   sql[9] = "CREATE TABLE \"ExcludedFolders\" (\"Folderpath\" VARCHAR PRIMARY KEY  NOT NULL  UNIQUE);";

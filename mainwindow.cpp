@@ -153,6 +153,9 @@ QMenuBar* MainWindow::createMenuBar()
   menus[2] = menubar->addMenu("Controls");
   menus[4] = menubar->addMenu("Window");
 
+#ifdef Q_WS_MAC
+  menubar->addMenu("Help");
+#endif
 
   //FILE MENU/////////////////////////////////////////////////////////////////
   actions[0] = menus[0]->addAction("Exit");
