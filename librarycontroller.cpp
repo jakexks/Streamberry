@@ -21,8 +21,6 @@
 LibraryController::LibraryController(Utilities& utilities, Database& datab, Player& p, SBSearchBar* searchbar)
     : util(utilities), db(datab), player(p)
 {
-
-
     curheaders = NULL;
     currentlyplaying = -1;
     musicvideofilter = 2;
@@ -55,6 +53,9 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     }
     setHeaders(headers, 3);
     widget = new QWidget();
+    widget->setObjectName("MainLibraryWidget");
+    widget->setStyleSheet("#MainLibraryWidget { background:black; }");
+
     container = new QGridLayout(widget);
     container->setMargin(0);
     curview = NULL;
@@ -63,7 +64,6 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     makeWidget();
 
     QWidget* playerwind = player.initVid();
-
 
     allwidgets = new QStackedWidget();
     allwidgets->addWidget(curview);
@@ -78,14 +78,12 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     repeat=0;
     numberiterator=-1;
 
-
     trackmenu = new TrackContext(&db);
 
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
     QObject::connect(&player, SIGNAL(getFirstSong(int )), this, SLOT(itemClicked(int)));
     QObject::connect(searchbar, SIGNAL(newSearchString(QString)), this, SLOT(setSearchText(QString)));
     QObject::connect(&db, SIGNAL(onlineStatusChange()), this, SLOT(updateLibrary()));
-
 }
 
 QWidget* LibraryController::getWidget()
@@ -458,8 +456,11 @@ void LibraryController::updateLibrary()
 {
     if(tablewidget!=NULL)
     {
-        QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+" "+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
-        fillData(result);
+        if(viewqueue[viewqueueindex].videoview!=1)
+        {
+            QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+" "+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
+            fillData(result);
+        }
 
         if(allwidgets!=NULL && allwidgets->count()!=0)
         {
@@ -854,7 +855,7 @@ void LibraryController::pushVideoView()
     viewqueue.append(item);
     viewqueueindex++;
     emit setSearchBoxText("");
-    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+    //    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
     updateLibrary();
 }
 

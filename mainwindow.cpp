@@ -248,6 +248,7 @@ QMenuBar* MainWindow::createMenuBar()
 void MainWindow::resizeEvent(QResizeEvent *resize)
 {
   QSize size = resize->size();
+
   if(isMaximized())
     db.storeSetting("isMaximised", "1");
   else
@@ -258,6 +259,8 @@ void MainWindow::resizeEvent(QResizeEvent *resize)
     db.storeSetting("windowSize", winsize);
     db.storeSetting("isMaximised", "0");
   }
+
+  player.resizeVideo();
   sidebarcontroller->updateplaylistbar( (int)(size.height()/89.25) );
 }
 
