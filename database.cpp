@@ -952,9 +952,9 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
       {
         final += "DELETE FROM Lib";
         final += uniqueID;
-        final += " WHERE Filepath='";
+        final += " WHERE Filepath=\"";
         final += result.record().value("Filepath").toString();
-        final += "'; \x1D";
+        final += "\"; \x1D";
       } else {
         final += "INSERT OR REPLACE INTO Lib";
         final += uniqueID;
