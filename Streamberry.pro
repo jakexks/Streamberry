@@ -61,7 +61,8 @@ SOURCES +=  main.cpp\
             addto.cpp \
             firstrunwizard.cpp \
     previewpane.cpp \
-    albumartgetter.cpp
+    albumartgetter.cpp \
+    maxplaylists.cpp
 
 mac:OBJECTIVE_SOURCES += player.mm
 win32:SOURCES += player.cpp
@@ -113,3 +114,6 @@ HEADERS += \
 
 HEADERS += \
     albumartgetter.h
+
+HEADERS += \
+    maxplaylists.h

@@ -826,7 +826,6 @@ void LibraryController::pushAllView()
     tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
     updateLibrary();
   }
-
 }
 
 void LibraryController::pushNormalPlaylist(QString name)

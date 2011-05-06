@@ -155,6 +155,7 @@ void SidebarController::updateplaylistbar(int shownumber)
     {
         trimsize = playlists->size();
     }
+    util.setCount(trimsize);
     trimsize = trimsize + 3;
     playlistTableWidget->setMaximumHeight(trimsize*30);   //////CAUSING ISSUES
     playlistTableWidget->setMinimumHeight(trimsize*30);
