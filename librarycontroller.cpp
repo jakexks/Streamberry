@@ -526,21 +526,26 @@ void LibraryController::playplaylist(QString playlistname)
     fields.append("Album");
     order.append("DESC");
     QList<QSqlRecord>* data = db.searchDb(0, playlistname, "", fields,order, 0);
-    if(playingdata!=NULL && playingdata != currentdata)
-        delete playingdata;
-    playingdata = data;
-    QSqlRecord record = playingdata->at(0);
-    tablewidget->selectRow(0);
-    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
-    qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
-    if(record.field("UniqueID").value().toString() != "Local")
+    if(!data->isEmpty())
     {
-        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-        player.playFile(record.field("FilePath").value().toString(), record.field("UniqueID").value().toString(), ipaddress);
-    } else {
-        player.playFile(record.field("FilePath").value().toString());
+        if(playingdata!=NULL && playingdata != currentdata)
+            delete playingdata;
+
+
+        playingdata = data;
+        QSqlRecord record = playingdata->at(0);
+        tablewidget->selectRow(0);
+        emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+        qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
+        if(record.field("UniqueID").value().toString() != "Local")
+        {
+            QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+            player.playFile(record.field("FilePath").value().toString(), record.field("UniqueID").value().toString(), ipaddress);
+        } else {
+            player.playFile(record.field("FilePath").value().toString());
+        }
+        makeShuffleList(-1);
     }
-    makeShuffleList(-1);
 }
 
 void LibraryController::playsmartplaylist(QString filter)
@@ -550,21 +555,25 @@ void LibraryController::playsmartplaylist(QString filter)
     fields.append("Album");
     order.append("DESC");
     QList<QSqlRecord>* data = db.searchDb(0, "", filter, fields,order, 0);
-    if(playingdata!=NULL && playingdata != currentdata)
-        delete playingdata;
-    playingdata = data;
-    QSqlRecord record = playingdata->at(0);
-    tablewidget->selectRow(0);
-    emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
-    qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
-    if(record.field("UniqueID").value().toString() != "Local")
+    if(!data->isEmpty())
     {
-        QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
-        player.playFile(record.field("FilePath").value().toString(), record.field("UniqueID").value().toString(), ipaddress);
-    } else {
-        player.playFile(record.field("FilePath").value().toString());
+        if(playingdata!=NULL && playingdata != currentdata)
+            delete playingdata;
+
+        playingdata = data;
+        QSqlRecord record = playingdata->at(0);
+        tablewidget->selectRow(0);
+        emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
+        qDebug() << "Currently playing: " << record.field("FilePath").value().toString();
+        if(record.field("UniqueID").value().toString() != "Local")
+        {
+            QString ipaddress = db.getIPfromUID(record.field("UniqueID").value().toString());
+            player.playFile(record.field("FilePath").value().toString(), record.field("UniqueID").value().toString(), ipaddress);
+        } else {
+            player.playFile(record.field("FilePath").value().toString());
+        }
+        makeShuffleList(-1);
     }
-    makeShuffleList(-1);
 }
 
 void LibraryController::shuffleSlot()
