@@ -383,5 +383,5 @@ void SidebarController::setSelectedPlaylist(QString name)
 void SidebarController::setVideoSelected()
 {
     playlistTableWidget->clearSelection();
-    playlistTableWidget->selectRow(2);
+    playlistTableWidget->selectRow(1);
 }
