@@ -10,7 +10,7 @@ FirstRunWizard::FirstRunWizard(Database &datab, Filescan &fscan, QWidget *parent
     sharingpage = new SharingPage;
     addPage(sharingpage);
     QObject::connect(this, SIGNAL(accepted()), &fs, SLOT(scan()));
-    setWindowTitle(tr("Streamberry first run wizard"));
+    setWindowTitle(tr("Streamberry First Run Wizard"));
 }
 
 //Sets the nickname and selected folders in the database and runs a filescan
@@ -25,7 +25,13 @@ void FirstRunWizard::accept()
 NickPage::NickPage(QWidget *parent) : QWizardPage(parent)
 {
     QLabel *intro = new QLabel(tr("Welcome to the first run wizard for Streamberry. Please select a nickname so that other people on your network can identify you."));
-    QLabel *note = new QLabel(tr("Please note that all settings can be changed using the dialogue located in the Edit menu"));
+
+#ifdef Q_WS_MAC
+    QLabel *note = new QLabel(tr("Please note that all settings can be changed using the dialogue located in the Streamberry menu."));
+#elif
+    QLabel *note = new QLabel(tr("Please note that all settings can be changed using the dialogue located in the Edit menu."));
+#endif
+
     intro->setWordWrap(true);
     QLineEdit *nickedit = new QLineEdit();
     nickedit->setMaxLength(20);
@@ -42,7 +48,7 @@ NickPage::NickPage(QWidget *parent) : QWizardPage(parent)
 
 SharingPage::SharingPage(QWidget *parent) : QWizardPage(parent)
 {
-    QLabel *label = new QLabel(tr("Please select which files and folders you would like to appear in your media library and share with others on your local network. A filescan will be run when you finish this wizard so it may take a moment for your media to appear"));
+    QLabel *label = new QLabel(tr("Please select which files and folders you would like to appear in your media library and share with others on your local network. A filescan will be run when you finish this wizard so it may take a moment for your media to appear."));
     label->setWordWrap(true);
 
     tree = new QTreeView(this);
