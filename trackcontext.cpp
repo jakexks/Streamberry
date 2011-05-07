@@ -69,12 +69,4 @@ void TrackContext::Delete()
   }
 }
 
-void TrackContext::Hide()
-{
-  int i =0;
-  for(i=0; i<CurrentIDs.size(); i++)
-  {
-    db->togglehidden(CurrentIDs.at(i), CurrentUniqueIDs.at(i));
-  }
-}
 

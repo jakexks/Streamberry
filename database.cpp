@@ -1162,30 +1162,3 @@ QList<QSqlRecord>* Database::getAllPlaylists()
   return result;
 }
 
-void Database::togglehidden(QString file, QString uniqueID)
-{
-  QString sql = "SELECT Hidden FROM Lib";
-  QString h;
-  sql += uniqueID;
-  sql += " WHERE Filepath = \"";
-  sql +=file;
-  sql +="\";";
-
-  QSqlQuery queryresult = query(sql);
-  queryresult.first();
-  const QSqlRecord r = queryresult.record();
-  if( r.value("Hidden").toString() == "0")
-    h = "1";
-  else
-    h = "0";
-  QString sql1 = "UPDATE Lib";
-  sql1 += uniqueID;
-  sql1 += " SET Hidden=";
-  sql1 += h;
-  sql1 += " WHERE Filepath = \"";
-  sql1 +=file;
-  sql1 +="\";";
-  //qDebug() << sql1;
-  query(sql1);
-  return;
-}
