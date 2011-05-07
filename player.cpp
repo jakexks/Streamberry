@@ -14,6 +14,7 @@ Player::Player()
 {
     currIP = "";
     const char * const vlc_args[] = {
+        "--no-video-title-show",
         //"--vout-event=0",
         //"-I", "dummy", /* Don't use any interface */
         //"--ignore-config", /* Don't use VLC's config */
