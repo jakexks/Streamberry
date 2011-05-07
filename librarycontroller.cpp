@@ -55,6 +55,9 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
   }
   setHeaders(headers, 3);
   widget = new QWidget();
+  widget->setObjectName("LibraryBackgroundWidget");
+  widget->setStyleSheet("#LibraryBackgroundWidget { background:black; }");
+
   container = new QGridLayout(widget);
   container->setMargin(0);
   curview = NULL;
@@ -861,7 +864,7 @@ void LibraryController::pushVideoView()
   viewqueue.append(item);
   viewqueueindex++;
   emit setSearchBoxText("");
-  tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+//  tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
   updateLibrary();
 }
 
