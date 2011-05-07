@@ -262,7 +262,7 @@ void MainWindow::resizeEvent(QResizeEvent *resize)
   }
 
   player.resizeVideo();
-  sidebarcontroller->updateplaylistbar( (int)(size.height()/89.25) );
+  sidebarcontroller->updateplaylistbar( (int)(size.height()/70) );
 }
 
 void MainWindow::moveEvent(QMoveEvent *move)

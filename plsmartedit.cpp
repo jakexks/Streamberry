@@ -28,7 +28,7 @@ PLSmartEdit::PLSmartEdit(Playlist* playlist, Utilities* util)
 
   layout.addWidget(text, 0, 0, Qt::AlignHCenter);
   layout.addWidget(textbox, 1, 0, Qt::AlignHCenter);
-  layout.setColumnMinimumWidth(1, 180);
+  layout.setColumnMinimumWidth(0, 180);
   layout.addWidget(accept, 2, 0, Qt::AlignHCenter);
 
   dialog->exec();
