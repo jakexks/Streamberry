@@ -108,8 +108,8 @@ QTableWidget* SidebarController::buildplaylistbar()
 
 
     playlistTableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    QObject::connect(playlistTableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(Clicked(int,int)));
     QObject::connect(playlistTableWidget, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(ShowContextMenu(const QPoint&)));
+    QObject::connect(playlistTableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(Clicked(int,int)));
     QObject::connect(playlistTableWidget, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(DoubleClicked(int,int)));
 
     QObject::connect(playlistTableWidget, SIGNAL(cellEntered(int,int)), this, SLOT(RolloverCell(int,int)));

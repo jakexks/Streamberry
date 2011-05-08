@@ -657,8 +657,6 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
   QList<QSqlRecord> *files;
   searchtxt = searchtxt.trimmed();
   QStringList searches = searchtxt.split(" ", QString::SkipEmptyParts);
-
-  //work out condition
   switch(type)
   {
   case 1:
@@ -713,9 +711,7 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
     }
     break;
   }
-
   condition += " AND (Deleted='0')";
-
   switch(musicorvideo)
   {
   case 0:
@@ -726,9 +722,7 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
   default:
     break;
   }
-
   int sortcount = sortcols.length();
-
   if(sortcount>0)
   {
     ordering += " ORDER BY ";
@@ -743,51 +737,29 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
       ordering += " ";
       ordering += order.at(i);
     }
-
     ordering += ", Track ASC";
   }
 
   try
   {
-    //select all unique ids from libindex
     sql = "SELECT UniqueID FROM LibIndex WHERE (Online=1)";
     result = query(sql);
     result.first();
-
-    //for every table found add it to the users list
     while(result.isValid())
     {
       users.append(result.record());
       result.next();
     }
-
-    //get local library and add to files list
-    //sql = "SELECT * FROM LibLocal";
-    //sql += condition;
-    //result = query(sql);
-    //result.first();
     files = new QList<QSqlRecord>();
-    // while(result.isValid())
-    //{
-    //files->append(result.record());
-    //result.next();
-    //}
-
-    //for every user
     while(!users.isEmpty())
     {
-      //get library and add to files list
       sql = "SELECT * FROM Lib";
       QString id = users.takeFirst().value(0).toString();
       sql += id;
 
       if(playlist!="")
-      {
         sql += ", PlaylistTracks";
-      }
-
       sql += condition;
-
       if(playlist!="")
       {
         sql += " AND Playlist='";
@@ -796,10 +768,8 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
         sql += id;
         sql += "'";
       }
-      //qDebug() << sql;
       sql += ordering;
       result = query(sql);
-
       result.first();
       while(result.isValid())
       {
@@ -812,7 +782,6 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
         int pos = copy.indexOf("Length");
         copy.remove(pos);
         copy.insert(pos, temp);
-
         if(result.record().field("Filepath").value().toString().indexOf("\\;") != -1)
         {
           const QString fieldname = "Filepath";
@@ -842,7 +811,6 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
         }
 
         files->append(copy);
-
         result.next();
       }
     }
@@ -851,8 +819,6 @@ QList<QSqlRecord>* Database::searchDb(int type, QString playlist, QString search
   {
     throw e;
   }
-
-
   return files;
 
 }

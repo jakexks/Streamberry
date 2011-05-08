@@ -36,7 +36,6 @@ PLSmartNew::PLSmartNew(Utilities* util, Database& datab): db(datab)
   layout.addWidget(textbox2, 3, 0, Qt::AlignHCenter);
   layout.addWidget(accept, 4, 0, Qt::AlignHCenter);
   layout.setColumnMinimumWidth(0, 180);
-  qDebug() << Utilities::getCount();
   if(Utilities::getCount() > 10)
   {
     MaxPlaylists temp(util, db);
