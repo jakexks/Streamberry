@@ -10,7 +10,9 @@ class CrossPlatform
 {
 public:
     CrossPlatform();
+    //returns the path of the place you can store data on the system
     QString static getAppDataPath();
+    //path of the image folder
     QString static getImageDirPath(Utilities *util);
 };
 

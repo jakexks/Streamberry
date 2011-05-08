@@ -15,64 +15,67 @@
 
 class MainWindow : public QMainWindow
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  MainWindow(Utilities& util, Database &datab, Player &p, Filescan &fsinit, QMenuBar* menu, QApplication& aapp, QWidget *parent = 0);
-  void setPath(char* path);
-  QMenuBar* createMenuBar();
+    MainWindow(Utilities& util, Database &datab, Player &p, Filescan &fsinit, QMenuBar* menu, QApplication& aapp, QWidget *parent = 0);
+    void setPath(char* path);
+    //fill menubar with menus
+    QMenuBar* createMenuBar();
 public slots:
-  void menuSettings();
-  void menuMaximise();
-  void menuMinimise();
-  void menuMinimiseToTray();
-  void trayIconClicked(QSystemTrayIcon::ActivationReason);
-  void menuNewPlaylist();
-  void menuNewSmartPlaylist();
-//  Code in the header is bad.
-//  void closeEvent(QCloseEvent *event)
-//  {
-//      QSettings settings;
-//      settings.setValue("pos", pos());
-//      settings.setValue("normalgeo", normalGeometry());
-//      settings.setValue("ismax", isMaximized());
-//  }
+    //open settings panel
+    void menuSettings();
+    //maximise and minimise
+    void menuMaximise();
+    void menuMinimise();
+    void menuMinimiseToTray();
+    void trayIconClicked(QSystemTrayIcon::ActivationReason);
+    //make new playlists
+    void menuNewPlaylist();
+    void menuNewSmartPlaylist();
 
 signals:
-  void filescanRequest();
-  void repeatsig(bool, bool);
+    //request a new filescan
+    void filescanRequest();
+    void repeatsig(bool, bool);
 
 private slots:
-  void menuVolUp();
-  void menuVolDown();
-  void menuMute();
-  void menuShuffle();
+    //increase volume
+    void menuVolUp();
+    //decrease volume
+    void menuVolDown();
+    //mute volume
+    void menuMute();
+    //toggle shuffle
+    void menuShuffle();
 
 private:
-  //layout of the main window
-  void makeTrayIcon();
-  QWidget* centralwidget;
-  QMenuBar* menubar;
-  QGridLayout* mainlayout;
-  QAction* mutemenu;
-  void initialiseGrid();
-  void resizeEvent(QResizeEvent *);
-  void moveEvent(QMoveEvent *);
-  //void changeEvent(QEvent *event );
+    void makeTrayIcon();
+    //the widget that is displayed in window
+    QWidget* centralwidget;
+    QMenuBar* menubar;
+    //puts parts of window in right place
+    QGridLayout* mainlayout;
+    QAction* mutemenu;
+    void initialiseGrid();
+    //called when window resized
+    void resizeEvent(QResizeEvent *);
+    //called when window moved
+    void moveEvent(QMoveEvent *);
 
-  //widgets for each section of screen
-  SidebarController* sidebarcontroller;
-  TopbarController* topbarcontroller;
-  LibraryController* librarycontroller;
-  PlaybackController* playbackcontroller;
+    //widgets for each section of screen
+    SidebarController* sidebarcontroller;
+    TopbarController* topbarcontroller;
+    LibraryController* librarycontroller;
+    PlaybackController* playbackcontroller;
 
-  Utilities& util;
-  Database& db;
-  Player& player;
-  Filescan& fs;
-  int volmem;
-  QApplication& app;
-  QSystemTrayIcon* trayicon;
+    Utilities& util;
+    Database& db;
+    Player& player;
+    Filescan& fs;
+    int volmem;
+    QApplication& app;
+    QSystemTrayIcon* trayicon;
 };
 
 #endif // MAINWINDOW_H
