@@ -28,7 +28,7 @@ NickPage::NickPage(QWidget *parent) : QWizardPage(parent)
 
 #ifdef Q_WS_MAC
     QLabel *note = new QLabel(tr("Please note that all settings can be changed using the dialogue located in the Streamberry menu."));
-#elif
+#else
     QLabel *note = new QLabel(tr("Please note that all settings can be changed using the dialogue located in the Edit menu."));
 #endif
 
