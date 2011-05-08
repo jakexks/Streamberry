@@ -2,14 +2,13 @@
 #define SBEXCEPTION_H
 
 //Streamberry Exception Class
-//NOTE: COULD NOT WORK OUT HOW TO DO EXCEPTIONS. THIS PROBABLY NEEDS TO BE REWRITTEN PROPERLY.
 
-#include <exception>
 #include <QString>
 
 //enumerated error types
 enum extype {GENERIC, DB};
 
+//Streamberry exceptions
 class SBException
 {
 public:

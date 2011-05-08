@@ -8,6 +8,7 @@
 class LibraryController;
 class PreviewPane;
 
+//Controls the sidebar
 class SidebarController : public QObject
 {
     Q_OBJECT

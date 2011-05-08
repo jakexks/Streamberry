@@ -7,6 +7,7 @@
 class Utilities;
 class Database;
 
+//Controls a maxmimum number of playlists
 class MaxPlaylists: public QDialog
 {
    Q_OBJECT

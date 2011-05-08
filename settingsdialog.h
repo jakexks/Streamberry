@@ -6,6 +6,7 @@
 #include "database.h"
 #include "filescan.h"
 
+//The settings dialogue window
 class SettingsDialog : public QDialog
 {
     Q_OBJECT

@@ -14,7 +14,7 @@
 
 using namespace std;
 
-
+//controls scanning of directories and adding result to database
 class Filescan: public QObject
 {
     Q_OBJECT

@@ -9,7 +9,7 @@ class LibraryController;
 class Utilities;
 class Database;
 
-
+//Playlist context menu
 class PlaylistMenu : public QMenu
 {
   Q_OBJECT

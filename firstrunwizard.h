@@ -6,6 +6,7 @@
 #include "database.h"
 #include "filescan.h"
 
+//controls all the first run wizard pages
 class SharingPage: public QWizardPage
 {
     Q_OBJECT

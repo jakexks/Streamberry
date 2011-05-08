@@ -7,7 +7,7 @@
 
 Q_DECLARE_METATYPE(QHostAddress)
 
-
+//Deals with incoming beacons
 class BeaconReceiver : public QObject
 {
     Q_OBJECT
