@@ -23,6 +23,8 @@
     class NSAutoreleasePool;
 #endif
 
+
+//Interfaces with VLC and allows you to control ongoing media
 class Player : public QObject
 {
     Q_OBJECT

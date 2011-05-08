@@ -9,6 +9,7 @@
 
 using namespace std;
 
+//Controls all interactions with database.
 class Database : public QObject
 {
     Q_OBJECT

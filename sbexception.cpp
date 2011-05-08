@@ -1,5 +1,4 @@
 #include "sbexception.h"
-#include <exception>
 
 SBException::SBException()
 {

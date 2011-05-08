@@ -5,7 +5,6 @@
 #include <QString>
 
 //Class for methods that resolve differences between platforms.
-
 class CrossPlatform
 {
 public:

@@ -3,6 +3,8 @@
 
 #include <QFrame>
 #include "utilities.h"
+
+//the playback progress bar in the playback controls
 class PlaybackProgress : public QFrame
 {
     Q_OBJECT

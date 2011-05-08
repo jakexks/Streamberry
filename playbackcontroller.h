@@ -7,6 +7,7 @@
 #include "songinfo.h"
 #include <QtGui>
 
+//Controls the playback controls
 class PlaybackController : public QObject
 {
     Q_OBJECT;

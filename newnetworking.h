@@ -5,6 +5,7 @@
 #include <QTcpSocket>
 #include <QTcpServer>
 
+//generic networking abilities
 class NewNetworking : public QObject
 {
     Q_OBJECT

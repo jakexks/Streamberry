@@ -10,6 +10,7 @@ class QStackedWidget;
 class QTableWidget;
 class QLabel;
 
+//The preview pane in the sidebar
 class PreviewPane : public QObject
 {
     Q_OBJECT

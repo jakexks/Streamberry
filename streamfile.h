@@ -6,10 +6,10 @@
 #include <QObject>
 #include <QHash>
 #include <QFileInfo>
-
 #include "streamrequest.h"
 #include "player.h"
 
+//Controls the streaming of files
 class StreamFile : public QObject
 {
     Q_OBJECT;

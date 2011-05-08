@@ -4,6 +4,7 @@
 #include <QObject>
 #include "utilities.h"
 
+//The song info widget in bottom bar
 class SongInfo: public QObject
 {
     Q_OBJECT;

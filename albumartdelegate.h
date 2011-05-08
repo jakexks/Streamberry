@@ -9,6 +9,7 @@
 #include <QDoubleValidator>
 #include "utilities.h"
 
+//Creates album panels when they are needed by the table
 class AlbumArtDelegate : public QStyledItemDelegate
 {
     Q_OBJECT

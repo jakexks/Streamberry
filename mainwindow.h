@@ -12,7 +12,7 @@
 #include "filescan.h"
 #include <QSystemTrayIcon>
 
-
+//The program's main window
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

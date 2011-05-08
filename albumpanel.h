@@ -5,7 +5,7 @@
 #include <QGridLayout>
 #include "utilities.h"
 
-
+//An album panel
 class AlbumPanel : public QWidget
 {
     Q_OBJECT

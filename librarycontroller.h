@@ -12,7 +12,7 @@
 #include <QObject>
 class Player;
 
-
+//controls the library view
 class LibraryController : public QObject
 {
     Q_OBJECT

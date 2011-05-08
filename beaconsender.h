@@ -2,6 +2,7 @@
 #define BEACONSENDER_H
 #include "database.h"
 
+//sends beacons on network at interval or when needed
 class BeaconSender : public QObject
 {
     Q_OBJECT

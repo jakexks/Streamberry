@@ -2,6 +2,7 @@
 #define UTILITIES_H
 #include <QString>
 
+//All generic utilities that are useful to more than one class
 class Utilities
 {
 public:
