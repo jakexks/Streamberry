@@ -46,7 +46,7 @@ private slots:
   void menuVolUp();
   void menuVolDown();
   void menuMute();
-  void menuShuffle();
+  void menuRepeat();
 
 private:
   //layout of the main window

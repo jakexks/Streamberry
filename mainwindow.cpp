@@ -103,6 +103,7 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
   QObject::connect(playbackcontroller, SIGNAL(sPress()), librarycontroller, SLOT(shuffleSlot()));
   QObject::connect(playbackcontroller, SIGNAL(rPress(bool, bool)), librarycontroller, SLOT(repeatSlot(bool, bool)));
   QObject::connect(librarycontroller, SIGNAL(selectVideo()), sidebarcontroller, SLOT(setVideoSelected()));
+  QObject::connect(this, SIGNAL(repeatsig(bool, bool)), librarycontroller, SLOT(repeatSlot(bool, bool)));//trying to make the repeat menu work
 
   PreviewPane* preview = sidebarcontroller->getPreviewPane();
   QObject::connect(&player, SIGNAL(playingalbumart()), preview, SLOT(displayAlbumArt()));  ///CHANGE THIS ONCE ALBUMART WORKS
@@ -216,12 +217,15 @@ QMenuBar* MainWindow::createMenuBar()
 
   actions[14] = menus[2]->addAction("Repeat All");
   actions[14]->setCheckable(true);
-  QObject::connect(actions[14], SIGNAL(triggered()), this, SLOT(menuShuffle()));
-  QObject::connect(this, SIGNAL(repeatsig(bool, bool)), librarycontroller, SLOT(repeatSlot(bool, bool)));
+//  QObject::connect(actions[14], SIGNAL(triggered()), librarycontroller, SLOT(repeatSlot(bool, bool)));
+  QObject::connect(actions[14], SIGNAL(triggered()), this, SLOT(menuRepeat()));
+//QObject::connect(this, SIGNAL(repeatsig(bool, bool)), librarycontroller, SLOT(repeatSlot(bool, bool)));
+  actions[14]->setShortcut(QKeySequence("R"));
 
   actions[15] = menus[2]->addAction("Shuffle");
   actions[15]->setCheckable(true);
   QObject::connect(actions[15], SIGNAL(triggered()), playbackcontroller, SLOT(shufflePress()));
+  actions[15]->setShortcut(QKeySequence("S"));
 
   //WINDOW MENU//////////////////////////////////////////////////////////////////
 #if defined(Q_OS_MAC)
@@ -364,7 +368,7 @@ void MainWindow::menuMute()
   }
 }
 
-void MainWindow::menuShuffle()
+void MainWindow::menuRepeat()
 {
   emit repeatsig(false, true);
 }
