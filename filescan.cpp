@@ -352,7 +352,7 @@ int Filescan::ismedia(QFileInfo file)
       QString::compare("m2v",name)==0   || QString::compare("m4v",name)==0   ||
       QString::compare("wmv",name)==0   || QString::compare("mpeg4",name)==0 ||
       QString::compare("mpeg1",name)==0 || QString::compare("mpeg2",name)==0 ||
-      QString::compare("ts",name)==0    || QString::compare("divx",name)==0  ||
+      QString::compare("divx",name)==0  ||
       QString::compare("vob",name)==0   || QString::compare("dv",name)==0    ||
       QString::compare("avi",name)==0   || QString::compare("flv",name)==0   ||
       QString::compare("mpeg",name)==0  || QString::compare("m1v",name)==0   ||
