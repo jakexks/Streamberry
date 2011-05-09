@@ -56,13 +56,11 @@ void Playlist::removeTrack(int index)
 
 QList<QSqlRecord>* Playlist::getAllTracks()
 {
-  //qDebug() << Trackpaths << "||" << TrackIDs;
   if(smart == 0) {
     return db.getTracks(Trackpaths, TrackIDs);
   }
   else
   {
-    //Only library controller should ever call this - Robbie
     QList<QString> fields;
     QList<QString> order;
     fields.append("Album");

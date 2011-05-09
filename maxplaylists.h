@@ -7,15 +7,17 @@
 class Utilities;
 class Database;
 
-//Controls a maxmimum number of playlists
+//Displays a dialog box when the maximum number of playlists is reached
 class MaxPlaylists: public QDialog
 {
    Q_OBJECT
 
 public:
+  //instantiates the dialog box
   MaxPlaylists(Utilities* util, Database& datab);
 
 public slots:
+  //closes the dialog box
   void btnClicked();
 
 private:

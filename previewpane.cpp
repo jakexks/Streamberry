@@ -20,8 +20,6 @@ PreviewPane::PreviewPane(Utilities &utilities, Database& datab, LibraryControlle
   window = new QStackedWidget(mainwidget);
   window->setMinimumSize(219, 220);
   window->setMaximumSize(219, 220);
-  // window->setObjectName("sideBarPreviewPic");
-  // window->setStyleSheet(util->getStylesheet());
 
   previewPaneLayout->addWidget(window, 0,0, 2, 1,  Qt::AlignHCenter);
 
@@ -52,7 +50,7 @@ QFrame* PreviewPane::maketimebar()
   timebarLayout->setSpacing(0);
   timetext = new QLabel("");
   QFont font;
-  font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
+  font.setStyleHint(QFont::System, QFont::PreferAntialias);
   font.setBold(true);
 #ifdef Q_WS_WIN
   font.setPointSize(10);
