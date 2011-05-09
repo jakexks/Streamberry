@@ -157,7 +157,7 @@ void SidebarController::updateplaylistbar(int shownumber)
     }
     util.setCount(trimsize);
     trimsize = trimsize + 3;
-    playlistTableWidget->setMaximumHeight(trimsize*30);   //////CAUSING ISSUES
+    playlistTableWidget->setMaximumHeight(trimsize*30);
     playlistTableWidget->setMinimumHeight(trimsize*30);
     playlistTableWidget->setRowCount(trimsize);
     int  i;
@@ -180,7 +180,7 @@ void SidebarController::updateplaylistbar(int shownumber)
 QWidget* SidebarController::makePlaylistRow(QString name, QWidget* parent)
 {
     QFont font;
-    font.setStyleHint(QFont::System, QFont::PreferAntialias);  //STYLESHEET THIS!!!
+    font.setStyleHint(QFont::System, QFont::PreferAntialias);
 #ifdef Q_WS_WIN
     font.setPointSize(10);
 #else
@@ -199,12 +199,10 @@ QWidget* SidebarController::makePlaylistRow(QString name, QWidget* parent)
     QLabel* text = new QLabel(name,temp);
     text->setFont(font);
     text->setMouseTracking(true);
-    //QFrame* sideborder = new QFrame(temp);
-    //sideborder->setMaximumWidth(30);
-    //sideborder->setObjectName("sideBarPlaylistCell");
+
     temp->setStyleSheet(util.getStylesheet());
 
-    //playlistTitleLayout->addWidget(sideborder, 0, 0);
+
     playlistTitleLayout->addWidget(text, 0, 1, Qt::AlignLeft);
 
     return temp;
@@ -241,7 +239,6 @@ QWidget* SidebarController::makePreviewBar()
     QObject::connect(this, SIGNAL(rolledover(QString)), preview, SLOT(rolloverPlaylist(QString)));
     QObject::connect(this, SIGNAL(rolldefault()), preview, SLOT(rolloverDefault()));
     QObject::connect(libpass, SIGNAL(rolldefault()), preview, SLOT(rolloverDefault()));
-    //QObject::connect(libpass, SIGNAL(rollAlbum()), preview, SLOT(displayAlbumArt()));  ////CHANGE THIS TO HAVE ROLLOVER ALBUM ART AND LINE 860 LIBCONT
     return temp;
 
 
@@ -323,8 +320,7 @@ void SidebarController::Clicked(int row, int)
             libpass->pushNormalPlaylist(text);
         }
 
-        //QList<QSqlRecord>* alltracks = pass.getAllTracks();
-        //emit(playthis(alltracks));
+
     }
 
 }
