@@ -10,8 +10,8 @@ mac:QMAKE_LFLAGS += -framework Cocoa
 
 QT += core gui network sql
 
-#LIBS += -Wl,-Bdynamic -lvlc
-LIBS += -lvlc
+LIBS += -Wl,-Bdynamic -lvlc
+#LIBS += -lvlc
 mac:LIBS += -L/Applications/VLC.app/Contents/MacOS/lib/
 mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
 
@@ -20,6 +20,8 @@ win32:LIBS += -L"C:\\Program files (x86)\\VideoLAN\\VLC"
 win32:INCLUDEPATH += "C:\\vlc-1.1.7\\include"
 TARGET = Streamberry
 TEMPLATE = app
+
+RC_FILE = icon.rc
 
 
 SOURCES +=  main.cpp\
