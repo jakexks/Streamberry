@@ -215,12 +215,12 @@ QMenuBar* MainWindow::createMenuBar()
   mutemenu = actions[13];
   menus[2]->addSeparator();
 
-  actions[14] = menus[2]->addAction("Repeat All");
-  actions[14]->setCheckable(true);
+//  actions[14] = menus[2]->addAction("Repeat All");
+//  actions[14]->setCheckable(true);
 //  QObject::connect(actions[14], SIGNAL(triggered()), librarycontroller, SLOT(repeatSlot(bool, bool)));
-  QObject::connect(actions[14], SIGNAL(triggered()), this, SLOT(menuRepeat()));
+//  QObject::connect(actions[14], SIGNAL(triggered()), this, SLOT(menuRepeat()));
 //QObject::connect(this, SIGNAL(repeatsig(bool, bool)), librarycontroller, SLOT(repeatSlot(bool, bool)));
-  actions[14]->setShortcut(QKeySequence("R"));
+//  actions[14]->setShortcut(QKeySequence("R"));
 
   actions[15] = menus[2]->addAction("Shuffle");
   actions[15]->setCheckable(true);
@@ -368,10 +368,10 @@ void MainWindow::menuMute()
   }
 }
 
-void MainWindow::menuRepeat()
-{
-  emit repeatsig(false, true);
-}
+//void MainWindow::menuRepeat()
+//{
+//  emit repeatsig(false, true);
+//}
 
 /*void MainWindow::changeEvent ( QEvent *event )
 {
