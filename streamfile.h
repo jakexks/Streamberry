@@ -8,6 +8,7 @@
 #include <QFileInfo>
 #include "streamrequest.h"
 #include "player.h"
+#include "networking.h"
 
 //Controls the streaming of files
 class StreamFile : public QObject
@@ -35,6 +36,7 @@ private:
     StreamRequest stream;
     Player& player;
     QHash<QString, int> ispaused;
+    networking n;
 
 private slots:
     void parseMessage(QString message);

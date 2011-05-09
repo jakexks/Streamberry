@@ -122,13 +122,16 @@ void StreamFile::parseMessage(QString message)
 
     qDebug() << "RECEIVED IN STREAMER" << message;
 
-
-
     if(split.at(1)=="PLAY")
     {
         QString uniqueID = split.at(3);
         QString ipaddress = split.at(2);
         QString filepath = split.at(4);
+        QString intendedipaddress = split.at(5);
+        if (intendedipaddress != n.getmyip())
+        {
+            return;
+        }
         //Check if something is playing
         if(libvlc_vlm_show_media(_vlcinstance, uniqueID.toAscii())!=NULL)
         {
