@@ -14,6 +14,7 @@ void StreamRequest::send(QString ipaddress, quint16 port, QString message)
 {
     toSend = message;
     QHostAddress addr(ipaddress);
+    client.disconnectFromHost();
     client.connectToHost(addr, port);
 }
 
