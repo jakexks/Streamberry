@@ -49,7 +49,6 @@ SOURCES +=  main.cpp\
             playbackprogress.cpp \
             playbackbutton.cpp \
             songinfo.cpp\
-            quitmanager.cpp \
             newnetworking.cpp \
             volumeslider.cpp \
             settingsdialog.cpp \
@@ -60,8 +59,9 @@ SOURCES +=  main.cpp\
             plnormalnew.cpp \
             addto.cpp \
             firstrunwizard.cpp \
-    previewpane.cpp \
-    albumartgetter.cpp
+            previewpane.cpp \
+            albumartgetter.cpp \
+            maxplaylists.cpp
 
 mac:OBJECTIVE_SOURCES += player.mm
 win32:SOURCES += player.cpp
@@ -96,7 +96,6 @@ HEADERS +=  mainwindow.h\
             playbackprogress.h \
             playbackbutton.h \
             songinfo.h\
-            quitmanager.h \
             newnetworking.h \
             volumeslider.h \
             settingsdialog.h \
@@ -106,10 +105,7 @@ HEADERS +=  mainwindow.h\
             plsmartnew.h \
             plnormalnew.h \
             addto.h \
-            firstrunwizard.h
-
-HEADERS += \
-    previewpane.h
-
-HEADERS += \
-    albumartgetter.h
+            firstrunwizard.h \
+            previewpane.h \
+            albumartgetter.h \
+            maxplaylists.h

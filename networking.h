@@ -6,7 +6,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 
-
+//generic networking controls and abilities
 class networking
 {
 public:

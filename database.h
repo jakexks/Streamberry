@@ -9,6 +9,7 @@
 
 using namespace std;
 
+//Controls all interactions with database.
 class Database : public QObject
 {
     Q_OBJECT
@@ -49,6 +50,7 @@ public:
     void setOnline(QString uniqueID, QString status);
     //add new changes
     void setNewChanges(QString changes);
+    //This creates a new user when a new computer is detected as being online.
     void makeUser(QString timeLastUpdated, QString timeLastOnline, QString uniqueID, QString name);
 
     //if argument 0 gets tracked, if 1 gets excluded
@@ -75,25 +77,33 @@ public:
     void setIPaddress(QString uniqueID, QString ipaddress);
     //Gets IP address from uniqueID
     QString getIPfromUID(QString uniqueID);
-    //Only for testing purposes: Sets the unique ID of the local machine to a certain value.
-    //void setUniqueID();
-    //This takes a playlist name and returns a QSqlQuery containing information about the playlists type and filter.
+
+     //This takes a playlist name and returns a QSqlQuery containing information about the playlists type and filter.
     QSqlQuery GetPlaylistInfo(QString playlistName);
+
     //This takes a playlist name and returns an QSqlQuery containing the IDs and Unique IDs of all the tracks in the playlist
     QSqlQuery GetPlaylistTracks(QString playlistName);
+
     //Takes a QList of track unique IDs and IDs, and returns a QList of QSqlRecords containing all the Track data from across all tables.
     QList<QSqlRecord>* getTracks( QList<QString> Filepaths, QList<QString> UniqueIDs);
+
     //Takes a playlist name, smart bool and a filter and enters it into the playlist table.
     void PlaylistSave(QString name, int smart, QString filter);
+
     //Takes a list of tracks and a playlist name and enters them into the playlistTracks table
     void PlaylistAddTracks(QList<QString> Filepaths, QList<QString>UniqueIDs, QString Playlist);
+
     //Deletes a playlist from the playlist table and it's tracks from the playlistTracks table
     void removePlaylist(QString name);
+
+    //Returns a list of all the playlists currently stored in the database along with their details
     QList<QSqlRecord>* getAllPlaylists();
-    void togglehidden(QString file, QString uniqueID);
+
+    //Pass the filepath and the Unique ID in, this function returns the full QSQlRecord containing all info on that track
     QSqlRecord* getTrackInfo(QString filepath, QString uniqueID);
 
 signals:
+    //If a user's online status is changed, this signal is emitted.
     void onlineStatusChange();
 
   private:
@@ -103,7 +113,9 @@ signals:
     void createDatabase(QString &path);
     //performs an SQL query
 
-    bool localonly; //when true, only local files can played, other files are greyed out
+    //when true, only local files can played, other files are greyed out
+    bool localonly;
+    //Holds the actual database instance
     QSqlDatabase db;
     //says whether database is connected or not
     bool connected;

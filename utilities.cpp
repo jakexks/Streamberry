@@ -4,6 +4,23 @@
 #include <QString>
 #include <QDebug>
 
+int Utilities::PLcount = 0;
+
+int Utilities::getCount()
+{
+  return PLcount;
+}
+
+void Utilities::incCount()
+{
+  PLcount++;
+}
+
+void Utilities::setCount(int newc)
+{
+  PLcount = newc;
+}
+
 
 Utilities::Utilities(QString path) : execpath(path)
 {

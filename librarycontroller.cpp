@@ -21,6 +21,8 @@
 LibraryController::LibraryController(Utilities& utilities, Database& datab, Player& p, SBSearchBar* searchbar)
     : util(utilities), db(datab), player(p)
 {
+
+
     curheaders = NULL;
     currentlyplaying = -1;
     musicvideofilter = 2;
@@ -53,8 +55,8 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     }
     setHeaders(headers, 3);
     widget = new QWidget();
-    widget->setObjectName("MainLibraryWidget");
-    widget->setStyleSheet("#MainLibraryWidget { background:black; }");
+    widget->setObjectName("LibraryBackgroundWidget");
+    widget->setStyleSheet("#LibraryBackgroundWidget { background:black; }");
 
     container = new QGridLayout(widget);
     container->setMargin(0);
@@ -64,6 +66,7 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     makeWidget();
 
     QWidget* playerwind = player.initVid();
+
 
     allwidgets = new QStackedWidget();
     allwidgets->addWidget(curview);
@@ -78,12 +81,14 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     repeat=0;
     numberiterator=-1;
 
+
     trackmenu = new TrackContext(&db);
 
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
     QObject::connect(&player, SIGNAL(getFirstSong(int )), this, SLOT(itemClicked(int)));
     QObject::connect(searchbar, SIGNAL(newSearchString(QString)), this, SLOT(setSearchText(QString)));
     QObject::connect(&db, SIGNAL(onlineStatusChange()), this, SLOT(updateLibrary()));
+
 }
 
 QWidget* LibraryController::getWidget()
@@ -460,6 +465,7 @@ void LibraryController::updateLibrary()
         {
             QList<QSqlRecord> *result = db.searchDb(0, viewqueue[viewqueueindex].playlist, viewqueue[viewqueueindex].smarttext+" "+viewqueue[viewqueueindex].searchtext, viewqueue[viewqueueindex].sortcols, viewqueue[viewqueueindex].orders, musicvideofilter);
             fillData(result);
+            emit setSelectedPlaylist(viewqueue[viewqueueindex].playlisttitle);
         }
         else
         {
@@ -530,13 +536,11 @@ void LibraryController::playplaylist(QString playlistname)
     fields.append("Album");
     order.append("DESC");
     QList<QSqlRecord>* data = db.searchDb(0, playlistname, "", fields,order, 0);
-    if(!data->isEmpty())
+    if(playingdata!=NULL && playingdata != currentdata)
+        delete playingdata;
+    playingdata = data;
+    if( !playingdata->isEmpty() )
     {
-        if(playingdata!=NULL && playingdata != currentdata)
-            delete playingdata;
-
-
-        playingdata = data;
         QSqlRecord record = playingdata->at(0);
         tablewidget->selectRow(0);
         emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
@@ -559,12 +563,11 @@ void LibraryController::playsmartplaylist(QString filter)
     fields.append("Album");
     order.append("DESC");
     QList<QSqlRecord>* data = db.searchDb(0, "", filter, fields,order, 0);
-    if(!data->isEmpty())
+    if(playingdata!=NULL && playingdata != currentdata)
+        delete playingdata;
+    playingdata = data;
+    if( !playingdata->isEmpty() )
     {
-        if(playingdata!=NULL && playingdata != currentdata)
-            delete playingdata;
-
-        playingdata = data;
         QSqlRecord record = playingdata->at(0);
         tablewidget->selectRow(0);
         emit songInfoData(record.field("Album").value().toString(), record.field("Artist").value().toString(), record.field("Title").value().toString(), record.field("Track").value().toString());
@@ -817,8 +820,9 @@ void LibraryController::goForward()
 
 void LibraryController::pushAllView()
 {
-    if(viewqueue[viewqueueindex].playlist!="" || viewqueue[viewqueueindex].smarttext != "" || viewqueue[viewqueueindex].videoview==1)
+    if(viewqueue[viewqueueindex].playlist!="" || viewqueue[viewqueueindex].smarttext != "" || viewqueue[viewqueueindex].videoview != 0)
     {
+
         while(viewqueueindex<viewqueue.size()-1)
             viewqueue.removeLast();
 
@@ -831,6 +835,7 @@ void LibraryController::pushAllView()
         viewqueueindex++;
         emit setSearchBoxText("");
         tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+        updateLibrary();
     }
 }
 
@@ -856,22 +861,19 @@ void LibraryController::pushNormalPlaylist(QString name)
 
 void LibraryController::pushVideoView()
 {
-    if(viewqueue[viewqueueindex].videoview==0)
-    {
-        while(viewqueueindex<viewqueue.size()-1)
-            viewqueue.removeLast();
+    while(viewqueueindex<viewqueue.size()-1)
+        viewqueue.removeLast();
 
-        ViewQueueItem item;
-        item.playlist = "";
-        item.smarttext = "";
-        item.searchtext = "";
-        item.videoview = 1;
-        viewqueue.append(item);
-        viewqueueindex++;
-        emit setSearchBoxText("");
-        //    tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
-        updateLibrary();
-    }
+    ViewQueueItem item;
+    item.playlist = "";
+    item.smarttext = "";
+    item.searchtext = "";
+    item.videoview = 1;
+    viewqueue.append(item);
+    viewqueueindex++;
+    emit setSearchBoxText("");
+    //  tablewidget->horizontalHeader()->setSortIndicator(sortcolumn+2, sortorder);
+    updateLibrary();
 }
 
 void LibraryController::pushSmartPlaylist(QString name, QString filtertext)

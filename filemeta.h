@@ -6,6 +6,7 @@
 #include <vlc/vlc.h>
 #include "sbexception.h"
 
+//gets tags from files
 class FileMeta
 {
     libvlc_instance_t *_vlcinstance;

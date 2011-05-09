@@ -4,6 +4,7 @@
 #include "playlist.h"
 #include <utilities.h>
 #include <database.h>
+#include <maxplaylists.h>
 
 
 PLSmartNew::PLSmartNew(Utilities* util, Database& datab): db(datab)
@@ -35,7 +36,11 @@ PLSmartNew::PLSmartNew(Utilities* util, Database& datab): db(datab)
   layout.addWidget(textbox2, 3, 0, Qt::AlignHCenter);
   layout.addWidget(accept, 4, 0, Qt::AlignHCenter);
   layout.setColumnMinimumWidth(0, 180);
-
+  if(Utilities::getCount() > 10)
+  {
+    MaxPlaylists temp(util, db);
+  }
+  else
   dialog->exec();
 }
 
@@ -51,5 +56,6 @@ void PLSmartNew::btnClicked()
     newplaylist.setFilter(newfilter);
     newplaylist.SavePlaylist();
   }
+   Utilities::incCount();
   dialog->accept();
 }

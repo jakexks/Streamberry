@@ -4,6 +4,7 @@
 #include <QSlider>
 #include "utilities.h"
 
+//The volume slider in the bottom bar
 class VolumeSlider : public QSlider
 {
     Q_OBJECT

@@ -952,42 +952,42 @@ QString Database::changesSinceTime(int timestamp, QString uniqueID)
       {
         final += "DELETE FROM Lib";
         final += uniqueID;
-        final += " WHERE Filepath='";
-        final += result.record().value("Filepath").toString().replace("'", "''");
-        final += "'; \x1D";
+        final += " WHERE Filepath=\"";
+        final += result.record().value("Filepath").toString();
+        final += "\"; \x1D";
       } else {
         final += "INSERT OR REPLACE INTO Lib";
         final += uniqueID;
         final += " (Filepath, Artist, Album , Title , Genre, Rating , Filename , Year , Track, Length , Bitrate , Filesize , Timestamp , Filetype, MusicOrVideo) VALUES (\"";
-        final += result.record().value("Filepath").toString().replace("'", "''");
+        final += result.record().value("Filepath").toString();
         final += "\", \"";
-        final += result.record().value("Artist").toString().replace("'", "''");
+        final += result.record().value("Artist").toString();
         final += "\", \"";
-        final += result.record().value("Album").toString().replace("'", "''");
+        final += result.record().value("Album").toString();
         final += "\", \"";
-        final += result.record().value("Title").toString().replace("'", "''");
+        final += result.record().value("Title").toString();
         final += "\", \"";
-        final += result.record().value("Genre").toString().replace("'", "''");
+        final += result.record().value("Genre").toString();
         final += "\", \"";
-        final += result.record().value("Rating").toString().replace("'", "''");
+        final += result.record().value("Rating").toString();
         final += "\", \"";
-        final += result.record().value("Filename").toString().replace("'", "''");
+        final += result.record().value("Filename").toString();
         final += "\", \"";
-        final += result.record().value("Year").toString().replace("'", "''");
+        final += result.record().value("Year").toString();
         final += "\", \"";
-        final += result.record().value("Track").toString().replace("'", "''");
+        final += result.record().value("Track").toString();
         final += "\", \"";
-        final += result.record().value("Length").toString().replace("'", "''");
+        final += result.record().value("Length").toString();
         final += "\", \"";
-        final += result.record().value("Bitrate").toString().replace("'", "''");
+        final += result.record().value("Bitrate").toString();
         final += "\", \"";
-        final += result.record().value("Filesize").toString().replace("'", "''");
+        final += result.record().value("Filesize").toString();
         final += "\", \"";
-        final += result.record().value("Timestamp").toString().replace("'", "''");
+        final += result.record().value("Timestamp").toString();
         final += "\", \"";
-        final += result.record().value("Filetype").toString().replace("'", "''");
+        final += result.record().value("Filetype").toString();
         final += "\", \"";
-        final += result.record().value("MusicOrVideo").toString().replace("'", "''");
+        final += result.record().value("MusicOrVideo").toString();
         //group separator
         final += "\"); \x1D";
       }
@@ -1162,30 +1162,3 @@ QList<QSqlRecord>* Database::getAllPlaylists()
   return result;
 }
 
-void Database::togglehidden(QString file, QString uniqueID)
-{
-  QString sql = "SELECT Hidden FROM Lib";
-  QString h;
-  sql += uniqueID;
-  sql += " WHERE Filepath = \"";
-  sql +=file;
-  sql +="\";";
-
-  QSqlQuery queryresult = query(sql);
-  queryresult.first();
-  const QSqlRecord r = queryresult.record();
-  if( r.value("Hidden").toString() == "0")
-    h = "1";
-  else
-    h = "0";
-  QString sql1 = "UPDATE Lib";
-  sql1 += uniqueID;
-  sql1 += " SET Hidden=";
-  sql1 += h;
-  sql1 += " WHERE Filepath = \"";
-  sql1 +=file;
-  sql1 +="\";";
-  //qDebug() << sql1;
-  query(sql1);
-  return;
-}

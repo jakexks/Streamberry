@@ -23,6 +23,8 @@
     class NSAutoreleasePool;
 #endif
 
+
+//Interfaces with VLC and allows you to control ongoing media
 class Player : public QObject
 {
     Q_OBJECT
@@ -56,40 +58,47 @@ private:
 
 public:
     QTimer *poller;
-    //void playFile(QString file);
+    //Function that starts playing the file given. UniqueID, ipaddress of the remote computer
     void playFile(QString file, QString uniqueID="Local", QString ipaddress="Local");
+    //Check if something is playing locally. Will return 1 if listening to a stream
     bool isPlaying();
+    //Set the length of the file - used when listening to remote file
     void setFileLength(int secs);
     void stopPlayer();
+    //Initialise the frame output - returns pointer to QWidget
     QWidget* initVid();
     void resizeVideo();
     Player();
     ~Player();
 
 public slots:
-
+    //Seek to position newPosition. Max value is 5760
     void changePosition(int newPosition);
     void changeVolume(int newVolume);
+    //Play or pause depending on current state
     void playControl();
-//    void muteAudio();
+    //Called by the poller to update the progress
     void sliderUpdate();
-    void test();
 
 protected:
+    //Event handler - can be used to implement full screen video
      bool eventFilter(QObject *obj, QEvent *ev);
 
 signals:
+    //Updated progress value
     void sliderChanged(int newValue);
+    //Called at the end of the file to request the next one
     void getNextFile();
     void getFirstSong(const int i);
     void paused();
     void play();
     void playingalbumart();
+    //Set the length of the progress bar
     void settracklength(int);
     void settrackprogress(float);
     void setAlbumArtDefault();
+    //Signal to tell the GUI to change to video view
     void isvideo();
-
 };
 
 #endif // PLAYER_H

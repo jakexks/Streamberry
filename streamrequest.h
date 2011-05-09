@@ -4,6 +4,7 @@
 #include <QtNetwork>
 #include <QObject>
 
+//Sends requests to remote machines to stream
 class StreamRequest : public QObject
 {
         Q_OBJECT;

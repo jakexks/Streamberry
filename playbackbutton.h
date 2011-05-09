@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include "playbackprogress.h"
 
+//Play/pause button in playback controls
 class PlaybackButton : public QPushButton
 {
     Q_OBJECT

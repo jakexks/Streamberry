@@ -8,6 +8,7 @@
 #include <QTcpServer>
 #include "newnetworking.h"
 
+//request a library from another computer on the network
 class LibraryRequester : public QObject
 {
     Q_OBJECT
