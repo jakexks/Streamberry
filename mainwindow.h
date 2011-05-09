@@ -47,7 +47,7 @@ private slots:
     //mute volume
     void menuMute();
     //toggle repeat
-    void menuRepeat();//was menuShuffle, but is actually repeat
+//    void menuRepeat();//was menuShuffle, but is actually repeat
 
 private:
     void makeTrayIcon();
