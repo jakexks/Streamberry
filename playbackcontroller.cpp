@@ -203,7 +203,3 @@ void PlaybackController::repeatPress()
     }
 }
 
-/*void PlaybackController::nextFile()
-{
-    emit nextFile();
-}*/

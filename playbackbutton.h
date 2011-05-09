@@ -15,6 +15,7 @@ public:
 signals:
 
 public slots:
+    //changes the name of the object in order to use different CSS style
     void changeNamePlay();
     void changeNamePause();
 

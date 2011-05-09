@@ -40,21 +40,14 @@ signals:
     void repeatsig(bool, bool);
 
 private slots:
-<<<<<<< HEAD
-  void menuVolUp();
-  void menuVolDown();
-  void menuMute();
-  void menuRepeat();
-=======
     //increase volume
     void menuVolUp();
     //decrease volume
     void menuVolDown();
     //mute volume
     void menuMute();
-    //toggle shuffle
-    void menuShuffle();
->>>>>>> c6053e9fd2d9c616a0ccf9389dee87da4e0048a4
+    //toggle repeat
+    void menuRepeat();//was menuShuffle, but is actually repeat
 
 private:
     void makeTrayIcon();

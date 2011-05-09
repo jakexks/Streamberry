@@ -11,7 +11,9 @@ class VolumeSlider : public QSlider
 public:
     explicit VolumeSlider(Utilities& utilities, QWidget *parent = 0);
     QSlider*volumeslider;
+    //returns the last position of the slider before being muted
     int getlastpos();
+    //sets the slider to this position
     void setslidepos(int j);
 
 private:

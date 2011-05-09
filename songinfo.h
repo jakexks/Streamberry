@@ -12,6 +12,7 @@ public:
     SongInfo(Utilities& utilities);
     QWidget* getWidget();
     void update();
+    //sets the text to be displayed
     void setText(QString album, QString artist, QString title, QString track);
 
 private:

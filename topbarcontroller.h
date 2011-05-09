@@ -32,7 +32,9 @@ public slots:
     void musicButtonControl();
     //video button pressed
     void videosButtonControl();
+    //back button pressed
     void backClicked();
+    //forward button pressed
     void forwardClicked();
     //set the search text
     void setSearchText(QString text);
@@ -44,8 +46,10 @@ private:
     QPushButton *videos;
     QPushButton *back;
     QPushButton *forward;
+    //booleans for the states of the music/video button
     int musicState;
     int videosState;
+    //creates the search bar widget
     SBSearchBar *search;
 };
 
