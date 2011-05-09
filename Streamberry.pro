@@ -18,7 +18,6 @@ mac:INCLUDEPATH += /Applications/VLC.app/Contents/MacOS/include/
 win32:LIBS += -L"C:\\Program files\\VideoLAN\\VLC"
 win32:LIBS += -L"C:\\Program files (x86)\\VideoLAN\\VLC"
 win32:INCLUDEPATH += "C:\\vlc-1.1.7\\include"
-win32:INCLUDEPATH += "C:\\Program Files (x86)\\SmartGit 1.5\\bin\\Streamberry"
 TARGET = Streamberry
 TEMPLATE = app
 
