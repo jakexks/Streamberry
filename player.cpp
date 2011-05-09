@@ -34,8 +34,6 @@ Player::Player()
 
     _mp = libvlc_media_player_new (_vlcinstance);
     connect(poller, SIGNAL(timeout()), this, SLOT(sliderUpdate()));
-    //connect(_positionSlider, SIGNAL(sliderMoved(int)), this, SLOT(changePosition(int)));
-    //connect(_volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(changeVolume(int)));
     poller->start(100);
 
     _videoWidget = NULL;
@@ -72,7 +70,6 @@ Player::~Player()
 
 QWidget* Player::initVid()
 {
-
     if(_videoWidget!=NULL)
         delete _videoWidget;
 
@@ -86,34 +83,15 @@ QWidget* Player::initVid()
 
     frame->installEventFilter(this);
 
-    //frame->show();
-    //////////////////////////////DOUBLE FRAME ERROR HERE//////////////////
-    //    #ifdef Q_WS_X11
-    //        _videoWidget = new QX11EmbedContainer(frame);
-    //    #else
-    //        _videoWidget=new QFrame(frame);
-    //    #endif
-
     return frame;
 }
-
-/*void Player::playFile(QString file)
-{
-    _m = libvlc_media_new_location (_vlcinstance, file.toUtf8());
-    libvlc_media_player_set_media (_mp, _m);
-    //libvlc_media_parse (_m);
-    libvlc_media_release (_m);
-    libvlc_media_player_play (_mp);
-    _isPlaying=true;
-    currIP="";//Set IP to empty
-}*/
 
 void Player::playFile(QString file, QString uniqueID, QString ipaddress)
 {
     //Check if playing already, if remote, send stop
     //set up address if remote, send command to the other
     //if localplayback, give filename, if remote, set filename to 127.0.0.1
-    //give filename normall
+    //give filename normally
 
     if(currIP == "127.0.0.1")
     {
@@ -123,7 +101,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         stream.send(remoteIP, 45459, toSend);
     }
     currIP = "Local"; //Change to local
-    qDebug() << ipaddress;
+    //qDebug() << ipaddress;
 
     if(ipaddress != "Local")
     {
@@ -137,34 +115,27 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
         //Send IP, uniqueID, file path
         stream.send(ipaddress, 45459, toSend);
         file = "rtp://@";
-#ifdef Q_WS_WIN
+    #ifdef Q_WS_WIN
         file = "rtp://";
         file += n.getmyip();
         file += ":5004";
-#endif
+    #endif
         qDebug() << file;
         currIP = "127.0.0.1";
         remoteIP = ipaddress;
         currSecs = 0;
     }
 
-
-    libvlc_media_release(libvlc_media_player_get_media(_mp));
+    //Not sure if needed:
+    //libvlc_media_release(libvlc_media_player_get_media(_mp));
 
     _m = libvlc_media_new_location (_vlcinstance, file.toUtf8());
     libvlc_media_player_set_media (_mp, _m);
-    //libvlc_media_parse (_m);
 
 #if defined(Q_OS_WIN)
     libvlc_media_player_set_hwnd(_mp, frame->winId());
 #elif defined(Q_OS_MAC)
-    //        libvlc_media_player_set_agl(_mp, frame->winId());
-    //        int view = frame->winId();
-    //        libvlc_media_player_set_nsobject(_mp, (void*)view);
-    //        frame->setStyleSheet("background: magenta;");
-
     libvlc_media_player_set_nsobject(_mp, videoView);
-
 #else
     int windid = frame->winId();
     libvlc_media_player_set_xwindow (_mp, windid);
@@ -177,18 +148,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     //////////////////////////////////////////Links to preview
     oldtrack =0;
     emit playingalbumart();
-
     //////////////////////////////////////////////////////////
-    /*if(remote)
-    {
-        if(libvlc_media_player_is_playing)
-        {
-            libvlc_media_player_stop(_mp);
-        }
-
-    } else {
-        playFile(file);
-    }*/
 }
 
 void Player::changeVolume(int newVolume)
@@ -225,7 +185,6 @@ void Player::changePosition(int newPosition)
     } else {
         libvlc_media_player_set_position (_mp, pos);
     }
-    //libvlc_media_player_play(_mp);
 }
 
 void Player::playControl()
@@ -266,15 +225,6 @@ void Player::playControl()
     }
 }
 
-//void Player::muteAudio()
-//{
-//    libvlc_audio_toggle_mute(_mp);
-//}
-
-void Player::test(){
-    qDebug() << "\ntest\n";
-}
-
 void Player::sliderUpdate()
 {
     if(!_isPlaying)
@@ -293,7 +243,6 @@ void Player::sliderUpdate()
     {
         if(_isPlaying==true)
         {
-            //currSecs += (float)poller->interval()/1000;
             currSecs += (float)poller->interval();
         }
         pos = currSecs/fileLength;
@@ -311,7 +260,6 @@ void Player::sliderUpdate()
     {
         libvlc_media_player_stop(_mp);
 
-        //TODO: Check if on loop
         emit getNextFile();
         sliderChanged(0);
         return;
@@ -346,8 +294,6 @@ void Player::setFileLength(int secs)
 
 void Player::stopPlayer()
 {
-    //    qDebug()<<"player stopped";
-    // Almost working stopping at the end of playlist. The progress is not going to 0.
     libvlc_media_player_stop (_mp);
     _isPlaying=false;
     emit setAlbumArtDefault();
@@ -358,9 +304,7 @@ bool Player::eventFilter(QObject *obj, QEvent *event)
 {
     if(obj == frame) {
         if(event->type() == QEvent::MouseButtonDblClick) {
-            qDebug() << "double clicked";
-            //Goes here
-
+            qDebug() << "Double clicked window";
         }
         return false;
     }
