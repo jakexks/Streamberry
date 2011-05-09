@@ -25,6 +25,7 @@ public:
 
 private:
     Utilities& util;
+    QWidget *editor;
 };
 
 #endif // ALBUMARTDELEGATE_H

@@ -9,6 +9,10 @@
 
 AlbumArtDelegate::AlbumArtDelegate(Utilities &utilities, QObject *parent) : QStyledItemDelegate(parent), util(utilities)
 {
+    editor = new QWidget();
+
+    editor->setObjectName("albumArt");
+    editor->setStyleSheet(util.getStylesheet());
 }
 
 QWidget* AlbumArtDelegate::createEditor(QWidget*, const QStyleOptionViewItem&, const QModelIndex&) const
@@ -26,10 +30,7 @@ void AlbumArtDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, 
 void AlbumArtDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     painter->save();
-    QWidget *editor = new QWidget();
     editor->setFixedSize(option.rect.size());
-    editor->setObjectName("albumArt");
-    editor->setStyleSheet(util.getStylesheet());
     AlbumPanel *p = new AlbumPanel(util,"", editor);
     QGridLayout grid(editor);
     grid.setMargin(0);
@@ -38,4 +39,5 @@ void AlbumArtDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opti
     painter->translate(option.rect.x(), option.rect.y());
     editor->render(painter);
     painter->restore();
+    delete p;
 }
