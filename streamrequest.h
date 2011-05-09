@@ -16,6 +16,7 @@ private:
 
 public:
     void sendConnect();
+    //Send the message to ipaddress, using given port
     void send(QString ipaddress, quint16 port, QString message);
     void startServer();
     StreamRequest();

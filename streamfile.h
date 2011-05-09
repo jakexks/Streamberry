@@ -26,10 +26,12 @@ public:
     void seekStream(QString compID, float percentage);
     float getStreamPosition(QString compID);
     int getStreamTime(QString compID);
+    //Returns the length of the stream with given UID
     int getStreamLength(QString compID);
     bool isSameStream(QString compID, QString filepath);
 
 public slots:
+    //Start playing the strean
     void playStream(QString compID);
 private:
     libvlc_instance_t *_vlcinstance;
@@ -39,6 +41,7 @@ private:
     networking n;
 
 private slots:
+    //Parse the message coming in from streamRequest class
     void parseMessage(QString message);
 };
 
