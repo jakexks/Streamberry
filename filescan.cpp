@@ -357,7 +357,7 @@ int Filescan::ismedia(QFileInfo file)
       QString::compare("avi",name)==0   || QString::compare("flv",name)==0   ||
       QString::compare("mpeg",name)==0  || QString::compare("m1v",name)==0   ||
       QString::compare("mpg",name)==0   || QString::compare("mov",name)==0   ||
-      QString::compare("mp4",name)==0
+      QString::compare("mp4",name)==0   || QString::compare("mkv",name)==0
       )
   {
     return 2;
