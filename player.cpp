@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QMacCocoaViewContainer>
 #include <QEvent>
+#include <QKeyEvent>
 
 #ifdef Q_OS_MAC
 #include <Cocoa/Cocoa.h>
@@ -305,8 +306,25 @@ void Player::stopPlayer()
 bool Player::eventFilter(QObject *obj, QEvent *event)
 {
     if(obj == frame) {
-        if(event->type() == QEvent::MouseButtonDblClick) {
+        if(event->type() == QEvent::KeyPress)
+        {
+            /*QKeyEvent *ke = static_cast<QKeyEvent *>(event);
+            if (ke->key() == Qt::Key_Tab) {
+                frame->setParent(0);
+                frame->showFullScreen();
+                qDebug() << frame->winId();
+                libvlc_media_player_pause(_mp);
+                libvlc_media_player_set_hwnd(_mp, frame->winId());
+                libvlc_media_player_play (_mp);
+                return true;
+            }*/
+        }
+        if(event->type() == QEvent::MouseButtonDblClick)
+        {
             qDebug() << "Double clicked window";
+            //frame->reparent(NULL, Qt::WType_TopLevel, QPoint(0, 0));
+            //frame->setParent(0);
+            //frame->showFullScreen();
         }
         return false;
     }

@@ -81,14 +81,12 @@ LibraryController::LibraryController(Utilities& utilities, Database& datab, Play
     repeat=0;
     numberiterator=-1;
 
-
     trackmenu = new TrackContext(&db);
 
     QObject::connect(tablewidget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SLOT(sectionResized(int,int,int)));
     QObject::connect(&player, SIGNAL(getFirstSong(int )), this, SLOT(itemClicked(int)));
     QObject::connect(searchbar, SIGNAL(newSearchString(QString)), this, SLOT(setSearchText(QString)));
     QObject::connect(&db, SIGNAL(onlineStatusChange()), this, SLOT(updateLibrary()));
-
 }
 
 QWidget* LibraryController::getWidget()
