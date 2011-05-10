@@ -196,7 +196,20 @@ void LibraryController::addHeaders()
         }
         else
         {
-            tablewidget->setColumnWidth(i+2, DEFAULT_WIDTH);
+            switch(i)
+            {
+            case 0:
+            case 2:
+            case 3:
+                tablewidget->setColumnWidth(i+2, DEFAULT_WIDTH);
+                break;
+            case 1:
+                tablewidget->setColumnWidth(i+2, 60);
+                break;
+            case 4:
+                tablewidget->setColumnWidth(i+2, 100);
+                break;
+            }
         }
 
         tablewidget->setHorizontalHeaderItem(i+2, header);

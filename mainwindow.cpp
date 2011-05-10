@@ -44,12 +44,12 @@ MainWindow::MainWindow(Utilities& utilities, Database &datab, Player &p, Filesca
     }
     else
     {
-      resize(900, 625);
+      resize(950, 625);
     }
   }
   else
   {
-    resize(900, 625);
+    resize(950, 625);
   }
 
   if((temp = db.getSetting("windowPos")) != NULL)
