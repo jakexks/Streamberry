@@ -118,9 +118,19 @@ bool StreamFile::isSameStream(QString compID, QString filepath)
 
 void StreamFile::parseMessage(QString message)
 {
+    if(message.compare("")==0)
+    {
+        return;
+    }
+
     QStringList split = message.split('|', QString::KeepEmptyParts, Qt::CaseInsensitive);
 
     qDebug() << "RECEIVED IN STREAMER" << message;
+
+    if(split.length()<2)
+    {
+        return;
+    }
 
     if(split.at(1)=="PLAY")
     {
