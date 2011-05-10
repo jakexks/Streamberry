@@ -93,7 +93,7 @@ void Player::playFile(QString file, QString uniqueID, QString ipaddress)
     //if localplayback, give filename, if remote, set filename to 127.0.0.1
     //give filename normally
 
-    if(currIP == "127.0.0.1")
+    if(currIP.compare("127.0.0.1")==0)
     {
         //Send command to other computer to stop. Use remoteIP variable
         QString toSend = "STREAMBERRY|STOP|";

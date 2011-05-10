@@ -2,7 +2,7 @@
 
 StreamRequest::StreamRequest()
 {
-    connect(&client, SIGNAL(connected()),this, SLOT(startSend()));
+//    connect(&client, SIGNAL(connected()),this, SLOT(startSend()));
 }
 
 void StreamRequest::sendConnect()
@@ -14,8 +14,22 @@ void StreamRequest::send(QString ipaddress, quint16 port, QString message)
 {
     toSend = message;
     QHostAddress addr(ipaddress);
-    client.disconnectFromHost();
     client.connectToHost(addr, port);
+
+    //if connected
+    if(client.waitForConnected(3500))
+    {
+        //send the data
+        startSend();
+        //make sure it sent
+        client.waitForBytesWritten(1000);
+        //close connection
+        client.close();
+    }
+    else
+    {
+        qDebug() << "Count not connect to host " << ipaddress;
+    }
 }
 
 void StreamRequest::startSend()
@@ -49,6 +63,6 @@ void StreamRequest::read()
 
 StreamRequest::~StreamRequest()
 {
-    client.close();
+//    client.close();
     server.close();
 }
